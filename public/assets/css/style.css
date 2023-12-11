@@ -192,6 +192,11 @@ aside .sidebar a.active{
     margin-left: 0;
 }
 
+aside .sidebar a.active {
+    color: #fff;
+    background-color: skyblue;
+}
+
 aside .sidebar a.active::before{
     content: '';
     width: 6px;
