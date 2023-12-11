@@ -27,14 +27,14 @@
     } );
 
     document.addEventListener("DOMContentLoaded", function() {
-    const activePage = window.location.pathname;
-    const sidebarLinks = document.querySelectorAll('aside .sidebar a');
+        const activePage = window.location.pathname;
+        const sidebarLinks = document.querySelectorAll('aside .sidebar a');
 
-    sidebarLinks.forEach(link => {
-        // Use includes() to match partial URLs
-        if (activePage.includes(link.getAttribute("href"))) {
-        link.classList.add('active');
-        }
-    });
+        sidebarLinks.forEach(link => {
+            // Use includes() to match partial URLs
+            if (activePage.includes(link.getAttribute("href"))) {
+            link.classList.add('active');
+            }
+        });
     });
 </script>
