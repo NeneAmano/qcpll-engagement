@@ -4,49 +4,82 @@
         <?php require_once 'includes/head.php' ?>
         <!-- Main Content -->
         <main>
-            <h1>Users</h1>
+        <h1>Users</h1>
             <!-- Analyses -->
             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal">Add user</button>
             <br>
             <br>
-            <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Username</th>
-      <th scope="col">Role</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Admin</td>
-      <td>
-      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>
-      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">Delete</button>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Admin</td>
-      <td>
-          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">Delete</button></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Staff</td>
-      <td>
-          <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal">Edit</button>
-          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal">Delete</button></td>
-    </tr>
-  </tbody>
-</table>
+            <!-- start of table -->
+            <table class="table table-bordered table-striped" id="datatable">
+                <!-- start of table header -->
+                <thead>
+                    <tr>
+                        <th class="table-light text-uppercase text-center">ID</th>
+                        <th class="d-none">ID</th>
+                        <th class="table-light text-uppercase text-center">User Role</th>
+                        <th class="table-light text-uppercase text-center">Username</th>
+                        <th class="table-light text-uppercase text-center">Status</th>
+                        <th class="table-light text-uppercase text-center">Last Login</th>
+                        <th class="table-light text-uppercase text-center">Date Added</th>
+                        <th class="table-light text-uppercase text-center">Last Updated</th>
+                        <th class="table-light text-uppercase text-center">Action</th>
+                    </tr>
+                </thead>
+                <!-- end of table header -->
+                <!-- start of table body -->
+                <tbody>
+                    <?php
+                        $sql_select = "SELECT user_role.user_role_id, user_role.user_role, users.* FROM users INNER JOIN user_role USING (user_role_id) ORDER BY users.user_id DESC;";
+                        $result_select = mysqli_query($conn, $sql_select);
+                        if(mysqli_num_rows($result_select) > 0){
+                            while($row_select = mysqli_fetch_assoc($result_select)){
+                                $user_id = $row_select['user_id'];
+                                $user_role_id = $row_select['user_role_id'];
+                                $user_role = $row_select['user_role'];
+                                $username = $row_select['username'];
+                                $is_active = $row_select['is_active'];
+                                $last_login = $row_select['last_login'];
+                                $created_at = $row_select['created_at'];
+                                $updated_at = $row_select['updated_at'];
 
+                                if($is_active == 0){
+                                    $is_active = 'Inactive';
+                                }elseif($is_active == 1){
+                                    $is_active = 'Active';
+                                }
+                    ?>
+                    <tr>
+                        <td class="text-center"><?= $user_id ?></td>
+                        <td class="d-none"><?= $user_role_id ?></td>
+                        <td class="text-center"><?= $user_role ?></td>
+                        <td class="text-center"><?= $username ?></td>
+                        <td class="text-center"><?= $is_active ?></td>
+                        <td class="text-center"><?= $last_login ?></td>
+                        <td class="text-center"><?= $created_at ?></td>
+                        <td class="text-center"><?= $updated_at ?></td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
+                            <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_user_modal"><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    <?php
+                            }
+                        }else{
+                    ?>
+                    <tr>
+                        <td colspan="" class="text-center d-none"></td>
+                        <td colspan="" class="text-center d-none"></td>
+                        <td colspan="" class="text-center d-none"></td>
+                        <td colspan="" class="text-center d-none"></td>
+                        <td colspan="8" class="text-center">No records found.</td>
+                    </tr>
+                </tbody>
+                <?php
+                    }
+                ?>
+                <!-- end of table body -->
+            </table>
+            <!-- end of table -->
         </main>
         <!-- End of Main Content -->
 
@@ -205,30 +238,26 @@
   </div>
 </div>
 
-<!-- Delete Modal -->
-<div class="modal" id="deleteModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Delete Record</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <!-- Modal Body -->
-      <div class="modal-body">
-        <p>Are you sure you want to delete this record?</p>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
-      </div>
+    <!-- Delete Modal -->
+    <div class="modal" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <h4 class="modal-title">Delete Record</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Body -->
+        <div class="modal-body">
+            <p>Are you sure you want to delete this record?</p>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+        </div>
+        </div>
     </div>
-  </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="assets/js/index.js"></script>
+    <?php
+        require_once 'includes/scripts.php';
+    ?>
 </body>
-
 </html>
