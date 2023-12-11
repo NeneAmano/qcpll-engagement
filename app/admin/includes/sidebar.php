@@ -48,7 +48,6 @@
                         mail_outline
                     </span>
                     <h3>Feedbacks</h3>
-                    <span class="message-count">27</span>
                 </a>
                 <a href="service.php">
                     <span class="material-icons-sharp">

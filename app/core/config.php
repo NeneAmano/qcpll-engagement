@@ -8,7 +8,7 @@
         define('DBDRIVER', '');
 
         // absolute path    
-        define('ROOT', '../public');
+        define('ROOT', '../../public');
     }else{
         // database config
         define('DBNAME', 'qcpl_engagement');
