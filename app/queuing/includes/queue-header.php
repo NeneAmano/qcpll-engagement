@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once('../../app/core/init.php');
+    require_once('../core/init.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quezon City Public Library Queue</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="shortcut icon" href="assets/images/qcplLogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../../public/assets/css/style.css">
+    <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
