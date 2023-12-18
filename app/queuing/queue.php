@@ -1,23 +1,23 @@
 <?php 
-    require_once("includes/header.php");
+    require_once("includes/queue-header.php");
 ?>
 <body>
 
     <section id="swup" class="transtion-fade">
     <div class="logo">
-            <img src="./images/qclogo.jpg" alt="">
+            <img src="../../public/assets/images/qclogo.jpg" alt="">
             <div class="title">
             <p>Quezon City Public Library</p>
             <p>Quezon City Government</p>
             </div>
-            <img src="./images/qcplLogo.png" alt="">
+            <img src="../../public/assets/images/qcplLogo.png" alt="">
         </div>
 
         <!-- start of demographic form -->
         <div class="wrapper">
             <div class="inner">
                 <div class="image-holder">
-                    <img src="./images/demographic-img.png" alt="">
+                    <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
                 <form action="">
                     <h3>Demographic Form</h3>
