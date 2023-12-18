@@ -2,7 +2,7 @@
 
 <div class="container">
         <?php require_once 'includes/sidebar.php' ?>
-        <?php require_once 'includes/head.php' ?>
+        <?php require_once 'includes/header.php' ?>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- Main Content -->
         <main>

@@ -2,7 +2,7 @@
 
 <div class="container">
         <?php require_once 'includes/sidebar.php' ?>
-        <?php require_once 'includes/head.php' ?>
+        <?php require_once 'includes/header.php' ?>
         <!-- Main Content -->
         <main>
             <h1>Services Offered</h1>
