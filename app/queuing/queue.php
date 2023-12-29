@@ -1,8 +1,65 @@
 <?php 
     require_once("includes/queue-header.php");
+
+    if(isset($_SESSION['user_id'])){
+        $firstname_error = '';
+        $middlename_error = '';
+        $surname_error = '';
+        $suffix_error = '';
+
+        $firstname_success = '';
+        $middlename_success = '';
+        $surname_success = '';
+        $suffix_success = '';
+
+        $firstname_value = '';
+        $middlename_value = '';
+        $surname_value = '';
+        $suffix_value = '';
+
+        if(isset($_POST['submit'])){
+            $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+            $middlename = mysqli_real_escape_string($conn, $_POST['middlename']);
+            $surname = mysqli_real_escape_string($conn, $_POST['surname']);
+            $suffix = mysqli_real_escape_string($conn, $_POST['suffix']);
+
+            if(nameInvalid($firstname) !== false) {
+                $firstname_error = ' *Invalid First Name';
+            } else {
+                $firstname_error = '';
+                $firstname_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                $firstname_value = $firstname;
+            }
+
+            if(nameInvalid($middlename) !== false) {
+                $middlename_error = ' *Invalid Middle Name';
+            } else {
+                $middlename_error = '';
+                $middlename_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                $middlename_value = $middlename;
+            }
+
+            if(nameInvalid($surname) !== false) {
+                $surname_error = ' *Invalid Surname';
+            } else {
+                $surname_error = '';
+                $surname_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                $surname_value = $surname;
+            }
+
+            if(nameInvalid($suffix) !== false) {
+                $suffix_error = ' *Invalid Suffix';
+            } else {
+                $suffix_error = '';
+                $suffix_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                $suffix_value = $suffix;
+            }
+        }
+    }
+
+
 ?>
 <body>
-
     <section id="swup" class="transtion-fade">
     <div class="logo">
             <img src="../../public/assets/images/qclogo.jpg" alt="">
@@ -19,12 +76,20 @@
                 <div class="image-holder">
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
-                <form action="">
+                <form action="" method="post">
                     <h3>Demographic Form</h3>
                     <div class="form-group">
-                        <input type="text" name="surname" id="" placeholder="Surname" class="form-control" required>
-                        <input type="text" name="firstname" id="" placeholder="Firstname" class="form-control" required>
-                        <input type="text" name="suffix" id="" placeholder="Suffix" class="form-control" required>
+                        <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
+                        <input type="text" name="firstname" id="" placeholder="First Name" class="form-control" value="<?= $firstname_value ?>" required>
+
+                        <span class="text-danger"><?= $middlename_error ?></span><span class="text-success"><?= $middlename_success ?></span>
+                        <input type="text" name="middlename" id="" placeholder="Middle Name" class="form-control" value="<?= $middlename_value ?>" >
+
+                        <span class="text-danger"><?= $surname_error ?></span><span class="text-success"><?= $surname_success ?></span>
+                        <input type="text" name="surname" id="" placeholder="Surname" class="form-control" value="<?= $surname_value ?>" required>
+
+                        <span class="text-danger"><?= $suffix_error ?></span><span class="text-success"><?= $suffix_success ?></span>
+                        <input type="text" name="suffix" id="" placeholder="Suffix" class="form-control" value="<?= $suffix_value ?>" >
                     </div>
                     <div class="form-group">
                         <input type="date" name="" id="">
@@ -68,9 +133,9 @@
                         <input type="checkbox" id="checkbox1">Other
                         <input type="text" name="" id="dialog1">
                     </div>
-                    <button class="existBtn" onclick="window.location.href='existProfile.php';">Already have Account?</button>
+                    <button class="existBtn" onclick="window.location.href='existProfile.php';">Already have an account?</button>
                     <!-- <a href="existProfile.php" class="existBtn">Already have Account?</a> -->
-                    <button class="profileBtn">Submit</button>
+                    <button type="submit" name="submit" class="profileBtn">Submit</button>
                 </form>
             </div>
         </div>
