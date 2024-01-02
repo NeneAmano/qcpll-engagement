@@ -16,12 +16,21 @@
         $middlename_value = '';
         $surname_value = '';
         $suffix_value = '';
+        $age_value = '';
 
         if(isset($_POST['submit'])){
             $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
             $middlename = mysqli_real_escape_string($conn, $_POST['middlename']);
             $surname = mysqli_real_escape_string($conn, $_POST['surname']);
             $suffix = mysqli_real_escape_string($conn, $_POST['suffix']);
+            $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
+            $gender = mysqli_real_escape_string($conn, $_POST['gender']);
+            $education = mysqli_real_escape_string($conn, $_POST['education']);
+            $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
+            $nbi = mysqli_real_escape_string($conn, $_POST['nbi']);
+            $police = mysqli_real_escape_string($conn, $_POST['police']);
+            $others = mysqli_real_escape_string($conn, $_POST['others']);
+
 
             if(nameInvalid($firstname) !== false) {
                 $firstname_error = ' *Invalid First Name';
@@ -54,6 +63,45 @@
                 $suffix_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
                 $suffix_value = $suffix;
             }
+
+            if(empty($middlename)){
+                $middlename_error = '';
+            }
+
+            if(empty($suffix)){
+                $suffix_error = '';
+            }
+
+            //date in mm/dd/yyyy format; or it can be in other formats as well
+            // $birthDate = "12/17/1983";
+            //explode the date to get month, day and year
+            $new_birthdate = date("m-d-Y", strtotime($birthdate));
+
+            $new_birthdate = explode("-", $new_birthdate);
+            //get age from date or birthdate
+            $age = (date("md", date("U", mktime(0, 0, 0, $new_birthdate[0], $new_birthdate[1], $new_birthdate[2]))) > date("md")
+                ? ((date("Y") - $new_birthdate[2]) - 1)
+                : (date("Y") - $new_birthdate[2]));
+
+            if(($age >= 0) && ($age <= 12)){
+                $age_value = 1;
+            }elseif(($age >= 13) && ($age <= 21)){
+                $age_value = 2;
+            }elseif(($age >= 22) && ($age <= 35)){
+                $age_value = 3;
+            }elseif(($age >= 36) && ($age <= 59)){
+                $age_value = 4;
+            }elseif($age >= 60){
+                $age_value = 5;
+            }
+            echo $gender;
+            echo $education;
+            echo $occupation;
+            echo $nbi;
+            echo $police;
+            echo $others;
+
+
         }
     }
 
@@ -92,31 +140,31 @@
                         <input type="text" name="suffix" id="" placeholder="Suffix" class="form-control" value="<?= $suffix_value ?>" >
                     </div>
                     <div class="form-group">
-                        <input type="date" name="" id="">
+                        <input type="date" name="birthdate" id="birthdate" max="2000-13-13">
                     </div>
                     <div class="form-wrapper">
-                        <select name="" id="" class="form-control">
+                        <select name="gender" id="" class="form-control">
                             <option value="" disabled selected>Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
                         </select>
                     </div>
                     <div class="form-wrapper">
-                        <select name="" id="" class="form-control">
+                        <select name="education" id="" class="form-control">
                             <option value="" disabled selected>Educational Attainment</option>
-                            <option value="ElementaryGraduate">Elementary Graduate</option>
-                            <option value="HighSchoolLevel">High School Level</option>
-                            <option value="HighSchoolGraduate">High School Graduate</option>
-                            <option value="CollegeLevel">College Level</option>
-                            <option value="CollegeGraduate">College Graduate</option>
-                            <option value="MastersDegree">Master’s Degree</option>
-                            <option value="DoctorateDegree">Doctorate Degree</option>
+                            <option value="Elementary Graduate">Elementary Graduate</option>
+                            <option value="HighSchool Level">High School Level</option>
+                            <option value="HighSchool Graduate">High School Graduate</option>
+                            <option value="College Level">College Level</option>
+                            <option value="College Graduate">College Graduate</option>
+                            <option value="Masters Degree">Master’s Degree</option>
+                            <option value="Doctorate Degree">Doctorate Degree</option>
                             <option value="Vocational">Vocational</option>
                         </select>
                     </div>
                     <div class="form-wrapper">
-                        <select name="" id="" class="form-control">
+                        <select name="occupation" id="" class="form-control">
                             <option value="" disabled selected>Occupation</option>
                             <option value="Student">Student</option>
                             <option value="Unemployed">Unemployed</option>
@@ -128,10 +176,10 @@
                         <h1>Please Select Services</h1>
                         <input type="checkbox" id="nbi" name="nbi" value="nbi">
                         <label for="nbi"> NBI</label><br>
-                        <input type="checkbox" id="policeclearance" name="policeclearance" value="nbi">
+                        <input type="checkbox" id="policeclearance" name="police" value="police">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
                         <input type="checkbox" id="checkbox1">Other
-                        <input type="text" name="" id="dialog1">
+                        <input type="text" name="others">
                     </div>
                     <button class="existBtn" onclick="window.location.href='existProfile.php';">Already have an account?</button>
                     <!-- <a href="existProfile.php" class="existBtn">Already have Account?</a> -->
@@ -144,29 +192,45 @@
 
 
       <script>
-         $(function() {
+            $(function() {
 
-            var dialog1 = $("#dialog1");
-            var checkbox1 = $("#checkbox1");
+                var dialog1 = $("#dialog1");
+                var checkbox1 = $("#checkbox1");
 
-            dialog1.dialog({
-               autoOpen: false,
-               modal: true,
-               buttons: {
-                  Save: function() {$(this).dialog("close");}
-               },
-               title: "Type below...",
-               close : function() {checkbox1.prop('checked', false);}
+                dialog1.dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Save: function() {$(this).dialog("close");}
+                },
+                title: "Type below...",
+                close : function() {checkbox1.prop('checked', false);}
+
+                });
+
+                checkbox1.click(function() {
+                if (checkbox1.prop("checked")) {
+                    dialog1.dialog("open");
+                }
+                });
 
             });
 
-            checkbox1.click(function() {
-               if (checkbox1.prop("checked")) {
-                   dialog1.dialog("open");
-               }
-            });
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+            var yyyy = today.getFullYear();
 
-         });
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm;
+            } 
+                
+            today = yyyy + '-' + mm + '-' + dd;
+            document.getElementById("birthdate").setAttribute("max", today);
       </script>
    </head>
 
