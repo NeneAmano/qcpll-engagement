@@ -29,7 +29,20 @@
             $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
             $nbi = mysqli_real_escape_string($conn, $_POST['nbi']);
             $police = mysqli_real_escape_string($conn, $_POST['police']);
-            $others = mysqli_real_escape_string($conn, $_POST['others']);
+            $total_input = mysqli_real_escape_string($conn, $_POST['total_input']);
+
+            // Initialize an empty array
+            $others = array();
+
+            // Use a loop to create $_POST['others'][] based on $total_input
+            for ($i = 0; $i < $total_input; $i++) {
+                // Use mysqli_real_escape_string or any other necessary validation/sanitization
+                $others[$i] = mysqli_real_escape_string($conn, $_POST['others'][$i]);
+            }
+            // Iterate through $others and echo the values
+            foreach ($others as $key => $value) {
+                echo "Value of \$others[$key]: $value<br>";
+            }
 
 
             if(nameInvalid($firstname) !== false) {
@@ -94,14 +107,10 @@
             }elseif($age >= 60){
                 $age_value = 5;
             }
-            echo $gender;
-            echo $education;
-            echo $occupation;
-            echo $nbi;
-            echo $police;
-            echo $others;
+            
+            if(!empty($firstname) && $firstname_error == '' && $middlename_error == '' && !empty($lastname) && $lastname_error == '' && $suffix_error == '' && !empty($birthdate)){
 
-
+            }
         }
     }
 
@@ -124,7 +133,7 @@
                 <div class="image-holder">
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return validateForm()">
                     <h3>Demographic Form</h3>
                     <div class="form-group">
                         <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
@@ -174,12 +183,17 @@
                     </div>
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
-                        <input type="checkbox" id="nbi" name="nbi" value="nbi">
+                        <input type="checkbox" id="nbi" name="checkbox-group" value="nbi">
                         <label for="nbi"> NBI</label><br>
-                        <input type="checkbox" id="policeclearance" name="police" value="police">
+                        <input type="checkbox" id="policeclearance" name="checkbox-group" value="police">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
-                        <input type="checkbox" id="checkbox1">Other
-                        <input type="text" name="others">
+
+                        <input type="text" name="others[]">
+                        <button onclick="add()" type="button">Add</button>
+                        <button onclick="remove()" type="button">remove</button>
+                        <div id="new_chq"></div>
+                        <input type="hidden" value="1" id="total_chq" name="total_input">
+                        
                     </div>
                     <button class="existBtn" onclick="window.location.href='existProfile.php';">Already have an account?</button>
                     <!-- <a href="existProfile.php" class="existBtn">Already have Account?</a> -->
@@ -216,6 +230,7 @@
 
             });
 
+            // allows datepicker to disable date after today
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth() + 1; //January is 0!
@@ -231,6 +246,44 @@
                 
             today = yyyy + '-' + mm + '-' + dd;
             document.getElementById("birthdate").setAttribute("max", today);
+
+            // function For adding new input field
+            function add(){
+                var new_chq_no = parseInt($('#total_chq').val())+1;
+                var new_input="<input type='text' id='new_"+new_chq_no+"' name='others[]'>";
+                $('#new_chq').append(new_input);
+                $('#total_chq').val(new_chq_no)
+            }
+
+            function remove(){
+                var last_chq_no = $('#total_chq').val();
+                if(last_chq_no>1){
+                    $('#new_'+last_chq_no).remove();
+                    $('#total_chq').val(last_chq_no-1);
+                }
+            }
+
+            function validateForm() {
+                // Get all checkboxes by their name attribute
+                var checkboxes = document.getElementsByName('checkbox-group');
+
+                // Check if at least one checkbox is checked
+                var isChecked = false;
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        isChecked = true;
+                        break;
+                    }
+                }
+
+                // Display an alert if no checkbox is checked
+                if (!isChecked) {
+                    alert("Please select at least one checkbox.");
+                    return false; // Prevent form submission
+                }
+
+                return true; // Allow form submission
+            }
       </script>
    </head>
 
