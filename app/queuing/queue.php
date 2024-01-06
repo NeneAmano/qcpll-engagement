@@ -44,7 +44,6 @@
                 echo "Value of \$others[$key]: $value<br>";
             }
 
-
             if(nameInvalid($firstname) !== false) {
                 $firstname_error = ' *Invalid First Name';
             } else {
@@ -107,9 +106,20 @@
             }elseif($age >= 60){
                 $age_value = 5;
             }
-            
-            if(!empty($firstname) && $firstname_error == '' && $middlename_error == '' && !empty($lastname) && $lastname_error == '' && $suffix_error == '' && !empty($birthdate)){
 
+            $random = random_int(100000, 999999);
+            if($age_value == 5){
+                $queue_no = 'P' . $random;
+            }else{
+                $queue_no = 'N' . $random;
+            }
+            if(!empty($firstname) && nameInvalid($firstname) === '' && nameInvalid($middlename) && !empty($lastname) && nameInvalid($surname) && nameInvalid($suffix) && !empty($birthdate)){
+                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation) VALUES ('$firstname', '$middlename', '$surname', '$suffix', $age_value, '$gender', '$education', '$occupation');";
+
+                if(mysqli_query($conn, $sql)){
+                    // header("location: queue.php?success");
+                }
+                // $client_id = mysqli_insert_id($conn);
             }
         }
     }
@@ -133,7 +143,7 @@
                 <div class="image-holder">
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
-                <form action="" method="post" onsubmit="return validateForm()">
+                <form action="" method="post" id="myForm">
                     <h3>Demographic Form</h3>
                     <div class="form-group">
                         <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
@@ -183,12 +193,13 @@
                     </div>
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
-                        <input type="checkbox" id="nbi" name="checkbox-group" value="nbi">
+                        
+                        <input type="checkbox" id="nbi" name="nbi" value="nbi">
                         <label for="nbi"> NBI</label><br>
-                        <input type="checkbox" id="policeclearance" name="checkbox-group" value="police">
+                        <input type="checkbox" id="policeclearance" name="police" value="police">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
 
-                        <input type="text" name="others[]">
+                        <input type="text" class="others[]" name="others[]" id="new_1">
                         <button onclick="add()" type="button">Add</button>
                         <button onclick="remove()" type="button">remove</button>
                         <div id="new_chq"></div>
@@ -250,7 +261,7 @@
             // function For adding new input field
             function add(){
                 var new_chq_no = parseInt($('#total_chq').val())+1;
-                var new_input="<input type='text' id='new_"+new_chq_no+"' name='others[]'>";
+                var new_input="<input type='text' id='new_"+new_chq_no+"' name='others[]' class='others"+new_chq_no+"'>";
                 $('#new_chq').append(new_input);
                 $('#total_chq').val(new_chq_no)
             }
@@ -263,27 +274,25 @@
                 }
             }
 
-            function validateForm() {
-                // Get all checkboxes by their name attribute
-                var checkboxes = document.getElementsByName('checkbox-group');
+            document.getElementById('myForm').addEventListener('submit', function(event) {
+                var nbiChecked = document.getElementById('nbi').checked;
+                var policeChecked = document.getElementById('policeclearance').checked;
+                var otherInputs = document.querySelectorAll('[class^="others"]');
+                var isValid = false;
 
-                // Check if at least one checkbox is checked
-                var isChecked = false;
-                for (var i = 0; i < checkboxes.length; i++) {
-                    if (checkboxes[i].checked) {
-                        isChecked = true;
+                for (var i = 0; i < otherInputs.length; i++) {
+                    var inputValue = otherInputs[i].value.trim();
+                    if (inputValue !== '') {
+                        isValid = true;
                         break;
                     }
                 }
-
-                // Display an alert if no checkbox is checked
-                if (!isChecked) {
-                    alert("Please select at least one checkbox.");
-                    return false; // Prevent form submission
+                // Example validation
+                if (!nbiChecked && !policeChecked && !isValid) {
+                    alert('Please either check the checkbox or provide additional text input.');
+                    event.preventDefault(); // Prevent form submission
                 }
-
-                return true; // Allow form submission
-            }
+            });
       </script>
    </head>
 
