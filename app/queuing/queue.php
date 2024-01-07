@@ -27,8 +27,8 @@
             $gender = mysqli_real_escape_string($conn, $_POST['gender']);
             $education = mysqli_real_escape_string($conn, $_POST['education']);
             $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
-            $nbi = mysqli_real_escape_string($conn, $_POST['nbi']);
-            $police = mysqli_real_escape_string($conn, $_POST['police']);
+            $nbi = isset($_POST['nbi']) ? mysqli_real_escape_string($conn, $_POST['nbi']) : "";
+            $police = isset($_POST['police']) ? mysqli_real_escape_string($conn, $_POST['police']) : "";
             $total_input = mysqli_real_escape_string($conn, $_POST['total_input']);
 
             // Initialize an empty array
@@ -44,32 +44,73 @@
                 echo "Value of \$others[$key]: $value<br>";
             }
 
-            if(nameInvalid($firstname) !== false) {
-                $firstname_error = ' *Invalid First Name';
+            // Functions for validating name
+            function firstnameInvalid($firstname) {
+                $firstname_length = strlen($firstname);
+        
+                if((!preg_match("/^[a-zA-Z ,.'-]+$/i", $firstname)) || ($firstname_length < 2)) {
+                    $result = true;  
+                } else {
+                    $result = false;
+                }
+                return $result;
+            }
+
+            function middlenameInvalid($middlename) {
+                if(!preg_match("/^[a-zA-Z ,.'-]+$/i", $middlename)) {
+                    $result = true;
+                } else {
+                    $result = false;
+                }
+                return $result;
+            }
+
+            function surnameInvalid($surname) {
+                $surname_length = strlen($surname);
+        
+                if((!preg_match("/^[a-zA-Z ,.'-]+$/i", $surname)) || ($surname_length < 2)) {
+                    $result = true;
+                } else {
+                    $result = false;
+                }
+                return $result;
+            }
+
+            function suffixInvalid($suffix) {
+                if(!preg_match("/^[a-zA-Z ,.'-]+$/i", $suffix)) {
+                    $result = true;
+                } else {
+                    $result = false;
+                }
+                return $result;
+            }
+
+            if(firstnameInvalid($firstname) !== false) {
+                $firstname_error = ' *Invalid first name.';
             } else {
                 $firstname_error = '';
                 $firstname_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
                 $firstname_value = $firstname;
             }
 
-            if(nameInvalid($middlename) !== false) {
-                $middlename_error = ' *Invalid Middle Name';
-            } else {
-                $middlename_error = '';
-                $middlename_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
-                $middlename_value = $middlename;
-            }
-
-            if(nameInvalid($surname) !== false) {
-                $surname_error = ' *Invalid Surname';
+            if(surnameInvalid($surname) !== false) {
+                $surname_error = ' *Invalid surname.';
             } else {
                 $surname_error = '';
                 $surname_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
                 $surname_value = $surname;
             }
 
-            if(nameInvalid($suffix) !== false) {
-                $suffix_error = ' *Invalid Suffix';
+            if(middlenameInvalid($middlename) !== false) {
+                $middlename_error = ' *Invalid middle name.';
+            } else {
+                $middlename_error = '';
+                $middlename_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                $middlename_value = $middlename;
+            }
+
+            if(suffixInvalid($suffix) !== false) {
+                $suffix_error = ' *Invalid suffix.';
             } else {
                 $suffix_error = '';
                 $suffix_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
@@ -77,10 +118,12 @@
             }
 
             if(empty($middlename)){
+                $middlename_value = '';
                 $middlename_error = '';
             }
 
             if(empty($suffix)){
+                $suffix_value = '';
                 $suffix_error = '';
             }
 
@@ -113,14 +156,69 @@
             }else{
                 $queue_no = 'N' . $random;
             }
-            if(!empty($firstname) && nameInvalid($firstname) === '' && nameInvalid($middlename) && !empty($lastname) && nameInvalid($surname) && nameInvalid($suffix) && !empty($birthdate)){
-                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation) VALUES ('$firstname', '$middlename', '$surname', '$suffix', $age_value, '$gender', '$education', '$occupation');";
 
-                if(mysqli_query($conn, $sql)){
-                    // header("location: queue.php?success");
-                }
-                // $client_id = mysqli_insert_id($conn);
+            if(firstnameInvalid($firstname) === false){
+                echo $firstname;
             }
+            if(surnameInvalid($surname) === false){
+                echo $surname;
+            }
+            if(middlenameInvalid($middlename) === false){
+                echo $middlename;
+            }
+            if(suffixInvalid($suffix) === false){
+                echo $suffix;
+            }
+            if(!empty($birthdate)){
+                echo $birthdate;
+            }
+            if($gender !== ''){
+                echo $gender;
+            }
+            if($education !== ''){
+                echo $education;
+            }
+            if($occupation !== ''){
+                echo $occupation;
+            }
+            if (
+                !firstnameInvalid($firstname) &&
+                !surnameInvalid($surname) &&
+                middlenameInvalid($middlename) &&
+                suffixInvalid($suffix) &&
+                !empty($birthdate) &&
+                $gender !== '' &&
+                $education !== '' &&
+                $occupation !== ''
+            ) {
+                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation) VALUES ('$firstname', '$middlename', '$surname', '$suffix', $age_value, '$gender', '$education', '$occupation');";
+    
+                if(mysqli_query($conn, $sql)){
+                    $client_id = mysqli_insert_id($conn);
+
+                    if(isset($nbi)){
+                        $sql_nbi = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$nbi', '$queue_no');";
+                        if(mysqli_query($conn, $sql_nbi)){
+                            header("location: queue.php?success");
+                            die();
+                        }
+                    }
+                    
+                    if(isset($police)){
+                        $sql_police = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$police', '$queue_no');";
+                        if(mysqli_query($conn, $sql_police)){
+                            var_dump($police);
+                        }
+                    }
+
+                    
+
+                }else{
+                    echo 'Error: ' . mysqli_error($conn);
+                }
+            }
+
+            // var_dump($firstname, $middlename, $surname, $suffix, $birthdate, $gender, $education, $occupation);
         }
     }
 
@@ -194,9 +292,9 @@
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
                         
-                        <input type="checkbox" id="nbi" name="nbi" value="nbi">
+                        <input type="checkbox" id="nbi" name="nbi" value="NBI">
                         <label for="nbi"> NBI</label><br>
-                        <input type="checkbox" id="policeclearance" name="police" value="police">
+                        <input type="checkbox" id="policeclearance" name="police" value="Police">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
 
                         <input type="text" class="others[]" name="others[]" id="new_1">
