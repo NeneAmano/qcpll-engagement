@@ -34,16 +34,6 @@
             // Initialize an empty array
             $others = array();
 
-            // Use a loop to create $_POST['others'][] based on $total_input
-            for ($i = 0; $i < $total_input; $i++) {
-                // Use mysqli_real_escape_string or any other necessary validation/sanitization
-                $others[$i] = mysqli_real_escape_string($conn, $_POST['others'][$i]);
-            }
-            // Iterate through $others and echo the values
-            foreach ($others as $key => $value) {
-                echo "Value of \$others[$key]: $value<br>";
-            }
-
             // Functions for validating name
             function firstnameInvalid($firstname) {
                 $firstname_length = strlen($firstname);
@@ -120,11 +110,15 @@
             if(empty($middlename)){
                 $middlename_value = '';
                 $middlename_error = '';
+            }elseif(!empty($middlename )){
+                $middlename_value = $middlename;
             }
 
             if(empty($suffix)){
                 $suffix_value = '';
                 $suffix_error = '';
+            }elseif(!empty($suffix )){
+                $suffix_value = $suffix;
             }
 
             //date in mm/dd/yyyy format; or it can be in other formats as well
@@ -157,62 +151,46 @@
                 $queue_no = 'N' . $random;
             }
 
-            if(firstnameInvalid($firstname) === false){
-                echo $firstname;
-            }
-            if(surnameInvalid($surname) === false){
-                echo $surname;
-            }
-            if(middlenameInvalid($middlename) === false){
-                echo $middlename;
-            }
-            if(suffixInvalid($suffix) === false){
-                echo $suffix;
-            }
-            if(!empty($birthdate)){
-                echo $birthdate;
-            }
-            if($gender !== ''){
-                echo $gender;
-            }
-            if($education !== ''){
-                echo $education;
-            }
-            if($occupation !== ''){
-                echo $occupation;
-            }
-            if (
-                !firstnameInvalid($firstname) &&
-                !surnameInvalid($surname) &&
-                middlenameInvalid($middlename) &&
-                suffixInvalid($suffix) &&
+            
+            if (!firstnameInvalid($firstname) && !surnameInvalid($surname) && (!middlenameInvalid($middlename) || !suffixInvalid($suffix)) || (middlenameInvalid($middlename) || suffixInvalid($suffix)) && 
                 !empty($birthdate) &&
                 $gender !== '' &&
                 $education !== '' &&
                 $occupation !== ''
             ) {
-                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation) VALUES ('$firstname', '$middlename', '$surname', '$suffix', $age_value, '$gender', '$education', '$occupation');";
+                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation) VALUES ('$firstname', '$middlename_value', '$surname', '$suffix_value', $age_value, '$gender', '$education', '$occupation');";
     
                 if(mysqli_query($conn, $sql)){
                     $client_id = mysqli_insert_id($conn);
-
-                    if(isset($nbi)){
+                    if($nbi !== ''){
                         $sql_nbi = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$nbi', '$queue_no');";
                         if(mysqli_query($conn, $sql_nbi)){
-                            header("location: queue.php?success");
-                            die();
+                            header("location: queue-number.php?queue_no=" .$queue_no);
                         }
+                        
                     }
-                    
-                    if(isset($police)){
+                    if($police !== ''){
                         $sql_police = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$police', '$queue_no');";
                         if(mysqli_query($conn, $sql_police)){
-                            var_dump($police);
+                            header("location: queue-number.php?queue_no=" .$queue_no);
                         }
                     }
 
-                    
-
+                    // Use a loop to create $_POST['others'][] based on $total_input
+                    for ($i = 0; $i < $total_input; $i++) {
+                        // Use mysqli_real_escape_string or any other necessary validation/sanitization
+                        $others[$i] = mysqli_real_escape_string($conn, $_POST['others'][$i]);
+                    }
+                    // Iterate through $others and echo the values
+                    foreach ($others as $key => $value) {
+                        if(!empty($value) || $value !== ''){
+                            $sql_others = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$value', '$queue_no');";
+                            if(mysqli_query($conn, $sql_others)){
+                                header("location: queue-number.php?queue_no=" .$queue_no);
+                            }
+                        }
+                    }
+                        
                 }else{
                     echo 'Error: ' . mysqli_error($conn);
                 }
@@ -221,8 +199,6 @@
             // var_dump($firstname, $middlename, $surname, $suffix, $birthdate, $gender, $education, $occupation);
         }
     }
-
-
 ?>
 <body>
     <section id="swup" class="transtion-fade">
