@@ -73,13 +73,13 @@
   }
   .login{
     position:absolute;
-    padding: 50px 80px;
+    padding:30px 60px;
     text-align: center;
     box-shadow: 3px 6px 30px 8px rgb(58 58 58 / 15%);
     background: rgba(255, 255, 255);
     right: 9%;
-    bottom: 15%;
-    height:60%;
+    top: 30%;
+    min-height:60%;
     border-radius: 8px;
     backdrop-filter: blur(5px);
   }
@@ -93,7 +93,7 @@
 .login p{
   font-size: 18px;
   color: #000000;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 .inputbox{
   position: relative;
@@ -484,13 +484,13 @@ select option[value=""] [disabled]{
       .login{
         text-decoration: none;
         position:absolute;
-        padding: 40px 60px;
+        padding:30px 60px;
         text-align: center;
         box-shadow: 3px 6px 30px 8px rgb(58 58 58 / 15%);
-        background: rgb(0, 52, 134 / 50%);
+        background: rgba(255, 255, 255);
         right: 9%;
-        bottom: 15%;
-        height:60%;
+        top: 30%;
+        min-height:60%;
         border: 1px solid ;
         border-top-color: #13a561;
         border-left-color: rgb(24, 114, 94);
