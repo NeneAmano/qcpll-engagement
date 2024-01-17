@@ -229,7 +229,7 @@
                     '.$username.'
                 </button>';
                     echo '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">';
-                        echo '<li><a class="dropdown-item" href="../app/includes/logout.php">Log out</a></li>';
+                        echo '<li><a class="dropdown-item" href="../../app/includes/logout.php">Log out</a></li>';
                     echo '</ul>';
             echo '</div>';
             
