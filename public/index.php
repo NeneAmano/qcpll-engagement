@@ -67,7 +67,6 @@
             <div class="login">
                 <h4>Welcome Back!</h4>
                 <p>Login to continue</p>
-                <a href="../app/includes/logout.php">Log out    </a>
                 <div class="logbox">
                     <form action="" method="post">
                         <span class="text-danger"><?= $error_message; ?></span>
