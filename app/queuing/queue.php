@@ -165,14 +165,14 @@
                     if($nbi !== ''){
                         $sql_nbi = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$nbi', '$queue_no');";
                         if(mysqli_query($conn, $sql_nbi)){
-                            header("location: queue-number.php?queue_no=" .$queue_no);
+                            header("location: queue-number.php?queue_no=" .$queue_no. "&totalinput=" .$total_input);
                         }
                         
                     }
                     if($police !== ''){
                         $sql_police = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$police', '$queue_no');";
                         if(mysqli_query($conn, $sql_police)){
-                            header("location: queue-number.php?queue_no=" .$queue_no);
+                            header("location: queue-number.php?queue_no=" .$queue_no. "&totalinput=" .$total_input);
                         }
                     }
 
@@ -186,11 +186,32 @@
                         if(!empty($value) || $value !== ''){
                             $sql_others = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$value', '$queue_no');";
                             if(mysqli_query($conn, $sql_others)){
-                                header("location: queue-number.php?queue_no=" .$queue_no);
+                                header("location: queue-number.php?queue_no=" .$queue_no. "&totalinput=" .$total_input);
+                                // date_default_timezone_get();
                             }
                         }
                     }
-                        
+
+
+                    date_default_timezone_set('Asia/Manila');
+                    $date_today = date('Y-m-d');
+                    $timestamp_today = date('Y-m-d h:i:s');
+
+                    $sql_date = "SELECT * FROM queue WHERE queue_date = '$date_today';";
+                    $result_date = mysqli_query($conn, $sql_date);
+                    if(mysqli_num_rows($result_date) > 0){
+                        while($row_date = mysqli_fetch_assoc($result_date)){
+                            $sql_update = "UPDATE queue SET total_queue = total_queue + 1 WHERE queue_date = '$date_today';";
+                            if(mysqli_query($conn, $sql_update)){
+                                header("location: queue-number.php?queue_no=" .$queue_no. "&test");
+                            }
+                        }
+                    }else{
+                        $sql_date_insert = "INSERT INTO queue (total_queue, queue_date) VALUES (1, '$date_today');";
+                        if(mysqli_query($conn, $sql_date_insert)){
+                            header("location: queue-number.php?queue_no=" .$queue_no. "&test");
+                        }
+                    }
                 }else{
                     echo 'Error: ' . mysqli_error($conn);
                 }
@@ -307,10 +328,10 @@
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
 
                         <input type="text" class="others[]" name="others[]" id="new_1">
-                        <button onclick="add()" type="button">Add</button>
-                        <button onclick="remove()" type="button">remove</button>
+                        <button onclick="add()" type="button" class="btn btn-primary">Add</button>
+                        <button onclick="remove()" type="button" class="btn btn-danger">remove</button>
                         <div id="new_chq"></div>
-                        <input type="hidden" value="1" id="total_chq" name="total_input">
+                        <input type="hidden" value="1" id="total_chq" name="total_input" >
                         
                     </div>
                     <button class="existBtn" onclick="window.location.href='existProfile.php';">Already have an account?</button>
@@ -321,7 +342,12 @@
         </div>
         
     </section>
-
+<style>
+    #others{
+    border: 10px solid black;
+    padding: 90px;
+    }
+</style>
 
       <script>
             $(function() {
@@ -368,7 +394,7 @@
             // function For adding new input field
             function add(){
                 var new_chq_no = parseInt($('#total_chq').val())+1;
-                var new_input="<input type='text' id='new_"+new_chq_no+"' name='others[]' class='others"+new_chq_no+"'>";
+                var new_input="<input type='text' id='new_"+new_chq_no+"' name='others[]' class='others"+new_chq_no+"' id='others'>";
                 $('#new_chq').append(new_input);
                 $('#total_chq').val(new_chq_no)
             }
