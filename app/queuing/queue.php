@@ -27,6 +27,7 @@
             $gender = mysqli_real_escape_string($conn, $_POST['gender']);
             $education = mysqli_real_escape_string($conn, $_POST['education']);
             $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
+            $status = mysqli_real_escape_string($conn, $_POST['status']);
             $nbi = isset($_POST['nbi']) ? mysqli_real_escape_string($conn, $_POST['nbi']) : "";
             $police = isset($_POST['police']) ? mysqli_real_escape_string($conn, $_POST['police']) : "";
             $total_input = mysqli_real_escape_string($conn, $_POST['total_input']);
@@ -146,9 +147,9 @@
 
             $random = random_int(100000, 999999);
             if($age_value == 5){
-                $queue_no = 'P' . $random;
+                $queue_no = 'P-' . $random;
             }else{
-                $queue_no = 'N' . $random;
+                $queue_no = 'N-' . $random;
             }
 
             
@@ -220,7 +221,7 @@
 </style>
     <section id="swup" class="transtion-fade">
     <?php  if(isset($_SESSION['user_id'])){
-        $sql = "SELECT username FROM users";
+        $sql = "SELECT username FROM users WHERE user_id = $user_id_session";
         $res = mysqli_query($conn,$sql);
         while($row = mysqli_fetch_assoc($res)){
             $username = $row['username'];
@@ -270,7 +271,7 @@
                     </div>
                     <div class="form-wrapper">
                         <select name="gender" id="" class="form-control">
-                            <option value="" disabled selected>Gender</option>
+                            <option value="" disabled selected>-- Select Gender --</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Others">Others</option>
@@ -278,7 +279,7 @@
                     </div>
                     <div class="form-wrapper">
                         <select name="education" id="" class="form-control">
-                            <option value="" disabled selected>Educational Attainment</option>
+                            <option value="" disabled selected>-- Select Educational Attainment --</option>
                             <option value="Elementary Graduate">Elementary Graduate</option>
                             <option value="HighSchool Level">High School Level</option>
                             <option value="HighSchool Graduate">High School Graduate</option>
@@ -291,11 +292,19 @@
                     </div>
                     <div class="form-wrapper">
                         <select name="occupation" id="" class="form-control">
-                            <option value="" disabled selected>Occupation</option>
+                            <option value="" disabled selected>-- Select Occupation --</option>
                             <option value="Student">Student</option>
                             <option value="Unemployed">Unemployed</option>
                             <option value="Employed">Employed</option>
                             <option value="Retired">Retired</option>
+                        </select>
+                    </div>
+
+                    <div class="form-wrapper">
+                        <select name="status" id="" class="form-control">
+                            <option value="" disabled selected>-- Select Status --</option>
+                            <option value="0">Non-Priority</option>
+                            <option value="1">Priority</option>
                         </select>
                     </div>
                     <div class="form-wrapper">
@@ -313,7 +322,7 @@
                         <input type="hidden" value="1" id="total_chq" name="total_input">
                         
                     </div>
-                    <button class="existBtn" onclick="window.location.href='existProfile.php';">Already have an account?</button>
+                    <button class="existBtn" onclick="window.location.href='profile-exist.php';">Already have an account?</button>
                     <!-- <a href="existProfile.php" class="existBtn">Already have Account?</a> -->
                     <button type="submit" name="submit" class="profileBtn">Submit</button>
                 </form>
