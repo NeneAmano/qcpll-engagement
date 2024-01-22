@@ -145,13 +145,26 @@
                 $age_value = 5;
             }
 
-            $random = random_int(100000, 999999);
-            if($age_value == 5){
-                $queue_no = 'P-' . $random;
+            if($age_value == 5 || $status == 1){
+                $prefix = 'P-';
             }else{
-                $queue_no = 'N-' . $random;
+                $prefix = 'N-';
             }
-
+            $sql_queue = "SELECT * FROM queue_details ORDER BY queue_number DESC LIMIT 1;";
+            $result_queue = mysqli_query($conn, $sql_queue);
+            if(mysqli_num_rows($result_queue) > 0){
+                $row = mysqli_fetch_assoc($result_queue);
+        
+                $queue_number = $row['queue_number'];
+                list($new_prefix, $string_number) = explode('-', $queue_number);
+                
+                $int_number = intval($string_number);
+                $int_number++;
+                $new_int_number = sprintf('%05d', $int_number);
+                $new_string_number = strval($new_int_number);
+                $new_queue_number = $prefix . $new_string_number;
+            }
+            
             
             if (!firstnameInvalid($firstname) && !surnameInvalid($surname) && (!middlenameInvalid($middlename) || !suffixInvalid($suffix)) || (middlenameInvalid($middlename) || suffixInvalid($suffix)) && 
                 !empty($birthdate) &&
@@ -164,16 +177,16 @@
                 if(mysqli_query($conn, $sql)){
                     $client_id = mysqli_insert_id($conn);
                     if($nbi !== ''){
-                        $sql_nbi = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$nbi', '$queue_no');";
+                        $sql_nbi = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$nbi');";
                         if(mysqli_query($conn, $sql_nbi)){
-                            header("location: queue-number.php?queue_no=" .$queue_no. "&totalinput=" .$total_input);
+                            header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
                         }
                         
                     }
                     if($police !== ''){
-                        $sql_police = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$police', '$queue_no');";
+                        $sql_police = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$police');";
                         if(mysqli_query($conn, $sql_police)){
-                            header("location: queue-number.php?queue_no=" .$queue_no. "&totalinput=" .$total_input);
+                            header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
                         }
                     }
 
@@ -185,9 +198,9 @@
                     // Iterate through $others and echo the values
                     foreach ($others as $key => $value) {
                         if(!empty($value) || $value !== ''){
-                            $sql_others = "INSERT INTO queue_details (client_id, service, queue_no) VALUES ($client_id, '$value', '$queue_no');";
+                            $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
                             if(mysqli_query($conn, $sql_others)){
-                                header("location: queue-number.php?queue_no=" .$queue_no. "&totalinput=" .$total_input);
+                                header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
                                 // date_default_timezone_get();
                             }
                         }
