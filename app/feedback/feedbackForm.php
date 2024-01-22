@@ -143,23 +143,23 @@ body {
     <p id="question">❓How was your experience with our services? ❓</p>
     <div class="reaction-container">
         <div class="reaction">
-        <img class="img1" src="./images/EMOJI/1.png" alt="Feeling">
+        <img class="img1" src="../../public/assets/images/EMOJI/1.png" alt="Feeling">
         <p class="word">Very Satisfied</p>
         </div>
         <div class="reaction">
-        <img class="img2" src="./images/EMOJI/2.png" alt="Feeling">
+        <img class="img2" src="../../public/assets/images/EMOJI/2.png" alt="Feeling">
         <p class="word">Satisfied</p>
         </div>
         <div class="reaction">
-        <img class="img3" src="./images/EMOJI/3.png" alt="Feeling">
+        <img class="img3" src="../../public/assets/images/EMOJI/3.png" alt="Feeling">
         <p class="word">Neutral</p>
         </div>
         <div class="reaction">
-      <img class="img4" src="./images/EMOJI/4.png" alt="Feeling">
+      <img class="img4" src="../../public/assets/images/EMOJI/4.png" alt="Feeling">
         <p class="word">Dissatisfied</p>
         </div>
         <div class="reaction">
-        <img class="img5" src="./images/EMOJI/5.png" alt="Feeling">
+        <img class="img5" src="../../public/assets/images/EMOJI/5.png" alt="Feeling">
         <p class="word">Very Dissatisfied</p>
         </div>
     </div>
@@ -179,7 +179,7 @@ body {
         <p class="word"> Likely to recommend</p>
         </div>
         <div class="reaction">
-        <img class="img3" src="./images/EMOJI/3.png" alt="Feeling">
+        <img class="img3" src="../../public/assets/images/EMOJI/1.png" alt="Feeling">
         <p class="word">Neutral</p>
         </div>
         <div class="reaction">
