@@ -35,7 +35,6 @@
                 <br>
                 <button class="btn btn-success flex" type="submit" name="search">Search my Name</button>
                 <?php
-
                     if(isset($_POST['search'])){
                         $id = $_POST['id'];
 
@@ -105,22 +104,21 @@
             </div>
             <div class="modal-body">
             <?php
+                if(isset($_POST['search'])){
+                    $id = $_POST['id'];
 
-                    if(isset($_POST['search'])){
-                        $id = $_POST['id'];
+                    $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_number FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_number = '$id' LIMIT 1";
+                    $res = mysqli_query($conn,$sql);
 
-                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_number FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_number = '$id' LIMIT 1";
-                        $res = mysqli_query($conn,$sql);
-
-                        while($row = mysqli_fetch_array($res)){
-                            ?>
-                            <p style="font-style: italic;">Hi,</p>
+                    while($row = mysqli_fetch_array($res)){
+            ?>
+                        <p style="font-style: italic;">Hi,</p>
                         <p><?php echo $row['masked_name']?></p>
-                    <?php
-                        
+                <?php
                     }
-                    }
-
+                }else{
+                    
+                }
             ?>
                 <p>Would you like to submit a feedback?</p>
             </div>
