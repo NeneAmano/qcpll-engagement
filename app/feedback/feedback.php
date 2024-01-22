@@ -39,7 +39,7 @@
                     if(isset($_POST['search'])){
                         $id = $_POST['id'];
 
-                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_no FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_no = '$id' LIMIT 1";
+                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_number FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_number = '$id' LIMIT 1";
                         $res = mysqli_query($conn,$sql);
 
                         while($row = mysqli_fetch_array($res)){
@@ -109,7 +109,7 @@
                     if(isset($_POST['search'])){
                         $id = $_POST['id'];
 
-                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_no FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_no = '$id' LIMIT 1";
+                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_number FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_number = '$id' LIMIT 1";
                         $res = mysqli_query($conn,$sql);
 
                         while($row = mysqli_fetch_array($res)){
@@ -126,7 +126,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-success"><a href="feedbackForm.php" style="text-decoration:none; color:#fff;">Yes</a></button>
+                <button type="button" class="btn btn-success"><a href="feedback-form.php" style="text-decoration:none; color:#fff;">Yes</a></button>
             </div>
         </div>
     </div>
