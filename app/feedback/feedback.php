@@ -83,14 +83,11 @@
                         <div><span>0</span></div>
                         <div class="del"><span>Del</span></div>
                     </div>
-<<<<<<< HEAD
                     <div class="flex r r5">
                         <div><span>N</span></div>
                         <div class=""></div>
                         <div><span>P</span></div>
                     </div>
-=======
->>>>>>> d914469550587014aceffc0a983963354446f7df
                 </div>
             </div>
         </div>
