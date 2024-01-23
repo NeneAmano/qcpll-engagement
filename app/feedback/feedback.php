@@ -38,13 +38,15 @@
                     if(isset($_POST['search'])){
                         $id = $_POST['id'];
 
-                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_number FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_number = '$id' LIMIT 1";
+                        $sql = "SELECT CONCAT(LEFT(client.f_name, 1), REPEAT('*', LENGTH(client.f_name) - 1), ' ', LEFT(client.l_name, 1), REPEAT('*', LENGTH(client.l_name) - 1)) AS masked_name, queue_details.queue_number, queue_details.client_id FROM client INNER JOIN queue_details ON client.client_id = queue_details.client_id WHERE queue_number = '$id' LIMIT 1";
                         $res = mysqli_query($conn,$sql);
 
                         while($row = mysqli_fetch_array($res)){
+                            $client_id = $row['client_id']
                             ?>
                 <p style="font-size: 1.5em;">Client Identifier</p>
                 <p style="font-size: 1em; font-style:italic;">Note* This is a type box that will auto-fill when your account exists.</p>
+                
                 <p style="font-size: 1em; font-style:italic;">Paalala* Ito ay kusang naglalagay ng pangalan kung kayo ay nakagawa na ng account.</p>
                 <input type="text" name="" id="" disabled class="inputnum" style="padding:0px;" value="<?php echo $row['masked_name']?>"/>
 
@@ -123,8 +125,8 @@
                 <p>Would you like to submit a feedback?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-success"><a href="feedback-form.php" style="text-decoration:none; color:#fff;">Yes</a></button>
+                <button type="button" class="btn btn-secondary"><a href="feedback-form.php" style="text-decoration:none; color:#fff;">No</a></button>
+                <button type="button" class="btn btn-success"><a href="feedback-form.php?client_id=<?= $client_id ?>" style="text-decoration:none; color:#fff;">Yes</a></button>
             </div>
         </div>
     </div>
