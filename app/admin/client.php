@@ -138,7 +138,7 @@ $result = mysqli_query($conn, $query);
                 while ($row = $result->fetch_assoc()) {
                     echo '<tr>';
                     echo '<th scope="row">' . $row['qd_id'] . '</th>';
-                    echo '<td>' . $row['queue_no'] . '</td>';
+                    echo '<td>' . $row['queue_number'] . '</td>';
                     echo '<td>' . $row['service'] . '</td>';
                     echo '</tr>';
                 }
