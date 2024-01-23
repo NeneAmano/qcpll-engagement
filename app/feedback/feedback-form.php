@@ -1,6 +1,11 @@
 <?php
     require_once('../core/init.php');
-
+    if(isset($_GET['client_id'])){
+        $client_id = $_GET['client_id'];
+    }else{
+        header('location:feedback.php');
+        die();
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -178,7 +183,7 @@
                             <div class="reaction-container">
                                 <?php
                                     if($qt_id == 1){
-                                        $sql_emoji = "SELECT * FROM emoji ORDER BY emoji_id DESC;";
+                                        $sql_emoji = "SELECT * FROM emoji WHERE UNICODE != '0' ORDER BY emoji_id DESC LIMIT 5;";
                                         $result_emoji = mysqli_query($conn, $sql_emoji);
                                         if(mysqli_num_rows($result_emoji) > 0){
                                             while($row_emoji = mysqli_fetch_assoc($result_emoji)){
@@ -209,16 +214,15 @@
                 }
             }
         ?>
-        <div class="tab">
-        </div>
+  
         <!-- emoji based answer ends here -->
         <div style="overflow:auto;">
-        <?= $question_id ?>
+        
             <div style="float:right; margin-top:12px;">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
 
                 
-                <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)" name="submit">Next</button>
             </div>
         </div>
         <!-- Circles which indicates the steps of the form: -->
@@ -246,36 +250,34 @@
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
+                document.getElementById("nextBtn").setAttribute('type', 'submit');
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
+                document.getElementById("nextBtn").setAttribute('type', 'button');
+
             }
             //... and run a function that will display the correct step indicator:
             fixStepIndicator(n)
         }
 
         function nextPrev(n) {
-    // This function will figure out which tab to display
-    var x = document.getElementsByClassName("tab");
-
-    // Exit the function if any field in the current tab is invalid:
-    if (n === 1 && !validateForm()) return false;
-
-    // Hide the current tab:
-    x[currentTab].style.display = "none";
-
-    // Increase or decrease the current tab by 1:
-    currentTab += n;
-
-    // If you have reached the end of the form...
-    if (currentTab >= x.length) {
-        // Set the button text to "Submit" and return:
-        document.getElementById("nextBtn").innerHTML = "Submit";
-    } else {
-        // Otherwise, display the correct tab:
-        document.getElementById("nextBtn").innerHTML = "Next";
-        showTab(currentTab);
-    }
-}
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            if (n == 1 && !validateForm()) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab += n;
+            // if you have reached the end of the form...
+            if (currentTab >= x.length) {
+                // ... the form gets submitted:
+                // document.getElementById("regForm").submit();
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            showTab(currentTab);
+        }
 
         function validateForm() {
             // This function deals with validation of the form fields
