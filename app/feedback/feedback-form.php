@@ -157,6 +157,7 @@
     <form id="regForm" action="" method="POST">
         <!-- One "tab" for each step in the form: -->
         <?php
+            
             // get the total rows of question table
             $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions;";
             $result_row = mysqli_query($conn, $sql_row);
@@ -165,7 +166,18 @@
                     $total_rows = $row_row['total_rows'];
                 }
             }
-
+if(isset($_POST['submit'])){
+                // $username = mysqli_real_escape_string($conn, $_POST['username']);
+                // $username = mysqli_real_escape_string($conn, $_POST['username']);
+                
+                for ($i = 1; $i <= $total_rows; $i++) {
+                    // Check if the emoji radio button for the current question exists in $_POST
+                    if (isset($_POST["emoji{$i}"])) {
+                        // Get the value of the emoji radio button for the current question
+                        $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
+                    }
+                }
+            }
             $sql = "SELECT * FROM questions WHERE is_deleted != 1;";
             $result = mysqli_query($conn, $sql);
             if(mysqli_num_rows($result) > 0) {
