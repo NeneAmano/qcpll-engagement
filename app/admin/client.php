@@ -7,29 +7,31 @@ if (isset($_POST['showDaily'])) {
     // Get the current date
     $currentDate = date('Y-m-d');
 
-    // Query to get clients created on the current day
-    $query = "SELECT * FROM `client` WHERE DATE(`created_at`) = '$currentDate'";
+    // Query to get clients created on the current day with age information
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id WHERE DATE(client.created_at) = '$currentDate'";
 } elseif (isset($_POST['showMonthly'])) {
     // Get the selected month and year from the dropdown
     $selectedMonth = $_POST['selectedMonth'];
     $currentYear = date('Y');
 
-    // Query to get clients created in the selected month of the current year
-    $query = "SELECT * FROM `client` WHERE MONTH(`created_at`) = '$selectedMonth' AND YEAR(`created_at`) = '$currentYear'";
+    // Query to get clients created in the selected month of the current year with age information
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id WHERE MONTH(client.created_at) = '$selectedMonth' AND YEAR(client.created_at) = '$currentYear'";
 } elseif (isset($_POST['showYearly'])) {
     // Get the selected year from the dropdown
     $selectedYear = $_POST['selectedYear'];
 
-    // Query to get clients created in the selected year
-    $query = "SELECT * FROM `client` WHERE YEAR(`created_at`) = '$selectedYear'";
+    // Query to get clients created in the selected year with age information
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id WHERE YEAR(client.created_at) = '$selectedYear'";
 } else {
-    // Default query to get all clients (you can modify this based on your requirements)
-    $query = "SELECT * FROM `client`";
+    // Default query to get all clients with age information (you can modify this based on your requirements)
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id";
 }
 
 // Execute the query and fetch the results
 $result = mysqli_query($conn, $query);
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -88,33 +90,43 @@ $result = mysqli_query($conn, $query);
     </form>
      <br><br><br>
     <!-- Display clients based on the query results -->
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <!-- Modify the table headers based on your actual schema -->
-                    <th>Client ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <!-- Add more columns as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                // Process the results and display them in a table
-                // (You need to customize this part based on your requirements)
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo '<tr>';
-                    echo '<td>' . $row['client_id'] . '</td>';
-                    echo '<td>' . $row['f_name'] . '</td>';
-                    echo '<td>' . $row['l_name'] . '</td>';
-                    // Add more columns as needed
-                    echo '</tr>';
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
+    <!-- Display clients based on the query results -->
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <!-- Modify the table headers based on your actual schema -->
+                <th>ID</th>
+                <th>Fullname</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Occupation</th>
+                <th>Educational Attainment</th>
+            </tr>
+        </thead>
+        <tbody id="clientData">
+            <?php
+            // Display clients dynamically
+
+            
+            while ($row = $result->fetch_assoc()) {
+                echo '<tr>';
+                echo '<td>' . $row['client_id'] . '</td>';
+                echo '<td>' . $row['f_name'] . ' ' . $row['l_name'] . '</td>';
+                echo '<td>' . $row['age_range'] . '</td>'; // Display age range instead of age ID
+                echo '<td>' . $row['gender'] . '</td>';
+                echo '<td>' . $row['occupation'] . '</td>';
+                echo '<td>' . $row['education'] . '</td>';
+                echo '</tr>';
+            }
+            
+            
+            
+            ?>
+        </tbody>
+    </table>
+</div>
+
             
 
 
