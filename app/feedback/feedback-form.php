@@ -154,10 +154,9 @@
 }
 </style>
 <body>
-    <form id="regForm" action="" method="POST">
+    <form id="regForm" method="post" action="feedback.php">
         <!-- One "tab" for each step in the form: -->
         <?php
-            
             // get the total rows of question table
             $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions;";
             $result_row = mysqli_query($conn, $sql_row);
@@ -166,7 +165,7 @@
                     $total_rows = $row_row['total_rows'];
                 }
             }
-if(isset($_POST['submit'])){
+            if(isset($_POST['submit'])){
                 // $username = mysqli_real_escape_string($conn, $_POST['username']);
                 // $username = mysqli_real_escape_string($conn, $_POST['username']);
                 
@@ -215,7 +214,7 @@ if(isset($_POST['submit'])){
                                         }
                                     }else{
                                     ?>
-                                        <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example">
+                                        <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example" value="test">
                                     <?php
                                     }
                                 ?>
@@ -232,8 +231,6 @@ if(isset($_POST['submit'])){
         
             <div style="float:right; margin-top:12px;">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-
-                
                 <button type="button" id="nextBtn" onclick="nextPrev(1)" name="submit">Next</button>
             </div>
         </div>
@@ -247,7 +244,7 @@ if(isset($_POST['submit'])){
         </div>
     </form>
     <script>
-        var currentTab = 1; // Current tab is set to be the first tab (0)
+        var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
 
         function showTab(n) {
@@ -256,18 +253,17 @@ if(isset($_POST['submit'])){
             var x = document.getElementsByClassName("tab");
             x[n].style.display = "block";
             //... and fix the Previous/Next buttons:
-            if (n == 1) {
+            if (n == 0) {
                 document.getElementById("prevBtn").style.display = "none";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
             if (n == (x.length - 1)) {
                 document.getElementById("nextBtn").innerHTML = "Submit";
-                document.getElementById("nextBtn").setAttribute('type', 'submit');
+                document.getElementById("nextBtn").setAttribute('type', 'button');
             } else {
                 document.getElementById("nextBtn").innerHTML = "Next";
                 document.getElementById("nextBtn").setAttribute('type', 'button');
-
             }
             //... and run a function that will display the correct step indicator:
             fixStepIndicator(n)
@@ -282,12 +278,12 @@ if(isset($_POST['submit'])){
             // Hide the current tab:
             x[currentTab].style.display = "none";
             // Increase or decrease the current tab by 1:
-            currentTab += n;
+            currentTab = currentTab + n;
             // if you have reached the end of the form...
-            if (currentTab > x.length) {
+            if (currentTab >= x.length) {
                 // ... the form gets submitted:
                 // document.getElementById("regForm").submit();
-                return false;
+                // return false;
             }
             // Otherwise, display the correct tab:
             showTab(currentTab);
