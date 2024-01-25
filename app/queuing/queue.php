@@ -206,7 +206,6 @@
                         }
                     }
 
-
                     date_default_timezone_set('Asia/Manila');
                     $date_today = date('Y-m-d');
                     $timestamp_today = date('Y-m-d h:i:s');
@@ -217,13 +216,13 @@
                         while($row_date = mysqli_fetch_assoc($result_date)){
                             $sql_update = "UPDATE queue SET total_queue = total_queue + 1 WHERE queue_date = '$date_today';";
                             if(mysqli_query($conn, $sql_update)){
-                                header("location: queue-number.php?queue_no=" .$queue_no. "&test");
+                                header("location: queue-number.php?queue_no=" .$new_queue_number);
                             }
                         }
                     }else{
                         $sql_date_insert = "INSERT INTO queue (total_queue, queue_date) VALUES (1, '$date_today');";
                         if(mysqli_query($conn, $sql_date_insert)){
-                            header("location: queue-number.php?queue_no=" .$queue_no. "&test");
+                            header("location: queue-number.php?queue_no=" .$new_queue_number);
                         }
                     }
                 }else{
@@ -370,7 +369,6 @@
     padding: 90px;
     }
 </style>
-
       <script>
             $(function() {
 
@@ -450,9 +448,6 @@
             });
       </script>
    </head>
-
-
-    
     <script src="https://unpkg.com/swup@4"></script>
     <script src="script.js"></script>
 </body>
