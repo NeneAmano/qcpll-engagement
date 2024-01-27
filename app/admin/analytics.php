@@ -1,4 +1,37 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<?php
+// Include your database configuration file here
+require_once('../core/init.php');
+
+// Check if the "Show Daily" button is clicked
+if (isset($_POST['showDaily'])) {
+    // Get the current date
+    $currentDate = date('Y-m-d');
+
+    // Query to get clients created on the current day with age information
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id WHERE DATE(client.created_at) = '$currentDate'";
+} elseif (isset($_POST['showMonthly'])) {
+    // Get the selected month and year from the dropdown
+    $selectedMonth = $_POST['selectedMonth'];
+    $currentYear = date('Y');
+
+    // Query to get clients created in the selected month of the current year with age information
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id WHERE MONTH(client.created_at) = '$selectedMonth' AND YEAR(client.created_at) = '$currentYear'";
+} elseif (isset($_POST['showYearly'])) {
+    // Get the selected year from the dropdown
+    $selectedYear = $_POST['selectedYear'];
+
+    // Query to get clients created in the selected year with age information
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id WHERE YEAR(client.created_at) = '$selectedYear'";
+} else {
+    // Default query to get all clients with age information (you can modify this based on your requirements)
+    $query = "SELECT age.age_range, client.* FROM client INNER JOIN age ON client.age_id = age.age_id";
+}
+
+// Execute the query and fetch the results
+$result = mysqli_query($conn, $query);
+?>
+
 
 <div class="container">
         <?php require_once 'includes/sidebar.php' ?>
@@ -10,86 +43,185 @@
             <h1>Data Analytics</h1>
             <!-- Analyses -->
             <div>
+    <!-- Add your dropdown and buttons for filtering here -->
+    <form method="post" class="d-flex gap-2">
+        <button type="submit" name="showDaily" class="btn btn-primary btn-sm">Show Daily</button>
+        
+        <!-- Monthly dropdown for monthly filter -->
+        <select name="selectedMonth" class="form-select btn btn-primary btn-sm" style="width: 110px;">
+            <!-- Generate options for each month -->
+            <?php
+            for ($month = 1; $month <= 12; $month++) {
+                $monthName = date("F", mktime(0, 0, 0, $month, 1));
+                echo '<option value="' . $month . '">' . $monthName . '</option>';
+            }
+            ?>
+        </select>
 
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Daily</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Weekly</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Monthly</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Annually</button>
-            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal">Generate Reports</button>
+        <button type="submit" name="showMonthly" class="btn btn-primary btn-sm">Show Monthly</button>
+        
+        <!-- Year dropdown for yearly filter -->
+        <select name="selectedYear" class="form-select btn btn-primary btn-sm" style="width: 90px;">
+            <!-- Add options dynamically based on your database data -->
+            <?php
+            // Assuming your 'client' table has a column named 'created_at'
+            $yearsQuery = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client`";
+            $yearsResult = mysqli_query($conn, $yearsQuery);
+            
+            while ($yearRow = mysqli_fetch_assoc($yearsResult)) {
+                echo '<option value="' . $yearRow['year'] . '">' . $yearRow['year'] . '</option>';
+            }
+            ?>
+        </select>
+
+        <button type="submit" name="showYearly" class="btn btn-primary btn-sm">Show Yearly</button>
+
+        <!-- Submit Button -->
+        
+    </form>
             <!-- start of data analysis of age -->
-             <canvas id="age"></canvas>
+          <?php
+                    $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                    FROM age
+                    INNER JOIN client ON age.age_id = client.age_id
+                    GROUP BY age.age_range;
+                    ";
+                    $result1 = mysqli_query($conn, $query1);
 
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                      <p style="font-size: 15px;"> There were 12 clients in the age range of 0 to 12, 19 clients in the age range of 13 to 21, 3 clients in the age range of 22 to 35, 5 clients in the age range of 36 to 59, and 2 clients who are 60 years old or above.</p>
+                    foreach($result1 as $data1){
+                      $age_range[] = $data1['AGE_RANGE'];
+                      $client_count[] = $data1['client_count'];
+                   
+                    }
+                ?>
+                <div class="barchart1">
+                    <canvas id="myChart1"></canvas>
                 </div>
 
-          </div>
-
-
-
 <script>
-  const age = document.getElementById('age');
+        // const labels = Utils.months({count: 7});
+        const labels = <?php echo json_encode($age_range); ?>;
+        const data = {
+        labels: labels,
+        datasets: [{
+            label: 'TOTAL AGE COUNT PER MONTH',
+            data: <?php echo json_encode($client_count); ?>,
+            backgroundColor: [
+            'rgba(255, 99, 132, 0.7)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 205, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+            ],
+            borderWidth: 2
+        }]
+        };
 
-  new Chart(age, {
-    type: 'bar',
-    data: {
-      labels: ['0-12', '13-21', '22-35', '36-59', '60-Above'],
-      datasets: [{
-        label: 'Age Analysis',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
+        const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+            y: {
+                beginAtZero: true
+            }
+            }
+        },
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart1'),
+            config
+        );
+    </script>
+
 <!-- end of data analysis of age -->
-
 
 <!-- start of data analysis of gender -->
-  <canvas id="gender"></canvas>
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                    <p style="font-size: 15px;">The dataset reveals that there were 12 male clients, 19 female clients, and 3 clients categorized as "others."</p>
-                    </div>
+<?php
+  $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+  FROM (
+      SELECT 'Male' AS gender
+      UNION
+      SELECT 'Female'
+      UNION
+      SELECT 'Other'
+  ) AS all_genders
+  LEFT JOIN client ON all_genders.gender = client.gender
+  GROUP BY all_genders.gender
+  ";
+  $result2 = mysqli_query($conn, $query2);
 
-  </div>
+  foreach($result2 as $data2){
+    $genders[] = $data2['genders'];
+    $gender_count[] = $data2['gender_count'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart2"></canvas>
+</div>
+
 <script>
-  const gender = document.getElementById('gender');
+// const labels = Utils.months({count: 7});
+const labels_gender = <?php echo json_encode($genders); ?>;
+const data_gender = {
+labels: labels_gender,
+datasets: [{
+label: 'TOTAL GENDER COUNT PER MONTH',
+data: <?php echo json_encode($gender_count); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
 
-  new Chart(gender, {
-    type: 'bar',
-    data: {
-      labels: ['Male', 'Female', 'Others'],
-      datasets: [{
-        label: 'Gender Analysis',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+const config_gender = {
+type: 'bar',
+data: data_gender,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_gender = new Chart(
+document.getElementById('myChart2'),
+config_gender
+);
 </script>
-<!-- end of data analysis of age -->
+
+<!-- end of data analysis of gender -->
+
 
 <!-- start of data analysis of occupation -->
 
