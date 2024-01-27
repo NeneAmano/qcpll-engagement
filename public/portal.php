@@ -21,7 +21,7 @@
 </style>
     <section id="swup" class="transtion-fade">
     <?php  if(isset($_SESSION['user_id'])){
-        $sql = "SELECT username FROM users";
+        $sql = "SELECT username FROM users WHERE user_id = $user_id_session";
         $res = mysqli_query($conn,$sql);
         while($row = mysqli_fetch_assoc($res)){
             $username = $row['username'];
