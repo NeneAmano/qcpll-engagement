@@ -14,6 +14,9 @@
 <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
 <!-- latest bootstrap cdn -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<!-- jquery ajax -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
 <style>
     * {
         box-sizing: border-box;
@@ -154,7 +157,7 @@
 }
 </style>
 <body>
-    <form id="regForm" method="post" action="feedback.php">
+    <form id="regForm" method="post" action="">
         <!-- One "tab" for each step in the form: -->
         <?php
             // get the total rows of question table
@@ -168,12 +171,54 @@
             if(isset($_POST['submit'])){
                 // $username = mysqli_real_escape_string($conn, $_POST['username']);
                 // $username = mysqli_real_escape_string($conn, $_POST['username']);
+                // Iterate through $others and echo the values
+
                 
+                
+
                 for ($i = 1; $i <= $total_rows; $i++) {
                     // Check if the emoji radio button for the current question exists in $_POST
-                    if (isset($_POST["emoji{$i}"])) {
-                        // Get the value of the emoji radio button for the current question
-                        $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
+                    // if (isset($_POST["emoji{$i}"])) {
+                    //     // Get the value of the emoji radio button for the current question
+                    //     $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
+                    //     echo $emoji_value;
+                    // }
+
+                    // if (isset($_POST["text{$i}"])) {
+                    //     // Get the value of the emoji radio button for the current question
+                    //     $text_value = mysqli_real_escape_string($conn, $_POST["text{$i}"]);
+                    //     echo $text_value;
+                    // }
+
+                    if(isset($_POST["question{$i}"])){
+                        $question_value = mysqli_real_escape_string($conn, $_POST["question{$i}"]);
+
+                        $sql_qt = "SELECT qt_id FROM questions WHERE question_id = $question_value;";
+                        $result_qt = mysqli_query($conn, $sql_qt);
+                        if(mysqli_num_rows($result_qt) > 0){
+                            $row_qt = mysqli_fetch_assoc($result_qt);
+                            $question_type = $row_qt['qt_id'];
+                        }
+
+                        if($question_type == 2){
+                            $emoji_value = 6;
+                        }
+                        
+                        if (isset($_POST["text{$i}"])) {
+                            // Get the value of the emoji radio button for the current question
+                            $text_value = mysqli_real_escape_string($conn, $_POST["text{$i}"]);
+                            echo $text_value;
+                            
+                        }
+
+                        if (isset($_POST["emoji{$i}"])) {
+                            // Get the value of the emoji radio button for the current question
+                            $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
+                            echo $emoji_value;
+                        }
+
+                        $sql = "INSERT INTO feedback (client_id, question_id, emoji_id, text_feedback) VALUES ($client_id, $question_value, $emoji_value, '$text_value');";
+                        mysqli_query($conn, $sql);
                     }
                 }
             }
@@ -189,8 +234,9 @@
                     <!-- emoji based answer starts here -->
                     <div class="tab">
                         <div id="question-container">
-                            <p id="english<?= $qt_id ?>" class="fs-4"><?= $english_question; ?></p>
-                            <p id="tagalog<?= $qt_id ?>" class="fs-6 fst-italic"><?= $tagalog_question; ?></p>
+                            <p id="english<?= $question_id ?>" class="fs-4"><?= $english_question; ?></p>
+                            <p id="tagalog<?= $question_id ?>" class="fs-6 fst-italic"><?= $tagalog_question; ?></p>
+                            <input type="hidden" value="<?= $question_id ?>" name="question<?= $question_id ?>" id="answer<?= $question_id ?>">
                             <div class="reaction-container">
                                 <?php
                                     if($qt_id == 1){
@@ -214,7 +260,7 @@
                                         }
                                     }else{
                                     ?>
-                                        <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example" value="test">
+                                        <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example" value="">
                                     <?php
                                     }
                                 ?>
@@ -231,7 +277,8 @@
         
             <div style="float:right; margin-top:12px;">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)" name="submit">Next</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)" class="">Next</button>
+                <button type="submit" class="d-none" id="submit" name="submit">Submit</button>
             </div>
         </div>
         <!-- Circles which indicates the steps of the form: -->
@@ -259,11 +306,11 @@
                 document.getElementById("prevBtn").style.display = "inline";
             }
             if (n == (x.length - 1)) {
-                document.getElementById("nextBtn").innerHTML = "Submit";
-                document.getElementById("nextBtn").setAttribute('type', 'button');
+                document.getElementById("submit").className = 'btn btn-lg';
+                document.getElementById("nextBtn").className = "d-none";
             } else {
-                document.getElementById("nextBtn").innerHTML = "Next";
-                document.getElementById("nextBtn").setAttribute('type', 'button');
+                document.getElementById("submit").className = 'd-none';
+                document.getElementById("nextBtn").className = "";
             }
             //... and run a function that will display the correct step indicator:
             fixStepIndicator(n)
@@ -295,15 +342,15 @@
             x = document.getElementsByClassName("tab");
             y = x[currentTab].getElementsByTagName("input");
             // A loop that checks every input field in the current tab:
-            for (i = 0; i < y.length; i++) {
-                // If a field is empty...
-                if (y[i].value == "") {
-                    // add an "invalid" class to the field:
-                    y[i].className += " invalid";
-                    // and set the current valid status to false
-                    valid = false;
-                }
-            }
+            // for (i = 0; i < y.length; i++) {
+            //     // If a field is empty...
+            //     if (y[i].value == "") {
+            //         // add an "invalid" class to the field:
+            //         y[i].className += " invalid";
+            //         // and set the current valid status to false
+            //         valid = false;
+            //     }
+            // }
             // If the valid status is true, mark the step as finished and valid:
             if (valid) {
                 document.getElementsByClassName("step")[currentTab].className += " finish";
