@@ -222,187 +222,786 @@ config_gender
 
 <!-- end of data analysis of gender -->
 
+<!-- start of data analysis of education -->
+<?php
+  $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+  FROM (
+      SELECT 'Elementary Graduate' AS education
+      UNION
+      SELECT 'HighSchool Level'
+      UNION
+      SELECT 'HighSchool Graduate'
+      UNION
+      SELECT 'College Level'
+      UNION
+      SELECT 'College Graduate'
+      UNION
+      SELECT 'Master''s Degree' -- Corrected single quote usage
+      UNION
+      SELECT 'Doctorate Degree'
+      UNION
+      SELECT 'Vocational'
+  ) AS all_education
+  LEFT JOIN client ON all_education.education = client.education
+  GROUP BY all_education.education;
+  
+  ";
+  $result3 = mysqli_query($conn, $query3);
+
+  foreach($result3 as $data3){
+    $education[] = $data3['educations'];
+    $education_count[] = $data3['education_count'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart3"></canvas>
+</div>
+
+<script>
+// const labels = Utils.months({count: 7});
+const labels_education = <?php echo json_encode($education); ?>;
+const data_education = {
+labels: labels_education,
+datasets: [{
+label: 'TOTAL EDUCATION COUNT PER MONTH',
+data: <?php echo json_encode($education_count); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
+
+const config_education = {
+type: 'bar',
+data: data_education,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_education = new Chart(
+document.getElementById('myChart3'),
+config_education
+);
+</script>
+
+<!-- end of data analysis of education -->
+
+
 
 <!-- start of data analysis of occupation -->
+<?php
+  $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+  FROM (
+      SELECT 'Student' AS occupation
+      UNION
+      SELECT 'Unemployed'
+      UNION
+      SELECT 'Employed'
+      UNION
+      SELECT 'Retired'
+  ) AS all_occupation
+  LEFT JOIN client ON all_occupation.occupation = client.occupation
+  GROUP BY all_occupation.occupation;
+  ";
+  $result4 = mysqli_query($conn, $query4);
 
-<canvas id="occupation"></canvas>
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                    <p style="font-size: 15px;">The breakdown of clients based on their occupational status is as follows: 12 students, 19 unemployed individuals, 3 employed individuals, and 5 retired individuals.</p>
-                    </div>
+  foreach($result4 as $data4){
+    $occupations[] = $data4['occupations'];
+    $occupation_count[] = $data4['occupation_count'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart4"></canvas>
+</div>
 
-  </div>
 <script>
-  const occupation = document.getElementById('occupation');
+const labels_occupations = <?php echo json_encode($occupations); ?>;
+const data_occupations = {
+labels: labels_occupations,
+datasets: [{
+label: 'TOTAL OCCUPATION COUNT PER MONTH',
+data: <?php echo json_encode($occupation_count); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
 
-  new Chart(occupation, {
-    type: 'bar',
-    data: {
-      labels: ['Student', 'Unemployed', 'Employed','Retired'],
-      datasets: [{
-        label: 'Occupation Analysis',
-        data: [12, 19, 3, 5],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+const config_occupations = {
+type: 'bar',
+data: data_occupations,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_occupations = new Chart(
+document.getElementById('myChart4'),
+config_occupations
+);
 </script>
-<!-- end of data analysis of occupation -->
 
-<!-- start of data analysis of educational -->
+<!-- end of data analysis of education -->
 
-<canvas id="edu_attainment"></canvas>
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                    <p style="font-size: 15px;">The data suggests a varied distribution of individuals based on their educational attainment. Specifically, there are 12 individuals who have completed elementary school, 19 at the high school level, 3 high school graduates, 5 individuals at the college level, 12 college graduates, 3 with a Master’s Degree, 17 with a Doctorate Degree, and 12 individuals with vocational training. This analysis provides insights into the educational diversity within the dataset.</p>
-                    </div>
 
-  </div>
-<script>
-  const edu_attainment = document.getElementById('edu_attainment');
-
-  new Chart(edu_attainment, {
-    type: 'bar',
-    data: {
-      labels: ['Elementary Graduate', 'High School Level', 'High School Graduate','College Level','College Graduate','Master’s Degree','Doctorate Degree','Vocational'],
-      datasets: [{
-        label: 'Educational Attainment Analysis',
-        data: [12, 19, 3, 5, 12, 3, 17, 12],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
-<!-- end of data analysis of educational -->
 
 <!-- start of data analysis of services -->
+<?php
+  $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details GROUP BY service;
+  ";
+  $result5 = mysqli_query($conn, $query5);
 
-<canvas id="services"></canvas>
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                    <p style="font-size: 15px;">The "Services Analysis" dataset reveals that among the individuals surveyed, 5 chose NBI (National Bureau of Investigation) services, 9 preferred Police Clearance, 3 selected both NBI and Police Clearance, and 15 opted for other services. </p>
-                    </div>
+  foreach($result5 as $data5){
+    $service[] = $data5['service'];
+    $count_service[] = $data5['count_service'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart5"></canvas>
+</div>
 
-  </div>
 <script>
-  const services = document.getElementById('services');
+const labels_service = <?php echo json_encode($service); ?>;
+const data_service = {
+labels: labels_service,
+datasets: [{
+label: 'TOTAL SERVICE COUNT PER MONTH',
+data: <?php echo json_encode($count_service); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
 
-  new Chart(services, {
-    type: 'bar',
-    data: {
-      labels: ['NBI', 'Police Clearance', 'Both','Others'],
-      datasets: [{
-        label: 'Services Analysis',
-        data: [5, 9, 3, 15],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+const config_service = {
+type: 'bar',
+data: data_service,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_service = new Chart(
+document.getElementById('myChart5'),
+config_service
+);
 </script>
-<!-- end of data analysis of occupation -->
 
-<!-- start of data analysis of educational -->
+<!-- end of data analysis of services -->
 
-<canvas id="q1"></canvas>
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                    <p style="font-size: 15px;">The majority of respondents (15) learned about our service through government websites, followed by online searches (12) and printed materials (10). Word of mouth and social media were less prominent, with 4 and 3 respondents, respectively. The data for 'Referral from a friend or Family' and another source is not complete and should be filled in to provide a comprehensive understanding of how participants discovered the service.</p>
-                    </div>
 
-  </div>
+<!-- start of data analysis of q1 -->
+<?php
+$query6 = "SELECT
+    emoji.value,
+    (SELECT questions.english_question
+        FROM questions
+        WHERE questions.question_id = 1
+        ORDER BY RAND()
+        LIMIT 1
+    ) AS english_question,
+    COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+    emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 1
+GROUP BY
+    emoji.emoji_id, emoji.value, emoji.image_path;
+";
+
+$result6 = mysqli_query($conn, $query6);
+
+foreach ($result6 as $data6) {
+    $q1_label = $data6['english_question'];
+    $value[] = $data6['value'];
+    $count_feedback[] = $data6['count_feedback'];
+}
+?>
+
+<div class="barchart1">
+  <canvas id="myChart6"></canvas>
+</div>
+
 <script>
-  const q1 = document.getElementById('q1');
+const labels_feedback = <?php echo json_encode($value); ?>;
+const data_feedback = {
+labels: labels_feedback,
+datasets: [{
+label: '<?php echo json_encode($q1_label); ?>',
+data: <?php echo json_encode($count_feedback); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
 
-  new Chart(q1, {
-    type: 'bar',
-    data: {
-      labels: ['Online Search', 'Word of Mouth', 'Social Media','Government Website','Printed Materials','Referral from a friend or Family'],
-      datasets: [{
-        label: 'How did you learn about our service?',
-        data: [12, 4, 3, 15, 10],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+const config_feedback = {
+type: 'bar',
+data: data_feedback,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback = new Chart(
+document.getElementById('myChart6'),
+config_feedback
+);
 </script>
-<!-- end of data analysis of educational -->
+
+<!-- end of data analysis of q1 -->
 
 
-<!-- start of data analysis of educational -->
+<!-- start of data analysis of q2 -->
+<?php
+  $query7 = "SELECT
+  emoji.value,
+  (SELECT questions.english_question
+      FROM questions
+      WHERE questions.question_id = 2
+      ORDER BY RAND()
+      LIMIT 1
+  ) AS english_question,
+  COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+  emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 2
+GROUP BY
+  emoji.emoji_id, emoji.value, emoji.image_path;
+  ";
+  $result7 = mysqli_query($conn, $query7);
 
-<canvas id="q2"></canvas>
-                  <div class="demographic" style="display: flex;font-style:italic;">
-                  <span class="material-icons-sharp active">
-                  info
-                  </span>
-                    <div class="info">
-                    <p style="font-size: 15px;">The majority of respondents (15) learned about our service through government websites, followed by online searches (12) and printed materials (10). Word of mouth and social media were less prominent, with 4 and 3 respondents, respectively. The data for 'Referral from a friend or Family' and another source is not complete and should be filled in to provide a comprehensive understanding of how participants discovered the service.</p>
-                    </div>
+  foreach($result7 as $data7){
+    $q2_label = $data7['english_question'];
+    $value1[] = $data7['value'];
+    $count_feedback1[] = $data7['count_feedback'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart7"></canvas>
+</div>
 
-  </div>
 <script>
-  const q2 = document.getElementById('q2');
+const labels_feedback2 = <?php echo json_encode($value1); ?>;
+const data_feedback2 = {
+labels: labels_feedback2,
+datasets: [{
+label: '<?php echo json_encode($q2_label); ?>',
+data: <?php echo json_encode($count_feedback1); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
 
-  new Chart(q2, {
-    type: 'bar',
-    data: {
-      labels: ['Bad', 'Poor', 'Neutral','Good','Excellent'],
-      datasets: [{
-        label: 'How was your experience with our services?',
-        data: [10, 4, 13, 15, 5],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
+const config_feedback2 = {
+type: 'bar',
+data: data_feedback2,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback2 = new Chart(
+document.getElementById('myChart7'),
+config_feedback2
+);
 </script>
-<!-- end of data analysis of educational -->
+
+<!-- end of data analysis of q2 -->
+
+
+<!-- start of data analysis of q3 -->
+<?php
+  $query8 = "SELECT
+  emoji.value,
+  (SELECT questions.english_question
+      FROM questions
+      WHERE questions.question_id = 3
+      ORDER BY RAND()
+      LIMIT 1
+  ) AS english_question,
+  COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+  emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 3
+GROUP BY
+  emoji.emoji_id, emoji.value, emoji.image_path;
+  ";
+  $result8 = mysqli_query($conn, $query8);
+
+  foreach($result8 as $data8){
+    $q3_label = $data8['english_question'];
+    $value2[] = $data8['value'];
+    $count_feedback2[] = $data8['count_feedback'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart8"></canvas>
+</div>
+
+<script>
+const labels_feedback3 = <?php echo json_encode($value2); ?>;
+const data_feedback3 = {
+labels: labels_feedback3,
+datasets: [{
+label: '<?php echo json_encode($q3_label); ?>',
+data: <?php echo json_encode($count_feedback2); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
+
+const config_feedback3 = {
+type: 'bar',
+data: data_feedback3,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback3 = new Chart(
+document.getElementById('myChart8'),
+config_feedback3
+);
+</script>
+
+<!-- end of data analysis of q3 -->
+
+
+<!-- start of data analysis of q4 -->
+<?php
+  $query9 = "SELECT
+  emoji.value,
+  (SELECT questions.english_question
+      FROM questions
+      WHERE questions.question_id = 4
+      ORDER BY RAND()
+      LIMIT 1
+  ) AS english_question,
+  COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+  emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 4
+GROUP BY
+  emoji.emoji_id, emoji.value, emoji.image_path;
+  ";
+  $result9 = mysqli_query($conn, $query9);
+
+  foreach($result9 as $data9){
+    $q4_label = $data9['english_question'];
+    $value3[] = $data9['value'];
+    $count_feedback3[] = $data9['count_feedback'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart9"></canvas>
+</div>
+
+<script>
+const labels_feedback4 = <?php echo json_encode($value3); ?>;
+const data_feedback4 = {
+labels: labels_feedback4,
+datasets: [{
+label: '<?php echo json_encode($q4_label); ?>',
+data: <?php echo json_encode($count_feedback3); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
+
+const config_feedback4 = {
+type: 'bar',
+data: data_feedback4,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback4 = new Chart(
+document.getElementById('myChart9'),
+config_feedback4
+);
+</script>
+
+<!-- end of data analysis of q4 -->
+
+<!-- start of data analysis of q5 -->
+<?php
+  $query10 = "SELECT
+  emoji.value,
+  (SELECT questions.english_question
+      FROM questions
+      WHERE questions.question_id = 5
+      ORDER BY RAND()
+      LIMIT 1
+  ) AS english_question,
+  COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+  emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 5
+GROUP BY
+  emoji.emoji_id, emoji.value, emoji.image_path;
+  ";
+  $result10 = mysqli_query($conn, $query10);
+
+  foreach($result10 as $data10){
+    $q5_label = $data10['english_question'];
+    $value4[] = $data10['value'];
+    $count_feedback4[] = $data10['count_feedback'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart10"></canvas>
+</div>
+
+<script>
+const labels_feedback5 = <?php echo json_encode($value4); ?>;
+const data_feedback5 = {
+labels: labels_feedback5,
+datasets: [{
+label: '<?php echo json_encode($q5_label); ?>',
+data: <?php echo json_encode($count_feedback4); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
+
+const config_feedback5 = {
+type: 'bar',
+data: data_feedback5,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback5 = new Chart(
+document.getElementById('myChart10'),
+config_feedback5
+);
+</script>
+
+<!-- end of data analysis of q5 -->
+
+
+<!-- start of data analysis of q6 -->
+<?php
+  $query11 = "SELECT
+  emoji.value,
+  (SELECT questions.english_question
+      FROM questions
+      WHERE questions.question_id = 6
+      ORDER BY RAND()
+      LIMIT 1
+  ) AS english_question,
+  COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+  emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 6
+GROUP BY
+  emoji.emoji_id, emoji.value, emoji.image_path;
+  ";
+  $result11 = mysqli_query($conn, $query11);
+
+  foreach($result11 as $data11){
+    $q6_label = $data11['english_question'];
+    $value5[] = $data11['value'];
+    $count_feedback5[] = $data11['count_feedback'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart11"></canvas>
+</div>
+
+<script>
+const labels_feedback6 = <?php echo json_encode($value5); ?>;
+const data_feedback6 = {
+labels: labels_feedback6,
+datasets: [{
+label: '<?php echo json_encode($q6_label); ?>',
+data: <?php echo json_encode($count_feedback5); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
+
+const config_feedback6 = {
+type: 'bar',
+data: data_feedback6,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback6 = new Chart(
+document.getElementById('myChart11'),
+config_feedback6
+);
+</script>
+
+<!-- end of data analysis of q6 -->
+
+<!-- start of data analysis of q7 -->
+<?php
+  $query12 = "SELECT
+  emoji.value,
+  (SELECT questions.english_question
+      FROM questions
+      WHERE questions.question_id = 7
+      ORDER BY RAND()
+      LIMIT 1
+  ) AS english_question,
+  COALESCE(COUNT(feedback.feedback_id), 0) AS count_feedback
+FROM
+  emoji
+LEFT JOIN feedback ON emoji.emoji_id = feedback.emoji_id AND feedback.question_id = 7
+GROUP BY
+  emoji.emoji_id, emoji.value, emoji.image_path;
+  ";
+  $result12= mysqli_query($conn, $query12);
+
+  foreach($result12 as $data12){
+    $q7_label = $data12['english_question'];
+    $value6[] = $data12['value'];
+    $count_feedback6[] = $data12['count_feedback'];
+  }
+?>
+<div class="barchart1">
+  <canvas id="myChart12"></canvas>
+</div>
+
+<script>
+const labels_feedback7 = <?php echo json_encode($value6); ?>;
+const data_feedback7 = {
+labels: labels_feedback7,
+datasets: [{
+label: '<?php echo json_encode($q7_label); ?>',
+data: <?php echo json_encode($count_feedback6); ?>,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(255, 159, 64, 0.2)',
+'rgba(255, 205, 86, 0.2)',
+'rgba(75, 192, 192, 0.2)',
+'rgba(54, 162, 235, 0.2)',
+'rgba(153, 102, 255, 0.2)',
+'rgba(201, 203, 207, 0.2)'
+],
+borderColor: [
+'rgb(255, 99, 132)',
+'rgb(255, 159, 64)',
+'rgb(255, 205, 86)',
+'rgb(75, 192, 192)',
+'rgb(54, 162, 235)',
+'rgb(153, 102, 255)',
+'rgb(201, 203, 207)'
+],
+borderWidth: 2
+}]
+};
+
+const config_feedback7 = {
+type: 'bar',
+data: data_feedback7,
+options: {
+scales: {
+y: {
+beginAtZero: true
+}
+}
+},
+};
+
+const myChart_feedback7 = new Chart(
+document.getElementById('myChart12'),
+config_feedback7
+);
+</script>
+
+<!-- end of data analysis of q7 -->
 
         </main>
         <!-- End of Main Content -->
