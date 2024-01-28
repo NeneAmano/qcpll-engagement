@@ -1,3 +1,4 @@
+<?php require_once '../app/core/init.php' ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,19 +9,32 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@100;200;300;400;500;700;800;900&family=Roboto:wght@300&family=Teko:wght@300;400&display=swap" rel="stylesheet">
     <style type="text/css">
+
+
         body {
             background-color:#fff;
             padding: 2px;
             font-family: 'Poppins', sans-serif;
         }
 
-        .container {
+        .main-container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* .container2 {
+            height: 500px;
+        } */
+
+        .container1 {
             width: 40%;
-            height: 670px;
-            border: none    ;
+            height: 500px;
+            /* border: 5px solid; */
             text-align: center;
             display: flex;
             flex-direction: column;
+            padding-top: 20px;
+            overflow: hidden;
         }
 .serve-container{
     max-width: 700px;
@@ -58,7 +72,7 @@
         border-left: 10px solid rgb(0, 203, 169);
     }
 
-        .onqueue {
+        .onqueue, .onqueue1 {
             flex: 1;
             text-align: center;
             display: flex;
@@ -74,7 +88,7 @@
             position: relative;
         }
 
-        .queue-list {
+        .queue-list, .queue-list1 {
             flex: 0.5;
             display: flex;
             flex-direction: column;
@@ -97,7 +111,7 @@
             padding: 10px;
         }
 
-        .queue-item {
+        .queue-item, .queue-item1{
             margin: 5px 0;
             padding: 10px;
             border-radius: 8px;
@@ -110,6 +124,7 @@
         border-radius: 25% 10%;
         border: 3px solid rgb(0, 203, 169);
         border-left: 40px solid rgb(0, 203, 169);
+        /* background: linear-gradient(to left, red, purple); */
         }
 
         .prior-item {
@@ -126,7 +141,7 @@
                 border: 3px solid rgb(0, 203, 169);
                 border-left: 40px solid rgb(0, 203, 169);  
                 border-right: 10px solid #D13A28;  
-                    }
+            }
 
         a{
         	display: block;
@@ -136,10 +151,10 @@
         }
 
         video{
-            position:   relative        ;
+            /* position: relative; */
         	float: right;
             right:  4%;
-        	margin-top: -670px;
+        	/* margin-top: -670px; */
         	width: 900px;
         	height: 665px;
 
@@ -147,21 +162,87 @@
 
     </style>
 </head>
-<body>
-    <div class="container">
 
-        <div class="onqueue">
-            <div class="queue-list">
-                <h1 style="text-transform: uppercase;">queueing line</h1>
-                <div class="prior-item"><a href=""> P-0001 </a></div>
-                <div class="queue-item"><a href=""> N-0002 </a></div>
-                <div class="queue-item"><a href=""> N-0003 </a></div>
-            </div>
+<body>
+
+<div class="main-container">
+        <div class="container1">
+            <h1 style="text-transform: uppercase;">queueing line</h1>
+                <div class="onqueue">
+                    <div class="queue-list">
+
+
+                        <?php
+                        // Assuming you have a database connection established
+                        // $conn = mysqli_connect("your_host", "your_username", "your_password", "your_database");
+
+                        // Your SQL query to retrieve data
+                        $query = "SELECT client.priority, queue_details.queue_number 
+                                FROM client 
+                                INNER JOIN queue_details ON client.client_id = queue_details.client_id 
+                                WHERE client.priority = 1";
+
+                        $result1 = mysqli_query($conn, $query);
+
+                        // Loop through the query results and display each item
+                        while ($row = mysqli_fetch_assoc($result1)) {
+                            $queueNumber = $row['queue_number'];
+                            echo '<div class="queue-item"><a href="">' . $queueNumber . '</a></div>';
+                        }
+
+                        // Check if no data is found
+                        if (mysqli_num_rows($result1) == 0) {
+                            echo '<p>No data found.</p>';
+                        }
+
+                        // Close the database connection
+                        // mysqli_close($conn);
+                        ?>
+
+                    </div>
+                </div>
+                    <div class="onqueue1">
+                        <div class="queue-list1">
+
+
+                            <?php
+
+                            // Your SQL query to retrieve data
+                            $query = "SELECT client.priority, queue_details.queue_number 
+                                    FROM client 
+                                    INNER JOIN queue_details ON client.client_id = queue_details.client_id 
+                                    WHERE client.priority = 0";
+
+                            $result0 = mysqli_query($conn, $query);
+
+                            // Loop through the query results and display each item
+                            while ($row = mysqli_fetch_assoc($result0)) {
+                                $queueNumber = $row['queue_number'];
+                                echo '<div class="queue-item1"><a href="">' . $queueNumber . '</a></div>';
+                            }
+
+                            // Check if no data is found
+                            if (mysqli_num_rows($result0) == 0) {
+                                echo '<p>No data found.</p>';
+                            }
+
+                            // Close the database connection
+                            mysqli_close($conn);
+                            ?>
+
+                        </div>
+                    </div>
         </div>
+
+    <div class="container2">
+        <video controls autoplay>
+            <source src="video/movid.mp4" type="video/mp4">
+        </video>
     </div>
-    <video controls autoplay>
- 		 <source src="video/movid.mp4" type="video/mp4">
-	</video>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#00cba9" fill-opacity="1" d="M0,96L40,90.7C80,85,160,75,240,96C320,117,400,171,480,160C560,149,640,75,720,74.7C800,75,880,149,960,192C1040,235,1120,245,1200,224C1280,203,1360,149,1400,122.7L1440,96L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg>
+
+                        </div>
+
+
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#00cba9" fill-opacity="1" d="M0,96L40,90.7C80,85,160,75,240,96C320,117,400,171,480,160C560,149,640,75,720,74.7C800,75,880,149,960,192C1040,235,1120,245,1200,224C1280,203,1360,149,1400,122.7L1440,96L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg> -->
 </body>
 </html>
