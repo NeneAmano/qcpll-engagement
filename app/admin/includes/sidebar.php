@@ -49,12 +49,6 @@
                     </span>
                     <h3>Feedbacks</h3>
                 </a>
-                <a href="service.php">
-                    <span class="material-icons-sharp">
-                        inventory
-                    </span>
-                    <h3>Services</h3>
-                </a>
                 <a href="question.php">
                     <span class="material-icons-sharp">
                         settings
