@@ -147,10 +147,13 @@
 
             if($age_value == 5 || $status == 1){
                 $prefix = 'P-';
+                $new_status = 1;
             }else{
                 $prefix = 'N-';
+                $new_status = 0;
             }
-            $sql_queue = "SELECT * FROM queue_details ORDER BY queue_number DESC LIMIT 1;";
+
+            $sql_queue = "SELECT * FROM queue_details ORDER BY qd_id DESC LIMIT 1;";
             $result_queue = mysqli_query($conn, $sql_queue);
             if(mysqli_num_rows($result_queue) > 0){
                 $row = mysqli_fetch_assoc($result_queue);
@@ -158,6 +161,13 @@
                 $queue_number = $row['queue_number'];
                 list($new_prefix, $string_number) = explode('-', $queue_number);
                 
+                $int_number = intval($string_number);
+                $int_number++;
+                $new_int_number = sprintf('%05d', $int_number);
+                $new_string_number = strval($new_int_number);
+                $new_queue_number = $prefix . $new_string_number;
+            }else{
+                $string_number = 00000;
                 $int_number = intval($string_number);
                 $int_number++;
                 $new_int_number = sprintf('%05d', $int_number);
@@ -172,7 +182,7 @@
                 $education !== '' &&
                 $occupation !== ''
             ) {
-                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation) VALUES ('$firstname', '$middlename_value', '$surname', '$suffix_value', $age_value, '$gender', '$education', '$occupation');";
+                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation, status) VALUES ('$firstname', '$middlename_value', '$surname', '$suffix_value', $age_value, '$gender', '$education', '$occupation', $new_status);";
     
                 if(mysqli_query($conn, $sql)){
                     $client_id = mysqli_insert_id($conn);
