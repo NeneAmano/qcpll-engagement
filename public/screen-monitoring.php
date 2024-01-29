@@ -1,248 +1,156 @@
-<?php require_once '../app/core/init.php' ?>
+<?php require_once '../app/core/init.php'; ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUEUING DISPLAY</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@100;200;300;400;500;700;800;900&family=Roboto:wght@300&family=Teko:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@100;200;300;400;500;700;800;900&family=Roboto:wght@300&family=Teko:wght@300;400&display=swap" rel="stylesheet">
     <style type="text/css">
-
-
         body {
-            background-color:#fff;
-            padding: 2px;
+            background-color: #f2f2f2;
             font-family: 'Poppins', sans-serif;
-        }
-
-        .main-container {
             display: flex;
-            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            margin-top: 10px;
         }
 
-        /* .container2 {
-            height: 500px;
-        } */
-
-        .container1 {
-            width: 40%;
-            height: 500px;
-            /* border: 5px solid; */
-            text-align: center;
+        .container {
+            width: 80%;
             display: flex;
             flex-direction: column;
-            padding-top: 20px;
-            overflow: hidden;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
-.serve-container{
-    max-width: 700px;
-    max-height: 800px;
 
-
-}
-        .serving {
-        flex: 1;
-        text-align: center;
-        display: flex;
-        gap: 5px;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .serving h1{
-    	margin-top: 0%;
-        font-size: 35px;
-        position: relative;
-    }
-
-    .serving .queueNum {
-        margin: 5px 0;
-        padding: 10px;
-        border-radius: 8px;
-        color: #fff;
-        width: 10%;
-        font-size: 30px;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 25% 10%;
-        border: 3px solid rgb(0, 203, 169);
-        border-left: 10px solid rgb(0, 203, 169);
-    }
+        h1 {
+            text-transform: uppercase;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
 
         .onqueue, .onqueue1 {
-            flex: 1;
-            text-align: center;
+            padding: 20px;
+            border: 4px solid #333;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-wrap: wrap;
             justify-content: center;
-            padding: 10px;
+            background-color: #fff;
+            max-height: 300px;
         }
 
-        .onqueue h1 {
-            margin-top: 0%;
-            font-size: 35px;
+        .queue-item, .queue-item1 {
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            color: #333;
+            width: calc(33.33% - 20px);
+            font-size: 30px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 3px solid rgb(0, 203, 169);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        .priority .queue-item, .priority .queue-item1 {
+            background-color: #FFD700; /* Priority item color */
+        }
+
+        .queue-item:hover, .queue-item1:hover {
+            transform: scale(1.05);
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
             position: relative;
         }
 
-        .queue-list, .queue-list1 {
-            flex: 0.5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
+        .onqueue {
+            border-color: red;
         }
 
-         .line {
-            width: 3px;
-            height: 90%;
-            background-color: black;
-            margin: 0 10px;
+        .no-data {
+            color: #555;
+            font-style: italic;
+            margin-top: 10px;
+            text-align: center;
         }
-
-        .prior {
-            flex: 0.5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
+        p {
+            text-transform: uppercase;
+            font-size: 20px;
+            font-weight: 600;
         }
-
-        .queue-item, .queue-item1{
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #fff;
-            color: #333;
-            width: 80%;
-            font-size: 30px;
-            justify-content: space-between;
-            align-items: center;
-        border-radius: 25% 10%;
-        border: 3px solid rgb(0, 203, 169);
-        border-left: 40px solid rgb(0, 203, 169);
-        /* background: linear-gradient(to left, red, purple); */
-        }
-
-        .prior-item {
-            margin: 5px 0;
-            padding: 10px;
-            border-radius: 8px;
-            background-color: #fff;
-            color: #333;
-            width: 80%;
-            font-size: 30px;
-            justify-content: space-between;
-            align-items: center;
-                border-radius: 25% 10%;
-                border: 3px solid rgb(0, 203, 169);
-                border-left: 40px solid rgb(0, 203, 169);  
-                border-right: 10px solid #D13A28;  
-            }
-
-        a{
-        	display: block;
-        	color: #333;
-  			text-decoration: none;
-  			position: relative;
-        }
-
-        video{
-            /* position: relative; */
-        	float: right;
-            right:  4%;
-        	/* margin-top: -670px; */
-        	width: 900px;
-        	height: 665px;
-
-        }
-
     </style>
 </head>
 
 <body>
+    <div class="container">
+        <h1>QUEUEING LINE</h1>
+        <p>PRIORITY LANE</p>
+        <div class="onqueue">
 
-<div class="main-container">
-        <div class="container1">
-            <h1 style="text-transform: uppercase;">queueing line</h1>
-                <div class="onqueue">
-                    <div class="queue-list">
+            <?php
+            $query = "SELECT DISTINCT client.`status`, queue_details.queue_number, queue_details.`status`
+            FROM client
+            JOIN queue_details ON client.client_id = queue_details.client_id
+            WHERE client.`status` = 1  AND queue_details.`status` = 0";
 
+            $result1 = mysqli_query($conn, $query);
 
-                        <?php
-                        // Assuming you have a database connection established
-                        // $conn = mysqli_connect("your_host", "your_username", "your_password", "your_database");
+            while ($row = mysqli_fetch_assoc($result1)) {
+                $queueNumber = $row['queue_number'];
+                $priorityClass = ($row['status'] == 1) ? 'priority' : '';
+                echo '<div class="queue-item ' . $priorityClass . '"><a href="">' . $queueNumber . '</a></div>';
+            }
 
-                        // Your SQL query to retrieve data
-                        $query = "SELECT client.priority, queue_details.queue_number 
-                                FROM client 
-                                INNER JOIN queue_details ON client.client_id = queue_details.client_id 
-                                WHERE client.priority = 1";
-
-                        $result1 = mysqli_query($conn, $query);
-
-                        // Loop through the query results and display each item
-                        while ($row = mysqli_fetch_assoc($result1)) {
-                            $queueNumber = $row['queue_number'];
-                            echo '<div class="queue-item"><a href="">' . $queueNumber . '</a></div>';
-                        }
-
-                        // Check if no data is found
-                        if (mysqli_num_rows($result1) == 0) {
-                            echo '<p>No data found.</p>';
-                        }
-
-                        // Close the database connection
-                        // mysqli_close($conn);
-                        ?>
-
-                    </div>
-                </div>
-                    <div class="onqueue1">
-                        <div class="queue-list1">
-
-
-                            <?php
-
-                            // Your SQL query to retrieve data
-                            $query = "SELECT client.priority, queue_details.queue_number 
-                                    FROM client 
-                                    INNER JOIN queue_details ON client.client_id = queue_details.client_id 
-                                    WHERE client.priority = 0";
-
-                            $result0 = mysqli_query($conn, $query);
-
-                            // Loop through the query results and display each item
-                            while ($row = mysqli_fetch_assoc($result0)) {
-                                $queueNumber = $row['queue_number'];
-                                echo '<div class="queue-item1"><a href="">' . $queueNumber . '</a></div>';
-                            }
-
-                            // Check if no data is found
-                            if (mysqli_num_rows($result0) == 0) {
-                                echo '<p>No data found.</p>';
-                            }
-
-                            // Close the database connection
-                            mysqli_close($conn);
-                            ?>
-
-                        </div>
-                    </div>
+            if (mysqli_num_rows($result1) == 0) {
+                echo '<p class="no-data">No data found.</p>';
+            }
+            ?>
         </div>
+        <p>NON-PRIORITY LANE</p>
+        <div class="onqueue1">
+            <?php
+            $query = "SELECT DISTINCT client.`status`, queue_details.queue_number, queue_details.`status`
+            FROM client
+            JOIN queue_details ON client.client_id = queue_details.client_id
+            WHERE client.`status` = 0  AND queue_details.`status` = 0";
 
-    <div class="container2">
-        <video controls autoplay>
-            <source src="video/movid.mp4" type="video/mp4">
-        </video>
+            $result0 = mysqli_query($conn, $query);
+
+            while ($row = mysqli_fetch_assoc($result0)) {
+                $queueNumber = $row['queue_number'];
+                $priorityClass = ($row['status'] == 1) ? 'priority' : '';
+                echo '<div class="queue-item1 ' . $priorityClass . '"><a href="">' . $queueNumber . '</a></div>';
+            }
+
+            if (mysqli_num_rows($result0) == 0) {
+                echo '<p class="no-data">No data found.</p>';
+            }
+            ?>
+        </div>
     </div>
 
-                        </div>
-
-
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#00cba9" fill-opacity="1" d="M0,96L40,90.7C80,85,160,75,240,96C320,117,400,171,480,160C560,149,640,75,720,74.7C800,75,880,149,960,192C1040,235,1120,245,1200,224C1280,203,1360,149,1400,122.7L1440,96L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path></svg> -->
+    <script>
+        setInterval(function() {
+            location.reload();
+        }, 1000);
+    </script>
 </body>
 </html>
