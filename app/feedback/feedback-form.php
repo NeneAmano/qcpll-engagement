@@ -255,7 +255,6 @@
                                                 <input type="radio" id="emoji<?=$question_id .$emoji_id?>" name="emoji<?= $question_id ?>" value="<?=$emoji_id?>" required>
                                                 <img src="../../<?= $image_path?>" alt="Option 1">
                                                 </label>
-                                                    <p class="word"><?= $value ?></p>
                                                 </div>
                                         <?php
                                             }
