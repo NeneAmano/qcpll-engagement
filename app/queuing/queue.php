@@ -242,6 +242,9 @@
 
             // var_dump($firstname, $middlename, $surname, $suffix, $birthdate, $gender, $education, $occupation);
         }
+    }else{
+        header('location: ../../public/index.php');
+        die();
     }
 ?>
 <body>
