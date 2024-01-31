@@ -51,14 +51,12 @@
 
                 <button type="button" class="btn btn-success feedbackbtn" data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
                     <?php
-                        
             }
                     }
                 ?>
                 <br>
                 <br>
                 <br>
-                
             </div>
             <div class="numPan">
                 <div class="nums">
