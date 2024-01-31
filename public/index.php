@@ -42,11 +42,12 @@
                 $error_message = 'Invalid username.';
             }
         }
+    }else{
+        header("location: portal.php");
     }
 ?>
     <!-- <button type="submit" name="login" class="button" style="text-decoration: none;">Log in</button> -->
 <body>
-
     <section id="swup" class="transtion-fade">
     <div class="logo">
             <img src="assets/images/qclogo.jpg" alt="">
