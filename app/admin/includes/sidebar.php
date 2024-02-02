@@ -25,7 +25,17 @@
             <ul class="list-unstyled px-2">
                 <div class="d-flex mt-1 ps-2 pb-1">
                     <img class="text-white rounded-circle" src="../../public/assets/images/qclogo.jpg" alt="" style="width: 20%; height: 30%;">
-                    <li class="px-3 py-2 d-block text-white">Admin</li>
+                    <?php
+                        if(isset($_SESSION['user_id'])){
+                            $sql = "SELECT * FROM users WHERE user_id = $user_id_session AND is_active = 1;";
+                            $result = mysqli_query($conn, $sql);
+                            if(mysqli_num_rows($result) > 0){
+                                $row = mysqli_fetch_assoc($result);
+                                $username = $row['username'];
+                            }
+                        }
+                    ?>
+                    <li class="px-3 py-2 d-block text-white"><?= $username; ?></li>
                 </div>
                 <div class="text-white">
                     <hr class="mx-2">
@@ -33,28 +43,21 @@
                         <li class=""><a href="dashboard.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-house"></i> Dashboard</a></li>
 
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Users</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Clients</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">History</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Analytics</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Feedbacks</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Questions</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Reports</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Queuing</span></a></li>
-
-
-
-                        <li class=""><a href="appointment.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-regular fa-calendar-days"></i></i> Appointments</a></li>
-
-                        <li class=""><a href="category.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-dog"></i> Categories</a></li>
-                        <li class=""><a href="service.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-syringe"></i> Services</a></li>
-
-                    
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-users"></i><span class="ps-2">Clients</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book-open"></i><span class="ps-2">History</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book"></i><span class="ps-2">Logs</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-chart-simple"></i><span class="ps-2">Analytics</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-chart-pie"></i><span class="ps-2">Feedbacks</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-circle-question"></i><span class="ps-2">Questions</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-print"></i><span class="ps-2">Reports</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-regular fa-face-laugh-beam"></i><span class="ps-2">Emoji</span></a></li>
+                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-display"></i><span class="ps-2">Queue Monitoring</span></a></li>
                         <div class="text-white">
                             <hr class="mx-2">
                         </div>
             </ul>
             <ul class="list-unstyled px-2">
-                <li class=""><a href="includes/logout.inc.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+                <li class=""><a href="includes/logout.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
             </ul>
         </div>
         <!-- end of sidebar -->
@@ -79,17 +82,15 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <?php
-                                        // if(isset($_SESSION['user_id'])){
-                                        //     $sql = "SELECT * FROM users WHERE user_id = 4;";
-                                        //     $result = mysqli_query($conn, $sql);
-                                        //     if(mysqli_num_rows($result) > 0){
-                                        //         while($row = mysqli_fetch_assoc($result)){
-                                        //             $username = $row['username'];
-                                        //         }
-                                        //     }
-                                        // }
-                                        echo 'Admin';
-                                        ?>
+                                        if(isset($_SESSION['user_id'])){
+                                            $sql = "SELECT * FROM users WHERE user_id = $user_id_session AND is_active = 1;";
+                                            $result = mysqli_query($conn, $sql);
+                                            if(mysqli_num_rows($result) > 0){
+                                                $row = mysqli_fetch_assoc($result);
+                                                echo $username = $row['username'];
+                                            }
+                                        }
+                                    ?>
                                 </a>
                                 <ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item bg-dark text-white admin-dropdown" href="change-password.php">Change Password</a></li>
