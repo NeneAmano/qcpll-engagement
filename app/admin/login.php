@@ -198,7 +198,7 @@
                 die();
             } elseif($checkPassword === true) {
                 
-                $query = "SELECT * FROM users WHERE user_id = '" .$usernameExists['user_id']. "' AND username = '" .$usernameExists['username']. "' AND is_active = 1;";
+                $query = "SELECT * FROM users WHERE user_id = '" .$usernameExists['user_id']. "' AND username = '" .$usernameExists['username']. "' AND is_active = 1 AND user_role_id = 1;";
                 $result = mysqli_query($conn, $query);
                 $count = mysqli_num_rows($result);
                 if($count === 1) {    
@@ -213,7 +213,7 @@
                     header("location: dashboard.php");
                     die();
                 } else {
-                    header("location: login.php?error=usernotactive");
+                    header("location: login.php?error=invalidaccess");
                     die();
                 }
             }
@@ -238,8 +238,8 @@
                             $error_message = 'Invalid username.';
                         }elseif($_GET['error'] === 'invalidpassword'){
                             $error_message = 'Invalid password.';
-                        }elseif($_GET['error'] === 'usernotactive'){
-                            $error_message = 'User not active.';
+                        }elseif($_GET['error'] === 'invalidaccess'){
+                            $error_message = 'Invalid access.';
                         }
                     }
                     ?>
