@@ -1,7 +1,17 @@
 <?php
     require_once 'includes/feedback-header.php';
+    
 ?>
 <body>
+    <!--<div class="logo">
+            <img src="../../public/assets/images/qclogo.jpg" alt="">
+            <div class="title">
+            <p>Quezon City Public Library</p>
+            <p>Quezon City Government</p>
+            </div>
+            <img src="../../public/assets/images/qcplLogo.png" alt="">
+        </div> -->
+
     <form id="regForm" method="post" action="">
         <!-- One "tab" for each step in the form: -->
         <?php
@@ -61,8 +71,8 @@
                 <!-- emoji based answer starts here -->
                 <div class="tab">
                     <div id="question-container">
-                        <p id="english<?= $question_id ?>" class="fs-4"><?= $english_question; ?></p>
-                        <p id="tagalog<?= $question_id ?>" class="fs-6 fst-italic"><?= $tagalog_question; ?></p>
+                        <p id="english<?= $question_id ?>" class="fs-4" style="font-size: 2em; font-weight:500;"><?= $english_question; ?></p>
+                        <p id="tagalog<?= $question_id ?>" class="fs-6" style="font-size: 1.2em; font-style:italic;"><?= $tagalog_question; ?></p>
                         <input type="hidden" value="<?= $question_id ?>" name="question<?= $question_id ?>" id="answer<?= $question_id ?>">
                         <div class="reaction-container">
                             <?php
