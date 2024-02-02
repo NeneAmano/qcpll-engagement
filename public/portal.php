@@ -1,47 +1,61 @@
 <?php 
     require_once("../app/includes/header.php");
 ?>
-<body>
 <style>
-    .dropdown{
+    .dropdown {
         max-width: 10%;
         position: fixed;
         display: flex;
         justify-content: flex-start;
     }
-    .dropdown:hover>.dropdown-menu {
+
+    .dropdown:hover > .dropdown-menu {
         display: block;
     }
-    .dropdown>.dropdown-toggle:active {
-    /*Without this, clicking will make it sticky*/
+
+    .dropdown > .dropdown-toggle:active {
         pointer-events: none;
     }
-    ion-icon{
+
+    ion-icon {
         color: #ffffff;
         padding: 10px;
         background-color: #13a561;
         width: 30px;
         height: 30px;
-        border-radius:50%;
+        border-radius: 50%;
         cursor: pointer;
         transition: 0.2s ease-in-out;
     }
-    ion-icon:hover{
+    .logout-btn{
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        right: 3em;
+        bottom: 6em;
+    }
+
+    ion-icon:hover {
         color: #13a561;
         background-color: #ffffff;
     }
-    .container-btn{
-        position: relative;
-        display: flex;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+
+    .container-btn {
+        position: fixed;
+        top: 2em; /* Adjust the top position for smaller screens */
+        right: 1em; /* Adjust the right position for smaller screens */
+        z-index: 1000; /* Ensure the button stays on top of other elements */
     }
-    .logout-btn{
-        position: relative;
-        top:35em;
-        left: 3em;
-        position:fixed;
+
+    @media screen and (min-width: 768px) {
+        .container-btn {
+            top: 35em; /* Adjust the top position for larger screens */
+            right: 3em; /* Adjust the right position for larger screens */
+        }
     }
 </style>
+
+<body>
     <section id="swup" class="transtion-fade">
     <?php  
         if(isset($_SESSION['user_id'])){
@@ -51,6 +65,9 @@
                 echo '<div class="container-btn">';
                 echo '<div class="logout-btn">';
                     echo '<a href="../app/includes/logout.php"><ion-icon name="log-out-outline"></ion-icon></a>';
+                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-facebook"></ion-icon></a>';
+                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-twitter"></ion-icon></a>';
+                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-instagram"></ion-icon></a>';
                 echo '</div>';
             echo '</div>';
             }
