@@ -271,9 +271,12 @@
     }
     .logout-btn{
         position: relative;
-        top:12em;
-        left: 76em;
-        position:fixed;
+        left: 43.5em;
+        bottom: 0.7em;
+    }
+    #power-btn:hover{
+        color:#FD1D1D;
+        border: 1px solid #FD1D1D ;
     }
 </style>
     <section id="swup" class="transtion-fade">
@@ -300,12 +303,11 @@
             while($row = mysqli_fetch_assoc($res)){
                 echo '<div class="container-btn">';
                 echo '<div class="logout-btn">';
-                    echo '<a href="../includes/logout.php">Logout</a>';
+                    echo '<a href="../includes/logout.php"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
                 echo '</div>';
             echo '</div>';
             }
-        }else
-        echo '<a href="../includes/logout.php">Logout</a>';
+        }
     ?>
 
                 <form action="" method="post" id="myForm">
