@@ -15,7 +15,7 @@
     <!-- start of main container -->
     <div class="main-container d-flex">
         <!-- start of sidebar -->
-        <div class="sidebar" id="sidebar">
+        <div class="sidebar bg-dark" id="sidebar">
             <div class="header-box px-2 pt-3 pb-2 d-flex justify-content-around">
                     
                 <h1 class="fs-4"><a href="dashboard.php" class="text-decoration-none"><span class="bg-white text-dark rounded shadow px-2 me-2 p-1 fs-6">Quezon City</span><span class="text-white fs-6">Public Library</span></a></h1>
@@ -64,10 +64,10 @@
 
         <div class="content">
             <!-- start of navbar -->
-            <nav class="navbar navbar-expand-md navbar-light bg-light">
+            <nav class="navbar navbar-expand-md navbar-light bg-dark">
                 <div class="container-fluid">
                     <div class="d-flex justify-content-between d-md-none d-block">
-                        <a class="navbar-brand fs-4" href="#">Online Shop</a>
+                        <a class="navbar-brand fs-4" href="#">QCPL Engagement</a>
                         <button class="btn px-1 py-0 open-btn"><i class="fa-solid fa-bars-staggered"></i></button>
                     </div>
                     
@@ -80,7 +80,7 @@
                             <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
                             </li> -->
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <?php
                                         if(isset($_SESSION['user_id'])){
                                             $sql = "SELECT * FROM users WHERE user_id = $user_id_session AND is_active = 1;";
