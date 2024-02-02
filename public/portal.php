@@ -27,14 +27,25 @@
         cursor: pointer;
         transition: 0.2s ease-in-out;
     }
+    .logo-facebook:hover{
+        color: #1877F2;
+    }
+    .logo-twitter:hover{
+        color: #1D9BF0;
+    }
+    .logo-instagram:hover{
+        color: rgb(225, 48, 108) ;
+    }
     .logout-btn{
         display: flex;
         flex-direction: column;
         position: relative;
+        gap:0.1px;
         right: 3em;
         bottom: 6em;
-    }
 
+    }
+    
     ion-icon:hover {
         color: #13a561;
         background-color: #ffffff;
@@ -65,9 +76,9 @@
                 echo '<div class="container-btn">';
                 echo '<div class="logout-btn">';
                     echo '<a href="../app/includes/logout.php"><ion-icon name="log-out-outline"></ion-icon></a>';
-                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-facebook"></ion-icon></a>';
-                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-twitter"></ion-icon></a>';
-                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-instagram"></ion-icon></a>';
+                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-facebook" class="logo-facebook"></ion-icon></a>';
+                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-twitter"  class="logo-twitter"></ion-icon></a>';
+                    echo '<a href="../app/includes/logout.php"><ion-icon name="logo-instagram" class="logo-instagram"></ion-icon></a>';
                 echo '</div>';
             echo '</div>';
             }
