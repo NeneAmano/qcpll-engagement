@@ -240,9 +240,11 @@
                             $error_message = 'Invalid password.';
                         }elseif($_GET['error'] === 'invalidaccess'){
                             $error_message = 'Invalid access.';
+                        }elseif($_GET['error'] === 'accessdenied'){
+                            $error_message = 'Access denied.';
                         }
                     }
-                    ?>
+                ?>
                 <p style="color: red; text-align: center;"><?= $error_message; ?></p>
             </form>
             <!-- /form -->
