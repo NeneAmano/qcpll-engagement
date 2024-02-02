@@ -1,40 +1,28 @@
-<!-- jquery cdn -->
-<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-<!-- jquery datatable js cdn -->
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+</div>
+<!-- end of main container -->
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- js section -->
+    <!-- bootstrap js popper -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <!-- bootstrap js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <!-- jquery datatable js cdn -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
+    <script>
+        // $('.sidebar ul li').on('click', function(){
+        //     $('.sidebar ul li.active').removeClass('active');
+        //     $(this).addClass('active');
+        // });
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-<script src="assets/js/index.js"></script>
-
-
-<script type="text/javascript">
-    let table = new DataTable('#datatable');
-    $(document).ready( function () {
-        $('#datatable').DataTable({
-            "responsive": false, 
-            "lengthChange": true, 
-            "autoWidth": false,
-            "searching": true,
-            "paging": true,
-            "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-            "iDisplayLength": 10,
-            "ordering": true,
+        $('.open-btn').on('click', function(){
+            $('.sidebar').addClass('active');
         });
-    } );
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const activePage = window.location.pathname;
-        const sidebarLinks = document.querySelectorAll('aside .sidebar a');
-
-        sidebarLinks.forEach(link => {
-            // Use includes() to match partial URLs
-            if (activePage.includes(link.getAttribute("href"))) {
-            link.classList.add('active');
-            }
+        $('.close-btn').on('click', function(){
+            $('.sidebar').removeClass('active');
         });
-    });
-</script>
+    </script>
+</body>
+</html>
