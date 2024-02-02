@@ -114,7 +114,13 @@
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
                 <form action="" method="post">
-                    <h3>For Existing User</h3>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../../public/portal.php">Portal</a></li>
+                    <li class="breadcrumb-item"><a href="queue.php">Demographic Profile</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Existing User</li>
+                </ol>
+                </nav>
                     <div class="form-group">
                         <input type="text" name="firstname" id="" placeholder="Firstname" class="form-control">
                         <input type="text" name="surname" id="" placeholder="Surname" class="form-control">
@@ -127,8 +133,8 @@
                         <input type="checkbox" id="policeclearance" name="policeclearance" value="nbi">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
                         <input type="text" class="others[]" name="others[]" id="new_1">
-                        <button onclick="add()" type="button">Add</button>
-                        <button onclick="remove()" type="button">remove</button>
+                        <button onclick="add()" type="button" class="btn btn-info">Add</button>
+                        <button onclick="remove()" type="button" class="btn btn-danger">remove</button>
                         <div id="new_chq"></div>
                         <input type="hidden" value="1" id="total_chq" name="total_input">
                     </div>

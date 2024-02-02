@@ -246,40 +246,38 @@
         die();
     }
 ?>
-<body>
+<body onload="hidefield()">
 <style>
-    .dropdown{
-        max-width: 10%;
-        position: fixed;
+    ion-icon{
+        color: #ffffff;
+        padding: 6px;
+        background-color: #13a561;
+        width: 30px;
+        height: 30px;
+        border-radius:50%;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+        border: 1px solid #13a561;
+    }
+    ion-icon:hover{
+        color: #13a561;
+        background-color: #ffffff;
+        border: 1px solid #13a561;
+    }
+    .container-btn{
+        position: relative;
         display: flex;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     }
-    .dropdown:hover>.dropdown-menu {
-        display: block;
-    }
-
-    .dropdown>.dropdown-toggle:active {
-    /*Without this, clicking will make it sticky*/
-        pointer-events: none;
+    .logout-btn{
+        position: relative;
+        top:12em;
+        left: 76em;
+        position:fixed;
     }
 </style>
     <section id="swup" class="transtion-fade">
-    <?php  
-        if(isset($_SESSION['user_id'])){
-            $sql = "SELECT username FROM users WHERE user_id = $user_id_session";
-            $res = mysqli_query($conn,$sql);
-            while($row = mysqli_fetch_assoc($res)){
-                $username = $row['username'];
-                echo '<div class="dropdown">';
-                    echo '<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        '.$username.'
-                    </button>';
-                        echo '<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">';
-                            echo '<li><a class="dropdown-item" href="../../app/includes/logout.php">Log out</a></li>';
-                        echo '</ul>';
-                echo '</div>';
-            }
-        }
-    ?>
+
     <div class="logo">
             <img src="../../public/assets/images/qclogo.jpg" alt="">
             <div class="title">
@@ -295,8 +293,29 @@
                 <div class="image-holder">
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
+                <?php  
+        if(isset($_SESSION['user_id'])){
+            $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
+            $res = mysqli_query($conn,$sql);
+            while($row = mysqli_fetch_assoc($res)){
+                echo '<div class="container-btn">';
+                echo '<div class="logout-btn">';
+                    echo '<a href="../includes/logout.php">Logout</a>';
+                echo '</div>';
+            echo '</div>';
+            }
+        }else
+        echo '<a href="../includes/logout.php">Logout</a>';
+    ?>
+
                 <form action="" method="post" id="myForm">
-                    <h3>Demographic Form</h3>
+                <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../../public/portal.php">Portal</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Demographic Profile</li>
+                </ol>
+                </nav>
+                                    
                     <div class="form-group">
                         <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
                         <input type="text" name="firstname" id="" placeholder="First Name" class="form-control" value="<?= $firstname_value ?>" required>
@@ -345,11 +364,14 @@
                     </div>
 
                     <div class="form-wrapper">
-                        <select name="status" id="" class="form-control">
-                            <option value="" disabled selected>-- Select Status --</option>
-                            <option value="0">Non-Priority</option>
-                            <option value="1">Priority</option>
-                        </select>
+                    <select name="travel_arriveVia" id="travel_arriveVia" onchange="showfield(this.options[this.selectedIndex].value)" class="form-control">
+                        <option selected="selected">-- Select Status --</option>
+                        <option value="Plane">PWD</option>
+                        <option value="Train">PREGNANT</option>
+                        <option value="Own Vehicle">PERSON W/DISABILITIES</option>
+                        <option value="Other">Other</option>
+                    </select>
+                        <div id="div1">If Other, Please Specify :<input type="text" name="whatever" class="form-control"/></div>
                     </div>
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
@@ -359,6 +381,7 @@
                         <input type="checkbox" id="policeclearance" name="police" value="Police">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
 
+                        <p>Please Specify:</p>
                         <input type="text" class="others[]" name="others[]" id="new_1">
                         <button onclick="add()" type="button" class="btn btn-primary">Add</button>
                         <button onclick="remove()" type="button" class="btn btn-danger">remove</button>
@@ -457,9 +480,21 @@
                     event.preventDefault(); // Prevent form submission
                 }
             });
+
+            //for adding textbox for others in status
+            function showfield(name){
+                if(name=='Other')document.getElementById('div1').style.display="block";
+                else document.getElementById('div1').style.display="none";
+            }
+            
+            function hidefield() {
+            document.getElementById('div1').style.display='none';
+            }
       </script>
    </head>
     <script src="https://unpkg.com/swup@4"></script>
     <script src="script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 </html>
