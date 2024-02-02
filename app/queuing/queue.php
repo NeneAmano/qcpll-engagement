@@ -175,7 +175,6 @@
                 $new_queue_number = $prefix . $new_string_number;
             }
             
-            
             if (!firstnameInvalid($firstname) && !surnameInvalid($surname) && (!middlenameInvalid($middlename) || !suffixInvalid($suffix)) || (middlenameInvalid($middlename) || suffixInvalid($suffix)) && 
                 !empty($birthdate) &&
                 $gender !== '' &&
