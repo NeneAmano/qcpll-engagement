@@ -1,6 +1,5 @@
 </div>
 <!-- end of main container -->
-
     <!-- js section -->
     <!-- bootstrap js popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
@@ -11,11 +10,6 @@
     <!-- jquery datatable js cdn -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js"></script>
     <script>
-        // $('.sidebar ul li').on('click', function(){
-        //     $('.sidebar ul li.active').removeClass('active');
-        //     $(this).addClass('active');
-        // });
-
         $('.open-btn').on('click', function(){
             $('.sidebar').addClass('active');
         });
@@ -23,6 +17,19 @@
         $('.close-btn').on('click', function(){
             $('.sidebar').removeClass('active');
         });
+
+        $(document).ready( function () {
+            $('#datatable').DataTable({
+                "responsive": false, 
+                "lengthChange": true, 
+                "autoWidth": false,
+                "searching": true,
+                "paging": true,
+                "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                "iDisplayLength": 10,
+                "ordering": true,
+            });
+        } );
     </script>
 </body>
 </html>
