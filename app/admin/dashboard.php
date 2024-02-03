@@ -74,6 +74,10 @@
         <!-- end of main row -->
     </div>
     <!-- end of main section container -->
-    <?php
-        require_once 'includes/scripts.php';
-    ?>
+</div>
+<!-- end of main container -->
+<?php
+    require_once 'js/scripts.php';
+?>
+</body>
+</html>
