@@ -1,16 +1,207 @@
 <?php
-    require_once 'includes/feedback-header.php';
-    
+    require_once('../core/init.php');
+    if(isset($_GET['client_id'])){
+        $client_id = $_GET['client_id'];
+        $sql = "UPDATE queue_details SET status = 1 WHERE client_id = $client_id;";
+        mysqli_query($conn, $sql);
+    }else{
+        header('location: feedback.php');
+        die();
+    }
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quezon City Public Library</title>
+    <link rel="stylesheet" href="../../public/assets/css/style.css">
+    <link rel="shortcut icon" href="assets/images/qcplLogo.png" type="image/x-icon">
+    <link href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+    <style>
+        
+        #regForm {
+            background-color: #e0f0e3;
+            margin: 100px auto;
+            font-family: Raleway;
+            padding: 40px;
+            width: 50%;
+            min-width: 300px;
+            border-radius: 7px;
+        }
+        h1 {
+            text-align: center;
+            color: #e0f0e3;
+        }
+        p{
+            color:#5a5255;
+        }
+        input {
+            padding: 10px;
+            width: 100%;
+            font-size: 17px;
+            font-family: Raleway;
+            border: 1px solid #aaaaaa;
+        }
+        /* Mark input boxes that gets an error on validation: */
+        input.invalid {
+            background-color: #ffdddd;
+        }
+        /* Hide all steps by default: */
+        .tab {
+            display: none;
+        }
+        button {
+            background-color: #04AA6D;
+            border: none;
+            padding: 10px 20px;
+            font-size: 17px;
+            font-family: Raleway;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        #prevBtn {
+            background-color: #bbbbbb;
+        }
+        /* Make circles that indicate the steps of the form: */
+        .step {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbbbbb;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            opacity: 0.5;
+        }
+        .step.active {
+            opacity: 1;
+        }
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #04AA6D;
+        }
+
+        #question-container {
+            text-align: center;
+            padding: 30px;
+            background-color: #c8e1cc;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        }
+        #question {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        .reaction-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 0.5em;
+        }
+        .reaction {
+            text-align: center;
+        }
+        .reaction img {
+            width: 100px;
+            /* Adjust the size as needed */
+            margin-top: 10px;
+        }
+        .reaction img:hover {
+            transform: translate(0px, -20px);
+            transition: ease-in 0.1s;
+            cursor: pointer;
+        }
+        .word {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+        label {
+            font-size: 1em;
+        }
+
+        /* HIDE RADIO */
+    [type=radio] { 
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    }
+
+    /* IMAGE STYLES */
+    [type=radio] + img {
+    cursor: pointer;
+    }
+
+    /* CHECKED STYLES */
+    [type=radio]:checked + img {
+    transform: translate(0px, -18px);
+    box-shadow: 26px 200px 203px -96px rgba(0,0,0,1);
+    -webkit-box-shadow: 26px 200px 203px -96px rgba(0,0,0,1);
+    -moz-box-shadow: 26px 200px 203px -96px rgba(0,0,0,1);
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+    border-radius: 50%;
+    background-color: transparent;
+    }
+    .hidden {
+        display: none;
+    }
+    
+    /* for the next page btn design */
+  button {
+  cursor: pointer;
+  font-weight: 700;
+  font-family: Helvetica,"sans-serif";
+  transition: all .2s;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background-color: #c8e1cc;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  
+}
+
+button:hover {
+  background: #68c4af;
+}
+
+button > svg {
+  width: 34px;
+  margin-left: 10px;
+  transition: transform .3s ease-in-out;
+}
+
+button:hover svg {
+  transform: translateX(5px);
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+
+    </style>
+
 <body>
-    <!--<div class="logo">
+<section id="swup" class="transtion-fade">\
+    
+    <div class="logo">
             <img src="../../public/assets/images/qclogo.jpg" alt="">
             <div class="title">
             <p>Quezon City Public Library</p>
             <p>Quezon City Government</p>
             </div>
             <img src="../../public/assets/images/qcplLogo.png" alt="">
-        </div> -->
+        </div>
 
     <form id="regForm" method="post" action="">
         <!-- One "tab" for each step in the form: -->
@@ -108,14 +299,23 @@
         }
         ?>
         <!-- emoji based answer ends here -->
+        
         <div style="overflow:auto;">
 
-            <div style="float:right; margin-top:12px;">
+            <div style="float:right; margin-top:12px; display:flex; gap:1em;">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)" class="">Next</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)" class="">
+                <span>Next Page</span>
+                <svg width="34" height="34" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                    <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+                </svg>
+            </button>
+
                 <button type="submit" class="d-none" id="submit" name="submit">Submit</button>
             </div>
         </div>
+
         <!-- Circles which indicates the steps of the form: -->
         <div style="text-align:center;margin-top:40px;">
             <?php
@@ -124,7 +324,10 @@
             }
             ?>
         </div>
+
     </form>
+</section>
+
     <script>
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
