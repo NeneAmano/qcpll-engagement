@@ -1,5 +1,6 @@
 <?php
     require_once('../core/init.php');
+    ob_start();
     if(($user_role_id_session !== 1)) {
         header('location: login.php?error=accessdenied');
         die();
@@ -14,13 +15,39 @@
     <title>Users</title>
     <?php
         require_once 'includes/sidebar.php';
+        if(isset($_POST['add'])){
+            $add_user_role = mysqli_real_escape_string($conn, $_POST['add_user_role']);
+            $add_username = mysqli_real_escape_string($conn, $_POST['add_username']);
+            $add_password = mysqli_real_escape_string($conn, $_POST['add_password']);
+            $add_repeat_password = mysqli_real_escape_string($conn, $_POST['add_repeat_password']);
+            
+            $sql = "SELECT * FROM users WHERE username = '$add_username';";
+            $result = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($result) > 0){
+                $error_message = "Username already taken.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }elseif(empty($add_user_role) || empty($add_username) || empty($add_password) || empty($add_repeat_password)){
+                $error_message = "All fields are required.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }elseif($add_password !== $add_repeat_password){
+                $error_message = "Password does not match.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }else{
+                $hashed_password = password_hash($add_password, PASSWORD_DEFAULT);
+
+                $sql = "INSERT INTO users (user_role_id, username, password) VALUES ($add_user_role, '$add_username', '$hashed_password');";
+                if(mysqli_query($conn, $sql)){
+                    header('location: users.php?insertsuccess');
+                }
+            }
+        }
     ?>
     <!-- start of main section container -->
     <div class="container mt-3 ms-5">
         <!-- start of add user modal button -->
         <button type="button" class="btn btn-primary mb-3 mt-5" data-bs-toggle="modal" data-bs-target="#add_user_modal">Add user</button>
         <!-- end of add user modal button -->
-
+        
         <!-- start of add user modal -->
         <div class="modal fade" id="add_user_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -47,8 +74,18 @@
                                                     <div class="form-group">
                                                         <label for="add_user_role" class="ps-2 pb-2">User role</label>
                                                         <select class="form-select" aria-label="Default select example" name="add_user_role" id="add_user_role" required>
-                                                            <option selected value="2">Customer</option>
-                                                            <option value="1">Admin</option>
+                                                            <?php
+                                                                $sql_user_role = "SELECT * FROM user_role;";
+                                                                $result_user_role = mysqli_query($conn, $sql_user_role);
+                                                                if(mysqli_num_rows($result_user_role) > 0){
+                                                                    while($row_user_role = mysqli_fetch_assoc($result_user_role)){
+                                                                        $user_role_id = $row_user_role['user_role_id'];
+                                                                        $user_role = $row_user_role['user_role'];
+
+                                                                        echo '<option value="' .$user_role_id. '">' .$user_role. '</option>';
+                                                                    }
+                                                                }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -56,34 +93,6 @@
                                                     <div class="form-group">
                                                         <label for="add_username" class="ps-2 pb-2">Username</label>
                                                         <input type="text" class="form-control" name="add_username" id="add_username" value="" required>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-6 col-6 mt-3">
-                                                    <div class="form-group">
-                                                        <label for="add_first_name" class="ps-2 pb-2">First name</label>
-                                                        <input type="text" class="form-control" name="add_first_name" id="add_first_name" value="" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 col-6 mt-3">
-                                                    <div class="form-group">
-                                                        <label for="add_last_name" class="ps-2 pb-2">Last name</label>
-                                                        <input type="text" class="form-control" name="add_last_name" id="add_last_name" value="" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 col-6 mt-3">
-                                                    <div class="form-group">
-                                                        <label for="add_email" class="ps-2 pb-2">Email</label>
-                                                        <input type="text" class="form-control" name="add_email" id="add_email" value="" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 col-6 mt-3">
-                                                    <div class="form-group">
-                                                        <label for="add_phone_number" class="ps-2 pb-2">Phone number</label>
-                                                        <input type="text" class="form-control" name="add_phone_number" id="add_phone_number" value="" required>
                                                     </div>
                                                 </div>
 
@@ -182,9 +191,8 @@
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-sm btn-primary view" href="#" data-bs-toggle="modal" data-bs-target="#view_user_modal"><i class="fa-solid fa-eye"></i></a> 
                                                         <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
-                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_user_modal"><i class="fa-solid fa-trash"></i></a>
+                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_user_modal"><i class="fa-solid fa-ban"></i></a>
                                                     </td>
                                                 </tr>
                                 <?php
@@ -217,8 +225,113 @@
             <!-- end of second container -->
         </div>
         <!-- end of first row -->
+
+
+        <!-- start of edit user modal -->
+        <div class="modal fade" id="edit_user_modal">
+            <!-- start of edit modal dialog -->
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- start of edit modal content -->
+                <div class="modal-content">
+                    <!-- start of modal header -->
+                    <div class="modal-header bg-dark border-0">
+                        <h4 class="modal-title text-white">Edit user</h4>
+                        <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                        </button>
+                    </div>
+                    <!-- end of modal header -->
+                    <!-- start of edit modal form -->
+                    <form action="includes/edit-user.inc.php" method="post">
+                        <!-- start of edit modal body -->                
+                        <div class="modal-body">
+                            <!-- <input type="hidden" name="edit_user_id" id="edit_user_id"> -->
+                            <!-- start of edit modal row -->
+                            <div class="row">
+                                <!-- start of edit modal col -->
+                                <div class="col-md-12">
+                                    <!-- start of edit modal card -->
+                                    <div class="card card-primary">
+                                        <!-- start of edit modal card body -->
+                                        <div class="card-body">
+                                            <!-- start of edit modal row -->
+                                            <div class="row">
+                                                <!-- <label for="edit_user_id" class="ps-2 pb-2">User ID</label> -->
+                                                <input type="hidden" class="form-control" name="edit_user_id" id="edit_user_id" value="">
+                                                
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_user_role" class="ps-2 pb-2">User role</label>
+                                                        <select class="form-select" aria-label="Default select example" name="edit_user_role" id="edit_user_role" required>
+                                                            <?php
+                                                                $sql_user_role = "SELECT * FROM user_role;";
+                                                                $result_user_role = mysqli_query($conn, $sql_user_role);
+                                                                if(mysqli_num_rows($result_user_role) > 0){
+                                                                    while($row_user_role = mysqli_fetch_assoc($result_user_role)){
+                                                                        $user_role_id = $row_user_role['user_role_id'];
+                                                                        $user_role = $row_user_role['user_role'];
+
+                                                                        echo '<option value="' .$user_role_id. '">' .$user_role. '</option>';
+                                                                    }
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_username" class="ps-2 pb-2">Username</label>
+                                                        <input type="text" class="form-control" name="edit_username" id="edit_username" value="" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_password" class="ps-2 pb-2">Password</label>
+                                                        <input type="password" class="form-control" name="edit_password" id="edit_password" value="" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_repeat_password" class="ps-2 pb-2">Repeat password</label>
+                                                        <input type="password" class="form-control" name="edit_repeat_password" id="edit_repeat_password" value="" required>
+                                                    </div>
+                                                </div>      
+                                            </div>
+                                            <!-- end of edit modal row -->
+                                        </div>
+                                        <!-- end of edit modal card body -->
+                                        <!-- start of edit modal footer -->
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" name="edit" class="btn btn-success">Save Changes</button>
+                                        </div>
+                                        <!-- end of edit modal footer -->
+                                    </div>
+                                    <!-- end of edit modal card -->
+                                </div>
+                                <!-- end of edit modal col -->
+                            </div>
+                            <!-- end of edit modal row -->
+                        </div>
+                        <!-- end of edit modal body -->                
+                    </form>
+                    <!-- end of edit modal form -->
+                </div>
+                <!-- end of edit modal content -->
+            </div>
+            <!-- end of edit modal dialog -->
+        </div>
+        <!-- end of edit user modal -->
     </div>
     <!-- end of main section container -->
-    <?php
-        require_once 'includes/scripts.php';
-    ?>
+</div>
+<!-- end of main container -->
+<?php
+    require_once 'js/scripts.php';
+?>
+    <script src="js/user-scripts.js"></script>
+</body>
+</html>
