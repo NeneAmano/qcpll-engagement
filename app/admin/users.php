@@ -191,7 +191,7 @@
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
+                                                        <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>  
                                                         <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_user_modal"><i class="fa-solid fa-ban"></i></a>
                                                     </td>
                                                 </tr>
@@ -255,7 +255,7 @@
                                         <div class="card-body">
                                             <!-- start of edit modal row -->
                                             <div class="row">
-                                                <input type="hidden" class="form-control" name="edit_user_id" id="edit_user_id" value="">
+                                                <input type="text" class="form-control" name="edit_user_id" id="edit_user_id" value="">
                                                 
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
@@ -288,7 +288,7 @@
                                         <!-- end of edit modal card body -->
                                         <!-- start of edit modal footer -->
                                         <div class="modal-footer justify-content-end">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_user_password_modal">Change Password</button>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_user_password_modal" data-modal-type="password">Change Password</button>
                                             
                                             <button type="submit" name="edit_user" class="btn btn-success">Save Changes</button>
                                         </div>
