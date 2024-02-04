@@ -17,3 +17,21 @@ $(document).ready(function () {
         $('#edit_username').val(data[3]);
     });
 });
+
+$(document).ready(function () {
+    // $('body').on('click', '.edit', function(event) {
+    $('body').on('click', '.edit', function(event) {
+
+        $('#edit_user_password_modal').modal('show');
+
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+
+        $('#edit_user_password_id').val(data[1])
+    });
+});
