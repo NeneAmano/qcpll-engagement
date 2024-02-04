@@ -264,11 +264,11 @@
         background-color: #ffffff;
         border: 1px solid #13a561;
     }
-    .container-btn{
+    /* .container-btn{
         position: relative;
         display: flex;
         box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-    }
+    } */
     .logout-btn{
         position: relative;
         left: 43.5em;
@@ -279,8 +279,8 @@
         border: 1px solid #FD1D1D ;
     }
 </style>
-    <section id="swup" class="transtion-fade">
 
+    <section id="swup" class="transtion-fade">
     <div class="logo">
             <img src="../../public/assets/images/qclogo.jpg" alt="">
             <div class="title">
@@ -296,28 +296,29 @@
                 <div class="image-holder">
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
+
                 <?php  
-        if(isset($_SESSION['user_id'])){
-            $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
-            $res = mysqli_query($conn,$sql);
-            while($row = mysqli_fetch_assoc($res)){
-                echo '<div class="container-btn">';
-                echo '<div class="logout-btn">';
-                    echo '<a href="../includes/logout.php"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
-                echo '</div>';
-            echo '</div>';
-            }
-        }
-    ?>
+                    if(isset($_SESSION['user_id'])){
+                        $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
+                        $res = mysqli_query($conn,$sql);
+                        while($row = mysqli_fetch_assoc($res)){
+                            echo '<div class="container-btn">';
+                            echo '<div class="logout-btn">';
+                                echo '<a href="../includes/logout.php"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
+                            echo '</div>';
+                        echo '</div>';
+                        }
+                    }
+                ?>
 
                 <form action="" method="post" id="myForm">
-                <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../../public/portal.php">Portal</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Demographic Profile</li>
-                </ol>
-                </nav>
-                                    
+                    <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="../../public/portal.php">Portal</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Demographic Profile</li>
+                    </ol>
+                    </nav>
+                                        
                     <div class="form-group">
                         <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
                         <input type="text" name="firstname" id="" placeholder="First Name" class="form-control" value="<?= $firstname_value ?>" required>
@@ -366,14 +367,13 @@
                     </div>
 
                     <div class="form-wrapper">
-                    <select name="travel_arriveVia" id="travel_arriveVia" onchange="showfield(this.options[this.selectedIndex].value)" class="form-control">
+                    <select name="status" id="travel_arriveVia" onchange="showfield(this.options[this.selectedIndex].value)" class="form-control">
                         <option selected="selected">-- Select Status --</option>
-                        <option value="Plane">PWD</option>
-                        <option value="Train">PREGNANT</option>
-                        <option value="Own Vehicle">PERSON W/DISABILITIES</option>
+                        <option value="PWD">PWD</option>
+                        <option value="Pregnant">Pregnant</option>
                         <option value="Other">Other</option>
                     </select>
-                        <div id="div1">If Other, Please Specify :<input type="text" name="whatever" class="form-control"/></div>
+                        <div id="div1">If Other, Please Specify :<input type="text" name="other" class="form-control"/></div>
                     </div>
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
