@@ -48,7 +48,7 @@
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book"></i><span class="ps-2">Logs</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-chart-simple"></i><span class="ps-2">Analytics</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-chart-pie"></i><span class="ps-2">Feedbacks</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-circle-question"></i><span class="ps-2">Questions</span></a></li>
+                        <li class=""><a href="questions.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-circle-question"></i><span class="ps-2">Questions</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-print"></i><span class="ps-2">Reports</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-regular fa-face-laugh-beam"></i><span class="ps-2">Emoji</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-display"></i><span class="ps-2">Queue Monitoring</span></a></li>
