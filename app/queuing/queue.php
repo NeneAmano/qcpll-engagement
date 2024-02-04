@@ -153,7 +153,7 @@
                 $new_status = 0;
             }
 
-            $sql_queue = "SELECT * FROM queue_details ORDER BY qd_id DESC LIMIT 1;";
+            $sql_queue = "SELECT * FROM queue_details WHERE DATE(`created_at`) = CURDATE() ORDER BY qd_id DESC LIMIT 1;";
             $result_queue = mysqli_query($conn, $sql_queue);
             if(mysqli_num_rows($result_queue) > 0){
                 $row = mysqli_fetch_assoc($result_queue);
@@ -364,12 +364,12 @@
                     </div>
 
                     <div class="form-wrapper">
-                    <select name="status" id="" class="form-control">
-                        <option value="" selected disabled>-- Select Status --</option>
-                        <option value="2">PWD</option>
-                        <option value="3">Pregnant</option>
-                    </select>
-                        
+                        <select name="status" id="" class="form-control">
+                            <option value="" selected disabled>-- Select Status --</option>
+                            <option value="2">PWD</option>
+                            <option value="3">Pregnant</option>
+                        </select>
+                    </div>
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
                         
