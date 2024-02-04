@@ -192,7 +192,7 @@
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
                                                         <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_user_modal" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>  
-                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_user_modal"><i class="fa-solid fa-ban"></i></a>
+                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#deactivate_user_modal"><i class="fa-solid fa-ban"></i></a>
                                                     </td>
                                                 </tr>
                                 <?php
@@ -391,10 +391,65 @@
         </div>
         <!-- end of edit password modal -->
 
+        <!-- start of deactivate user modal -->
+        <div class="modal fade" id="deactivate_user_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- start of deactivate modal dialog -->
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- start of deactivate modal content -->
+                <div class="modal-content">
+                    <!-- start of deactivate modal header -->
+                    <div class="modal-header bg-dark text-white">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Deactivate user</h1>
+                        <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
+                    </div>
+                    <!-- end of deactivate modal header -->
 
-
-
-
+                    <!-- start of deactivate modal form -->
+                    <form action="functions/deactivate-user.php" method="post">
+                        <!-- start of deactivate modal body -->                
+                        <div class="modal-body">
+                            <!-- start of deactivate modal row -->
+                            <div class="row">
+                                <!-- start of deactivate modal col -->
+                                <div class="col-md-12">
+                                    <!-- start of deactivate modal card -->
+                                    <div class="card card-primary">
+                                        <!-- start of deactivate modal card body -->
+                                        <div class="card-body">
+                                            <!-- start of deactivate modal row -->
+                                            <div class="row">
+                                                <div class="col-md-12 col-12 mt-3">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="deactivate_user_id" id="deactivate_user_id" class="form-control mb-3">
+                                                        <h4>Are you sure you want to deactivate this user?</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end of deactivate modal row -->
+                                        </div>
+                                        <!-- end of deactivate modal card body -->
+                                        <!-- start of deactivate modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <button type="submit" name="deactivate" class="btn btn-danger">Yes</button>
+                                        </div>
+                                        <!-- end of deactivate modal footer -->
+                                    </div>
+                                    <!-- end of deactivate modal card -->
+                                </div>
+                                <!-- end of deactivate modal col -->
+                            </div>
+                            <!-- end of deactivate modal row -->
+                        </div>
+                        <!-- end of deactivate modal body -->                
+                    </form>
+                    <!-- end of deactivate modal form -->
+                </div>
+                <!-- end of deactivate modal content -->
+            </div>
+            <!-- end of deactivate modal dialog -->
+        </div>
+        <!-- end of deactivate user modal -->
     </div>
     <!-- end of main section container -->
 </div>
