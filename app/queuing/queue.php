@@ -238,8 +238,6 @@
                     echo 'Error: ' . mysqli_error($conn);
                 }
             }
-
-            // var_dump($firstname, $middlename, $surname, $suffix, $birthdate, $gender, $education, $occupation);
         }
     }else{
         header('location: ../../public/index.php');
@@ -279,7 +277,6 @@
         border: 1px solid #FD1D1D ;
     }
 </style>
-
     <section id="swup" class="transtion-fade">
     <div class="logo">
             <img src="../../public/assets/images/qclogo.jpg" alt="">
@@ -367,14 +364,12 @@
                     </div>
 
                     <div class="form-wrapper">
-                    <select name="status" id="travel_arriveVia" onchange="showfield(this.options[this.selectedIndex].value)" class="form-control">
-                        <option selected="selected">-- Select Status --</option>
-                        <option value="PWD">PWD</option>
-                        <option value="Pregnant">Pregnant</option>
-                        <option value="Other">Other</option>
+                    <select name="status" id="" class="form-control">
+                        <option value="" selected disabled>-- Select Status --</option>
+                        <option value="2">PWD</option>
+                        <option value="3">Pregnant</option>
                     </select>
-                        <div id="div1">If Other, Please Specify :<input type="text" name="other" class="form-control"/></div>
-                    </div>
+                        
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
                         
@@ -482,16 +477,6 @@
                     event.preventDefault(); // Prevent form submission
                 }
             });
-
-            //for adding textbox for others in status
-            function showfield(name){
-                if(name=='Other')document.getElementById('div1').style.display="block";
-                else document.getElementById('div1').style.display="none";
-            }
-            
-            function hidefield() {
-            document.getElementById('div1').style.display='none';
-            }
       </script>
    </head>
     <script src="https://unpkg.com/swup@4"></script>

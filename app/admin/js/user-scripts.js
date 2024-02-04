@@ -20,3 +20,22 @@ $(document).ready(function () {
         }
     });
 });
+
+$(document).ready(function () {
+
+    $('body').on('click', '.delete', function(event) {
+
+        $('#deactivate_user_modal').modal('show');
+
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+
+        $('#deactivate_user_id').val(data[1]);
+
+    });
+});
