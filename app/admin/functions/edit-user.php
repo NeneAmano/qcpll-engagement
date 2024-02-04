@@ -26,7 +26,7 @@
         }else{
             $sql = "UPDATE users SET user_role_id = $edit_user_role, username = '$edit_username' WHERE user_id = $edit_user_id;";
             if(mysqli_query($conn, $sql)){
-                header("location: ../users.php?user=successfullyedited");
+                header("location: ../users.php?edit=successful");
                 die();
             }
         }
