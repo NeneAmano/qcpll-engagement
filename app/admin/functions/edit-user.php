@@ -1,97 +1,33 @@
 <?php
     require_once '../../core/init.php';
 
-    // if(isset($_POST['edit'])){
-    //     $edit_user_id = mysqli_real_escape_string($conn, $_POST['edit_user_id']);
-    //     $edit_user_role = mysqli_real_escape_string($conn, $_POST['edit_user_role']);
-    //     $edit_username = mysqli_real_escape_string($conn, $_POST['edit_username']);
-    //     $edit_password = mysqli_real_escape_string($conn, $_POST['edit_password']);
-    //     $edit_repeat_password = mysqli_real_escape_string($conn, $_POST['edit_repeat_password']);
+    if(isset($_POST['edit_user'])){
+        $edit_user_id = mysqli_real_escape_string($conn, $_POST['edit_user_id']);
+        $edit_user_role = mysqli_real_escape_string($conn, $_POST['edit_user_role']);
+        $edit_username = mysqli_real_escape_string($conn, $_POST['edit_username']);
 
-        // if(empty($edit_user_id) || empty($edit_user_role) || empty($edit_username) ||)
-
-
-
-
-
-
-
-
-
-    //     if($edit_user_role == 'Admin'){
-    //         if(empty($edit_user_id) || empty($edit_username) || empty($edit_first_name) || empty($edit_last_name)){
-    //             $error_message = "All fields are required!";
-    //             echo "<script type='text/javascript'>alert('$error_message');</script>";
-    
-    //             $error_redirect = '<h3 style="color: red; text-align: center;">All fields are required! You will be redirected to previous page in <span id="counter">5</span> second(s).</h3>
-    //             <script type="text/javascript">
-    //                 function countdown() {
-    //                     var i = document.getElementById("counter");
-    //                     if (parseInt(i.innerHTML)<=0) {
-    //                         location.href = "../service.php";
-    //                     }
-    //                     i.innerHTML = parseInt(i.innerHTML)-1;
-    //                 }
-    //                 setInterval(function(){ countdown(); },1000);
-    //             </script>';
-    //             echo $error_redirect;
-    //             header("refresh:5;url=../user.php");
-    //             die();
-    //         }else{
-    //             $sql = "UPDATE user SET username = '$edit_username' WHERE user_id = $edit_user_id;";
-    //             if(mysqli_query($conn, $sql)){
-    //                 // $user_id = mysqli_insert_id($conn);
-    //                 $query = "UPDATE user_info SET email = '$edit_email', phone_number = '$edit_phone_number', first_name = '$edit_first_name', last_name = '$edit_last_name' WHERE user_id = $edit_user_id;";
-    //                 if(mysqli_query($conn, $query)){
-    //                     header("location: ../user.php?user=successfullyedited");
-    //                     die();
-    //                 }
-    //             }else{
-    //                 $query = "UPDATE user_info SET email = '$edit_email', phone_number = '$edit_phone_number', first_name = '$edit_first_name', last_name = '$edit_last_name' WHERE user_id = $edit_user_id;";
-    //                 if(mysqli_query($conn, $query)){
-    //                     header("location: ../user.php?user=successfullyedited");
-    //                     die();
-    //                 }
-    //             }
-    //         }
-    //     }elseif($edit_user_role == 'Customer'){
-    //         if(empty($edit_user_id) || empty($edit_username) || empty($edit_first_name) || empty($edit_last_name) || empty($edit_email)){
-    //             $error_message = "All fields are required!";
-    //             echo "<script type='text/javascript'>alert('$error_message');</script>";
-    
-    //             $error_redirect = '<h3 style="color: red; text-align: center;">All fields are required! You will be redirected to previous page in <span id="counter">5</span> second(s).</h3>
-    //             <script type="text/javascript">
-    //                 function countdown() {
-    //                     var i = document.getElementById("counter");
-    //                     if (parseInt(i.innerHTML)<=0) {
-    //                         location.href = "../user.php";
-    //                     }
-    //                     i.innerHTML = parseInt(i.innerHTML)-1;
-    //                 }
-    //                 setInterval(function(){ countdown(); },1000);
-    //             </script>';
-    //             echo $error_redirect;
-    //             header("refresh:5;url=../user.php");
-    //             die();
-    //         }else{
-    //             $sql = "UPDATE user SET username = '$edit_username' WHERE user_id = $edit_user_id;";
-    //             if(mysqli_query($conn, $sql)){
-    //                 // $user_id = mysqli_insert_id($conn);
-    //                 $query = "UPDATE user_info SET email = '$edit_email', phone_number = '$edit_phone_number', first_name = '$edit_first_name', last_name = '$edit_last_name' WHERE user_id = $edit_user_id;";
-    //                 if(mysqli_query($conn, $query)){
-    //                     header("location: ../user.php?user=successfullyedited");
-    //                     die();
-    //                 }
-    //             }else{
-    //                 $query = "UPDATE user_info SET email = '$edit_email', phone_number = '$edit_phone_number', first_name = '$edit_first_name', last_name = '$edit_last_name' WHERE user_id = $edit_user_id;";
-    //                 if(mysqli_query($conn, $query)){
-    //                     header("location: ../user.php?user=successfullyedited");
-    //                     die();
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }else{
-    //     header("location: ../user.php");
-    //     die();
-    // }
+        if(empty($edit_user_id) || empty($edit_user_role) || empty($edit_username)){
+            $error_message = "All fields are required!";
+            echo "<script type='text/javascript'>alert('$error_message');</script>";
+            $error_redirect = '<h3 style="color: red; text-align: center;">All fields are required! You will be redirected to previous page in <span id="counter">5</span> second(s).</h3>
+            <script type="text/javascript">
+                function countdown() {
+                    var i = document.getElementById("counter");
+                    if (parseInt(i.innerHTML)<=0) {
+                        location.href = "../users.php";
+                    }
+                    i.innerHTML = parseInt(i.innerHTML)-1;
+                }
+                setInterval(function(){ countdown(); },1000);
+            </script>';
+            echo $error_redirect;
+            header("refresh:5;url=../users.php");
+            die();
+        }else{
+            $sql = "UPDATE users SET user_role_id = $edit_user_role, username = '$edit_username' WHERE user_id = $edit_user_id;";
+            if(mysqli_query($conn, $sql)){
+                header("location: ../users.php?user=successfullyedited");
+                die();
+            }
+        }
+    }
