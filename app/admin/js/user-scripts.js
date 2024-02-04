@@ -10,7 +10,7 @@ $(document).ready(function () {
             return $(this).text();
         }).get();
 
-        console.log(data);
+        // console.log(data);
 
         $('#edit_user_role').val(data[0]).change();
         $('#edit_user_id').val(data[1])
@@ -19,8 +19,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    // $('body').on('click', '.edit', function(event) {
-    $('body').on('click', '.edit', function(event) {
+    $('body').on('click', '#edit', function(event) {
 
         $('#edit_user_password_modal').modal('show');
 

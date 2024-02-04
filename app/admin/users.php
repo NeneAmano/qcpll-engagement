@@ -312,7 +312,6 @@
 
         <!-- start of edit password modal -->
         <div class="modal fade" id="edit_user_password_modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-            
             <!-- start of edit modal dialog -->
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <!-- start of edit modal content -->
@@ -344,8 +343,8 @@
 
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
-                                                        <label for="edit_password" class="ps-2 pb-2">Password</label>
-                                                        <input type="password" class="form-control" name="edit_password" id="edit_password" value="" required>
+                                                        <label for="edit_password" class="ps-2 pb-2">Current Password</label>
+                                                        <input type="password" class="form-control" name="edit_current_password" id="edit_current_password" value="" required>
                                                     </div>
                                                 </div>
 
