@@ -242,10 +242,9 @@
                     </div>
                     <!-- end of modal header -->
                     <!-- start of edit modal form -->
-                    <form action="includes/edit-user.inc.php" method="post">
+                    <form action="functions/edit-user.php" method="post">
                         <!-- start of edit modal body -->                
                         <div class="modal-body">
-                            <!-- <input type="hidden" name="edit_user_id" id="edit_user_id"> -->
                             <!-- start of edit modal row -->
                             <div class="row">
                                 <!-- start of edit modal col -->
@@ -256,7 +255,6 @@
                                         <div class="card-body">
                                             <!-- start of edit modal row -->
                                             <div class="row">
-                                                <!-- <label for="edit_user_id" class="ps-2 pb-2">User ID</label> -->
                                                 <input type="hidden" class="form-control" name="edit_user_id" id="edit_user_id" value="">
                                                 
                                                 <div class="col-md-6 col-6 mt-3">
@@ -278,35 +276,21 @@
                                                         </select>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
                                                         <label for="edit_username" class="ps-2 pb-2">Username</label>
                                                         <input type="text" class="form-control" name="edit_username" id="edit_username" value="" required>
                                                     </div>
                                                 </div>
-
-                                                <div class="col-md-6 col-6 mt-3">
-                                                    <div class="form-group">
-                                                        <label for="edit_password" class="ps-2 pb-2">Password</label>
-                                                        <input type="password" class="form-control" name="edit_password" id="edit_password" value="" required>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6 col-6 mt-3">
-                                                    <div class="form-group">
-                                                        <label for="edit_repeat_password" class="ps-2 pb-2">Repeat password</label>
-                                                        <input type="password" class="form-control" name="edit_repeat_password" id="edit_repeat_password" value="" required>
-                                                    </div>
-                                                </div>      
                                             </div>
                                             <!-- end of edit modal row -->
                                         </div>
                                         <!-- end of edit modal card body -->
                                         <!-- start of edit modal footer -->
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" name="edit" class="btn btn-success">Save Changes</button>
+                                        <div class="modal-footer justify-content-end">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#edit_user_password_modal">Change Password</button>
+                                            
+                                            <button type="submit" name="edit_user" class="btn btn-success">Save Changes</button>
                                         </div>
                                         <!-- end of edit modal footer -->
                                     </div>
@@ -325,6 +309,93 @@
             <!-- end of edit modal dialog -->
         </div>
         <!-- end of edit user modal -->
+
+        <!-- start of edit password modal -->
+        <div class="modal fade" id="edit_user_password_modal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            
+            <!-- start of edit modal dialog -->
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- start of edit modal content -->
+                <div class="modal-content">
+                    <!-- start of modal header -->
+                    <div class="modal-header bg-dark border-0">
+                        <h4 class="modal-title text-white">Edit user</h4>
+                        <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span>
+                        </button>
+                    </div>
+                    <!-- end of modal header -->
+
+                    <!-- start of edit modal form -->
+                    <form action="functions/edit-user-password.php" method="post">
+                        <!-- start of edit modal body -->                
+                        <div class="modal-body">
+                            <!-- start of edit modal row -->
+                            <div class="row">
+                                <!-- start of edit modal col -->
+                                <div class="col-md-12">
+                                    <!-- start of edit modal card -->
+                                    <div class="card card-primary">
+                                        <!-- start of edit modal card body -->
+                                        <div class="card-body">
+                                            <!-- start of edit modal row -->
+                                            <div class="row">
+                                                <input type="text" class="form-control" name="edit_user_password_id" id="edit_user_password_id" value="">
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_password" class="ps-2 pb-2">Password</label>
+                                                        <input type="password" class="form-control" name="edit_password" id="edit_password" value="" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_password" class="ps-2 pb-2">Password</label>
+                                                        <input type="password" class="form-control" name="edit_password" id="edit_password" value="" required>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_repeat_password" class="ps-2 pb-2">Repeat password</label>
+                                                        <input type="password" class="form-control" name="edit_repeat_password" id="edit_repeat_password" value="" required>
+                                                    </div>
+                                                </div>    
+                                            </div>
+                                            <!-- end of edit modal row -->
+                                        </div>
+                                        <!-- end of edit modal card body -->
+                                        <!-- start of edit modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-target="#edit_user_modal" data-bs-toggle="modal">Go back</button>
+                                            <button type="submit" name="edit_user_password" class="btn btn-success">Save Changes</button>
+                                        </div>
+                                        <!-- end of edit modal footer -->
+                                    </div>
+                                    <!-- end of edit modal card -->
+                                </div>
+                                <!-- end of edit modal col -->
+                            </div>
+                            <!-- end of edit modal row -->
+                        </div>
+                        <!-- end of edit modal body -->                
+                    </form>
+                    <!-- end of edit modal form -->
+                </div>
+                <!-- end of edit modal content -->
+            </div>
+            <!-- end of edit modal dialog -->
+        </div>
+        <!-- end of edit password modal -->
+
+
+
+
+
     </div>
     <!-- end of main section container -->
 </div>
