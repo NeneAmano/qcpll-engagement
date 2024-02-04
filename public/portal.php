@@ -1,5 +1,9 @@
 <?php 
     require_once("../app/includes/header.php");
+    if(!isset($_SESSION['user_id'])){
+        header('location: index.php');
+        die();
+    }
 ?>
 <style>
     .dropdown {
