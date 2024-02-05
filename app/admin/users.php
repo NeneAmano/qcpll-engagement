@@ -45,7 +45,7 @@
     <!-- start of main section container -->
     <div class="container mt-3 ms-5">
         <!-- start of add user modal button -->
-        <button type="button" class="btn btn-primary mb-3 mt-5" data-bs-toggle="modal" data-bs-target="#add_user_modal">Add user</button>
+        <button type="button" class="btn btn-primary mb-3 mt-5" data-bs-toggle="modal" data-bs-target="#add_user_modal">Add User</button>
         <!-- end of add user modal button -->
         
         <!-- start of add user modal -->
