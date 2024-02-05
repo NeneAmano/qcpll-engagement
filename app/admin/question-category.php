@@ -1,5 +1,6 @@
 <?php
     require_once('../core/init.php');
+    ob_start();
     if(($user_role_id_session !== 1)) {
         header('location: login.php?error=accessdenied');
         die();
@@ -14,11 +15,30 @@
     <title>Questions</title>
     <?php
         require_once 'includes/sidebar.php';
+        if(isset($_POST['add_qc'])){
+            $add_question_category = mysqli_real_escape_string($conn, $_POST['add_question_category']);
+
+            $sql = "SELECT * FROM question_category WHERE question_category = '$add_question_category';";
+            $result = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($result) > 0){
+                $error_message = "Question Category already exists.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }elseif(empty($add_question_category)){
+                $error_message = "Question Category is required.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }else{
+                $sql = "INSERT INTO question_category (question_category) VALUES ('$add_question_category');";
+                if(mysqli_query($conn, $sql)){
+                    header('location: question-category.php?add=successful');
+                    die();
+                }
+            }
+        }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
         <!-- start of card -->
-        <div class="card text-center">
+        <div class="card">
             <!-- start of card header -->
             <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
@@ -38,8 +58,65 @@
             <div class="card-body d-flex flex-column">
                 <div class="container-fluid">
                     <!-- start of add service modal button -->
-                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_service_modal">Add question</button>
+                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_question_category_modal">Add Category</button>
                     <!-- end of add service modal button -->
+                    <!-- start of add question category modal -->
+                    <div class="modal fade" id="add_question_category_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- start of add modal dialog -->
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <!-- start of add modal content -->
+                            <div class="modal-content">
+                                <!-- start of add modal eader -->
+                                <div class="modal-header bg-dark text-white">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Question Category</h1>
+                                    <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
+                                </div>
+                                <!-- end of add modal eader -->
+                                <!-- start of add modal form -->
+                                <form action="" method="post">
+                                    <!-- start of add modal body -->                
+                                    <div class="modal-body">
+                                        <!-- start of add modal row -->
+                                        <div class="row">
+                                            <!-- start of add modal col -->
+                                            <div class="col-md-12">
+                                                <!-- start of add modal card -->
+                                                <div class="card card-primary">
+                                                    <!-- start of add modal card body -->
+                                                    <div class="card-body">
+                                                        <!-- start of add modal row -->
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-6 mt-3">
+                                                                <div class="form-group">
+                                                                    <label for="add_question_category" class="ps-2 pb-2">Question Category</label>
+                                                                    <input type="text" class="form-control" name="add_question_category" id="add_question_category" value="" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end of add modal row -->
+                                                    </div>
+                                                    <!-- end of add modal card body -->
+                                                    <!-- start of add modal footer -->
+                                                    <div class="modal-footer justify-content-end">
+                                                        <button type="submit" name="add_qc" class="btn btn-success">Save Changes</button>
+                                                    </div>
+                                                    <!-- end of add modal footer -->
+                                                </div>
+                                                <!-- end of add modal card -->
+                                            </div>
+                                            <!-- end of add modal col -->
+                                        </div>
+                                        <!-- end of add modal row -->
+                                    </div>
+                                    <!-- end of add modal body -->                
+                                </form>
+                                <!-- end of add modal form -->
+                            </div>
+                            <!-- end of add modal content -->
+                        </div>
+                        <!-- end of add modal dialog -->
+                    </div>
+                    <!-- end of add question category modal -->
                 </div>
                 <!-- start of first row -->
                 <div class="row">
@@ -54,11 +131,11 @@
                                     <!-- start of table header -->
                                     <thead>
                                         <tr>
-                                            <th class="table-light text-uppercase">question category id</th>
-                                            <th class="table-light text-uppercase">question category</th>
-                                            <th class="table-light text-uppercase">date added</th>
-                                            <th class="table-light text-uppercase">last updated</th>
-                                            <th class="table-light text-uppercase">action</th>
+                                            <th class="table-light text-uppercase text-center">question category id</th>
+                                            <th class="table-light text-uppercase text-center">question category</th>
+                                            <th class="table-light text-uppercase text-center">date added</th>
+                                            <th class="table-light text-uppercase text-center">last updated</th>
+                                            <th class="table-light text-uppercase text-center">action</th>
                                         </tr>
                                     </thead>
                                     <!-- end of table header -->
@@ -80,7 +157,6 @@
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-sm btn-primary view" href="#" data-bs-toggle="modal" data-bs-target="#view_service_modal"><i class="fa-solid fa-eye"></i></a> 
                                                         <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_service_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
                                                         <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_service_modal"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
