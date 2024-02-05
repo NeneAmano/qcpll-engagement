@@ -15,7 +15,7 @@
     <title>Users</title>
     <?php
         require_once 'includes/sidebar.php';
-        if(isset($_POST['add'])){
+        if(isset($_POST['add_user'])){
             $add_user_role = mysqli_real_escape_string($conn, $_POST['add_user_role']);
             $add_username = mysqli_real_escape_string($conn, $_POST['add_username']);
             $add_password = mysqli_real_escape_string($conn, $_POST['add_password']);
@@ -37,7 +37,7 @@
 
                 $sql = "INSERT INTO users (user_role_id, username, password) VALUES ($add_user_role, '$add_username', '$hashed_password');";
                 if(mysqli_query($conn, $sql)){
-                    header('location: users.php?insertsuccess');
+                    header('location: users.php?add=successful');
                 }
             }
         }
@@ -53,7 +53,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-dark text-white">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add user</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
                         <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
                     </div>
                     <!-- start of add modal form -->
@@ -114,9 +114,8 @@
                                         </div>
                                         <!-- end of add modal card body -->
                                         <!-- start of add modal footer -->
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" name="add" class="btn btn-success">Save Changes</button>
+                                        <div class="modal-footer justify-content-end">
+                                            <button type="submit" name="add_user" class="btn btn-success">Save Changes</button>
                                         </div>
                                         <!-- end of add modal footer -->
                                     </div>
@@ -148,14 +147,14 @@
                             <thead>
                                 <tr>
                                     <th class="d-none">user role id</th>
-                                    <th class="table-light text-uppercase">user id</th>
-                                    <th class="table-light text-uppercase">user role</th>
-                                    <th class="table-light text-uppercase">username</th>
-                                    <th class="table-light text-uppercase">status</th>
-                                    <th class="table-light text-uppercase">last login</th>
-                                    <th class="table-light text-uppercase">date added</th>
-                                    <th class="table-light text-uppercase">last updated</th>
-                                    <th class="table-light text-uppercase">action</th>
+                                    <th class="table-light text-uppercase text-center">user id</th>
+                                    <th class="table-light text-uppercase text-center">user role</th>
+                                    <th class="table-light text-uppercase text-center">username</th>
+                                    <th class="table-light text-uppercase text-center">status</th>
+                                    <th class="table-light text-uppercase text-center">last login</th>
+                                    <th class="table-light text-uppercase text-center">date added</th>
+                                    <th class="table-light text-uppercase text-center">last updated</th>
+                                    <th class="table-light text-uppercase text-center">action</th>
                                 </tr>
                             </thead>
                             <!-- end of table header -->
