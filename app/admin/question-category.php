@@ -158,7 +158,6 @@
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
                                                         <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_service_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
-                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_service_modal"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                     <?php
