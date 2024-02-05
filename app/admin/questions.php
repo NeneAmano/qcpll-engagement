@@ -1,5 +1,6 @@
 <?php
     require_once('../core/init.php');
+    ob_start();
     if(($user_role_id_session !== 1)) {
         header('location: login.php?error=accessdenied');
         die();
@@ -18,7 +19,7 @@
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
         <!-- start of card -->
-        <div class="card text-center">
+        <div class="card">
             <!-- start of card header -->
             <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
@@ -38,7 +39,7 @@
             <div class="card-body d-flex flex-column">
                 <div class="container-fluid">
                     <!-- start of add service modal button -->
-                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_service_modal">Add question</button>
+                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_service_modal">Add Question</button>
                     <!-- end of add service modal button -->
                 </div>
                 <!-- start of first row -->
@@ -54,16 +55,16 @@
                                     <!-- start of table header -->
                                     <thead>
                                         <tr>
-                                            <th class="table-light text-uppercase">question id</th>
+                                            <th class="table-light text-uppercase text-center">question id</th>
                                             <th class="table-light text-uppercase d-none">question type id</th>
                                             <th class="table-light text-uppercase d-none">question category id</th>
-                                            <th class="table-light text-uppercase">question type</th>
-                                            <th class="table-light text-uppercase">question category</th>
-                                            <th class="table-light text-uppercase">english translation</th>
-                                            <th class="table-light text-uppercase">tagalog translation</th>
-                                            <th class="table-light text-uppercase">date added</th>
-                                            <th class="table-light text-uppercase">last updated</th>
-                                            <th class="table-light text-uppercase">action</th>
+                                            <th class="table-light text-uppercase text-center">question type</th>
+                                            <th class="table-light text-uppercase text-center">question category</th>
+                                            <th class="table-light text-uppercase text-center">english translation</th>
+                                            <th class="table-light text-uppercase text-center">tagalog translation</th>
+                                            <th class="table-light text-uppercase text-center">date added</th>
+                                            <th class="table-light text-uppercase text-center">last updated</th>
+                                            <th class="table-light text-uppercase text-center">action</th>
                                         </tr>
                                     </thead>
                                     <!-- end of table header -->
