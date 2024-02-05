@@ -145,9 +145,15 @@
                 $age_value = 5;
             }
 
-            if($age_value == 5 || $status == 1){
+            if($age_value == 5){
                 $prefix = 'P-';
                 $new_status = 1;
+            }elseif($status == 2){
+                $prefix = 'P-';
+                $new_status = 2;
+            }elseif($status == 3){
+                $prefix = 'P-';
+                $new_status = 3;
             }else{
                 $prefix = 'N-';
                 $new_status = 0;
@@ -365,7 +371,7 @@
 
                     <div class="form-wrapper">
                         <select name="status" id="" class="form-control">
-                            <option value="" selected disabled>-- Select Status --</option>
+                            <option value="0" selected >-- Select Status --</option>
                             <option value="2">PWD</option>
                             <option value="3">Pregnant</option>
                         </select>
