@@ -1,0 +1,57 @@
+<html>
+<head>
+    <title></title>
+    <style>
+        #others {
+            border: 10px solid black;
+            padding: 90px;
+        }
+    </style>
+</head>
+<body onload="hidefield()">
+
+    <select name="travel_arriveVia" id="travel_arriveVia" onchange="showfield(this.options[this.selectedIndex].value)" class="form-control">
+        <option selected="selected">-- Select Status --</option>
+        <option value="Plane">PWD</option>
+        <option value="Train">PREGNANT</option>
+        <option value="Own Vehicle">PERSON W/DISABILITIES</option>
+        <option value="Other">Other</option>
+    </select>
+    <div id="div1">If Other, Please Specify :
+        <input type="text" class="status_others[]" name="status_others[]" id="status_new_1">
+        <button onclick="add_status()" type="button" class="btn btn-primary">Add</button>
+        <button onclick="remove_status()" type="button" class="btn btn-danger">Remove</button>
+        <div id="new_chq_status"></div>
+        <input type="hidden" value="1" id="total_chq_status" name="total_input">
+    </div>
+
+    <script>
+        // function For adding new input field
+        function add_status() {
+            var new_chq_no = parseInt($('#total_chq_status').val()) + 1;
+            var new_input = "<input type='text' id='status_new_" + new_chq_no + "' name='status_others[]' class='status_others" + new_chq_no + "'>";
+            $('#new_chq_status').append(new_input);
+            $('#total_chq_status').val(new_chq_no);
+        }
+
+        function remove_status() {
+            var last_chq_no = $('#total_chq_status').val();
+            if (last_chq_no > 1) {
+                $('#status_new_' + last_chq_no).remove();
+                $('#total_chq_status').val(last_chq_no - 1);
+            }
+        }
+
+        // for adding textbox for others in status
+        function showfield(name) {
+            if (name == 'Other') document.getElementById('div1').style.display = "block";
+            else document.getElementById('div1').style.display = "none";
+        }
+
+        function hidefield() {
+            document.getElementById('div1').style.display = 'none';
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</body>
+</html>

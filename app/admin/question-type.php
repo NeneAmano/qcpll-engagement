@@ -15,6 +15,25 @@
     <title>Questions</title>
     <?php
         require_once 'includes/sidebar.php';
+        if(isset($_POST['add_qt'])){
+            $add_question_type = mysqli_real_escape_string($conn, $_POST['add_question_type']);
+
+            $sql = "SELECT * FROM question_type WHERE question_type = '$add_question_type';";
+            $result = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($result) > 0){
+                $error_message = "Question Type already exists.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }elseif(empty($add_question_type)){
+                $error_message = "Question Type is required.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }else{
+                $sql = "INSERT INTO question_type (question_type) VALUES ('$add_question_type');";
+                if(mysqli_query($conn, $sql)){
+                    header('location: question-type.php?add=successful');
+                    die();
+                }
+            }
+        }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
@@ -39,8 +58,65 @@
             <div class="card-body d-flex flex-column">
                 <div class="container-fluid">
                     <!-- start of add service modal button -->
-                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_service_modal">Add Question</button>
+                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_question_type_modal">Add Type</button>
                     <!-- end of add service modal button -->
+                    <!-- start of add question type modal -->
+                    <div class="modal fade" id="add_question_type_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- start of add modal dialog -->
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <!-- start of add modal content -->
+                            <div class="modal-content">
+                                <!-- start of add modal eader -->
+                                <div class="modal-header bg-dark text-white">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Question Type</h1>
+                                    <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
+                                </div>
+                                <!-- end of add modal eader -->
+                                <!-- start of add modal form -->
+                                <form action="" method="post">
+                                    <!-- start of add modal body -->                
+                                    <div class="modal-body">
+                                        <!-- start of add modal row -->
+                                        <div class="row">
+                                            <!-- start of add modal col -->
+                                            <div class="col-md-12">
+                                                <!-- start of add modal card -->
+                                                <div class="card card-primary">
+                                                    <!-- start of add modal card body -->
+                                                    <div class="card-body">
+                                                        <!-- start of add modal row -->
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-6 mt-3">
+                                                                <div class="form-group">
+                                                                    <label for="add_question_type" class="ps-2 pb-2">Question Type</label>
+                                                                    <input type="text" class="form-control" name="add_question_type" id="add_question_type" value="" required>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end of add modal row -->
+                                                    </div>
+                                                    <!-- end of add modal card body -->
+                                                    <!-- start of add modal footer -->
+                                                    <div class="modal-footer justify-content-end">
+                                                        <button type="submit" name="add_qt" class="btn btn-success">Save Changes</button>
+                                                    </div>
+                                                    <!-- end of add modal footer -->
+                                                </div>
+                                                <!-- end of add modal card -->
+                                            </div>
+                                            <!-- end of add modal col -->
+                                        </div>
+                                        <!-- end of add modal row -->
+                                    </div>
+                                    <!-- end of add modal body -->                
+                                </form>
+                                <!-- end of add modal form -->
+                            </div>
+                            <!-- end of add modal content -->
+                        </div>
+                        <!-- end of add modal dialog -->
+                    </div>
+                    <!-- end of add question type modal -->
                 </div>
                 <!-- start of first row -->
                 <div class="row">
@@ -55,13 +131,8 @@
                                     <!-- start of table header -->
                                     <thead>
                                         <tr>
-                                            <th class="table-light text-uppercase text-center">question id</th>
-                                            <th class="table-light text-uppercase d-none">question type id</th>
-                                            <th class="table-light text-uppercase d-none">question category id</th>
+                                            <th class="table-light text-uppercase text-center">question type id</th>
                                             <th class="table-light text-uppercase text-center">question type</th>
-                                            <th class="table-light text-uppercase text-center">question category</th>
-                                            <th class="table-light text-uppercase text-center">english translation</th>
-                                            <th class="table-light text-uppercase text-center">tagalog translation</th>
                                             <th class="table-light text-uppercase text-center">date added</th>
                                             <th class="table-light text-uppercase text-center">last updated</th>
                                             <th class="table-light text-uppercase text-center">action</th>
@@ -71,34 +142,22 @@
                                     <!-- start of table body -->
                                     <tbody>
                                     <?php
-                                        $sql_select = "SELECT questions.*, question_type.question_type, question_category.question_category FROM question_category INNER JOIN questions USING (qc_id) INNER JOIN question_type USING (qt_id) WHERE questions.is_deleted != 1 ORDER BY questions.question_id DESC;";
+                                        $sql_select = "SELECT * FROM question_type ORDER BY qt_id DESC;";
                                         $result_select = mysqli_query($conn, $sql_select);
                                         if(mysqli_num_rows($result_select) > 0){
                                             while($row_select = mysqli_fetch_assoc($result_select)){
-                                                $question_id = $row_select['question_id'];
                                                 $qt_id = $row_select['qt_id'];
-                                                $qc_id = $row_select['qc_id'];
                                                 $question_type = $row_select['question_type'];
-                                                $question_category = $row_select['question_category'];
-                                                $english_question = $row_select['english_question'];
-                                                $tagalog_question = $row_select['tagalog_question'];
                                                 $created_at = $row_select['created_at'];
                                                 $updated_at = $row_select['updated_at'];
                                     ?>
                                                 <tr>
-                                                    <td class="text-center"><?= $question_id ?></td>
-                                                    <td class="text-center d-none"><?= $qt_id ?></td>
-                                                    <td class="text-center d-none"><?= $qc_id ?></td>
+                                                    <td class="text-center"><?= $qt_id ?></td>
                                                     <td class="text-center"><?= $question_type ?></td>
-                                                    <td class="text-center"><?= $question_category ?></td>
-                                                    <td class="text-center"><?= $english_question ?></td>
-                                                    <td class="text-center"><?= $tagalog_question ?></td>
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-sm btn-primary view" href="#" data-bs-toggle="modal" data-bs-target="#view_service_modal"><i class="fa-solid fa-eye"></i></a> 
                                                         <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_service_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
-                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_service_modal"><i class="fa-solid fa-trash"></i></a>
                                                     </td>
                                                 </tr>
                                     <?php
@@ -110,12 +169,7 @@
                                             <td colspan="" class="text-center d-none"></td>
                                             <td colspan="" class="text-center d-none"></td>
                                             <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="9" class="text-center">No records found.</td>
+                                            <td colspan="4" class="text-center">No records found.</td>
                                         </tr>
                                     <?php
                                         }
