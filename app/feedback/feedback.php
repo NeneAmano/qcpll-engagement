@@ -218,17 +218,12 @@
                 <p>Would you like to submit a feedback?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal"><a href="feedback-form.php" style="text-decoration:none; color:#fff;">No</a></button>
+                <button type="button" class="btn btn-secondary"><a href="includes/feedback-complete.php?client_id=<?= $client_id ?>" style="text-decoration:none; color:#fff;">No</a></button>
                 <button type="button" class="btn btn-success"><a href="feedback-form.php?client_id=<?= $client_id ?>" style="text-decoration:none; color:#fff;">Yes</a></button>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
 <script src="https://unpkg.com/swup@4"></script>
