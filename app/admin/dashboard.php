@@ -13,40 +13,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <style>
-
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
-
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
         :root {
-    --color-primary: #6C9BCF;
-    --color-danger: #FF0060;
-    --color-success: #1B9C85;
-    --color-warning: #F7D060;
-    --color-white: #fff;
-    --color-info-dark: #7d8da1;
-    --color-dark: #363949;
-    --color-light: rgba(132, 139, 200, 0.18);
-    --color-dark-variant: #677483;
-    --color-background: #f6f6f9;
-    --card-border-radius: 2rem;
-    --border-radius-1: 0.4rem;
-    --border-radius-2: 1.2rem;
-    --card-padding: 1.8rem;
-    --padding-1: 1.2rem;
-    --box-shadow: 0 2rem 3rem var(--color-light);
+            --color-primary: #6C9BCF;
+            --color-danger: #FF0060;
+            --color-success: #1B9C85;
+            --color-warning: #F7D060;
+            --color-white: #fff;
+            --color-info-dark: #7d8da1;
+            --color-dark: #363949;
+            --color-light: rgba(132, 139, 200, 0.18);
+            --color-dark-variant: #677483;
+            --color-background: #f6f6f9;
+            --card-border-radius: 2rem;
+            --border-radius-1: 0.4rem;
+            --border-radius-2: 1.2rem;
+            --card-padding: 1.8rem;
+            --padding-1: 1.2rem;
+            --box-shadow: 0 2rem 3rem var(--color-light);
         }
         *{
             font-family: 'Poppins',sans-serif;
             box-sizing: border-box;
             padding: 0%;
             margin: 0;
-            
         }
-        section{
-        position: relative;
-        min-height: 100vh;
-        background-image:linear-gradient(rgba(18, 54, 39, 0.7),rgba(34, 42, 77, 0.7)),url(../../public/assets/images/bg.png);
-        background-repeat: no-repeat;
-        background-size: cover;
+        section {
+            position: relative;
+            min-height: 100vh;
+            background-image:linear-gradient(rgba(18, 54, 39, 0.7),rgba(34, 42, 77, 0.7)),url(../../public/assets/images/bg.png);
+            background-repeat: no-repeat;
+            background-size: cover;
         }
         .card{
             margin-top: 30px;
@@ -75,23 +72,23 @@
             padding: 20px;
         }
        .person-icon{
-        color: #6C9BCF;
-        font-size: 60px;
+            color: #6C9BCF;
+            font-size: 60px;
        }
        .book-icon{
-        color: #1B9C85;
-        font-size: 60px;
+            color: #1B9C85;
+            font-size: 60px;
        }
        .case-icon{
-        color: olive;
-        font-size: 60px;
+            color: olive;
+            font-size: 60px;
        }
        .card-text{
-        font-size: 30px;
-        font-weight: 600;
+            font-size: 30px;
+            font-weight: 600;
        }
        .card-title{
-        font-size: 15px;
+            font-size: 15px;
        }
     </style>
     <?php

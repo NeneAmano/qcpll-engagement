@@ -115,7 +115,7 @@
                                         <!-- end of add modal card body -->
                                         <!-- start of add modal footer -->
                                         <div class="modal-footer justify-content-end">
-                                            <button type="submit" name="add_user" class="btn btn-success">Save Changes</button>
+                                            <button type="submit" name="add_user" class="btn btn-success">Add</button>
                                         </div>
                                         <!-- end of add modal footer -->
                                     </div>

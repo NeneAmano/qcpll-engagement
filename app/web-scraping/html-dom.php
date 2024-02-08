@@ -53,4 +53,3 @@
     $json_data = json_encode($data, JSON_PRETTY_PRINT);
     file_put_contents('emoji.json', $json_data);
     echo $json_data;
-?>
