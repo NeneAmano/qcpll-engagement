@@ -1,5 +1,6 @@
 <?php
     require_once('../core/init.php');
+    include('../web-scraping/simple_html_dom.php');
     ob_start();
     if(($user_role_id_session !== 1)) {
         header('location: login.php?error=accessdenied');
@@ -18,7 +19,6 @@
         $file_destination = '';
         if(isset($_POST['add_emoji'])){
             $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
-            $url_unicode_name = str_replace(' ', '-', $add_unicode_name);
 
             //validate profile picture
             $file = $_FILES['add_image'];
@@ -61,7 +61,8 @@
 
                             // Loop through each emoji object
                             foreach ($data['emoji'] as $key => $emoji) {
-                                if ($emoji['Unicode name'] == "$add_unicode_name") {
+                                if ($emoji['Unicode name'] == $add_unicode_name) {
+                                    print_r($emoji);
                                     $add_char = $emoji['Char'];
                                     $add_image = $emoji['Image[twemoji]'];
                                     $add_unicode_codepoint = $emoji['Unicodecodepoint'];
@@ -78,8 +79,11 @@
                                     $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_destination', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
                             
                                     if(mysqli_query($conn, $sql)){
-                                        header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name);
-                                        die();
+                                        // header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name);
+                                        // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
+                                        // die();
+                                        header('location: emoji.php?add=successful');
+
                                     }
                                 }
                             }
