@@ -144,6 +144,11 @@
         bottom: -5%;
         height: 600px;
     }
+    .no-record{
+        text-align: center;
+        font-size: 20px;
+        letter-spacing: 5px;
+    }
 </style>
 
 <body>
@@ -176,8 +181,8 @@
 
                 if (mysqli_num_rows($result1) == 0) {
                     echo '<div class="card">';
-                    echo '<p class="queue-number"><span>NO RECORD TODAY</span></span></p>';
-                    echo '<p class="transaction">THANK YOU!</p>';
+                    echo '<p class="no-record"><span>NO RECORD TODAY</span></span></p>';
+                    echo '<p class="no-record">THANK YOU!</p>';
                     echo '<p class="user">📢</p>';
                     echo '</div>';
                 }
@@ -210,8 +215,8 @@
 
                 if (mysqli_num_rows($result1) == 0) {
                     echo '<div class="card">';
-                    echo '<p class="queue-number"><span>NO RECORD TODAY</span></span></p>';
-                    echo '<p class="transaction">THANK YOU!</p>';
+                    echo '<p class="no-record"><span>NO RECORD TODAY</span></span></p>';
+                    echo '<p class="no-record">THANK YOU!</p>';
                     echo '<p class="user">📢</p>';
                     echo '</div>';
                 }
