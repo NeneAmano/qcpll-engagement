@@ -18,6 +18,7 @@
         $file_destination = '';
         if(isset($_POST['add_emoji'])){
             $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
+            $url_unicode_name = str_replace(' ', '-', $add_unicode_name);
 
             //validate profile picture
             $file = $_FILES['add_image'];
@@ -77,7 +78,7 @@
                                     $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_destination', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
                             
                                     if(mysqli_query($conn, $sql)){
-                                        header('location: question-type.php?add=successful');
+                                        header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name);
                                         die();
                                     }
                                 }
