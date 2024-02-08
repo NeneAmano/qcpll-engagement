@@ -17,66 +17,85 @@
         require_once 'includes/sidebar.php';
         $file_destination = '';
         if(isset($_POST['add_emoji'])){
-            $unicode_name = mysqli_real_escape_string($conn, $_POST['unicode_name']);
+            $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
+            $url_unicode_name = str_replace(' ', '-', $add_unicode_name);
 
             //validate profile picture
-            $file = $_FILES['image'];
-            $file_name = $_FILES['image']['name'];
-            $file_tmp_name = $_FILES['image']['tmp_name'];
-            $file_size = $_FILES['image']['size'];
-            $file_error = $_FILES['image']['error'];
-            $file_type = $_FILES['image']['type'];
+            $file = $_FILES['add_image'];
+            $file_name = $_FILES['add_image']['name'];
+            $file_tmp_name = $_FILES['add_image']['tmp_name'];
+            $file_size = $_FILES['add_image']['size'];
+            $file_error = $_FILES['add_image']['error'];
+            $file_type = $_FILES['add_image']['type'];
 
             $file_ext = explode('.', $file_name);
             $file_actual_ext = strtolower(end($file_ext));
 
             $allowed = array('jpg', 'jpeg', 'png',);
 
-            if($_FILES["image"]["error"] == 4) {
+            if($_FILES["add_image"]["error"] == 4) {
                 //means there is no file uploaded
-                $image_error = '';
-                $file_destination = $image_value;
+                $error_message = "Emoji Image is required.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+                $file_destination = '';
             }
-            if(empty($unicode_name)){
-                $error_message = "Unicode name is required.";
+            if(empty($add_unicode_name)){
+                $error_message = "Unicode Name is required.";
                 echo "<script type='text/javascript'>alert('$error_message');</script>";
             }
 
             //if all condition is met, update the profile
-            if(!empty($unicode_name) && $file_destination !== ''){
+            if(!empty($add_unicode_name)){
                 if(in_array($file_actual_ext, $allowed)) {
                     if($file_error === 0) {
                         if($file_size < 5000000) {
-                            $file_name_new = $unicode_name. "." .$file_actual_ext;
+                            $file_name_new = $add_unicode_name. "." .$file_actual_ext;
                             $file_destination = '../../public/assets/images/emojis/' .$file_name_new;
                             move_uploaded_file($file_tmp_name, $file_destination);
 
                             // Read JSON file
-                            $jsonData = file_get_contents('your_json_file.json');
+                            $jsonData = file_get_contents('../web-scraping/emoji.json');
 
                             // Decode JSON data
                             $data = json_decode($jsonData, true);
 
+                            // Loop through each emoji object
+                            foreach ($data['emoji'] as $key => $emoji) {
+                                if ($emoji['Unicode name'] == "$add_unicode_name") {
+                                    $add_char = $emoji['Char'];
+                                    $add_image = $emoji['Image[twemoji]'];
+                                    $add_unicode_codepoint = $emoji['Unicodecodepoint'];
+                                    $add_occurrences = $emoji['Occurrences[5...max]'];
+                                    $add_position = $emoji['Position[0...1]'];
+                                    $add_negative = $emoji['Neg[0...1]'];
+                                    $add_neutral = $emoji['Neut[0...1]'];
+                                    $add_positive = $emoji['Pos[0...1]'];
+                                    $add_sentiment_score = $emoji['Sentiment score[-1...+1]'];
+                                    $add_unicode_name = $emoji['Unicode name'];
+                                    $add_unicode_block = $emoji['Unicode block'];
+                                    $add_remarks = '';
 
-
-
-                            $sql_emojji = "UPDATE user_info SET phone_number = '$phone_number', first_name = '$first_name', last_name = '$last_name', image = '$file_destination' WHERE user_id = $user_id_session;";
-                            $result_update = mysqli_query($conn, $sql_update);
-                            if($result_update){
-                                $success_message = ' Profile successfully updated.';
+                                    $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_destination', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
+                            
+                                    if(mysqli_query($conn, $sql)){
+                                        header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name);
+                                        die();
+                                    }
+                                }
                             }
+                            
                         }else {
-                            $image_error = ' *Your file is too big.';
+                            $error_message = "Your file is too big.";
+                            echo "<script type='text/javascript'>alert('$error_message');</script>";
                         }
                     }else {
-                        $image_error = ' *There was an error uploading your file.';
+                        $error_message = "There was an error uploading your file.";
+                        echo "<script type='text/javascript'>alert('$error_message');</script>";
                     }
                 }else{
-                    $image_error = ' *You cannot upload file of this type.';
+                    $error_message = "You cannot upload file of this type.";
+                    echo "<script type='text/javascript'>alert('$error_message');</script>";
                 }
-
-
-                
             }
         }
     ?>
@@ -98,7 +117,7 @@
                     </div>
                     <!-- end of add modal eader -->
                     <!-- start of add modal form -->
-                    <form action="" method="post">
+                    <form action="" method="post" enctype="multipart/form-data">
                         <!-- start of add modal body -->                
                         <div class="modal-body">
                             <!-- start of add modal row -->
@@ -166,7 +185,7 @@
                                     <th class="table-light text-uppercase text-center d-none">char</th>
                                     <th class="table-light text-uppercase text-center d-none">image[twemonji]</th>
                                     <th class="table-light text-uppercase text-center d-none">unicode codepoint</th>
-                                    <th class="table-light text-uppercase text-center d-none">occurences[5...max]</th>
+                                    <th class="table-light text-uppercase text-center d-none">occurrences[5...max]</th>
                                     <th class="table-light text-uppercase text-center d-none">position[0...1]</th>
                                     <th class="table-light text-uppercase text-center d-none">negative[0...1]</th>
                                     <th class="table-light text-uppercase text-center d-none">neutral[0...1]</th>
@@ -193,7 +212,7 @@
                                         $char = $row_select['_char'];
                                         $image = $row_select['image'];
                                         $unicode_codepoint = $row_select['unicode_codepoint'];
-                                        $occurences = $row_select['occurences'];
+                                        $occurrences = $row_select['occurrences'];
                                         $position = $row_select['_position'];
                                         $negative = $row_select['negative'];
                                         $neutral = $row_select['neutral'];
@@ -207,11 +226,11 @@
                             ?>
                                         <tr>
                                             <td class="text-center"><?= $emoji_id ?></td>
-                                            <td class="text-center"><?= $image_path ?></td>
+                                            <td class="text-center"><img style="height: 40px" src="<?= $image_path ?>" alt=""></td>
                                             <td class="text-center d-none"><?= $char ?></td>
                                             <td class="text-center d-none"><?= $image ?></td>
                                             <td class="text-center d-none"><?= $unicode_codepoint ?></td>
-                                            <td class="text-center d-none"><?= $occurences ?></td>
+                                            <td class="text-center d-none"><?= $occurrences ?></td>
                                             <td class="text-center d-none"><?= $position ?></td>
                                             <td class="text-center d-none"><?= $negative ?></td>
                                             <td class="text-center d-none"><?= $neutral ?></td>
