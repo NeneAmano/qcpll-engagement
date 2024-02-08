@@ -32,53 +32,8 @@
         pointer-events: none;
     }
 
-    ion-icon {
-        color: #ffffff;
-        padding: 10px;
-        background-color: #13a561;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: 0.2s ease-in-out;
-    }
-    .logo-facebook:hover{
-        color: #1877F2;
-    }
-    .logo-twitter:hover{
-        color: #1D9BF0;
-    }
-    .logo-instagram:hover{
-        color: rgb(225, 48, 108) ;
-    }
-    .logout-btn{
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        gap:0.1px;
-        right: 3em;
-        bottom: 6em;
 
-    }
-    
-    ion-icon:hover {
-        color: #13a561;
-        background-color: #ffffff;
-    }
 
-    .container-btn {
-        position: fixed;
-        top: 2em; /* Adjust the top position for smaller screens */
-        right: 1em; /* Adjust the right position for smaller screens */
-        z-index: 1000; /* Ensure the button stays on top of other elements */
-    }
-
-    @media screen and (min-width: 768px) {
-        .container-btn {
-            top: 35em; /* Adjust the top position for larger screens */
-            right: 3em; /* Adjust the right position for larger screens */
-        }
-    }
 </style>
 <body>
 <section id="swup" class="transtion-fade">
@@ -92,27 +47,13 @@
             <img src="../../public/assets/images/qcplLogo.png" alt="">
         </div>
 
-        <?php  
-        if(isset($_SESSION['user_id'])){
-            $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
-            $res = mysqli_query($conn,$sql);
-            while($row = mysqli_fetch_assoc($res)){
-                echo '<div class="container-btn">';
-                echo '<div class="logout-btn">';
-                    echo '<a href="../includes/logout.php"><ion-icon name="log-out-outline"></ion-icon></a>';
-                    echo '<a href="#"><ion-icon name="logo-facebook" class="logo-facebook"></ion-icon></a>';
-                    echo '<a href="#"><ion-icon name="logo-twitter"  class="logo-twitter"></ion-icon></a>';
-                    echo '<a href="#"><ion-icon name="logo-instagram" class="logo-instagram"></ion-icon></a>';
-                echo '</div>';
-            echo '</div>';
-            }
-            }
-        ?>
+
 
         <br>
         <br>
         <br>
         <br>
+
     <!-- Start of feedback form -->
     <form action="" method="post">
         <div class="flex">
@@ -218,13 +159,30 @@
                 <p>Would you like to submit a feedback?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"><a href="includes/feedback-complete.php?client_id=<?= $client_id ?>" style="text-decoration:none; color:#fff;">No</a></button>
+                <button type="button" class="btn btn-secondary" id="feedbackbtn" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1">No</button>
                 <button type="button" class="btn btn-success"><a href="feedback-form.php?client_id=<?= $client_id ?>" style="text-decoration:none; color:#fff;">Yes</a></button>
             </div>
         </div>
     </div>
 </div>
 
+<!--2nd Modal -->
+<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="border-radius: 5px;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+            </div>
+            <div class="modal-body">
+
+                <p style="text-align: center; font-size:50px;">Thank you</p>
+                <img src="../../public/assets/images/check-icon.gif" alt="" style="height: 30%;">
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+
+</style>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7/dist/jquery.min.js"></script>
 <script src="https://unpkg.com/swup@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -247,6 +205,33 @@
             }
         });
     });
+    $(document).ready(function(){
+    $('#feedbackbtn').click(function(){
+        // Close the first modal
+        $('#exampleModalCenter').modal('hide');
+
+        // Show the second modal after a brief delay
+        setTimeout(function() {
+            $('#exampleModalCenter1').modal('show');
+        }, 200); // Adjust the delay time as needed
+
+        // Redirect to the feedback-complete.php page after showing the second modal
+        setTimeout(function() {
+            window.location.href = './includes/feedback-complete.php?client_id=<?= $client_id ?>';
+        }, 3000); // Adjust the delay time as needed
+    });
+
+    // Handle click event for "Yes" button in the first modal
+    $('#yesButton').click(function() {
+        // Redirect to the feedback form page
+        window.location.href = 'feedback-form.php?client_id=<?= $client_id ?>';
+    });
+});
+
+
+
+
+
 </script>
 
 </body>
