@@ -275,7 +275,7 @@
     } */
     .logout-btn{
         position: relative;
-        left: 43.5em;
+        left: 46em;
         bottom: 0.7em;
     }
     #power-btn:hover{
@@ -305,11 +305,10 @@
                         $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
                         $res = mysqli_query($conn,$sql);
                         while($row = mysqli_fetch_assoc($res)){
-                            echo '<div class="container-btn">';
+        
                             echo '<div class="logout-btn">';
                                 echo '<a href="../includes/logout.php"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
                             echo '</div>';
-                        echo '</div>';
                         }
                     }
                 ?>
