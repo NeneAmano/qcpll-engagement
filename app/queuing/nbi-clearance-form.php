@@ -24,7 +24,7 @@ select -->
 <div class="formbg">
             <div class="row">
                     <div class="col-12 sm-2 col-print-6" style="text-align: center;">
-                        <h1>POLICE CLEARANCE FORM</h1>
+                        <h1>NBI CLEARANCE FORM</h1>
                     </div>
             </div>
     <div class="row">
@@ -43,39 +43,34 @@ select -->
                     <div class="row">
                         <div class="col">
                             <form>
-                                <label for="email" class="form-label">Active E-mail Address:</label>
                                 <input type="email" class="form-control" id="email" placeholder="youremail@gmail.com">
                             </form>
                         </div>
                     </div>
-
+                    <br>
                     <!-- first name and middle name -->
                     <div class="row">
                         <div class="col-6">
                             <form>
-                                <label for="first-name" class="form-label">First Name:</label>
-                                <input type="text" class="form-control" id="first-name">
+                                <input type="text" class="form-control" id="first-name" placeholder="Firstname">
                             </form>
                         </div>
                         <div class="col-6">
                             <form>
-                                <label for="middle-name" class="form-label">Middle Name:</label>
-                                <input type="text" class="form-control" id="middle-name">
+                                <input type="text" class="form-control" id="middle-name" placeholder="Middle Name">
                             </form>
                         </div>
                     </div>
-
+                        <br>
                     <!-- last name and suffix -->
                     <div class="row">
                         <div class="col-7">
                             <form>
-                                <label for="last-name" class="form-label">Last Name:</label>
-                                <input type="text" class="form-control" id="last-name">
+                                <input type="text" class="form-control" id="last-name" placeholder="Lastname">
                             </form>
                         </div>
                         <div class="col-5">
                             <form>
-                                <label for="suffix" class="form-label">Suffix:</label>
                                 <input type="text" class="form-control" id="suffix" placeholder="Jr./Sr./II/III" style="font-style: italic;">
                             </form>
                         </div>
@@ -89,11 +84,19 @@ select -->
                                 <input type="text" class="form-control" id="gender">
                             </form>
                         </div>
-                        <div class="col-6">
-                            <form>
-                                <label for="civil" class="form-label">Civil Status:</label>
-                                <input type="text" class="form-control" id="civil">
-                            </form>
+                        <div class="col-1">
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                        <label class="form-check-label" for="inlineCheckbox1">Single</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox2">Married</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+                        <label class="form-check-label" for="inlineCheckbox3">Widow</label>
+                        </div>
                         </div>
                     </div>
 
@@ -335,28 +338,41 @@ select -->
                         </div>
                     </div>
 
-                    <!-- spouse's name -->
-                    <div class="row">
-                        <div class="col">
-                            <div class="invi subtop-6">
-                                <label>Spouse's Name:</label>
-                                <p>________________________________________________________________________<p>
-                            </div>
-                            <div class="visi">
-                                <form>
-                                    <label for="spouse" class="form-label">Spouse's Name:</label>
-                                    <input type="text" class="form-control" id="spouse">
-                                </form>
-                            </div>
+                  <!-- spouse's name and birthplace -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="invi subtop-6">
+                            <label>Spouse's Name:</label>
+                            <p>_________________________________<p>
+                        </div>
+                        <div class="visi">
+                            <form>
+                                <label for="spouse" class="form-label">Spouse's Name:</label>
+                                <input type="text" class="form-control" id="spouse">
+                            </form>
                         </div>
                     </div>
+                    <div class="col-6">
+                        <div class="invi subtop-6 form-pad">
+                            <label>Birthplace:</label>
+                            <p>____________________________________<p>
+                        </div>
+                        <div class="visi">
+                            <form class="form-pad">
+                                <label for="spouse-birthplace" class="form-label">Spouse's Birthplace:</label>
+                                <input type="text" class="form-control" id="spouse-birthplace">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
 
                     <!-- purpose -->
                     <div class="row">
                         <div class="col">
                             <div class="invi subtop-7">
                                 <label>Purpose:</label>
-                                <p>________________________________________________________________________<p>
+                                <p>______________________________________________________________________<p>
                             </div>
                             <div class="visi subtop-7">
                             <form>
@@ -380,22 +396,34 @@ select -->
                             <h4>N-000006</h4>
                         </div>
                 </div>
-            </div>
-            
-            <div class="row">
-                <div class="col ml-date">
-                    <form>
-                        <!-- <label for="birthday" class="form-label">Birthday:</label> -->
-                        <input type="date" class="form-control" id="current-date">
-                    </form>
-                    <h4 class="ml-pad">Main Library</h4>
-                    
+                <div class="sub-information">
+                <h4>Main Library</h4>
+                <h4>02/08/2024:12:00am</h4>
+                <h4>2 Gov. ID</h4>
+                <p>1.___________<p>
+                <p>2.___________<p>
+
                 </div>
+                
             </div>
+
+
+    
+                        <!-- <label for="birthday" class="form-label">Birthday:</label> -->
+                        
         </div>
     </div>
 </div>
 </div>
+<style>
+    .sub-information{
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        margin-top: 5px;
+    }
+</style>
 
 <!-- style="text-align: center;" -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
