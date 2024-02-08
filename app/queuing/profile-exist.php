@@ -111,7 +111,7 @@
         <div class="wrapper">
             <div class="inner">
                 <div class="image-holder">
-                    <img src="../../public/assets/images/demographic-img.png" alt="">
+                    <img src="../../public/assets/images/chckboxIMG4.png" alt="">
                 </div>
                 <form action="" method="post">
                 <nav aria-label="breadcrumb">
@@ -133,7 +133,7 @@
                         <input type="checkbox" id="policeclearance" name="policeclearance" value="nbi">
                         <label for="policeclearance"> POLICE CLEARANCE</label><br>
                         <input type="text" class="others[]" name="others[]" id="new_1">
-                        <button onclick="add()" type="button" class="btn btn-info">Add</button>
+                        <button onclick="add()" type="button" class="btn btn-primary">Add</button>
                         <button onclick="remove()" type="button" class="btn btn-danger">remove</button>
                         <div id="new_chq"></div>
                         <input type="hidden" value="1" id="total_chq" name="total_input">
