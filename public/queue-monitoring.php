@@ -160,12 +160,24 @@
                 <h2 style="text-align: center; color:#ffffff; background-color:#3498db;">PRIORITY LANE</h2><br>
 
                 <?php
-                $priorSql = "SELECT client.`status` AS client_status, queue_details.queue_number, GROUP_CONCAT(queue_details.service) AS services, MAX(queue_details.`status`) AS queue_status
-                                    FROM client
-                                    JOIN queue_details ON client.client_id = queue_details.client_id
-                                    WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` IN (1, 2, 3) AND queue_details.`status` = 0
-                                    GROUP BY queue_details.queue_number LIMIT 6;
-                                    ";
+                        $priorSql = "SELECT 
+                        client.`status` AS client_status, 
+                        queue_details.queue_number, 
+                        GROUP_CONCAT(queue_details.service) AS services, 
+                        MAX(queue_details.`status`) AS queue_status 
+                        FROM 
+                        client 
+                        JOIN 
+                        queue_details ON client.client_id = queue_details.client_id 
+                        WHERE 
+                        DATE(queue_details.created_at) = CURDATE() 
+                        AND client.`status` IN (1, 2, 3) 
+                        AND queue_details.`status` = 0 
+                        AND queue_details.`entry_check` = 1
+                        GROUP BY 
+                        queue_details.queue_number
+                        LIMIT 6";
+
                 $result1 = mysqli_query($conn, $priorSql);
 
                 while ($row = mysqli_fetch_assoc($result1)) {
@@ -194,15 +206,15 @@
                 <h2 style="text-align: center; color:#ffffff; background-color:cadetblue">NON-PRIORITY LANE</h2><br>
 
                 <?php
-                $priorSql = "SELECT client.`status` AS client_status, queue_details.queue_number, GROUP_CONCAT(queue_details.service) AS services, MAX(queue_details.`status`) AS queue_status
+                $nonpriorSql = "SELECT client.`status` AS client_status, queue_details.queue_number, GROUP_CONCAT(queue_details.service) AS services, MAX(queue_details.`status`) AS queue_status
                                     FROM client
                                     JOIN queue_details ON client.client_id = queue_details.client_id
-                                    WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0
+                                    WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0 AND queue_details.`entry_check` = 1
                                     GROUP BY queue_details.queue_number LIMIT 6;
                                     ";
-                $result1 = mysqli_query($conn, $priorSql);
+                $result2 = mysqli_query($conn, $nonpriorSql);
 
-                while ($row = mysqli_fetch_assoc($result1)) {
+                while ($row = mysqli_fetch_assoc($result2)) {
                     $queueNumber = $row['queue_number'];
                     $service = $row['services'];
                     echo '<div class="card">';
@@ -213,7 +225,7 @@
                     echo '<br>';
                 }
 
-                if (mysqli_num_rows($result1) == 0) {
+                if (mysqli_num_rows($result2) == 0) {
                     echo '<div class="card">';
                     echo '<p class="no-record"><span>NO RECORD TODAY</span></span></p>';
                     echo '<p class="no-record">THANK YOU!</p>';
