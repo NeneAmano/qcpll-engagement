@@ -159,26 +159,50 @@
                 $new_status = 0;
             }
 
-            $sql_queue = "SELECT * FROM queue_details WHERE DATE(`created_at`) = CURDATE() ORDER BY qd_id DESC LIMIT 1;";
-            $result_queue = mysqli_query($conn, $sql_queue);
-            if(mysqli_num_rows($result_queue) > 0){
-                $row = mysqli_fetch_assoc($result_queue);
-        
-                $queue_number = $row['queue_number'];
-                list($new_prefix, $string_number) = explode('-', $queue_number);
-                
-                $int_number = intval($string_number);
-                $int_number++;
-                $new_int_number = sprintf('%05d', $int_number);
-                $new_string_number = strval($new_int_number);
-                $new_queue_number = $prefix . $new_string_number;
-            }else{
-                $string_number = 00000;
-                $int_number = intval($string_number);
-                $int_number++;
-                $new_int_number = sprintf('%05d', $int_number);
-                $new_string_number = strval($new_int_number);
-                $new_queue_number = $prefix . $new_string_number;
+            if($prefix == 'N-'){
+                $sql_queue = "SELECT * FROM queue_details WHERE queue_number LIKE 'N%' AND DATE(`created_at`) = CURDATE() ORDER BY qd_id DESC LIMIT 1;";
+                $result_queue = mysqli_query($conn, $sql_queue);
+                if(mysqli_num_rows($result_queue) > 0){
+                    $row = mysqli_fetch_assoc($result_queue);
+            
+                    $queue_number = $row['queue_number'];
+                    list($new_prefix, $string_number) = explode('-', $queue_number);
+                    
+                    $int_number = intval($string_number);
+                    $int_number++;
+                    $new_int_number = sprintf('%05d', $int_number);
+                    $new_string_number = strval($new_int_number);
+                    $new_queue_number = $prefix . $new_string_number;
+                }else{
+                    $string_number = 00000;
+                    $int_number = intval($string_number);
+                    $int_number++;
+                    $new_int_number = sprintf('%05d', $int_number);
+                    $new_string_number = strval($new_int_number);
+                    $new_queue_number = $prefix . $new_string_number;
+                }
+            }elseif($prefix == 'P-'){
+                $sql_queue = "SELECT * FROM queue_details WHERE queue_number LIKE 'P%' AND DATE(`created_at`) = CURDATE() ORDER BY qd_id DESC LIMIT 1;";
+                $result_queue = mysqli_query($conn, $sql_queue);
+                if(mysqli_num_rows($result_queue) > 0){
+                    $row = mysqli_fetch_assoc($result_queue);
+            
+                    $queue_number = $row['queue_number'];
+                    list($new_prefix, $string_number) = explode('-', $queue_number);
+                    
+                    $int_number = intval($string_number);
+                    $int_number++;
+                    $new_int_number = sprintf('%05d', $int_number);
+                    $new_string_number = strval($new_int_number);
+                    $new_queue_number = $prefix . $new_string_number;
+                }else{
+                    $string_number = 00000;
+                    $int_number = intval($string_number);
+                    $int_number++;
+                    $new_int_number = sprintf('%05d', $int_number);
+                    $new_string_number = strval($new_int_number);
+                    $new_queue_number = $prefix . $new_string_number;
+                }
             }
             
             if (!firstnameInvalid($firstname) && !surnameInvalid($surname) && (!middlenameInvalid($middlename) || !suffixInvalid($suffix)) || (middlenameInvalid($middlename) || suffixInvalid($suffix)) && 
