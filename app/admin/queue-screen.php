@@ -12,7 +12,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    <title>Queue Monitoring</title>                        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
     <?php
         require_once 'includes/sidebar.php';
     ?>
@@ -32,8 +33,8 @@
                             <!-- start of table header -->
                             <thead>
                                 <tr>
-                                    <th class="d-none">Queue Details ID</th>
-                                    <th class="table-light text-uppercase text-center">Client ID</th>
+                                    <th class="table-light text-uppercase text-center">Queue Details ID</th>
+                                    <th class="table-light text-uppercase text-center">Client</th>
                                     <th class="table-light text-uppercase text-center">Queue Number</th>
                                     <th class="table-light text-uppercase text-center">Service</th>
                                     <th class="table-light text-uppercase text-center">Status</th>
@@ -47,12 +48,16 @@
                             <!-- start of table body -->
                             <tbody>
                                 <?php
-                                    $sql_select = "SELECT * FROM queue_details ORDER BY client_id DESC;";
+                                    $sql_select = "SELECT queue_details.qd_id,CONCAT(client.f_name, ' ' , client.l_name) AS client,queue_details.queue_number,queue_details.service,queue_details.`status`,queue_details.entry_check,queue_details.created_at,queue_details.updated_at
+                                    FROM queue_details
+                                    JOIN client ON queue_details.client_id = client.client_id
+                                     WHERE DATE(queue_details.created_at) = CURDATE()
+                                     GROUP BY queue_details.qd_id ;";
                                     $result_select = mysqli_query($conn, $sql_select);
                                         if(mysqli_num_rows($result_select) > 0){
                                             while($row_select = mysqli_fetch_assoc($result_select)){
                                                 $qd_id = $row_select['qd_id'];
-                                                $client_id = $row_select['client_id'];
+                                                $client_name = $row_select['client'];
                                                 $qnumber = $row_select['queue_number'];
                                                 $service = $row_select['service'];
                                                 $is_active_status = $row_select['status'];
@@ -73,8 +78,8 @@
                                                 }
                                 ?>
                                                 <tr>
-                                                    <td class="d-none"><?= $qd_id; ?></td>
-                                                    <td class="text-center"><?= $client_id ?></td>
+                                                    <td class="text-center"><?= $qd_id; ?></td>
+                                                    <td class="text-center"><?= $client_name ?></td>
                                                     <td class="text-center"><?= $qnumber ?></td>
                                                     <td class="text-center"><?= $service ?></td>
                                                     <td class="text-center"><?=  $is_active_status ?></td>
@@ -83,7 +88,6 @@
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
                                                         <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>  
-                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#deactivate_user_modal"><i class="fa-solid fa-ban"></i></a>
                                                     </td>
                                                 </tr>
                                 <?php
@@ -146,14 +150,24 @@
                                         <div class="card-body">
                                             <!-- start of edit modal row -->
                                             <div class="row">
-                                                <input type="text" class="form-control" name="edit_qt_id" id="edit_qt_id" value="">
+                                                <input type="text" class="form-control" name="edit_qd_id" id="edit_qd_id" value="">
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_queue_number" class="ps-2 pb-2">Queue Number</label>
+                                                        <input type="text" class="form-control" name="edit_queue_number" id="edit_queue_number" value="" disabled>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="edit_name" class="ps-2 pb-2">Fullname</label>
+                                                        <input type="text" class="form-control" name="edit_name" id="edit_name" value="">
+                                                    </div>
+                                                </div>
                                                 
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
                                                         <label for="edit_entry_check" class="ps-2 pb-2">ENTRY STATUS</label>
-                                                        <select class="form-select" aria-label="Default select example" name="edit_entry_check" id="edit_entry_check" required>
-                                                           <option value="1">Pass</option>
-                                                           <option value="0">Fail</option>
+                                                        <select class="form-select" name="edit_entry_check" id="edit_entry_check" >
+                                                           <option value = 1>Pass</option>
+                                                           <option value = 0>Fail</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -163,7 +177,7 @@
                                         <!-- end of edit modal card body -->
                                         <!-- start of edit modal footer -->
                                         <div class="modal-footer justify-content-end">                                         
-                                            <button type="submit" name="edit_user" class="btn btn-success">Save Changes</button>
+                                            <button type="submit" name="edit_client" class="btn btn-success">Save Changes</button>
                                         </div>
                                         <!-- end of edit modal footer -->
                                     </div>
@@ -182,8 +196,35 @@
             <!-- end of edit modal dialog -->
         </div>
         <!-- end of edit user modal -->
+<script>
+$(document).ready(function () {
+    $('body').on('click', '.edit', function (event) {
+        var $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
 
-<script src="js/queue-screen-script.js"></script>
+
+        var modalType = $(this).data('modal-type');
+
+        $('#edit_entry_check').val(data[5]);
+        $('#edit_qd_id').val(data[0]);
+        $('#edit_name').val(data[1]);
+        $('#edit_queue_number').val(data[2])
+
+
+
+        // Show the appropriate modal based on modal type
+        if (modalType === 'user') {
+            $('#edit_user_modal').modal('show');
+        } else if(modalType === 'password') {
+            $('#edit_user_password_modal').modal('show');
+        }
+    });
+});
+
+
+</script>
 <?php
     require_once 'js/scripts.php';
 ?>
