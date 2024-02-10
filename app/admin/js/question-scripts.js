@@ -46,3 +46,22 @@ function showfield(name) {
 function hidefield() {
     document.getElementById('choices').style.display = 'none';
 }
+
+// edit question type
+$(document).ready(function () {
+    $('body').on('click', '.edit', function(event) {
+
+        $('#edit_question_type_modal').modal('show');
+
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+
+        $('#edit_qt_id').val(data[0]);
+        $('#edit_question_type').val(data[1]);
+    });
+});
