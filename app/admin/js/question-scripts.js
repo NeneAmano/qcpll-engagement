@@ -65,3 +65,23 @@ $(document).ready(function () {
         $('#edit_question_type').val(data[1]);
     });
 });
+
+// edit question category
+$(document).ready(function () {
+    $('body').on('click', '.edit', function(event) {
+
+        $('#edit_question_category_modal').modal('show');
+
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+
+        $('#edit_qc_id').val(data[0]);
+        $('#edit_question_category').val(data[1]);
+    });
+});
+
