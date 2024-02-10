@@ -39,7 +39,8 @@ select -->
                             <div class="row">
                                 <div class="col">
                                     <form>
-                                        <input type="email" class="form-control" id="email" placeholder="youremail@gmail.com">
+                                        <label class="form-label" for="email">Email Address: </label>
+                                        <input type="email" class="form-control" id="email" placeholder="" value="">
                                     </form>
                                 </div>
                             </div>
@@ -48,12 +49,14 @@ select -->
                             <div class="row">
                                 <div class="col-6">
                                     <form>
-                                        <input type="text" class="form-control" id="first-name" placeholder="Firstname">
+                                        <label class="form-label" for="first-name">First Name: </label>
+                                        <input type="text" class="form-control" id="first-name" placeholder="" value="">
                                     </form>
                                 </div>
                                 <div class="col-6">
                                     <form>
-                                        <input type="text" class="form-control" id="middle-name" placeholder="Middle Name">
+                                        <label class="form-label" for="middle-name">Middle Name: </label>
+                                        <input type="text" class="form-control" id="middle-name" placeholder="" value="">
                                     </form>
                                 </div>
                             </div>
@@ -62,12 +65,14 @@ select -->
                             <div class="row">
                                 <div class="col-7">
                                     <form>
-                                        <input type="text" class="form-control" id="last-name" placeholder="Lastname">
+                                        <label class="form-label" for="last-name">Last Name: </label>
+                                        <input type="text" class="form-control" id="last-name" placeholder="" value="">
                                     </form>
                                 </div>
                                 <div class="col-5">
                                     <form>
-                                        <input type="text" class="form-control" id="suffix" placeholder="Jr./Sr./II/III" style="font-style: italic;">
+                                        <label class="form-label" for="suffix">Suffix: <span class="fst-italic">(Jr./Sr./II/III)</span></label>
+                                        <input type="text" class="form-control" id="suffix" placeholder="">
                                     </form>
                                 </div>
                             </div>
@@ -101,13 +106,13 @@ select -->
                             <div class="row">
                                 <div class="col-5">
                                     <form>
-                                        <label for="birthday" class="form-label">Birthday:</label>
+                                        <label for="birthday" class="form-label mt-3">Birthdate:</label>
                                         <input type="date" class="form-control" id="birthday">
                                     </form>
                                 </div>
                                 <div class="col-7">
                                     <form>
-                                        <label for="birthplace" class="form-label">Birth Place:</label>
+                                        <label for="birthplace" class="form-label mt-3">Birth Place:</label>
                                         <input type="text" class="form-control" id="birthplace">
                                     </form>
                                 </div>
@@ -117,14 +122,14 @@ select -->
                             <div class="row">
                                 <div class="col-5">
                                     <form>
-                                        <label for="nationality" class="form-label">Nationality:</label>
+                                        <label for="nationality" class="form-label mt-3">Nationality:</label>
                                         <input type="text" class="form-control" id="nationality">
                                     </form>
                                 </div>
                                 <div class="col-7">
                                     <form>
-                                        <label for="contactNumber" class="form-label">Contact Number:</label>
-                                        <input type="text" class="form-control" id="contactNumber" placeholder="+63 9XX - XXX - XXXX">
+                                        <label for="contactNumber" class="form-label mt-3">Contact Number:</label>
+                                        <input type="text" class="form-control" id="contactNumber" placeholder="">
                                     </form>
                                 </div>
                             </div>
@@ -134,7 +139,7 @@ select -->
                             <div class="row">
                                 <div class="col">
                                     <form>
-                                        <label for="completeAddress" class="form-label">Complete Address:</label>
+                                        <label for="completeAddress" class="form-label mt-3">Complete Address:</label>
                                         <textarea class="form-control" id="completeAddress" row="3"></textarea>
                                     </form>
                                 </div>
@@ -396,11 +401,10 @@ select -->
                     <div class="row">
                         <div class="col ml-date">
                             <form>
-                                <!-- <label for="birthday" class="form-label">Birthday:</label> -->
+                                <p class=""></p>
                                 <input type="date" class="form-control" id="current-date">
                             </form>
                             <h4 class="ml-pad">Main Library</h4>
-
                         </div>
                     </div>
                 </div>
