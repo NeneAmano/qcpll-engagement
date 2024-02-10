@@ -11,7 +11,7 @@
     <!-- cdn of chartjs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body onload="hidefield()">
     <!-- start of main container -->
     <div class="main-container d-flex">
         <!-- start of sidebar -->
