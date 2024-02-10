@@ -25,37 +25,29 @@
             // Initialize an empty array
             $choices = array();
 
-
-                
-            // Use a loop to create $_POST['others'][] based on $total_input
-            for ($i = 0; $i < $total_input; $i++) {
-                // Use mysqli_real_escape_string or any other necessary validation/sanitization
-                $choices[$i] = mysqli_real_escape_string($conn, $_POST['add_choices'][$i]);
-            }
-            // Iterate through $others and echo the values
-            foreach ($choices as $key => $value) {
-                if(!empty($value) || $value !== ''){
-                    $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
-                    if(mysqli_query($conn, $sql_others)){
-                        header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
-                        // date_default_timezone_get();
-                    }
-                }
-            }
-
-            $sql = "SELECT * FROM question_type WHERE question_type = '$add_question_type';";
-            $result = mysqli_query($conn, $sql);
-            if(mysqli_num_rows($result) > 0){
-                $error_message = "Question Type already exists.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-            }elseif(empty($add_question_type)){
-                $error_message = "Question Type is required.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-            }else{
-                $sql = "INSERT INTO question_type (question_type) VALUES ('$add_question_type');";
+            if($add_question_type !== '3'){
+                $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
                 if(mysqli_query($conn, $sql)){
-                    header('location: question-type.php?add=successful');
-                    die();
+                    header('location: questions.php?add=successful');
+                }
+            }else{
+                $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
+                if(mysqli_query($conn, $sql)){
+                    $add_question_id = mysqli_insert_id($conn);
+                    // Use a loop to create $_POST['others'][] based on $total_input
+                    for ($i = 0; $i < $total_input; $i++) {
+                        // Use mysqli_real_escape_string or any other necessary validation/sanitization
+                        $choices[$i] = mysqli_real_escape_string($conn, $_POST['add_choices'][$i]);
+                    }
+                    // Iterate through $others and echo the values
+                    foreach ($choices as $key => $value) {
+                        if(!empty($value) || $value !== ''){
+                            $sql_others = "INSERT INTO choices (question_id, choice) VALUES ($add_question_id, '$value');";
+                            if(mysqli_query($conn, $sql_others)){
+                                header('location: questions.php?add=successful');
+                            }
+                        }
+                    }
                 }
             }
         }
