@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    <title>Users</title>                          
     <?php
         require_once 'includes/sidebar.php';
         if(isset($_POST['add_user'])){
@@ -254,7 +254,7 @@
                                         <div class="card-body">
                                             <!-- start of edit modal row -->
                                             <div class="row">
-                                                <input type="text" class="form-control" name="edit_user_id" id="edit_user_id" value="">
+                                                <input type="hidden" class="form-control" name="edit_user_id" id="edit_user_id" value="">
                                                 
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
@@ -338,7 +338,7 @@
                                         <div class="card-body">
                                             <!-- start of edit modal row -->
                                             <div class="row">
-                                                <input type="text" class="form-control" name="edit_user_password_id" id="edit_user_password_id" value="">
+                                                <input type="hidden" class="form-control" name="edit_user_password_id" id="edit_user_password_id" value="">
 
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
