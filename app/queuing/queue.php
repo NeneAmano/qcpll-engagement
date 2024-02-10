@@ -412,8 +412,7 @@
                         <button onclick="add()" type="button" class="btn btn-primary">Add</button>
                         <button onclick="remove()" type="button" class="btn btn-danger">remove</button>
                         <div id="new_chq"></div>
-                        <input type="hidden" value="1" id="total_chq" name="total_input" >
-                        
+                        <input type="hidden" value="1" id="total_chq" name="total_input">
                     </div>
                     <button class="existBtn" onclick="window.location.href='profile-exist.php';">Already have an account?</button>
                     <!-- <a href="existProfile.php" class="existBtn">Already have Account?</a> -->
