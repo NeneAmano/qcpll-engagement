@@ -1,7 +1,9 @@
 <?php
+    require_once('../core/init.php');
     include('simple_html_dom.php');
-    if(isset($_GET['remarks'])){
+    if(isset($_GET['remarks']) && isset($_GET['emoji_id'])){
         $remarks = $_GET['remarks'];
+        $emoji_id = $_GET['emoji_id'];
     }
     $arrContextOptions=array(
         "ssl"=>array(
@@ -9,7 +11,7 @@
             "verify_peer_name"=>false,
         ),
     );  
-    $htmlContent = file_get_html("https://emojipedia.org/angry-face", false, stream_context_create($arrContextOptions));
+    $htmlContent = file_get_html("https://emojipedia.org/" .$remarks, false, stream_context_create($arrContextOptions));
 
     $dom = new DOMDocument();
     @$dom->loadHTML($htmlContent);
@@ -22,7 +24,9 @@
     foreach ($nodes as $node) {
         $data[] = trim($node->nodeValue);
     }
-    echo $data[1];
-    // $json_data = json_encode($data, JSON_PRETTY_PRINT);
-    // file_put_contents('emoji.json', $json_data);
-    // echo $json_data;
+    $scraped_remarks = mysqli_real_escape_string($conn, $data[0]. ' ' .$data[1]);
+
+    echo $scraped_remarks;
+    
+    $sql = "UPDATE emoji SET remarks = '$scraped_remarks' WHERE emoji_id = $emoji_id";
+    mysqli_query($conn, $sql);
