@@ -225,7 +225,6 @@
         </div>
         <!-- end of first row -->
 
-
         <!-- start of edit user modal -->
         <div class="modal fade" id="edit_user_modal">
             <!-- start of edit modal dialog -->
@@ -449,6 +448,7 @@
             <!-- end of deactivate modal dialog -->
         </div>
         <!-- end of deactivate user modal -->
+
     </div>
     <!-- end of main section container -->
 </div>
