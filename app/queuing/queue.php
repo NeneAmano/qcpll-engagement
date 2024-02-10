@@ -218,14 +218,14 @@
                     if($nbi !== ''){
                         $sql_nbi = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$nbi');";
                         if(mysqli_query($conn, $sql_nbi)){
-                            header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
+                            header("location: nbi-clearance-form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id);
                         }
                         
                     }
                     if($police !== ''){
                         $sql_police = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$police');";
                         if(mysqli_query($conn, $sql_police)){
-                            header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
+                            header("location: police-clearance-form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id);
                         }
                     }
 
@@ -239,7 +239,7 @@
                         if(!empty($value) || $value !== ''){
                             $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
                             if(mysqli_query($conn, $sql_others)){
-                                header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
+                                header("location: queue-number.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id);
                                 // date_default_timezone_get();
                             }
                         }
@@ -255,13 +255,13 @@
                         while($row_date = mysqli_fetch_assoc($result_date)){
                             $sql_update = "UPDATE queue SET total_queue = total_queue + 1 WHERE queue_date = '$date_today';";
                             if(mysqli_query($conn, $sql_update)){
-                                header("location: queue-number.php?queue_no=" .$new_queue_number);
+                                // header("location: queue-number.php?queue_no=" .$new_queue_number . "&client_id=" .$client_id);
                             }
                         }
                     }else{
                         $sql_date_insert = "INSERT INTO queue (total_queue, queue_date) VALUES (1, '$date_today');";
                         if(mysqli_query($conn, $sql_date_insert)){
-                            header("location: queue-number.php?queue_no=" .$new_queue_number);
+                            // header("location: queue-number.php?queue_no=" .$new_queue_number . "&client_id=" .$client_id);
                         }
                     }
                 }else{
