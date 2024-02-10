@@ -15,6 +15,50 @@
     <title>Questions</title>
     <?php
         require_once 'includes/sidebar.php';
+        if(isset($_POST['add_question'])){
+            $add_question_type = mysqli_real_escape_string($conn, $_POST['add_question_type']);
+            $add_question_category = mysqli_real_escape_string($conn, $_POST['add_question_category']);
+            $add_english_question = mysqli_real_escape_string($conn, $_POST['add_english_question']);
+            $add_tagalog_question = mysqli_real_escape_string($conn, $_POST['add_tagalog_question']);
+            $total_input = mysqli_real_escape_string($conn, $_POST['total_input']);
+
+            // Initialize an empty array
+            $choices = array();
+
+
+                
+            // Use a loop to create $_POST['others'][] based on $total_input
+            for ($i = 0; $i < $total_input; $i++) {
+                // Use mysqli_real_escape_string or any other necessary validation/sanitization
+                $choices[$i] = mysqli_real_escape_string($conn, $_POST['add_choices'][$i]);
+            }
+            // Iterate through $others and echo the values
+            foreach ($choices as $key => $value) {
+                if(!empty($value) || $value !== ''){
+                    $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
+                    if(mysqli_query($conn, $sql_others)){
+                        header("location: queue-number.php?queue_no=" .$new_queue_number. "&totalinput=" .$total_input);
+                        // date_default_timezone_get();
+                    }
+                }
+            }
+
+            $sql = "SELECT * FROM question_type WHERE question_type = '$add_question_type';";
+            $result = mysqli_query($conn, $sql);
+            if(mysqli_num_rows($result) > 0){
+                $error_message = "Question Type already exists.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }elseif(empty($add_question_type)){
+                $error_message = "Question Type is required.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            }else{
+                $sql = "INSERT INTO question_type (question_type) VALUES ('$add_question_type');";
+                if(mysqli_query($conn, $sql)){
+                    header('location: question-type.php?add=successful');
+                    die();
+                }
+            }
+        }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
@@ -38,9 +82,119 @@
             <!-- start of card body -->
             <div class="card-body d-flex flex-column">
                 <div class="container-fluid">
-                    <!-- start of add service modal button -->
-                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_service_modal">Add Question</button>
-                    <!-- end of add service modal button -->
+                    <!-- start of add question modal button -->
+                    <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_question_modal">Add Question</button>
+                    <!-- end of add question modal button -->
+                    <!-- start of add question modal -->
+                    <div class="modal fade" id="add_question_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <!-- start of add modal dialog -->
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <!-- start of add modal content -->
+                            <div class="modal-content">
+                                <!-- start of add modal eader -->
+                                <div class="modal-header bg-dark text-white">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Question Type</h1>
+                                    <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
+                                </div>
+                                <!-- end of add modal eader -->
+                                <!-- start of add modal form -->
+                                <form action="" method="post">
+                                    <!-- start of add modal body -->                
+                                    <div class="modal-body">
+                                        <!-- start of add modal row -->
+                                        <div class="row">
+                                            <!-- start of add modal col -->
+                                            <div class="col-md-12">
+                                                <!-- start of add modal card -->
+                                                <div class="card card-primary">
+                                                    <!-- start of add modal card body -->
+                                                    <div class="card-body">
+                                                        <!-- start of add modal row -->
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-6 mt-3">
+                                                                <div class="form-group">
+                                                                    <label for="add_question_type" class="ps-2 pb-2">Question Type</label>
+                                                                    <select class="form-select" aria-label="Default select example" name="add_question_type" id="add_question_type" onchange="showfield(this.options[this.selectedIndex].value)" required>
+                                                                        <option value="" disabled selected>-- Select Question Type --</option>
+                                                                        <?php
+                                                                            $sql_question_type = "SELECT * FROM question_type;";
+                                                                            $result_question_type = mysqli_query($conn, $sql_question_type);
+                                                                            if(mysqli_num_rows($result_question_type) > 0){
+                                                                                while($row_question_type = mysqli_fetch_assoc($result_question_type)){
+                                                                                    $qt_id = $row_question_type['qt_id'];
+                                                                                    $question_type = $row_question_type['question_type'];
+                                                                                    echo '<option value="' .$qt_id. '">' .$question_type. '</option>';
+                                                                                }
+                                                                            }
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-6 mt-3">
+                                                                <div class="form-group">
+                                                                    <label for="add_question_category" class="ps-2 pb-2">Question Category</label>
+                                                                    <select class="form-select" aria-label="Default select example" name="add_question_category" id="add_question_category" required>
+                                                                        <option value="" disabled selected>-- Select Question Category --</option>
+                                                                        <?php
+                                                                            $sql_question_category = "SELECT * FROM question_category;";
+                                                                            $result_question_category = mysqli_query($conn, $sql_question_category);
+                                                                            if(mysqli_num_rows($result_question_category) > 0){
+                                                                                while($row_question_category = mysqli_fetch_assoc($result_question_category)){
+                                                                                    $qc_id = $row_question_category['qc_id'];
+                                                                                    $question_category = $row_question_category['question_category'];
+                                                                                    echo '<option value="' .$qc_id. '">' .$question_category. '</option>';
+                                                                                }
+                                                                            }
+                                                                        ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 col-6 mt-3">
+                                                                <div class="form-floating">
+                                                                    <textarea class="form-control" placeholder="Leave a comment here" id="add_english_question" name="add_english_question"style="height: 100px; resize: none;"></textarea required>
+                                                                    <label for="add_english_question">English Translation</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12 col-6 mt-3">
+                                                                <div class="form-floating">
+                                                                    <textarea class="form-control" placeholder="Leave a comment here" id="add_tagalog_question" name="add_tagalog_question"style="height: 100px; resize: none;"></textarea required>
+                                                                    <label for="add_tagalog_question">Tagalog Translation</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-6 mt-3">
+                                                                <div id="choices">Specify Choices
+                                                                    <button onclick="add_status()" type="button" class="btn btn-primary mb-2 ms-2">Add</button>
+                                                                    <button onclick="remove_status()" type="button" class="btn btn-danger mb-2 ms-2">Remove</button>
+                                                                    <input type="text" class="add_choices[] form-control mb-2" name="add_choices[]" id="add_choices_1">
+                                                                    <div id="new_chq_status"></div>
+                                                                    <input type="text" value="1" id="total_chq_status" name="total_input">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end of add modal row -->
+                                                    </div>
+                                                    <!-- end of add modal card body -->
+                                                    <!-- start of add modal footer -->
+                                                    <div class="modal-footer justify-content-end">
+                                                        <button type="submit" name="add_question" class="btn btn-success">Add</button>
+                                                    </div>
+                                                    <!-- end of add modal footer -->
+                                                </div>
+                                                <!-- end of add modal card -->
+                                            </div>
+                                            <!-- end of add modal col -->
+                                        </div>
+                                        <!-- end of add modal row -->
+                                    </div>
+                                    <!-- end of add modal body -->                
+                                </form>
+                                <!-- end of add modal form -->
+                            </div>
+                            <!-- end of add modal content -->
+                        </div>
+                        <!-- end of add modal dialog -->
+                    </div>
+                    <!-- end of add question modal -->
                 </div>
                 <!-- start of first row -->
                 <div class="row">
