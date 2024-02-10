@@ -1,6 +1,8 @@
+<?php
+    require_once('../core/init.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,7 +73,7 @@ select -->
                                 </div>
                                 <div class="col-5">
                                     <form>
-                                        <label class="form-label" for="suffix">Suffix: <span class="fst-italic">Jr./Sr./II/III</span></label>
+                                        <label class="form-label" for="suffix">Suffix: <span class="fst-italic">(Jr./Sr./II/III)</span></label>
                                         <input type="text" class="form-control" id="suffix" placeholder="">
                                     </form>
                                 </div>
@@ -106,13 +108,13 @@ select -->
                             <div class="row">
                                 <div class="col-5">
                                     <form>
-                                        <label for="birthday" class="form-label">Birthday:</label>
+                                        <label for="birthday" class="form-label mt-3">Birthday:</label>
                                         <input type="date" class="form-control" id="birthday">
                                     </form>
                                 </div>
                                 <div class="col-7">
                                     <form>
-                                        <label for="birthplace" class="form-label">Birth Place:</label>
+                                        <label for="birthplace" class="form-label mt-3">Birth Place:</label>
                                         <input type="text" class="form-control" id="birthplace">
                                     </form>
                                 </div>
@@ -122,14 +124,14 @@ select -->
                             <div class="row">
                                 <div class="col-5">
                                     <form>
-                                        <label for="nationality" class="form-label">Nationality:</label>
+                                        <label for="nationality" class="form-label mt-3">Nationality:</label>
                                         <input type="text" class="form-control" id="nationality">
                                     </form>
                                 </div>
                                 <div class="col-7">
                                     <form>
-                                        <label for="contactNumber" class="form-label">Contact Number:</label>
-                                        <input type="text" class="form-control" id="contactNumber" placeholder="+63 9XX - XXX - XXXX">
+                                        <label for="contactNumber" class="form-label mt-3">Contact Number:</label>
+                                        <input type="text" class="form-control" id="contactNumber" placeholder="">
                                     </form>
                                 </div>
                             </div>
@@ -139,7 +141,7 @@ select -->
                             <div class="row">
                                 <div class="col">
                                     <form>
-                                        <label for="completeAddress" class="form-label">Complete Address:</label>
+                                        <label for="completeAddress" class="form-label mt-3">Complete Address:</label>
                                         <textarea class="form-control" id="completeAddress" row="3"></textarea>
                                     </form>
                                 </div>
