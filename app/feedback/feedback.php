@@ -136,7 +136,7 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
                 <div class="textBox">
                     <p style="font-size: 1.5em;">Please enter your queue number</p>
                     <p style="font-size: 1em; font-style:italic;">Mangyaring ilagay sa ibaba inyong queue number</p>
-                    <input type="text" name="id" id="" class="inputnum">
+                    <input type="text" name="id" id="" class="inputnum" readonly>
                     <br>
                     <br>
                     <button class="btn btn-success flex" type="submit" name="search">Search my Name</button>
