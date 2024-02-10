@@ -62,7 +62,6 @@
                             // Loop through each emoji object
                             foreach ($data['emoji'] as $key => $emoji) {
                                 if ($emoji['Unicode name'] == $add_unicode_name) {
-                                    print_r($emoji);
                                     $add_char = $emoji['Char'];
                                     $add_image = $emoji['Image[twemoji]'];
                                     $add_unicode_codepoint = $emoji['Unicodecodepoint'];
@@ -79,10 +78,16 @@
                                     $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_destination', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
                             
                                     if(mysqli_query($conn, $sql)){
-                                        // header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name);
                                         // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
+                                        // header('location: emoji.php?add=successful');
+                                        $hypen_unicode = str_replace(' ', '-', $add_unicode_name);
+                                        $small_caps_unicode = strtolower($hypen_unicode);
+                                        $emoji_id = mysqli_insert_id($conn);
+                                        echo $small_caps_unicode;
+                                        // header('location: ../web-scraping/remarks-html-dom.php');
+                                        // header('location: ../web-scraping/remarks-html-dom.php');
+                                        header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$small_caps_unicode. '&emoji_id=' .$emoji_id);
                                         // die();
-                                        header('location: emoji.php?add=successful');
 
                                     }
                                 }
