@@ -239,8 +239,7 @@
                         if(!empty($value) || $value !== ''){
                             $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
                             if(mysqli_query($conn, $sql_others)){
-                                header("location: queue-number.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate);
-                                // date_default_timezone_get();
+                                header("location: other-form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate);
                             }
                         }
                     }
