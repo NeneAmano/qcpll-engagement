@@ -70,7 +70,7 @@ select -->
                     <div class="row">
 
                         <!-- APPLICATION FORM COLUMN -->
-                        <div class="col-5 sm-2" style="">
+                        <div class="col-5 sm-5 main-form" style="line-height: -20px !important;" >
                             <div class="row">
                                 <div class="col" style=" text-align: center;">
                                     <h4>Application Profile</h4>
@@ -439,7 +439,7 @@ select -->
                             </div>
                         </div>
                         <div class="sub-information">
-                            <h4>Main Library</h4>
+                            <h4 style="text-align:center;">Main Library</h4>
                             <h4 class="ps-4"><?= $created_at ?></h4>
                             <h4>2 Gov. ID</h4>
                             <p>1.___________
