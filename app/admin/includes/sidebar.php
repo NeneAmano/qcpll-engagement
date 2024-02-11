@@ -43,7 +43,7 @@
                         <li class=""><a href="dashboard.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-house"></i> Dashboard</a></li>
 
                         <li class=""><a href="users.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Users</span></a></li>
-                        <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-users"></i><span class="ps-2">Clients</span></a></li>
+                        <li class=""><a href="clients.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-users"></i><span class="ps-2">Clients</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book-open"></i><span class="ps-2">History</span></a></li>
                         <li class=""><a href="user.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book"></i><span class="ps-2">Logs</span></a></li>
                         <li class=""><a href="analytics.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-chart-simple"></i><span class="ps-2">Analytics</span></a></li>
