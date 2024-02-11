@@ -67,6 +67,24 @@ $(document).ready(function () {
     });
 });
 
+// delete question
+$(document).ready(function () {
+    $('body').on('click', '.delete', function(event) {
+
+        $('#delete_question_modal').modal('show');
+
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+
+        $('#delete_question_id').val(data[0]);
+    });
+});
+
 // edit question type
 $(document).ready(function () {
     $('body').on('click', '.edit', function(event) {
