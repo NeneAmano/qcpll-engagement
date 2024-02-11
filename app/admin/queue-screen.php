@@ -38,7 +38,6 @@
                                     <th class="table-light text-uppercase text-center">Queue Number</th>
                                     <th class="table-light text-uppercase text-center">Service</th>
                                     <th class="table-light text-uppercase text-center">Status</th>
-                                    <th class="table-light text-uppercase text-center">Entry Check</th>
                                     <th class="table-light text-uppercase text-center">Created_at</th>
                                     <th class="table-light text-uppercase text-center">Updated_at</th>
                                     <th class="table-light text-uppercase text-center">Action</th>
@@ -48,7 +47,7 @@
                             <!-- start of table body -->
                             <tbody>
                                 <?php
-                                    $sql_select = "SELECT queue_details.qd_id,CONCAT(client.f_name, ' ' , client.l_name) AS client,queue_details.queue_number,queue_details.service,queue_details.`status`,queue_details.entry_check,queue_details.created_at,queue_details.updated_at
+                                    $sql_select = "SELECT queue_details.qd_id,CONCAT(client.f_name, ' ' , client.l_name) AS client,queue_details.queue_number,queue_details.service,queue_details.`status`,queue_details.created_at,queue_details.updated_at
                                     FROM queue_details
                                     JOIN client ON queue_details.client_id = client.client_id
                                      WHERE DATE(queue_details.created_at) = CURDATE()
@@ -61,7 +60,6 @@
                                                 $qnumber = $row_select['queue_number'];
                                                 $service = $row_select['service'];
                                                 $is_active_status = $row_select['status'];
-                                                $is_active_entry = $row_select['entry_check'];
                                                 $created_at = $row_select['created_at'];
                                                 $updated_at = $row_select['updated_at'];
 
@@ -71,11 +69,6 @@
                                                     $is_active_status = 'Done';
                                                 }
 
-                                                if($is_active_entry == 0){
-                                                    $is_active_entry = 'Fail';
-                                                }elseif($is_active_entry == 1){
-                                                    $is_active_entry = 'Pass';
-                                                }
                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?= $qd_id; ?></td>
@@ -83,7 +76,6 @@
                                                     <td class="text-center"><?= $qnumber ?></td>
                                                     <td class="text-center"><?= $service ?></td>
                                                     <td class="text-center"><?=  $is_active_status ?></td>
-                                                    <td class="text-center"><?= $is_active_entry ?></td>
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
@@ -137,7 +129,7 @@
                     </div>
                     <!-- end of modal header -->
                     <!-- start of edit modal form -->
-                    <form action="functions/edit-queue-screen.php" method="post">
+                    <form action="" method="post">
                         <!-- start of edit modal body -->                
                         <div class="modal-body">
                             <!-- start of edit modal row -->
@@ -166,8 +158,9 @@
                                                     <div class="form-group">
                                                         <label for="edit_entry_check" class="ps-2 pb-2">ENTRY STATUS</label>
                                                         <select class="form-select" name="edit_entry_check" id="edit_entry_check" >
-                                                           <option value = 1>Pass</option>
-                                                           <option value = 0>Fail</option>
+                                                           <option value = 0>Pending</option>
+                                                           <option value = 1>Completed</option>
+                                                           <option value = 2>Cancelled</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -207,7 +200,6 @@ $(document).ready(function () {
 
         var modalType = $(this).data('modal-type');
 
-        $('#edit_entry_check').val(data[5]);
         $('#edit_qd_id').val(data[0]);
         $('#edit_name').val(data[1]);
         $('#edit_queue_number').val(data[2])
