@@ -415,13 +415,6 @@ select option[value=""] [disabled]{
   color: #333; /* Darker text color for better readability */
   background: linear-gradient(to bottom, #ffffff, #f1f1f1); /* Subtle gradient background */
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Lighter box shadow for depth */
-  transform-style: preserve-3d; /* Enable 3D transformations */
-  transform: rotateX(15deg); /* Adjust the initial rotation angle */
-  transition: transform 0.5s ease; /* Smooth transition for animation */
-}
-
-.numPan:hover {
-  transform: rotateX(0deg); /* Rotate back to the original position on hover */
 }
 
 .inputnum {
