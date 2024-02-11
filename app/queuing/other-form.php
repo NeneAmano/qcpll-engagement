@@ -117,6 +117,15 @@
             <div class="row">
                 <div class="col">
                     <form>
+                        <label for="educ" class="form-label">Educational Attainment:</label>
+                        <input type="text" class="form-control" id="educ">
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <form>
                         <label for="status" class="form-label me-2">Status:</label>
                         <input type="text" class="form-control" id="status" value="<?= $new_status ?>">
                     </form>
