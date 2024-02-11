@@ -49,12 +49,13 @@ h4 {
 @media print {
     @page {
         size: landscape a5;
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
     }
-    body {
-        margin: 0;
-        padding: 0;
+    body  {
+        margin: 0 !important;
+        padding: 0 !important;
+       
     }
 
     p {

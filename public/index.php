@@ -73,7 +73,7 @@
                         <span class="text-danger"><?= $error_message; ?></span>
                         <div class="inputbox">
                             <input type="text" name="username" id="username" value="<?= $username_value ?>" required>
-                            <span>User name</span>
+                            <span>Username</span>
                         </div>
                         <div class="inputbox">
                             <input type="password" name="password" id="pass" required>

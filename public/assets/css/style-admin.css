@@ -30,9 +30,9 @@
 }
 
 .sidebar li a:hover {
-    background-color: #eee;
+    background-color: #706c6c;
     border-radius: 8px;
-    color: #292b2c;
+    color: #e0e9ec;
 }
 
 .admin-dropdown:hover {

@@ -47,8 +47,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NBI Clearance</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../../public/assets/css/style-nbi-clearance-form.css">
+
 </head>
 <body>
     <!-- nasa media query
@@ -422,22 +424,7 @@ select -->
                             </div>
 
 
-                            <!-- purpose -->
-                            <div class="row">
-                                <div class="col">
-                                    <div class="invi subtop-7">
-                                        <label>Purpose:</label>
-                                        <p>______________________________________________________________________
-                                        <p>
-                                    </div>
-                                    <div class="visi subtop-7">
-                                        <form>
-                                            <label for="purpose" class="form-label">Purpose:</label>
-                                            <input type="text" class="form-control" id="purpose">
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+
 
                         </div>
                     </div>
