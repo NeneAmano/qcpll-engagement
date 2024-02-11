@@ -22,7 +22,6 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-
     $('body').on('click', '.delete', function(event) {
 
         $('#deactivate_user_modal').modal('show');
