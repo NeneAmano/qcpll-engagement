@@ -429,7 +429,7 @@
                                         <!-- start of deactivate modal footer -->
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                            <button type="submit" name="deactivate" class="btn btn-danger">Yes</button>
+                                            <button type="submit" name="deactivate_user" class="btn btn-danger">Yes</button>
                                         </div>
                                         <!-- end of deactivate modal footer -->
                                     </div>
