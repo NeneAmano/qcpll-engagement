@@ -255,7 +255,7 @@
                 }
             }
         }
-        $sql = "SELECT * FROM questions WHERE is_deleted != 1;";
+        $sql = "SELECT * FROM questions WHERE is_deleted != 1 ORDER BY qt_id;";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -273,7 +273,7 @@
                         <div class="reaction-container">
                             <?php
                             if ($qt_id == 1) {
-                                $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 1 ORDER BY emoji_id DESC LIMIT 5;";
+                                $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 0 LIMIT 5;";
                                 $result_emoji = mysqli_query($conn, $sql_emoji);
                                 if (mysqli_num_rows($result_emoji) > 0) {
                                     while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
@@ -289,7 +289,16 @@
                                 <?php
                                     }
                                 }
-                            } else {
+                            } elseif($qt_id == 2) {
+                                ?>
+                                <div class="reaction">
+                                    <label>
+                                        <input type="radio" id="emoji<?= $question_id . $emoji_id ?>" name="emoji<?= $question_id ?>" value="<?= $emoji_id ?>" required>
+                                        <img src="../../<?= $image_path ?>" alt="Option 1">
+                                    </label>
+                                </div>
+                            <?php
+                            }elseif($qt_id == 3){
                                 ?>
                                 <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example" value="">
                             <?php
