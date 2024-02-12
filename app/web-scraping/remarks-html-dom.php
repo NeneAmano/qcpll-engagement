@@ -29,4 +29,6 @@
     echo $scraped_remarks;
     
     $sql = "UPDATE emoji SET remarks = '$scraped_remarks' WHERE emoji_id = $emoji_id";
-    mysqli_query($conn, $sql);
+    if(mysqli_query($conn, $sql)){
+        header('location: ../admin/emoji.php?add=successful');
+    }
