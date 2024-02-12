@@ -153,7 +153,7 @@
                                                                     <label for="add_tagalog_question">Tagalog Translation</label>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6 col-6 mt-3">
+                                                            <div class="col-md-8 col-6 mt-3">
                                                                 <div id="choices">Specify Choices
                                                                     <button onclick="add_status()" type="button" class="btn btn-primary mb-2 ms-2">Add</button>
                                                                     <button onclick="remove_status()" type="button" class="btn btn-danger mb-2 ms-2">Remove</button>
