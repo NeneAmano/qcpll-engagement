@@ -291,11 +291,25 @@
                                 }
                             } elseif($qt_id == 2) {
                                 ?>
-                                <div class="reaction">
-                                    <label>
-                                        <input type="radio" id="emoji<?= $question_id . $emoji_id ?>" name="emoji<?= $question_id ?>" value="<?= $emoji_id ?>" required>
-                                        <img src="../../<?= $image_path ?>" alt="Option 1">
-                                    </label>
+                                <div class="d-flex flex-column">
+                                    <?php
+                                        $sql_choice = "SELECT * FROM choices WHERE is_deleted != 1 AND question_id = $question_id";
+                                        $result_choice = mysqli_query($conn, $sql_choice);
+                                        if (mysqli_num_rows($result_choice) > 0) {
+                                            while ($row_choice = mysqli_fetch_assoc($result_choice)) {
+                                                $choice_id = $row_choice['choice_id'];
+                                                $choice = $row_choice['choice'];
+                                    ?>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="choice[]" value="" id="<?= $choice_id ?>">
+                                                    <label class="form-check-label" for="<?= $choice_id ?>">
+                                                        <?= $choice ?>
+                                                    </label>
+                                                </div>
+                                    <?php
+                                            }
+                                        }
+                                    ?>
                                 </div>
                             <?php
                             }elseif($qt_id == 3){
