@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Queue Monitoring</title>                        
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
     <?php
@@ -203,15 +204,6 @@ $(document).ready(function () {
         $('#edit_qd_id').val(data[0]);
         $('#edit_name').val(data[1]);
         $('#edit_queue_number').val(data[2])
-
-
-
-        // Show the appropriate modal based on modal type
-        if (modalType === 'user') {
-            $('#edit_user_modal').modal('show');
-        } else if(modalType === 'password') {
-            $('#edit_user_password_modal').modal('show');
-        }
     });
 });
 
