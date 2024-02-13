@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   PRIMARY KEY (`client_id`),
   KEY `age_id` (`age_id`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`age_id`) REFERENCES `age` (`age_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.client: ~26 rows (approximately)
 INSERT INTO `client` (`client_id`, `f_name`, `m_name`, `l_name`, `suffix`, `age_id`, `gender`, `education`, `occupation`, `status`, `created_at`, `updated_at`) VALUES
@@ -119,7 +119,13 @@ INSERT INTO `client` (`client_id`, `f_name`, `m_name`, `l_name`, `suffix`, `age_
 	(59, 'awaasdasd', 'sadzxc', 'zxc', '', 3, 'Female', 'HighSchool Level', 'Unemployed', 3, '2024-02-10 15:17:47', '2024-02-10 15:17:47'),
 	(60, 'qweqweqwe', '', 'qweqweqwe', '', 2, 'Female', 'Elementary Graduate', 'Student', 0, '2024-02-10 15:24:37', '2024-02-10 15:24:37'),
 	(61, 'zxc', '', 'zxc', '', 3, 'Others', 'HighSchool Level', 'Employed', 0, '2024-02-10 15:36:10', '2024-02-10 15:36:10'),
-	(62, 'test', '', 'test', '', 3, 'Female', 'HighSchool Graduate', 'Employed', 2, '2024-02-12 19:26:46', '2024-02-12 19:26:46');
+	(62, 'test', '', 'test', '', 3, 'Female', 'HighSchool Graduate', 'Employed', 2, '2024-02-12 19:26:46', '2024-02-12 19:26:46'),
+	(63, 'Bogart', '', 'Pedring', '', 5, 'Others', 'HighSchool Level', 'Unemployed', 1, '2024-02-13 01:47:12', '2024-02-13 01:47:12'),
+	(64, 'asdasd', '', 'asdas', '', 2, 'Female', 'HighSchool Level', 'Unemployed', 2, '2024-02-13 02:57:46', '2024-02-13 02:57:46'),
+	(65, 'zczxc', '', 'zxczxc', '', 3, 'Male', 'Elementary Graduate', 'Student', 0, '2024-02-13 02:58:21', '2024-02-13 02:58:21'),
+	(66, 'Hedgehog', '', 'Duck', '', 2, 'Male', 'HighSchool Graduate', 'Employed', 2, '2024-02-13 03:02:57', '2024-02-13 03:02:57'),
+	(67, 'Jumbo', '', 'Hotdog', '', 3, 'Others', 'Elementary Graduate', 'Student', 3, '2024-02-13 03:03:43', '2024-02-13 03:03:43'),
+	(68, 'dfdfdf', 'd', 'dfdfdf', '', 2, 'Female', 'HighSchool Level', 'Student', 2, '2024-02-13 03:06:33', '2024-02-13 03:06:33');
 
 -- Dumping structure for table qcpl_engagement.emoji
 CREATE TABLE IF NOT EXISTS `emoji` (
@@ -197,7 +203,7 @@ INSERT INTO `questions` (`question_id`, `qt_id`, `qc_id`, `english_question`, `t
 	(12, 1, 2, 'Are you satisfied with the service you received?', 'Nasiyahan ka ba sa iyong serbisyong natanggap?', 0, '2024-02-10 09:10:38', '2024-02-10 09:10:38'),
 	(13, 1, 3, 'Is the facility clean?', 'Malinis ba ang pasilidad?', 0, '2024-02-10 09:10:53', '2024-02-10 09:10:53'),
 	(14, 1, 3, 'Do you feel comfortable while waiting?', 'Komportable ka ba habang naghihintay?\r\n', 0, '2024-02-10 09:11:10', '2024-02-10 09:11:10'),
-	(15, 3, 4, 'How was your overall experience with our system?', 'Kumusta ang iyong pangkalahatang karanasan sa aming sistema?', 0, '2024-02-10 09:11:37', '2024-02-10 09:11:37'),
+	(15, 3, 2, 'How was your overall experience with our services?', 'Kumusta ang iyong pangkalahatang karanasan sa aming mga serbisyo?', 0, '2024-02-10 09:11:37', '2024-02-13 01:26:30'),
 	(22, 2, 2, 'How did you learn about our service?', 'Paano mo natuklasan ang aming serbisyo?', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
 	(23, 2, 4, 'What positive aspects or experiences would you like to share?', 'Ano ang mga positibong aspeto o karanasan na nais mong ibahagi?', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
 	(24, 2, 4, 'Category of concerns or issues faced?', 'Alin ang mga isyu na iyong nakita o naranasan?', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01');
@@ -254,7 +260,7 @@ INSERT INTO `queue` (`queue_id`, `total_queue`, `queue_date`, `updated_at`) VALU
 	(8, 6, '2024-02-07 16:00:00', '2024-02-08 01:30:33'),
 	(9, 14, '2024-02-08 16:00:00', '2024-02-08 20:28:06'),
 	(10, 10, '2024-02-09 16:00:00', '2024-02-10 15:36:10'),
-	(11, 1, '2024-02-12 16:00:00', '2024-02-12 19:26:46');
+	(11, 7, '2024-02-12 16:00:00', '2024-02-13 03:06:33');
 
 -- Dumping structure for table qcpl_engagement.queue_details
 CREATE TABLE IF NOT EXISTS `queue_details` (
@@ -263,36 +269,43 @@ CREATE TABLE IF NOT EXISTS `queue_details` (
   `queue_number` varchar(255) NOT NULL,
   `service` varchar(255) NOT NULL,
   `status` tinyint(1) DEFAULT '0' COMMENT '0 = Pending\r\n1 = Complete',
-  `entry_check` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`qd_id`),
   KEY `client_id` (`client_id`),
   CONSTRAINT `queue_details_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.queue_details: ~19 rows (approximately)
-INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `entry_check`, `created_at`, `updated_at`) VALUES
-	(65, 40, 'N-00001', 'NBI', 0, 1, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
-	(66, 40, 'N-00001', 'Police', 0, 1, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
-	(67, 41, 'P-00001', 'Police', 0, 1, '2024-02-08 20:03:06', '2024-02-08 20:03:06'),
-	(68, 42, 'P-00002', 'Police', 0, 1, '2024-02-08 20:03:52', '2024-02-08 20:03:52'),
-	(75, 48, 'N-00002', 'Police', 0, 1, '2024-02-08 20:25:28', '2024-02-08 20:25:28'),
-	(76, 49, 'P-00003', 'NBI', 0, 1, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
-	(77, 49, 'P-00003', 'Police', 0, 1, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
-	(78, 50, 'P-00004', 'NBI', 0, 1, '2024-02-08 20:27:33', '2024-02-08 20:27:33'),
-	(79, 51, 'N-00003', 'PSA', 0, 1, '2024-02-08 20:28:06', '2024-02-08 20:28:06'),
-	(80, 52, 'N-00001', 'NBI', 1, 1, '2024-02-10 13:29:39', '2024-02-10 15:44:57'),
-	(81, 53, 'N-00002', 'NBI', 0, 1, '2024-02-10 13:45:13', '2024-02-10 13:45:13'),
-	(82, 54, 'N-00003', 'NBI', 0, 1, '2024-02-10 13:51:14', '2024-02-10 13:51:14'),
-	(83, 55, 'N-00004', 'NBI', 0, 1, '2024-02-10 13:54:54', '2024-02-10 13:54:54'),
-	(84, 56, 'P-00001', 'NBI', 0, 1, '2024-02-10 13:57:19', '2024-02-10 13:57:19'),
-	(85, 57, 'P-00002', 'NBI', 0, 1, '2024-02-10 15:01:54', '2024-02-10 15:01:54'),
-	(86, 58, 'P-00003', 'NBI', 0, 1, '2024-02-10 15:07:05', '2024-02-10 15:07:05'),
-	(87, 59, 'P-00004', 'NBI', 0, 1, '2024-02-10 15:17:47', '2024-02-10 15:17:47'),
-	(88, 60, 'N-00005', 'Police', 0, 1, '2024-02-10 15:24:37', '2024-02-10 15:24:37'),
-	(89, 61, 'N-00006', 'NBI', 0, 1, '2024-02-10 15:36:10', '2024-02-10 15:36:10'),
-	(90, 62, 'P-00001', 'NBI', 1, 1, '2024-02-12 19:26:46', '2024-02-12 19:38:20');
+INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `created_at`, `updated_at`) VALUES
+	(65, 40, 'N-00001', 'NBI', 0, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
+	(66, 40, 'N-00001', 'Police', 0, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
+	(67, 41, 'P-00001', 'Police', 0, '2024-02-08 20:03:06', '2024-02-08 20:03:06'),
+	(68, 42, 'P-00002', 'Police', 0, '2024-02-08 20:03:52', '2024-02-08 20:03:52'),
+	(75, 48, 'N-00002', 'Police', 0, '2024-02-08 20:25:28', '2024-02-08 20:25:28'),
+	(76, 49, 'P-00003', 'NBI', 0, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
+	(77, 49, 'P-00003', 'Police', 0, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
+	(78, 50, 'P-00004', 'NBI', 0, '2024-02-08 20:27:33', '2024-02-08 20:27:33'),
+	(79, 51, 'N-00003', 'PSA', 0, '2024-02-08 20:28:06', '2024-02-08 20:28:06'),
+	(80, 52, 'N-00001', 'NBI', 0, '2024-02-10 13:29:39', '2024-02-13 01:32:44'),
+	(81, 53, 'N-00002', 'NBI', 0, '2024-02-10 13:45:13', '2024-02-10 13:45:13'),
+	(82, 54, 'N-00003', 'NBI', 0, '2024-02-10 13:51:14', '2024-02-10 13:51:14'),
+	(83, 55, 'N-00004', 'NBI', 0, '2024-02-10 13:54:54', '2024-02-10 13:54:54'),
+	(84, 56, 'P-00001', 'NBI', 0, '2024-02-10 13:57:19', '2024-02-10 13:57:19'),
+	(85, 57, 'P-00002', 'NBI', 0, '2024-02-10 15:01:54', '2024-02-10 15:01:54'),
+	(86, 58, 'P-00003', 'NBI', 0, '2024-02-10 15:07:05', '2024-02-10 15:07:05'),
+	(87, 59, 'P-00004', 'NBI', 0, '2024-02-10 15:17:47', '2024-02-10 15:17:47'),
+	(88, 60, 'N-00005', 'Police', 0, '2024-02-10 15:24:37', '2024-02-10 15:24:37'),
+	(89, 61, 'N-00006', 'NBI', 0, '2024-02-10 15:36:10', '2024-02-10 15:36:10'),
+	(90, 62, 'P-00001', 'NBI', 0, '2024-02-12 19:26:46', '2024-02-13 02:44:01'),
+	(91, 63, 'P-00002', 'NBI', 1, '2024-02-13 01:47:12', '2024-02-13 02:43:28'),
+	(92, 63, 'P-00002', 'Police', 1, '2024-02-13 01:47:12', '2024-02-13 02:43:39'),
+	(93, 63, 'P-00002', 'PSA', 1, '2024-02-13 01:47:12', '2024-02-13 02:43:39'),
+	(94, 64, 'P-00003', 'NBI', 0, '2024-02-13 02:57:46', '2024-02-13 02:57:46'),
+	(95, 65, 'N-00001', 'NBI', 0, '2024-02-13 02:58:21', '2024-02-13 02:58:21'),
+	(96, 66, 'P-00004', 'Police', 0, '2024-02-13 03:02:57', '2024-02-13 03:02:57'),
+	(97, 67, 'P-00005', 'Police', 0, '2024-02-13 03:03:43', '2024-02-13 03:03:43'),
+	(98, 68, 'P-00006', 'PSA', 0, '2024-02-13 03:06:33', '2024-02-13 03:06:33');
 
 -- Dumping structure for table qcpl_engagement.service
 CREATE TABLE IF NOT EXISTS `service` (
