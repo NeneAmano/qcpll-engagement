@@ -39,7 +39,7 @@ function remove_status() {
 
 // function for showing the div of choices
 function showfield(name) {
-    if (name == '3') document.getElementById('choices').style.display = "block";
+    if (name == '2') document.getElementById('choices').style.display = "block";
     else document.getElementById('choices').style.display = "none";
 }
 

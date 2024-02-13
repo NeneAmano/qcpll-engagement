@@ -6,8 +6,6 @@
     }else{
         if(isset($_GET['client_id'])){
             $client_id = $_GET['client_id'];
-            $sql = "UPDATE queue_details SET status = 1 WHERE client_id = $client_id;";
-            mysqli_query($conn, $sql);
         }else{
             header('location: feedback.php');
             die();
@@ -255,7 +253,7 @@
                 }
             }
         }
-        $sql = "SELECT * FROM questions WHERE is_deleted != 1;";
+        $sql = "SELECT * FROM questions WHERE is_deleted != 1 ORDER BY qt_id;";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
@@ -273,13 +271,12 @@
                         <div class="reaction-container">
                             <?php
                             if ($qt_id == 1) {
-                                $sql_emoji = "SELECT * FROM emoji WHERE UNICODE != '0' ORDER BY emoji_id DESC LIMIT 5;";
+                                $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 0 ORDER BY emoji_id DESC LIMIT 5;";
                                 $result_emoji = mysqli_query($conn, $sql_emoji);
                                 if (mysqli_num_rows($result_emoji) > 0) {
                                     while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
                                         $emoji_id = $row_emoji['emoji_id'];
                                         $image_path = $row_emoji['image_path'];
-                                        $value = $row_emoji['value'];
                             ?>
                                         <div class="reaction">
                                             <label>
@@ -290,7 +287,30 @@
                                 <?php
                                     }
                                 }
-                            } else {
+                            } elseif($qt_id == 2) {
+                                ?>
+                                <div class="d-flex flex-column">
+                                    <?php
+                                        $sql_choice = "SELECT * FROM choices WHERE is_deleted != 1 AND question_id = $question_id";
+                                        $result_choice = mysqli_query($conn, $sql_choice);
+                                        if (mysqli_num_rows($result_choice) > 0) {
+                                            while ($row_choice = mysqli_fetch_assoc($result_choice)) {
+                                                $choice_id = $row_choice['choice_id'];
+                                                $choice = $row_choice['choice'];
+                                    ?>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="choice[]" value="" id="<?= $choice_id ?>">
+                                                    <label class="form-check-label" for="<?= $choice_id ?>">
+                                                        <?= $choice ?>
+                                                    </label>
+                                                </div>
+                                    <?php
+                                            }
+                                        }
+                                    ?>
+                                </div>
+                            <?php
+                            }elseif($qt_id == 3){
                                 ?>
                                 <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example" value="">
                             <?php

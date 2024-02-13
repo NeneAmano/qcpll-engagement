@@ -51,10 +51,11 @@
                     if($file_error === 0) {
                         if($file_size < 5000000) {
                             $file_name_new = $add_unicode_name. "." .$file_actual_ext;
-                            $file_destination = '../../public/assets/images/emojis/' .$file_name_new;
+                            $file_path = 'public/assets/images/emojis/' .$file_path. $file_name_new;
+                            $file_destination = '../../' .$file_path;
                             move_uploaded_file($file_tmp_name, $file_destination);
 
-                            // Read JSON file
+                            // Read JSON file 
                             $jsonData = file_get_contents('../web-scraping/emoji.json');
 
                             // Decode JSON data
@@ -76,7 +77,7 @@
                                     $add_unicode_block = $emoji['Unicode block'];
                                     $add_remarks = '';
 
-                                    $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_destination', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
+                                    $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_path', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
                             
                                     if(mysqli_query($conn, $sql)){
                                         // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
@@ -85,8 +86,6 @@
                                         $small_caps_unicode = strtolower($hypen_unicode);
                                         $emoji_id = mysqli_insert_id($conn);
                                         echo $small_caps_unicode;
-                                        // header('location: ../web-scraping/remarks-html-dom.php');
-                                        // header('location: ../web-scraping/remarks-html-dom.php');
                                         header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$small_caps_unicode. '&emoji_id=' .$emoji_id);
                                         // die();
 
@@ -236,7 +235,7 @@
                             ?>
                                         <tr>
                                             <td class="text-center"><?= $emoji_id ?></td>
-                                            <td class="text-center"><img style="height: 40px" src="<?= $image_path ?>" alt=""></td>
+                                            <td class="text-center"><img style="height: 40px" src="../../<?= $image_path ?>" alt=""></td>
                                             <td class="text-center d-none"><?= $char ?></td>
                                             <td class="text-center d-none"><?= $image ?></td>
                                             <td class="text-center d-none"><?= $unicode_codepoint ?></td>

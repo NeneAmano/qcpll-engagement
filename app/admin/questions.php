@@ -25,7 +25,7 @@
             // Initialize an empty array
             $choices = array();
 
-            if($add_question_type !== '3'){
+            if($add_question_type !== '2'){
                 $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
                 if(mysqli_query($conn, $sql)){
                     header('location: questions.php?add=successful');
@@ -153,13 +153,13 @@
                                                                     <label for="add_tagalog_question">Tagalog Translation</label>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-6 col-6 mt-3">
+                                                            <div class="col-md-8 col-6 mt-3">
                                                                 <div id="choices">Specify Choices
                                                                     <button onclick="add_status()" type="button" class="btn btn-primary mb-2 ms-2">Add</button>
                                                                     <button onclick="remove_status()" type="button" class="btn btn-danger mb-2 ms-2">Remove</button>
                                                                     <input type="text" class="add_choices[] form-control mb-2" name="add_choices[]" id="add_choices_1">
                                                                     <div id="new_chq_status"></div>
-                                                                    <input type="text" value="1" id="total_chq_status" name="total_input">
+                                                                    <input type="hidden" value="1" id="total_chq_status" name="total_input">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -378,7 +378,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-12 mt-3">
                                                     <div class="form-group">
-                                                        <input type="text" name="delete_question_id" id="delete_question_id" class="form-control mb-3">
+                                                        <input type="hidden" name="delete_question_id" id="delete_question_id" class="form-control mb-3">
                                                         <h4>Are you sure you want to delete this question?</h4>
                                                     </div>
                                                 </div>
