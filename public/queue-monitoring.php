@@ -237,7 +237,7 @@
         </div>
     </div>
 
-    <img src="./assets/images/duck.gif" alt="" class="duck">
+    <img src="./assets/images/hedgehog.gif" alt="" class="duck">
 
     <script>
         setInterval(function() {
