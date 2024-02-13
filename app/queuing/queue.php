@@ -218,14 +218,13 @@
                     if($nbi !== ''){
                         $sql_nbi = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$nbi');";
                         if(mysqli_query($conn, $sql_nbi)){
-                            header("location: nbi-clearance-form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate);
+                            header("location: form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate. "&service=" .$nbi);
                         }
-                        
                     }
                     if($police !== ''){
                         $sql_police = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$police');";
                         if(mysqli_query($conn, $sql_police)){
-                            header("location: police-clearance-form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate);
+                            header("location: form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate. "&service=" .$police);
                         }
                     }
 
