@@ -273,7 +273,7 @@
                         <div class="reaction-container">
                             <?php
                             if ($qt_id == 1) {
-                                $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 0 LIMIT 5;";
+                                $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 0 ORDER BY emoji_id DESC LIMIT 5;";
                                 $result_emoji = mysqli_query($conn, $sql_emoji);
                                 if (mysqli_num_rows($result_emoji) > 0) {
                                     while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
