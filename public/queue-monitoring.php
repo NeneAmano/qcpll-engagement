@@ -173,7 +173,6 @@
                         DATE(queue_details.created_at) = CURDATE() 
                         AND client.`status` IN (1, 2, 3) 
                         AND queue_details.`status` = 0 
-                        AND queue_details.`entry_check` = 1
                         GROUP BY 
                         queue_details.queue_number
                         LIMIT 6";
@@ -209,8 +208,7 @@
                 $nonpriorSql = "SELECT client.`status` AS client_status, queue_details.queue_number, GROUP_CONCAT(queue_details.service) AS services, MAX(queue_details.`status`) AS queue_status
                                     FROM client
                                     JOIN queue_details ON client.client_id = queue_details.client_id
-                                    WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0 AND queue_details.`entry_check` = 1
-                                    GROUP BY queue_details.queue_number LIMIT 6;
+                                    WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0 GROUP BY queue_details.queue_number LIMIT 6;
                                     ";
                 $result2 = mysqli_query($conn, $nonpriorSql);
 
