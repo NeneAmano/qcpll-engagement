@@ -93,6 +93,7 @@ if (($user_role_id_session !== 1)) {
                 </select>
 
                 <button type="submit" name="showYearly" class="btn btn-primary btn-sm">Show Yearly</button>
+                <button class="btn btn-primary">Export Data</button>
 
                 <!-- Submit Button -->
 
