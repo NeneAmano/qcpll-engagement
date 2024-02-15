@@ -56,7 +56,7 @@
             transform: scale(1.1);
             margin-left: 5em;
             margin-top: 5em;
-            width: 50em;
+            width: 40em;
             height: 40em;
             display: grid;
         }   
@@ -67,10 +67,10 @@
             padding: var(--card-padding) !important;
             border-radius: var(--card-border-radius);
             box-shadow: var(--box-shadow);
-            margin-left: 4em;
+            margin-left: 3em;
             margin-top: 5em;
             height: 20em;
-            min-width: 50em;
+            min-width: 43em;
         }
         .main-card h3{
             margin-bottom: 70px;
@@ -83,7 +83,7 @@
             border-radius: var(--card-border-radius);
             box-shadow: var(--box-shadow);
             position: relative;
-            left: 60em;
+            left: 50em;
             bottom: 69em;
             width: 25em;
             height: 25em;
@@ -97,7 +97,7 @@
             border-radius: var(--card-border-radius);
             box-shadow: var(--box-shadow);
             position: relative;
-            left: 60em;
+            left: 50em;
             bottom: 68em;
             width: 25em;
             height: 25em;
@@ -244,7 +244,7 @@
             opacity: 1;
         }
         }
-
+        
     </style>
 </head>
 <body>
