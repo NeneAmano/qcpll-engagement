@@ -45,7 +45,6 @@
             margin: 0%;
         }
 
-
         .main-card{
             margin-top: 2em;
             cursor: pointer;
@@ -56,7 +55,7 @@
             transform: scale(1.1);
             margin-left: 5em;
             margin-top: 5em;
-            width: 40em;
+            min-width: 34em; 
             height: 40em;
             display: grid;
         }   
@@ -70,7 +69,7 @@
             margin-left: 3em;
             margin-top: 5em;
             height: 20em;
-            min-width: 43em;
+            min-width: 38em;
         }
         .main-card h3{
             margin-bottom: 70px;
@@ -83,37 +82,38 @@
             border-radius: var(--card-border-radius);
             box-shadow: var(--box-shadow);
             position: relative;
-            left: 50em;
+            left: 45em;
             bottom: 69em;
             width: 25em;
-            height: 25em;
+            height: 44.3em;
             display: grid;
+            
         }
         .card-2{
-            margin-top: 1em;
+          
             cursor: pointer;
             background-color: var(--color-white);
             padding: 20px !important;
             border-radius: var(--card-border-radius);
             box-shadow: var(--box-shadow);
             position: relative;
-            left: 50em;
-            bottom: 68em;
+            left: 45em;
+            bottom: 72.5em;
             width: 25em;
-            height: 25em;
+            height: 20.4em;
             display: grid;
         }
         .card-body{
         display: flex;
         flex-direction: row;
-        gap: 4em;
+        gap: 3em;
         }
         .card-body span{
             text-align: center;
         }
 
         .emoji-img{
-            width: 45px;
+            width: 35px;
         }
         span p{
             font-size: 0.8em;
@@ -249,8 +249,8 @@
 </head>
 <body>
 <section>
-        <div class="col-md-2">
-            <div class="main-card">  
+        <div class="try col-md-2">
+        <div class="main-card">  
             <h3>Emoji-based Feedback Ratings</h3>
 
                 <div class="card-content">
@@ -392,13 +392,118 @@
                 <div class="bar" data-percentage="74.7%"></div>
             </div>
     </section>
+    <style>
+        .card-analysis{
+           display: flex;
+        }
+        .card-main-contetn-analysis{
+            display: flex;
+        }
+        .emoji-img-analysis{
+            width: 4em !important;
+            height: 2em;
+            margin-top: 0.8em;
+        }
+        .card-main-contetn-analysis p{
+            font-size: 0.7em;
+            font-style: italic;
+            color: #212121;
+        }
+        .card-body-analysis-text p{
+            font-size: 0.7em;
+            font-style: italic;
+            color: #212121;
+        }
+    </style>
     <section>
     <div class="card-1">
         <div class="card-title">
             <p>Analysis</p>
-        </div>
 
+            <!-- for overall Experience -->
+            <div class="card-title-analysis">
+                    <p>Overall Experience</p>
+                </div>
+            <div class="card-analysis">
+ 
+                <div class="card-main-contetn-analysis">
+                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                    <div class="card-body-analysis">
+                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                        <p>Sentiment score: 0.421</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for staff assistance -->
+            <div class="card-title-analysis">
+                    <p>Staff Experience</p>
+                </div>
+            <div class="card-analysis">
+ 
+                <div class="card-main-contetn-analysis">
+                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                    <div class="card-body-analysis">
+                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                        <p>Sentiment score: 0.421</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for services Experience -->
+            <div class="card-title-analysis">
+                    <p>Services Experience</p>
+            </div>
+            <div class="card-analysis">
+ 
+                <div class="card-main-contetn-analysis">
+                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                    <div class="card-body-analysis">
+                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                        <p>Sentiment score: 0.421</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- for Ambiance Experience -->
+            <div class="card-title-analysis">
+                    <p>Ambiance Experience</p>
+            </div>
+            <div class="card-analysis">
+ 
+                <div class="card-main-contetn-analysis">
+                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                    <div class="card-body-analysis">
+                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                        <p>Sentiment score: 0.421</p>
+                    </div>
+                </div>
+            </div>
+
+                <!-- for text-based ratings -->
+                <div class="card-title-analysis">
+                    <p>Overall Text-Based Ratings</p>
+            </div>
+            <div class="card-analysis">
+                    <div class="card-body-analysis-text">
+                        <p>Remarks:Positive</p>
+                        <p>Score: 69.1%</p>
+                    </div>
+            </div>
+
+            
+            
+        </div>
+        <p></p>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
     <div class="card-2">
         <div class="card-title">
             <p>Recommendations</p>
