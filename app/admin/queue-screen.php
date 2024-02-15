@@ -73,7 +73,6 @@
                                                 }elseif($status == 2){
                                                     $new_status = 'Cancelled';
                                                 }
-
                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?= $qd_id; ?></td>
@@ -109,7 +108,7 @@
                                                 <td colspan="" class="text-center d-none"></td>
                                                 <td colspan="" class="text-center d-none"></td>
                                                 <td colspan="" class="text-center d-none"></td>
-                                                <td colspan="8" class="text-center">No records found.</td>
+                                                <td colspan="9" class="text-center">No records found.</td>
                                             </tr>
                                 <?php
                                         }
