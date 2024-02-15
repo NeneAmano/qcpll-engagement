@@ -239,7 +239,7 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
                     <p>Would you like to submit a feedback?</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="feedbackbtn1" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1">No</button>
+                    <button type="button" class="btn btn-secondary" id="feedbackbtn1" data-bs-toggle="modal" data-bs-target="#exampleModalCenter1"><a href="includes/transaction-completed.php?client_id=<?= $client_id ?>">No</a></button>
                     <button type="button" class="btn btn-success"><a href="feedback-form.php?client_id=<?= $client_id ?>" style="text-decoration:none; color:#fff;">Yes</a></button>
                 </div>
             </div>
