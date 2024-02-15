@@ -6,14 +6,66 @@
     }else{
         if(isset($_GET['client_id'])){
             $client_id = $_GET['client_id'];
+
+            $sql_completed = "UPDATE queue_details SET status = 1 WHERE entry_check = 1 AND client_id = $client_id;";
+            (mysqli_query($conn, $sql_completed));
+            
+            $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
+            (mysqli_query($conn, $sql_rejected));
+            
+
+
+            // get the total rows of question table
+            $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions;";
+            $result_row = mysqli_query($conn, $sql_row);
+            if (mysqli_num_rows($result_row) > 0) {
+                while ($row_row = mysqli_fetch_assoc($result_row)) {
+                    $total_rows = $row_row['total_rows'];
+                }
+            }
+            if (isset($_POST['submit'])) {
+                // $username = mysqli_real_escape_string($conn, $_POST['username']);
+                // $username = mysqli_real_escape_string($conn, $_POST['username']);
+                // Iterate through $others and echo the values
+                for ($i = 1; $i <= $total_rows; $i++) {
+                    if (isset($_POST["question{$i}"])) {
+                        $question_value = mysqli_real_escape_string($conn, $_POST["question{$i}"]);
+
+                        $sql_qt = "SELECT qt_id FROM questions WHERE question_id = $question_value;";
+                        $result_qt = mysqli_query($conn, $sql_qt);
+                        if (mysqli_num_rows($result_qt) > 0) {
+                            $row_qt = mysqli_fetch_assoc($result_qt);
+                            $question_type = $row_qt['qt_id'];
+                        }
+
+                        if ($question_type == 2) {
+                            $emoji_value = 6;
+                        }
+
+                        if (isset($_POST["text{$i}"])) {
+                            // Get the value of the emoji radio button for the current question
+                            $text_value = mysqli_real_escape_string($conn, $_POST["text{$i}"]);
+                            echo $text_value;
+                        }
+
+                        if (isset($_POST["emoji{$i}"])) {
+                            // Get the value of the emoji radio button for the current question
+                            $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
+                            echo $emoji_value;
+                        }
+
+                        $sql = "INSERT INTO feedback (client_id, question_id, emoji_id, text_feedback) VALUES ($client_id, $question_value, $emoji_value, '$text_value');";
+                        mysqli_query($conn, $sql);
+                    }
+                }
+            }
         }else{
             header('location: feedback.php');
             die();
         }
     }
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -214,50 +266,6 @@
     <form id="regForm" method="post" action="">
         <!-- One "tab" for each step in the form: -->
         <?php
-        // get the total rows of question table
-        $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions;";
-        $result_row = mysqli_query($conn, $sql_row);
-        if (mysqli_num_rows($result_row) > 0) {
-            while ($row_row = mysqli_fetch_assoc($result_row)) {
-                $total_rows = $row_row['total_rows'];
-            }
-        }
-        if (isset($_POST['submit'])) {
-            // $username = mysqli_real_escape_string($conn, $_POST['username']);
-            // $username = mysqli_real_escape_string($conn, $_POST['username']);
-            // Iterate through $others and echo the values
-            for ($i = 1; $i <= $total_rows; $i++) {
-                if (isset($_POST["question{$i}"])) {
-                    $question_value = mysqli_real_escape_string($conn, $_POST["question{$i}"]);
-
-                    $sql_qt = "SELECT qt_id FROM questions WHERE question_id = $question_value;";
-                    $result_qt = mysqli_query($conn, $sql_qt);
-                    if (mysqli_num_rows($result_qt) > 0) {
-                        $row_qt = mysqli_fetch_assoc($result_qt);
-                        $question_type = $row_qt['qt_id'];
-                    }
-
-                    if ($question_type == 2) {
-                        $emoji_value = 6;
-                    }
-
-                    if (isset($_POST["text{$i}"])) {
-                        // Get the value of the emoji radio button for the current question
-                        $text_value = mysqli_real_escape_string($conn, $_POST["text{$i}"]);
-                        echo $text_value;
-                    }
-
-                    if (isset($_POST["emoji{$i}"])) {
-                        // Get the value of the emoji radio button for the current question
-                        $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
-                        echo $emoji_value;
-                    }
-
-                    $sql = "INSERT INTO feedback (client_id, question_id, emoji_id, text_feedback) VALUES ($client_id, $question_value, $emoji_value, '$text_value');";
-                    mysqli_query($conn, $sql);
-                }
-            }
-        }
         $sql = "SELECT * FROM questions WHERE is_deleted != 1 ORDER BY qt_id;";
         $result = mysqli_query($conn, $sql);
         if (mysqli_num_rows($result) > 0) {
@@ -307,7 +315,7 @@
                                                 <label class="form-check-label" for="<?= $choice_id ?>">
                                                         <?= $choice ?>
                                                     </label>
-                                                    <input class="form-check-input" type="checkbox" name="choice[]" value="" id="<?= $choice_id ?>">
+                                                    <input class="form-check-input" type="checkbox" name="choice<?= $choice_id ?>[]" value="" id="<?= $choice_id ?>">
 
                                                 </div>
                                                 
