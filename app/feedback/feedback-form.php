@@ -28,7 +28,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
     <style>
-        
+        body{
+            height: 40vh;
+        }
         #regForm {
             background-color: #e0f0e3;
             margin: 100px auto;
@@ -37,6 +39,9 @@
             width: 50%;
             min-width: 300px;
             border-radius: 7px;
+            margin-bottom: 40px !important;
+            position: relative;
+            bottom: 4.5em;
         }
         h1 {
             text-align: center;
@@ -113,12 +118,12 @@
             text-align: center;
         }
         .reaction img {
-            width: 100px;
+            width: 80px;
             /* Adjust the size as needed */
             margin-top: 10px;
         }
         .reaction img:hover {
-            width: 120px;
+            width: 100px;
             transition: ease-in-out 0.2s;
             cursor: pointer;
         }
@@ -299,16 +304,32 @@
                                                 $choice = $row_choice['choice'];
                                     ?>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="choice[]" value="" id="<?= $choice_id ?>">
-                                                    <label class="form-check-label" for="<?= $choice_id ?>">
+                                                <label class="form-check-label" for="<?= $choice_id ?>">
                                                         <?= $choice ?>
                                                     </label>
+                                                    <input class="form-check-input" type="checkbox" name="choice[]" value="" id="<?= $choice_id ?>">
+
                                                 </div>
+                                                
                                     <?php
                                             }
                                         }
                                     ?>
                                 </div>
+                                <style>
+                                    .form-check{
+                                        display: flex;
+                                        flex-direction: row;
+                                    }
+                                    .form-check-input{
+                                        /* display: flex;
+                                        flex-direction: column;
+                                        justify-content: flex-start;
+                                        align-items: flex-start; */
+                                        position: absolute;
+                                        right: 10em;
+                                    }
+                                </style>
                             <?php
                             }elseif($qt_id == 3){
                                 ?>

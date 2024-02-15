@@ -130,7 +130,7 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
         <form action="" method="post">
             <div class="flex">
                 <div class="textBox">
-                    <p style="font-size: 1.5em;">Please enter your queue number</p>
+                    <p style="font-size: 1.5em; font-weight:500; text-transform:capitalize;">Please enter your queue number</p>
                     <p style="font-size: 1em; font-style:italic;">Mangyaring ilagay sa ibaba inyong queue number</p>
                     <input type="text" name="id" id="" class="inputnum" readonly>
                     <br>
@@ -147,11 +147,11 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
                             $client_id = $row['client_id']
                     ?>
                             <p style="font-size: 1.5em;">Client Identifier</p>
-                            <p style="font-size: 1em; font-style:italic;">Note* This is a type box that will auto-fill when your account exists.</p>
+                            <p style="font-size: 0.7em; font-style:italic;">Note* This is a type box that will auto-fill when your account exists.</p>
 
-                            <p style="font-size: 1em; font-style:italic;">Paalala* Ito ay kusang naglalagay ng pangalan kung kayo ay nakagawa na ng account.</p>
+                            <p style="font-size: 0.7em; font-style:italic;">Paalala* Ito ay kusang naglalagay ng pangalan kung kayo ay nakagawa na ng account.</p>
                             <input type="text" name="" id="" disabled class="inputnum" style="padding:0px;" value="<?php echo $row['masked_name'] ?>" />
-
+                            <br>
                             <button type="button" class="btn btn-success feedbackbtn" data-toggle="modal" data-target="#exampleModalCenter">Submit</button>
                         <?php
                         } else {
