@@ -4,6 +4,19 @@
     if(($user_role_id_session !== 1)) {
         header('location: login.php?error=accessdenied');
         die();
+    }else{
+        if(isset($_GET['archived-records'])){
+            $archived = $_GET['archived-records'];
+
+            if($archived == 'yes'){
+                $is_deleted = 1;
+            }elseif($archived == 'no'){
+                $is_deleted = 0;
+            }
+        }else{
+            header('location: dashboard.php');
+            die();
+        }
     }
 ?>
 <!DOCTYPE html>
@@ -61,7 +74,7 @@
             <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" id="questions" href="questions.php">Questions</a>
+                        <a class="nav-link text-dark" id="questions" href="questions.php?archived-records=no">Questions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" id="question-type" href="question-type.php">Question Type</a>
@@ -77,6 +90,14 @@
                 <div class="container-fluid">
                     <!-- start of add question modal button -->
                     <button type="button" class="btn btn-primary mb-3 mt-3 float-start" data-bs-toggle="modal" data-bs-target="#add_question_modal">Add Question</button>
+                    <?php
+                        if($is_deleted == 1){
+                            echo '<button type="button" class="btn btn-warning mb-3 mt-3 float-end"><a href="questions.php?archived-records=no" class="text-decoration-none text-dark">Show Current Records</a></button>';
+                        }elseif($is_deleted == 0){
+                            echo '<button type="button" class="btn btn-warning mb-3 mt-3 float-end"><a href="questions.php?archived-records=yes" class="text-decoration-none text-dark">Show Archived Records</a></button>';
+                        }
+                    ?>
+                    
                     <!-- end of add question modal button -->
                     <!-- start of add question modal -->
                     <div class="modal fade" id="add_question_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -218,7 +239,7 @@
                                     <!-- start of table body -->
                                     <tbody>
                                     <?php
-                                        $sql_select = "SELECT questions.*, question_type.question_type, question_category.question_category FROM question_category INNER JOIN questions USING (qc_id) INNER JOIN question_type USING (qt_id) WHERE questions.is_deleted != 0 ORDER BY questions.question_id DESC;";
+                                        $sql_select = "SELECT questions.*, question_type.question_type, question_category.question_category FROM question_category INNER JOIN questions USING (qc_id) INNER JOIN question_type USING (qt_id) WHERE questions.is_deleted = $is_deleted ORDER BY questions.question_id DESC;";
                                         $result_select = mysqli_query($conn, $sql_select);
                                         if(mysqli_num_rows($result_select) > 0){
                                             while($row_select = mysqli_fetch_assoc($result_select)){
