@@ -218,7 +218,7 @@
                                     <!-- start of table body -->
                                     <tbody>
                                     <?php
-                                        $sql_select = "SELECT questions.*, question_type.question_type, question_category.question_category FROM question_category INNER JOIN questions USING (qc_id) INNER JOIN question_type USING (qt_id) WHERE questions.is_deleted != 1 ORDER BY questions.question_id DESC;";
+                                        $sql_select = "SELECT questions.*, question_type.question_type, question_category.question_category FROM question_category INNER JOIN questions USING (qc_id) INNER JOIN question_type USING (qt_id) WHERE questions.is_deleted != 0 ORDER BY questions.question_id DESC;";
                                         $result_select = mysqli_query($conn, $sql_select);
                                         if(mysqli_num_rows($result_select) > 0){
                                             while($row_select = mysqli_fetch_assoc($result_select)){
@@ -261,7 +261,7 @@
                                             <td colspan="" class="text-center d-none"></td>
                                             <td colspan="" class="text-center d-none"></td>
                                             <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="9" class="text-center">No records found.</td>
+                                            <td colspan="10" class="text-center">No records found.</td>
                                         </tr>
                                     <?php
                                         }
