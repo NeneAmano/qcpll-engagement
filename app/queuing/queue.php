@@ -371,8 +371,8 @@
                         <select name="education" id="" class="form-control">
                             <option value="" disabled selected>-- Select Educational Attainment --</option>
                             <option value="Elementary Graduate">Elementary Graduate</option>
-                            <option value="HighSchool Level">High School Level</option>
-                            <option value="HighSchool Graduate">High School Graduate</option>
+                            <option value="High School Level">High School Level</option>
+                            <option value="High School Graduate">High School Graduate</option>
                             <option value="College Level">College Level</option>
                             <option value="College Graduate">College Graduate</option>
                             <option value="Masters Degree">Master’s Degree</option>
