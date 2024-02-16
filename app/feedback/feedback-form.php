@@ -16,16 +16,15 @@
 
 
             // get the total rows of question table
-            $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions;";
+            $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions WHERE is_deleted != 1;";
             $result_row = mysqli_query($conn, $sql_row);
             if (mysqli_num_rows($result_row) > 0) {
                 while ($row_row = mysqli_fetch_assoc($result_row)) {
                     $total_rows = $row_row['total_rows'];
                 }
             }
+            echo $total_rows;
             if (isset($_POST['submit'])) {
-                // $username = mysqli_real_escape_string($conn, $_POST['username']);
-                // $username = mysqli_real_escape_string($conn, $_POST['username']);
                 // Iterate through $others and echo the values
                 for ($i = 1; $i <= $total_rows; $i++) {
                     if (isset($_POST["question{$i}"])) {
