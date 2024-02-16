@@ -215,6 +215,6 @@
 <?php
     require_once 'js/scripts.php';
 ?>
-    <script src="js/question-scripts.js"></script>
+    <!-- <script src="js/question-scripts.js"></script> -->
 </body>
 </html>
