@@ -1,7 +1,9 @@
 <!-- favicon -->
 <link rel="icon" href="../../resources/images/favicon.ico" type="image/x-icon">
     <!-- jquery datatable css cdn -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css"> -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.0/css/buttons.dataTables.css">
     <!-- font-awesome cdn -->
     <script src="https://kit.fontawesome.com/3481525a72.js" crossorigin="anonymous"></script>
     <!-- bootstrap cdn -->
@@ -11,6 +13,20 @@
     <!-- cdn of chartjs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <!-- jquery datatable js cdn -->
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
+
+    <!-- jquery datatable js cdn for exporting-->
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.0.0/js/buttons.print.min.js"></script>
 </head>
 <body onload="hidefield()">
     <!-- start of main container -->
