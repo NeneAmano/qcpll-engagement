@@ -44,7 +44,7 @@
             <div class="card-header">
                 <ul class="nav nav-pills card-header-pills">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" id="questions" href="questions.php">Questions</a>
+                        <a class="nav-link text-dark" id="questions" href="questions.php?archived-records=no">Questions</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" id="question-type" href="question-type.php">Question Type</a>
