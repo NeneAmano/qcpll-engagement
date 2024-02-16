@@ -36,7 +36,7 @@
                 "iDisplayLength": 10,
                 "ordering": true,
                 layout: {
-                    bottomStart: {
+                    top2Start: {
                         buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
                     }
                 }
