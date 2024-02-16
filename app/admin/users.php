@@ -44,7 +44,7 @@
         }
     ?>
     <!-- start of main section container -->
-    <div class="container mt-3 ms-5">
+    <div class="container-fluid mt-3">
         <!-- start of add user modal button -->
         <button type="button" class="btn btn-primary mb-3 mt-5" data-bs-toggle="modal" data-bs-target="#add_user_modal">Add User</button>
         <!-- end of add user modal button -->
@@ -208,7 +208,7 @@
                                                 <td colspan="" class="text-center d-none"></td>
                                                 <td colspan="" class="text-center d-none"></td>
                                                 <td colspan="" class="text-center d-none"></td>
-                                                <td colspan="8" class="text-center">No records found.</td>
+                                                <td colspan="9" class="text-center">No records found.</td>
                                             </tr>
                                 <?php
                                         }
