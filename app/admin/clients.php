@@ -20,7 +20,7 @@
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
         <!-- start of add service modal button -->
-        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target="">Today</button>
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="clients.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
         <!-- filter by month -->
         <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter by Month</button>
@@ -28,26 +28,25 @@
             <?php
                 for ($month = 1; $month <= 12; $month++) {
                     $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                    echo '<li><a class="dropdown-item" href="#">' .$month_name. '</a></li>';
+                    echo '<li><a class="dropdown-item" href="clients.php?filter=' .$month. '">' .$month_name. '</a></li>';
                 }
             ?>
         </ul>
-        
+
         <!-- filter by year -->
         <select class="form-select btn btn-success ps-0" style="width: 150px;" aria-label="Default select example">
             <option selected disabled>Filter by Year</option>
             <?php
-                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client`";
+                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
                 $result_year = mysqli_query($conn, $sql_year);
 
                 while ($row_year = mysqli_fetch_assoc($result_year)) {
                     $year = $row_year['year'];
-                    echo '<li><a class="dropdown-item" href="#">' .$year. '</a></li>';
-                    echo '<option value="' .$year. '">' .$year. '</option>';
+                    echo '<option value="' .$year. '"><a href="clients.php?filter=' .$year. '" class="text-decoration-none text-light">' .$year. '</a></option>';
                 }
             ?>
         </select>
-
+        
         <!-- end of add service modal button -->
         <!-- start of first row -->
         <div class="row">
@@ -80,7 +79,35 @@
                             <!-- start of table body -->
                             <tbody>
                             <?php
-                                $sql_select = "SELECT * FROM client ORDER BY client_id DESC;";
+                                if(isset($_GET['filter'])){
+                                    $filter = $_GET['filter'];
+
+                                    switch($filter){
+                                        case 'today':
+                                            $sql_select = "SELECT * FROM client WHERE DATE(created_at) = CURDATE() ORDER BY client_id DESC;";
+                                            break;
+                                        case '1':
+                                        case '2':
+                                        case '3':
+                                        case '4':
+                                        case '5':
+                                        case '6':
+                                        case '7':
+                                        case '8':
+                                        case '9':
+                                        case '10':
+                                        case '11':
+                                        case '12':
+                                            $sql_select = "SELECT * FROM client WHERE MONTH(created_at) = $filter ORDER BY client_id DESC;";
+                                            break;
+                                    }
+                                    if($filter == 'today'){
+                                        $sql_select = "SELECT * FROM client WHERE DATE(created_at) = CURDATE() ORDER BY client_id DESC;";
+                                    }
+                                }else{
+                                    $sql_select = "SELECT * FROM client ORDER BY client_id DESC;";
+
+                                }
                                 $result_select = mysqli_query($conn, $sql_select);
                                 if(mysqli_num_rows($result_select) > 0){
                                     while($row_select = mysqli_fetch_assoc($result_select)){
