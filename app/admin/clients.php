@@ -16,102 +16,38 @@
     <title>Clients</title>
     <?php
         require_once 'includes/sidebar.php';
-        $file_destination = '';
-        if(isset($_POST['add_emoji'])){
-            $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
-
-            //validate profile picture
-            $file = $_FILES['add_image'];
-            $file_name = $_FILES['add_image']['name'];
-            $file_tmp_name = $_FILES['add_image']['tmp_name'];
-            $file_size = $_FILES['add_image']['size'];
-            $file_error = $_FILES['add_image']['error'];
-            $file_type = $_FILES['add_image']['type'];
-
-            $file_ext = explode('.', $file_name);
-            $file_actual_ext = strtolower(end($file_ext));
-
-            $allowed = array('jpg', 'jpeg', 'png',);
-
-            if($_FILES["add_image"]["error"] == 4) {
-                //means there is no file uploaded
-                $error_message = "Emoji Image is required.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-                $file_destination = '';
-            }
-            if(empty($add_unicode_name)){
-                $error_message = "Unicode Name is required.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-            }
-
-            //if all condition is met, update the profile
-            if(!empty($add_unicode_name)){
-                if(in_array($file_actual_ext, $allowed)) {
-                    if($file_error === 0) {
-                        if($file_size < 5000000) {
-                            $file_name_new = $add_unicode_name. "." .$file_actual_ext;
-                            $file_destination = '../../public/assets/images/emojis/' .$file_name_new;
-                            move_uploaded_file($file_tmp_name, $file_destination);
-
-                            // Read JSON file
-                            $jsonData = file_get_contents('../web-scraping/emoji.json');
-
-                            // Decode JSON data
-                            $data = json_decode($jsonData, true);
-
-                            // Loop through each emoji object
-                            foreach ($data['emoji'] as $key => $emoji) {
-                                if ($emoji['Unicode name'] == $add_unicode_name) {
-                                    $add_char = $emoji['Char'];
-                                    $add_image = $emoji['Image[twemoji]'];
-                                    $add_unicode_codepoint = $emoji['Unicodecodepoint'];
-                                    $add_occurrences = $emoji['Occurrences[5...max]'];
-                                    $add_position = $emoji['Position[0...1]'];
-                                    $add_negative = $emoji['Neg[0...1]'];
-                                    $add_neutral = $emoji['Neut[0...1]'];
-                                    $add_positive = $emoji['Pos[0...1]'];
-                                    $add_sentiment_score = $emoji['Sentiment score[-1...+1]'];
-                                    $add_unicode_name = $emoji['Unicode name'];
-                                    $add_unicode_block = $emoji['Unicode block'];
-                                    $add_remarks = '';
-
-                                    $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_destination', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
-                            
-                                    if(mysqli_query($conn, $sql)){
-                                        // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
-                                        // header('location: emoji.php?add=successful');
-                                        $hypen_unicode = str_replace(' ', '-', $add_unicode_name);
-                                        $small_caps_unicode = strtolower($hypen_unicode);
-                                        $emoji_id = mysqli_insert_id($conn);
-                                        echo $small_caps_unicode;
-                                        // header('location: ../web-scraping/remarks-html-dom.php');
-                                        // header('location: ../web-scraping/remarks-html-dom.php');
-                                        header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$small_caps_unicode. '&emoji_id=' .$emoji_id);
-                                        // die();
-
-                                    }
-                                }
-                            }
-                            
-                        }else {
-                            $error_message = "Your file is too big.";
-                            echo "<script type='text/javascript'>alert('$error_message');</script>";
-                        }
-                    }else {
-                        $error_message = "There was an error uploading your file.";
-                        echo "<script type='text/javascript'>alert('$error_message');</script>";
-                    }
-                }else{
-                    $error_message = "You cannot upload file of this type.";
-                    echo "<script type='text/javascript'>alert('$error_message');</script>";
-                }
-            }
-        }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
         <!-- start of add service modal button -->
-        <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#add_emoji_modal">Add Client</button>
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target="">Today</button>
+
+        <!-- filter by month -->
+        <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter by Month</button>
+        <ul class="dropdown-menu bg-success monthly" id="monthly">
+            <?php
+                for ($month = 1; $month <= 12; $month++) {
+                    $month_name = date("F", mktime(0, 0, 0, $month, 1));
+                    echo '<li><a class="dropdown-item" href="#">' .$month_name. '</a></li>';
+                }
+            ?>
+        </ul>
+        
+        <!-- filter by year -->
+        <select class="form-select btn btn-success ps-0" style="width: 150px;" aria-label="Default select example">
+            <option selected disabled>Filter by Year</option>
+            <?php
+                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client`";
+                $result_year = mysqli_query($conn, $sql_year);
+
+                while ($row_year = mysqli_fetch_assoc($result_year)) {
+                    $year = $row_year['year'];
+                    echo '<li><a class="dropdown-item" href="#">' .$year. '</a></li>';
+                    echo '<option value="' .$year. '">' .$year. '</option>';
+                }
+            ?>
+        </select>
+
         <!-- end of add service modal button -->
         <!-- start of first row -->
         <div class="row">
