@@ -1,23 +1,24 @@
 <?php
-    require_once('../core/init.php');
-    ob_start();
-    if(($user_role_id_session !== 1)) {
-        header('location: login.php?error=accessdenied');
-        die();
-    }
+require_once('../core/init.php');
+ob_start();
+if (($user_role_id_session !== 1)) {
+    header('location: login.php?error=accessdenied');
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Reports</title>
     <?php
-        require_once 'includes/sidebar.php';
+    require_once 'includes/sidebar.php';
     ?>
     <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
 
         :root {
             --color-primary: #6C9BCF;
@@ -45,7 +46,7 @@
             margin: 0%;
         }
 
-        .main-card{
+        .main-card {
             margin-top: 2em;
             cursor: pointer;
             background-color: var(--color-white);
@@ -55,11 +56,12 @@
             transform: scale(1.1);
             margin-left: 5em;
             margin-top: 5em;
-            min-width: 34em; 
+            min-width: 34em;
             height: auto;
             display: grid;
-        }   
-        .bar-graph{
+        }
+
+        .bar-graph {
             margin-top: 2em;
             cursor: pointer;
             background-color: var(--color-white);
@@ -71,10 +73,12 @@
             height: 20em;
             min-width: 38em;
         }
-        .main-card h3{
+
+        .main-card h3 {
             margin-bottom: 70px;
         }
-        .card-1{
+
+        .card-1 {
             margin-top: 2em;
             cursor: pointer;
             background-color: var(--color-white);
@@ -87,9 +91,10 @@
             width: 25em;
             height: 45em;
             display: grid;
-            
+
         }
-        .card-2{
+
+        .card-2 {
             margin-top: 4em;
             cursor: pointer;
             background-color: var(--color-white);
@@ -103,456 +108,473 @@
             height: 20.4em;
             display: grid;
         }
-        .card-body{
-        display: flex;
-        flex-direction: row;
-        gap: 3em;
+
+        .card-body {
+            display: flex;
+            flex-direction: row;
+            gap: 3em;
         }
-        .card-body span{
+
+        .card-body span {
             text-align: center;
         }
 
-        .emoji-img{
+        .emoji-img {
             width: 35px;
         }
-        span p{
+
+        span p {
             font-size: 0.8em;
             font-style: italic;
             color: #212121;
         }
-        .card-title p{
+
+        .card-title p {
             font-size: 1em;
             font-weight: 500;
         }
 
         /* Bar Graph Horizontal */
         .bar-graph .feelings {
-        -webkit-animation: fade-in-text 2.2s 0.1s forwards;
-        -moz-animation: fade-in-text 2.2s 0.1s forwards;
-        animation: fade-in-text 2.2s 0.1s forwards;
-        opacity: 0;
+            -webkit-animation: fade-in-text 2.2s 0.1s forwards;
+            -moz-animation: fade-in-text 2.2s 0.1s forwards;
+            animation: fade-in-text 2.2s 0.1s forwards;
+            opacity: 0;
         }
 
         .bar-graph-horizontal {
-        max-width: 380px;
+            max-width: 380px;
         }
 
-        .bar-graph-horizontal > div {
-        float: left;
-        margin-bottom: 8px;
-        width: 100%;
+        .bar-graph-horizontal>div {
+            float: left;
+            margin-bottom: 8px;
+            width: 100%;
         }
 
         .bar-graph-horizontal .feelings {
-        float: left;
-        margin-top: 18px;
-        width: 50px;
+            float: left;
+            margin-top: 18px;
+            width: 50px;
         }
 
         .bar-graph-horizontal .bar {
-        border-radius: 3px;
-        height: 55px;
-        float: left;
-        overflow: hidden;
-        position: relative;
-        width: 0;
-        margin-left:1.6em;
+            border-radius: 3px;
+            height: 55px;
+            float: left;
+            overflow: hidden;
+            position: relative;
+            width: 0;
+            margin-left: 1.6em;
         }
 
         .bar-graph-one .bar::after {
-        -webkit-animation: fade-in-text 2.2s 0.1s forwards;
-        -moz-animation: fade-in-text 2.2s 0.1s forwards;
-        animation: fade-in-text 2.2s 0.1s forwards;
-        color: #fff;
-        content: attr(data-percentage);
-        font-weight: 700;
-        position: absolute;
-        right: 16px;
-        top: 17px;
+            -webkit-animation: fade-in-text 2.2s 0.1s forwards;
+            -moz-animation: fade-in-text 2.2s 0.1s forwards;
+            animation: fade-in-text 2.2s 0.1s forwards;
+            color: #fff;
+            content: attr(data-percentage);
+            font-weight: 700;
+            position: absolute;
+            right: 16px;
+            top: 17px;
         }
 
         .bar-graph-one .bar-one .bar {
-        background-color: #64b2d1;
-        -webkit-animation: show-bar-one 1.2s 0.1s forwards;
-        -moz-animation: show-bar-one 1.2s 0.1s forwards;
-        animation: show-bar-one 1.2s 0.1s forwards;
+            background-color: #64b2d1;
+            -webkit-animation: show-bar-one 1.2s 0.1s forwards;
+            -moz-animation: show-bar-one 1.2s 0.1s forwards;
+            animation: show-bar-one 1.2s 0.1s forwards;
         }
 
         .bar-graph-one .bar-two .bar {
-        background-color: #5292ac;
-        -webkit-animation: show-bar-two 1.2s 0.2s forwards;
-        -moz-animation: show-bar-two 1.2s 0.2s forwards;
-        animation: show-bar-two 1.2s 0.2s forwards;
+            background-color: #5292ac;
+            -webkit-animation: show-bar-two 1.2s 0.2s forwards;
+            -moz-animation: show-bar-two 1.2s 0.2s forwards;
+            animation: show-bar-two 1.2s 0.2s forwards;
         }
 
         .bar-graph-one .bar-three .bar {
-        background-color: #407286;
-        -webkit-animation: show-bar-three 1.2s 0.3s forwards;
-        -moz-animation: show-bar-three 1.2s 0.3s forwards;
-        animation: show-bar-three 1.2s 0.3s forwards;
+            background-color: #407286;
+            -webkit-animation: show-bar-three 1.2s 0.3s forwards;
+            -moz-animation: show-bar-three 1.2s 0.3s forwards;
+            animation: show-bar-three 1.2s 0.3s forwards;
         }
 
         .bar-graph-one .bar-four .bar {
-        background-color: #2e515f;
-        -webkit-animation: show-bar-four 1.2s 0.4s forwards;
-        -moz-animation: show-bar-four 1.2s 0.4s forwards;
-        animation: show-bar-four 1.2s 0.4s forwards;
+            background-color: #2e515f;
+            -webkit-animation: show-bar-four 1.2s 0.4s forwards;
+            -moz-animation: show-bar-four 1.2s 0.4s forwards;
+            animation: show-bar-four 1.2s 0.4s forwards;
         }
 
         /* Bar Graph Horizontal Animations */
         @-webkit-keyframes show-bar-one {
-        0% {
-            width: 0;
-        }
-        100% {
-            width: 69.6%;
-        }
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 69.6%;
+            }
         }
 
         @-webkit-keyframes show-bar-two {
-        0% {
-            width: 0;
-        }
-        100% {
-            width: 71%;
-        }
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 71%;
+            }
         }
 
         @-webkit-keyframes show-bar-three {
-        0% {
-            width: 0;
-        }
-        100% {
-            width: 74.7%;
-        }
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 74.7%;
+            }
         }
 
         @-webkit-keyframes show-bar-four {
-        0% {
-            width: 0;
-        }
-        100% {
-            width: 76.8%;
-        }
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 76.8%;
+            }
         }
 
         @-webkit-keyframes fade-in-text {
-        0% {
-            opacity: 0;
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
         }
-        100% {
-            opacity: 1;
-        }
-        }
-        
     </style>
 </head>
+
 <body>
-<section>
+    <section>
         <div class="try col-md-2">
-        <div class="main-card">  
-            <h3>Emoji-based Feedback Ratings</h3>
+            <div class="main-card">
+                <h3>Emoji-based Feedback Ratings</h3>
 
                 <div class="card-content">
                     <div class="card-title">
-                    <p>
-                    Overall Experience
-                    </p>
+                        <p>
+                            Overall Experience
+                        </p>
                     </div>
                     <div class="card-body">
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                        <p>28%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
+                            <p>28%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                        <p>1%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
+                            <p>1%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                        <p>11%</p>
+                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
+                            <p>11%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                        <p>81%</p>
+                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
+                            <p>81%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                        <p>7%</p>
+                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
+                            <p>7%</p>
                         </span>
                     </div>
                 </div>
 
                 <div class="card-content">
                     <div class="card-title">
-                    <p>
-                    Staff Assistance
-                    </p>
+                        <p>
+                            Staff Assistance
+                        </p>
                     </div>
                     <div class="card-body">
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                        <p>3%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
+                            <p>3%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                        <p>11%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
+                            <p>11%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                        <p>56%</p>
+                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
+                            <p>56%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                        <p>78%</p>
+                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
+                            <p>78%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                        <p>90%</p>
+                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
+                            <p>90%</p>
                         </span>
                     </div>
                 </div>
 
                 <div class="card-content">
                     <div class="card-title">
-                    <p>
-                    Services Experience
-                    </p>
+                        <p>
+                            Services Experience
+                        </p>
                     </div>
                     <div class="card-body">
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                        <p>32%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
+                            <p>32%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                        <p>12%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
+                            <p>12%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                        <p>10%</p>
+                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
+                            <p>10%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                        <p>78%</p>
+                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
+                            <p>78%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                        <p>56%</p>
+                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
+                            <p>56%</p>
                         </span>
                     </div>
                 </div>
 
                 <div class="card-content">
                     <div class="card-title">
-                    <p>
-                    Ambiance Experience
-                    </p>
+                        <p>
+                            Ambiance Experience
+                        </p>
                     </div>
                     <div class="card-body">
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                        <p>15%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
+                            <p>15%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                        <p>14%</p>
+                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
+                            <p>14%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                        <p>74%</p>
+                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
+                            <p>74%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                        <p>13%</p>
+                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
+                            <p>13%</p>
                         </span>
                         <span>
-                        <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                        <p>87%</p>
+                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
+                            <p>87%</p>
                         </span>
                     </div>
                 </div>
             </div>
         </div>
-</section>
+    </section>
     <section class="bar-graph bar-graph-horizontal bar-graph-one">
         <div class="text-based-title">
             <h3>Text-Based Ratings</h3>
         </div>
-            <div class="bar-one">
-                <span class="feelings">Positive</span> 
-                <div class="bar" data-percentage="69.6%" style="background-color: #EEF296;"></div>
-            </div>
-            <div class="bar-two">
-                <span class="feelings">Neutral</span>
-                <div class="bar" data-percentage="71%" style="background-color: #9ADE7B;"></div>
-            </div>
-            <div class="bar-three">
-                <span class="feelings">Negative</span>
-                <div class="bar" data-percentage="74.7%" style="background-color: #508D69;"></div>
-            </div>
+        <div class="bar-one">
+            <span class="feelings">Positive</span>
+            <div class="bar" data-percentage="69.6%" style="background-color: #EEF296;"></div>
+        </div>
+        <div class="bar-two">
+            <span class="feelings">Neutral</span>
+            <div class="bar" data-percentage="71%" style="background-color: #9ADE7B;"></div>
+        </div>
+        <div class="bar-three">
+            <span class="feelings">Negative</span>
+            <div class="bar" data-percentage="74.7%" style="background-color: #508D69;"></div>
+        </div>
     </section>
     <style>
-        .card-analysis{
-           display: flex;
-        }
-        .card-main-contetn-analysis{
+        .card-analysis {
             display: flex;
         }
-        .emoji-img-analysis{
+
+        .card-main-contetn-analysis {
+            display: flex;
+        }
+
+        .emoji-img-analysis {
             width: 4em !important;
             height: 2em;
             margin-top: 0.8em;
         }
-        .card-main-contetn-analysis p{
+
+        .card-main-contetn-analysis p {
             font-size: 0.7em;
             font-style: italic;
             color: #212121;
         }
-        .card-body-analysis-text p{
+
+        .card-body-analysis-text p {
             font-size: 0.7em;
             font-style: italic;
             color: #212121;
         }
+
         @media only screen and (min-width: 1900px) {
-            .card-2{
-          
-          cursor: pointer;
-          background-color:#fff;
-          padding: 20px !important;
-          border-radius: var(--card-border-radius);
-          box-shadow: var(--box-shadow);
-          position: relative;
-          left: 75em;
-          bottom: 119.4em;
-          width: 25em;
-          height: 20.4em;
-          display: grid;
-      }
-      .bar-graph{
-            position: relative;
-            top: 6em;
-            cursor: pointer;
-            background-color: var(--color-white);
-            padding: var(--card-padding) !important;
-            border-radius: var(--card-border-radius);
-            box-shadow: var(--box-shadow);
-            margin-left: 3em;
-            height: 20em;
-            min-width: 97em;
-        }
-        .card-1{
-            margin-top: 2em;
-            cursor: pointer;
-            background-color: var(--color-white);
-            padding: 20px !important;
-            border-radius: var(--card-border-radius);
-            box-shadow: var(--box-shadow);
-            position: relative;
-            left: 45em;
-            bottom: 66em;
-            width: 25em;
-            height: auto;
-            display: grid;
-            
-        }
+            .card-2 {
+
+                cursor: pointer;
+                background-color: #fff;
+                padding: 20px !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: var(--box-shadow);
+                position: relative;
+                left: 75em;
+                bottom: 119.4em;
+                width: 25em;
+                height: 20.4em;
+                display: grid;
+            }
+
+            .bar-graph {
+                position: relative;
+                top: 6em;
+                cursor: pointer;
+                background-color: var(--color-white);
+                padding: var(--card-padding) !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: var(--box-shadow);
+                margin-left: 3em;
+                height: 20em;
+                min-width: 97em;
+            }
+
+            .card-1 {
+                margin-top: 2em;
+                cursor: pointer;
+                background-color: var(--color-white);
+                padding: 20px !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: var(--box-shadow);
+                position: relative;
+                left: 45em;
+                bottom: 66em;
+                width: 25em;
+                height: auto;
+                display: grid;
+
+            }
         }
     </style>
     <section>
-    <div class="card-1">
-        <div class="card-title">
-            <p>Analysis</p>
+        <div class="card-1">
+            <div class="card-title">
+                <p>Analysis</p>
 
-            <!-- for overall Experience -->
-            <div class="card-title-analysis">
+                <!-- for overall Experience -->
+                <div class="card-title-analysis">
                     <p>Overall Experience</p>
                 </div>
-            <div class="card-analysis">
- 
-                <div class="card-main-contetn-analysis">
-                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                    <div class="card-body-analysis">
-                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                        <p>Sentiment score: 0.421</p>
+                <div class="card-analysis">
+
+                    <div class="card-main-contetn-analysis">
+                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                        <div class="card-body-analysis">
+                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                            <p>Sentiment score: 0.421</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- for staff assistance -->
-            <div class="card-title-analysis">
+                <!-- for staff assistance -->
+                <div class="card-title-analysis">
                     <p>Staff Experience</p>
                 </div>
-            <div class="card-analysis">
- 
-                <div class="card-main-contetn-analysis">
-                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                    <div class="card-body-analysis">
-                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                        <p>Sentiment score: 0.421</p>
+                <div class="card-analysis">
+
+                    <div class="card-main-contetn-analysis">
+                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                        <div class="card-body-analysis">
+                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                            <p>Sentiment score: 0.421</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- for services Experience -->
-            <div class="card-title-analysis">
+                <!-- for services Experience -->
+                <div class="card-title-analysis">
                     <p>Services Experience</p>
-            </div>
-            <div class="card-analysis">
- 
-                <div class="card-main-contetn-analysis">
-                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                    <div class="card-body-analysis">
-                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                        <p>Sentiment score: 0.421</p>
-                    </div>
                 </div>
-            </div>
+                <div class="card-analysis">
 
-            <!-- for Ambiance Experience -->
-            <div class="card-title-analysis">
-                    <p>Ambiance Experience</p>
-            </div>
-            <div class="card-analysis">
- 
-                <div class="card-main-contetn-analysis">
-                    <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                    <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                    <div class="card-body-analysis">
-                        <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                        <p>Sentiment score: 0.421</p>
+                    <div class="card-main-contetn-analysis">
+                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                        <div class="card-body-analysis">
+                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                            <p>Sentiment score: 0.421</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- for Ambiance Experience -->
+                <div class="card-title-analysis">
+                    <p>Ambiance Experience</p>
+                </div>
+                <div class="card-analysis">
+
+                    <div class="card-main-contetn-analysis">
+                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
+                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                        <div class="card-body-analysis">
+                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
+                            <p>Sentiment score: 0.421</p>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- for text-based ratings -->
                 <div class="card-title-analysis">
                     <p>Overall Text-Based Ratings</p>
-            </div>
-            <div class="card-analysis">
+                </div>
+                <div class="card-analysis">
                     <div class="card-body-analysis-text">
                         <p>Remarks:Positive</p>
                         <p>Score: 69.1%</p>
                     </div>
+                </div>
+
+
+
+            </div>
+            <p></p>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="card-2">
+            <div class="card-title">
+                <p>Recommendations</p>
             </div>
 
-            
-            
         </div>
-        <p></p>
-    </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <div class="card-2">
-        <div class="card-title">
-            <p>Recommendations</p>
-        </div>
-
-    </div>
-</section>
+    </section>
 </body>
+
 </html>
