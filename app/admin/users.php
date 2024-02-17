@@ -133,7 +133,13 @@
             </div>
         </div>
         <!-- end of add user modal -->
-
+        <style>
+                        .table{
+                        border: 2px solid #28a745;
+                        border-top:40px solid #28a745 ;
+                        
+                    }
+                </style>
         <!-- start of first row -->
         <div class="row">
             <!-- start of second container -->
@@ -143,10 +149,11 @@
                     <!-- start of div on center -->
                     <div class="col-md-12">
                         <!-- start of table -->
+                        <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="datatable">
                             <!-- start of table header -->
-                            <thead>
-                                <tr>
+                            <thead class="table-head">
+                                <tr >
                                     <th class="d-none">user role id</th>
                                     <th class="table-light text-uppercase text-center">user id</th>
                                     <th class="table-light text-uppercase text-center">user role</th>
@@ -216,6 +223,7 @@
                             </tbody>
                             <!-- end of table body -->
                         </table>
+                        </div>
                         <!-- end of table -->
                     </div>
                     <!-- end of div on center -->

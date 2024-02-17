@@ -176,6 +176,12 @@
             <!-- end of add modal dialog -->
         </div>
         <!-- end of add emoji modal -->
+        <style>
+            .table {
+                border: 2px solid #28a745;
+                border-top: 40px solid #28a745;
+            }
+        </style>
         <!-- start of first row -->
         <div class="row">
             <!-- start of second container -->

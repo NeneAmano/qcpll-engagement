@@ -53,52 +53,85 @@ if (($user_role_id_session !== 1)) {
             right: 20px;
             display: none;
         }
+
+        /* start design for filter by year */
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 8px 7px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
     </style>
 </head>
 
 <body>
     <main class="analytics-dashboard">
         <!-- Main Content -->
-        <div class="top-btn">
-            <h1>Data Analytics</h1>
-            <!-- Add your dropdown and buttons for filtering here -->
-            <form method="post" class="d-flex gap-2">
-                <button type="submit" name="showDaily" class="btn btn-primary btn-sm">Show Daily</button>
+        <?php
+    require_once 'includes/sidebar.php';
+    ?>
+    <!-- start of main section container -->
+    <div class="container-fluid mt-3">
+        <!-- start of add service modal button -->
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="analytics.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
-                <!-- Monthly dropdown for monthly filter -->
-                <select name="selectedMonth" class="form-select btn btn-primary btn-sm" style="width: 110px;">
-                    <!-- Generate options for each month -->
-                    <?php
-                    for ($month = 1; $month <= 12; $month++) {
-                        $monthName = date("F", mktime(0, 0, 0, $month, 1));
-                        echo '<option value="' . $month . '">' . $monthName . '</option>';
-                    }
-                    ?>
-                </select>
 
-                <button type="submit" name="showMonthly" class="btn btn-primary btn-sm">Show Monthly</button>
-
-                <!-- Year dropdown for yearly filter -->
-                <select name="selectedYear" class="form-select btn btn-primary btn-sm" style="width: 90px;">
-                    <!-- Add options dynamically based on your database data -->
-                    <?php
-                    // Assuming your 'client' table has a column named 'created_at'
-                    $yearsQuery = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client`";
-                    $yearsResult = mysqli_query($conn, $yearsQuery);
-
-                    while ($yearRow = mysqli_fetch_assoc($yearsResult)) {
-                        echo '<option value="' . $yearRow['year'] . '">' . $yearRow['year'] . '</option>';
-                    }
-                    ?>
-                </select>
-
-                <button type="submit" name="showYearly" class="btn btn-primary btn-sm">Show Yearly</button>
-                <button class="btn btn-primary">Export Data</button>
-
-                <!-- Submit Button -->
-
-            </form>
+        <!-- filter by month -->
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+            <div class="dropdown-content">
+                <?php
+                for ($month = 1; $month <= 12; $month++) {
+                    $month_name = date("F", mktime(0, 0, 0, $month, 1));
+                    echo '<a href="analytics.php?filter=' . $month . '">' . $month_name . '</a>';
+                }
+                ?>
+            </div>
         </div>
+
+        <!-- filter by year -->
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+            <div class="dropdown-content">
+                <?php
+                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
+                $result_year = mysqli_query($conn, $sql_year);
+
+                while ($row_year = mysqli_fetch_assoc($result_year)) {
+                    $year = $row_year['year'];
+                    echo '<a href="clients.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
 
         <main class="main-content">
 
@@ -135,24 +168,14 @@ if (($user_role_id_session !== 1)) {
                             label: 'TOTAL AGE COUNT PER MONTH',
                             data: <?php echo json_encode($client_count); ?>,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(255, 159, 64)',
-                                'rgb(255, 205, 86)',
-                                'rgb(75, 192, 192)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 2
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F',
+                                '#FBFADA',
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F'
+                            ]
                         }]
                     };
 
@@ -236,24 +259,14 @@ GROUP BY all_genders.gender
                             label: 'TOTAL GENDER COUNT PER MONTH',
                             data: <?php echo json_encode($gender_count); ?>,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(255, 159, 64)',
-                                'rgb(255, 205, 86)',
-                                'rgb(75, 192, 192)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 2
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F',
+                                '#FBFADA',
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F'
+                            ]
                         }]
                     };
 
@@ -321,24 +334,14 @@ GROUP BY all_education.education;
                             label: 'TOTAL EDUCATION COUNT PER MONTH',
                             data: <?php echo json_encode($education_count); ?>,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(255, 159, 64)',
-                                'rgb(255, 205, 86)',
-                                'rgb(75, 192, 192)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 2
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F',
+                                '#FBFADA',
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F'
+                            ]
                         }]
                     };
 
@@ -398,24 +401,14 @@ GROUP BY all_occupation.occupation;
                             label: 'TOTAL OCCUPATION COUNT PER MONTH',
                             data: <?php echo json_encode($occupation_count); ?>,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(255, 159, 64)',
-                                'rgb(255, 205, 86)',
-                                'rgb(75, 192, 192)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 2
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F',
+                                '#FBFADA',
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F'
+                            ]
                         }]
                     };
 
@@ -464,24 +457,14 @@ GROUP BY all_occupation.occupation;
                             label: 'TOTAL SERVICE COUNT PER MONTH',
                             data: <?php echo json_encode($count_service); ?>,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(255, 159, 64)',
-                                'rgb(255, 205, 86)',
-                                'rgb(75, 192, 192)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 2
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F',
+                                '#FBFADA',
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F'
+                            ]
                         }]
                     };
 
@@ -545,24 +528,14 @@ emoji.emoji_id, emoji.value, emoji.image_path;
                             label: '<?php echo json_encode($q1_label); ?>',
                             data: <?php echo json_encode($count_feedback); ?>,
                             backgroundColor: [
-                                'rgba(255, 99, 132, 0.7)',
-                                'rgba(255, 159, 64, 0.2)',
-                                'rgba(255, 205, 86, 0.2)',
-                                'rgba(75, 192, 192, 0.2)',
-                                'rgba(54, 162, 235, 0.2)',
-                                'rgba(153, 102, 255, 0.2)',
-                                'rgba(201, 203, 207, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(255, 159, 64)',
-                                'rgb(255, 205, 86)',
-                                'rgb(75, 192, 192)',
-                                'rgb(54, 162, 235)',
-                                'rgb(153, 102, 255)',
-                                'rgb(201, 203, 207)'
-                            ],
-                            borderWidth: 2
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F',
+                                '#FBFADA',
+                                '#12372A',
+                                '#436850',
+                                '#ADBC9F'
+                            ]
                         }]
                     };
 

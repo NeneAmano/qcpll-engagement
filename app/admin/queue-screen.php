@@ -18,8 +18,16 @@
     <?php
         require_once 'includes/sidebar.php';
     ?>
+    
+    <style>
+                        .table{
+                        border: 2px solid #28a745;
+                        border-top:40px solid #28a745 ;
+                        
+                    }
+                </style>
     <!-- start of main section container -->
-    <div class="container mt-3 ms-5">
+    <div class="container mt-3 ">
 <h1 class="d-flex" style="justify-content: center;">QUEUEING NUMBER MONITORING</h1>
         <!-- start of first row -->
         <div class="row">

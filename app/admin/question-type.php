@@ -51,6 +51,8 @@
                             FOREIGN KEY(question_id) REFERENCES questions(question_id) ON DELETE SET NULL ON UPDATE CASCADE
                         );";
                         if(mysqli_query($conn, $sql_table)){
+
+
                             header('location: question-type.php?add=successful');
                             die();
                         }
@@ -153,6 +155,13 @@
                     </div>
                     <!-- end of add question type modal -->
                 </div>
+                <style>
+                        .table{
+                        border: 2px solid #28a745;
+                        border-top:40px solid #28a745 ;
+                        
+                    }
+                </style>
                 <!-- start of first row -->
                 <div class="row">
                     <!-- start of second container -->

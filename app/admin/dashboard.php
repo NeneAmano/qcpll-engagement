@@ -193,13 +193,14 @@ if (($user_role_id_session !== 1)) {
             align-items: flex-end;
             position: relative;
             bottom: 35em;
-            right:8em;
+            right:6em;
             flex-direction: column;
             font-family:Georgia, 'Times New Roman', Times, serif !important;
         }
         .card-container{
             display: flex;
             justify-content: center;
+            left: 3em;
             align-items: center;
             flex-direction: column;
             cursor: pointer;
@@ -208,6 +209,7 @@ if (($user_role_id_session !== 1)) {
             box-shadow: var(--box-shadow);
             border: none !important;
             transition: all 0.3s ease;
+            border-radius: 5px;
 
         }
         .card-container:hover{

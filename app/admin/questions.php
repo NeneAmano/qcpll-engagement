@@ -221,6 +221,13 @@
                     </div>
                     <!-- end of add question modal -->
                 </div>
+                <style>
+                        .table{
+                        border: 2px solid #28a745;
+                        border-top:40px solid #28a745 ;
+                        
+                    }
+                </style>
                 <!-- start of first row -->
                 <div class="row">
                     <!-- start of second container -->
@@ -230,6 +237,7 @@
                             <!-- start of div on center -->
                             <div class="col-md-12">
                                 <!-- start of table -->
+                                
                                 <table class="table table-bordered table-striped" id="datatable">
                                     <!-- start of table header -->
                                     <thead>

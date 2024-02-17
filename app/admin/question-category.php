@@ -119,6 +119,13 @@
                     </div>
                     <!-- end of add question category modal -->
                 </div>
+                <style>
+                        .table{
+                        border: 2px solid #28a745;
+                        border-top:40px solid #28a745 ;
+                        
+                    }
+                </style>
                 <!-- start of first row -->
                 <div class="row">
                     <!-- start of second container -->

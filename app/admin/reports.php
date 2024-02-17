@@ -35,7 +35,7 @@
             --border-radius-2: 1.2rem;
             --card-padding: 1.8rem;
             --padding-1: 1.2rem;
-            --box-shadow: 0 2rem 5rem var(--color-light);
+            --box-shadow: 0 .4rem .6rem #28a745;
         }
 
         * {
@@ -56,7 +56,7 @@
             margin-left: 5em;
             margin-top: 5em;
             min-width: 34em; 
-            height: 40em;
+            height: auto;
             display: grid;
         }   
         .bar-graph{
@@ -83,14 +83,14 @@
             box-shadow: var(--box-shadow);
             position: relative;
             left: 45em;
-            bottom: 69em;
+            bottom: 66em;
             width: 25em;
-            height: 44.3em;
+            height: 45em;
             display: grid;
             
         }
         .card-2{
-          
+            margin-top: 4em;
             cursor: pointer;
             background-color: var(--color-white);
             padding: 20px !important;
@@ -381,15 +381,15 @@
         </div>
             <div class="bar-one">
                 <span class="feelings">Positive</span> 
-                <div class="bar" data-percentage="69.6%"></div>
+                <div class="bar" data-percentage="69.6%" style="background-color: #EEF296;"></div>
             </div>
             <div class="bar-two">
                 <span class="feelings">Neutral</span>
-                <div class="bar" data-percentage="71%"></div>
+                <div class="bar" data-percentage="71%" style="background-color: #9ADE7B;"></div>
             </div>
             <div class="bar-three">
                 <span class="feelings">Negative</span>
-                <div class="bar" data-percentage="74.7%"></div>
+                <div class="bar" data-percentage="74.7%" style="background-color: #508D69;"></div>
             </div>
     </section>
     <style>
@@ -413,6 +413,49 @@
             font-size: 0.7em;
             font-style: italic;
             color: #212121;
+        }
+        @media only screen and (min-width: 1900px) {
+            .card-2{
+          
+          cursor: pointer;
+          background-color:#fff;
+          padding: 20px !important;
+          border-radius: var(--card-border-radius);
+          box-shadow: var(--box-shadow);
+          position: relative;
+          left: 75em;
+          bottom: 119.4em;
+          width: 25em;
+          height: 20.4em;
+          display: grid;
+      }
+      .bar-graph{
+            position: relative;
+            top: 6em;
+            cursor: pointer;
+            background-color: var(--color-white);
+            padding: var(--card-padding) !important;
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            margin-left: 3em;
+            height: 20em;
+            min-width: 97em;
+        }
+        .card-1{
+            margin-top: 2em;
+            cursor: pointer;
+            background-color: var(--color-white);
+            padding: 20px !important;
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            position: relative;
+            left: 45em;
+            bottom: 66em;
+            width: 25em;
+            height: auto;
+            display: grid;
+            
+        }
         }
     </style>
     <section>
