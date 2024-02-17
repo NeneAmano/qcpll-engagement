@@ -39,10 +39,20 @@
             // Initialize an empty array
             $choices = array();
 
-            if($add_question_type !== '2'){
+            $sql_qt = "SELECT * FROM question_type WHERE qt_id = $add_question_type;";
+            $result_qt = mysqli_query($conn, $sql_qt);
+            if(mysqli_num_rows($result_qt) > 0){
+                $row_qt = mysqli_fetch_assoc($result_qt);
+
+                $qt = $row_qt['question_type'];
+                $table_name = strtolower(str_replace(" ", "_", $qt));
+            }
+
+
+            if($add_question_type !== $add_question_type){
                 $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
                 if(mysqli_query($conn, $sql)){
-                    header('location: questions.php?add=successful');
+                    header('location: questions.php?archived-records=no&add=successful');
                 }
             }else{
                 $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
@@ -56,9 +66,9 @@
                     // Iterate through $others and echo the values
                     foreach ($choices as $key => $value) {
                         if(!empty($value) || $value !== ''){
-                            $sql_others = "INSERT INTO choices (question_id, choice) VALUES ($add_question_id, '$value');";
+                            $sql_others = "INSERT INTO $table_name (question_id, $table_name) VALUES ($add_question_id, '$value');";
                             if(mysqli_query($conn, $sql_others)){
-                                header('location: questions.php?add=successful');
+                                header('location: questions.php?archived-records=no&add=successful');
                             }
                         }
                     }
