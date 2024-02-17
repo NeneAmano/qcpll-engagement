@@ -60,6 +60,9 @@ input[type="text"],
 input[type="email"],
 input[type="date"],
 select -->
+
+<!-- Married and NotMarried 
+    classes name -->
     <div class="container my-4">
         <div class="formbg">
             <div class="row">
@@ -81,7 +84,7 @@ select -->
 
                             <!-- email address -->
                             <div class="row">
-                                <div class="col">
+                                <div class="col margin-top-e">
                                     <form>
                                         <label class="form-label" for="email">Email Address:</label>
                                         <input type="email" class="form-control" id="email" placeholder="">
@@ -90,37 +93,67 @@ select -->
                             </div>
                             <br>
                             <!-- first name and middle name -->
+                            <div class="MarginSection">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-6 margin-top-fm">
                                     <form>
                                         <label class="form-label" for="first-name">First Name:</label>
                                         <input type="text" class="form-control" id="first-name" placeholder="" value="<?= $f_name ?>">
                                     </form>
                                 </div>
-                                <div class="col-6">
-                                    <form>
-                                        <label class="form-label" for="middle-name">Middle Name:</label>
-                                        <input type="text" class="form-control" id="middle-name" placeholder="" value="<?= $m_name ?>">
-                                    </form>
+                                <div class="col-6 margin-top-fm">
+                                    <div class="middle-rel Married">
+                                        <form>
+                                            <label class="form-label" for="middle-name">Middle Name:<div class="SmallPar">(gitna ng pagka-dalaga)</div></label>
+                                            <input type="text" class="form-control" id="middle-name" placeholder="" value="<?= $m_name ?>">
+                                        </form>
+                                    </div>
+                                    <div class="NotMarried">
+                                        <form>
+                                            <label class="form-label" for="middle-name">Middle Name:</label>
+                                            <input type="text" class="form-control" id="middle-name" placeholder="" value="<?= $m_name ?>">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             <br>
                             <!-- last name and suffix -->
                             <div class="row">
-                                <div class="col-7">
-                                    <form>
-                                        <label class="form-label" for="last-name">Last Name:</label>
-                                        <input type="text" class="form-control" id="last-name" placeholder="" value="<?= $l_name ?>">
-                                    </form>
+                                <div class="col-7 margin-top-ls">
+                                    <div class="NotMarried">
+                                        <form>
+                                            <label class="form-label" for="last-name">Last Name:</label>
+                                            <input type="text" class="form-control" id="last-name" placeholder="" value="<?= $l_name ?>">
+                                        </form>
+                                    </div>
+                                    <div class="Married">    
+                                        <form>
+                                            <label class="form-label" for="MaidenName">Maiden Name:</label>
+                                            <input type="text" class="form-control" id="MaidenName" placeholder="" value="">
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-5 margin-top-ls">
                                     <form>
                                         <label class="form-label" for="suffix">Suffix: <span class="fst-italic">(Jr./Sr./II/III)</span></label>
                                         <input type="text" class="form-control" id="suffix" placeholder="" value="<?= $suffix ?>">
                                     </form>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col margin-top-mh">
+                                    <div class="invi-2">
+                                        <div class="Married">
+                                        <form>
+                                            <label class="form-label" for="last-name">Last Name:</label>
+                                            <input type="text" class="form-control" id="last-name" placeholder="" value="<?= $l_name ?>">
+                                        </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                             <div class="margin-section-1">
                             <!-- gender options -->
                             <div class="row">
                                 <div class="col-6">
@@ -129,19 +162,11 @@ select -->
                                         <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
                                     </form>
                                 </div>
-                                <div class="col-1">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Single</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                        <label class="form-check-label" for="inlineCheckbox2">Married</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-                                        <label class="form-check-label" for="inlineCheckbox3">Widow</label>
-                                    </div>
+                                <div class="col-6">
+                                    <form>
+                                        <label for="civil-status" class="form-label">Civil Status:</label>
+                                        <input type="text" class="form-control" id="civil-status" value="">
+                                    </form>
                                 </div>
                             </div>
 
@@ -189,8 +214,8 @@ select -->
                                 </div>
                             </div>
                         </div>
-
-
+                            </div>
+                        </div>
                         <!-- OTHER INFORMATION COLUMN -->
                         <div class="col-7">
                             <div class="row">
@@ -464,7 +489,7 @@ select -->
     </style>
     <!-- style="text-align: center;" -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script>
+    <!-- <script>
     window.onload = function() {
     window.print();
     };
@@ -476,6 +501,6 @@ select -->
     function closePrintView() {
         window.location.href = 'queue.php';   
     }
-    </script>
+    </script> -->
 </body>
 </html>
