@@ -45,6 +45,23 @@ h4 {
     padding-top: 1.25rem;
 }
 
+.SmallPar {
+    font-size: 0.813rem;
+}
+
+.middle-rel {
+    position: relative;
+    top: -1.125rem;
+}
+
+.Married {
+    display: none;
+}
+
+.NotMarried {
+    display: block;
+}
+
 
 @media print {
     @page {
@@ -115,7 +132,6 @@ h4 {
         top: -8.125rem;
     }
 
-
     h1 {
         font-size: 0.65rem;
     }
@@ -146,5 +162,25 @@ h4 {
     input[type="radio"],
     input[type="checkbox"] {
         transform: scale(0.8); /* Adjust scale if needed */
+    }
+
+    .middle-rel {
+        position: static;
+    }
+
+    .SmallPar {
+        position: relative;
+        top: -0.188rem;
+        font-size: 0.563rem;
+    }
+
+    .MarginSection {
+        position: relative;
+        top: -1.875rem;
+    }
+
+    .margin-top-fm {
+        position: relative;
+        top: 1.25rem;
     }
 }
