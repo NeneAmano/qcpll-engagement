@@ -14,6 +14,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Clients</title>
+    <style>
+        /* start design for filter by year */
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 8px 7px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+    </style>
     <?php
         require_once 'includes/sidebar.php';
     ?>
@@ -22,30 +56,36 @@
         <!-- start of add service modal button -->
         <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="clients.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
-        <!-- filter by month -->
-        <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">Filter by Month</button>
-        <ul class="dropdown-menu bg-success monthly" id="monthly">
-            <?php
+
+                        <!-- filter by month -->
+        <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+        <div class="dropdown-content">
+        <?php
                 for ($month = 1; $month <= 12; $month++) {
                     $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                    echo '<li><a class="dropdown-item" href="clients.php?filter=' .$month. '">' .$month_name. '</a></li>';
+                    echo '<a href="clients.php?filter=' .$month. '">' .$month_name. '</a>';
                 }
             ?>
-        </ul>
+        </div>
+        </div>
 
-        <!-- filter by year -->
-        <select class="form-select btn btn-success ps-0" style="width: 150px;" aria-label="Default select example">
-            <option selected disabled>Filter by Year</option>
-            <?php
+                <!-- filter by year -->
+        <div class="dropdown">
+        <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+        <div class="dropdown-content">
+        <?php
                 $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
                 $result_year = mysqli_query($conn, $sql_year);
 
                 while ($row_year = mysqli_fetch_assoc($result_year)) {
                     $year = $row_year['year'];
-                    echo '<option value="' .$year. '"><a href="clients.php?filter=' .$year. '" class="text-decoration-none text-light">' .$year. '</a></option>';
+                    echo '<a href="clients.php?filter=' .$year. '" class="text-decoration-none text-dark">' .$year. '</a>';
                 }
             ?>
-        </select>
+        </div>
+        </div>
+
         
         <!-- end of add service modal button -->
         <!-- start of first row -->
