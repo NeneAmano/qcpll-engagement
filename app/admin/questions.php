@@ -136,8 +136,9 @@
                                                                             if(mysqli_num_rows($result_question_type) > 0){
                                                                                 while($row_question_type = mysqli_fetch_assoc($result_question_type)){
                                                                                     $qt_id = $row_question_type['qt_id'];
+                                                                                    $qt_mc = $row_question_type['multiple_choice'];
                                                                                     $question_type = $row_question_type['question_type'];
-                                                                                    echo '<option value="' .$qt_id. '">' .$question_type. '</option>';
+                                                                                    echo '<option value="' .$qt_id. '" id="' .$qt_mc. '">' .$question_type. '</option>';
                                                                                 }
                                                                             }
                                                                         ?>

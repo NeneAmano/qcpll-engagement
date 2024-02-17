@@ -38,10 +38,23 @@ function remove_status() {
 }
 
 // function for showing the div of choices
-function showfield(name) {
-    if (name == '2') document.getElementById('choices').style.display = "block";
-    else document.getElementById('choices').style.display = "none";
+// function showfield(name) {
+//     if (name == '2') document.getElementById('choices').style.display = "block";
+//     else document.getElementById('choices').style.display = "none";
+// }
+
+function showfield(selectedValue) {
+    // Get the selected option element
+    var selectedOption = document.querySelector('#add_question_type option[value="' + selectedValue + '"]');
+    
+    // Check if the ID of the selected option is 1
+    if (selectedOption && selectedOption.id === '1') {
+        document.getElementById('choices').style.display = "block";
+    } else {
+        document.getElementById('choices').style.display = "none";
+    }
 }
+
 
 function hidefield() {
     document.getElementById('choices').style.display = 'none';

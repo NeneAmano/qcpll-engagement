@@ -104,6 +104,7 @@
                                     <th class="table-light text-uppercase text-center">client id</th>
                                     <th class="table-light text-uppercase text-center">first name</th>
                                     <th class="table-light text-uppercase text-center">middle name</th>
+                                    <th class="table-light text-uppercase text-center">maiden name</th>
                                     <th class="table-light text-uppercase text-center">last name</th>
                                     <th class="table-light text-uppercase text-center">suffix</th>
                                     <th class="table-light text-uppercase text-center">age range</th>
@@ -154,6 +155,7 @@
                                         $client_id = $row_select['client_id'];
                                         $f_name = $row_select['f_name'];
                                         $m_name = $row_select['m_name'];
+                                        $maiden_name = $row_select['maiden_name'];
                                         $l_name = $row_select['l_name'];
                                         $suffix = $row_select['suffix'];
                                         $age_id = $row_select['age_id'];
@@ -163,14 +165,27 @@
                                         $status = $row_select['status'];
                                         $created_at = $row_select['created_at'];
                                         $updated_at = $row_select['updated_at'];
+
+                                        if($age_id == 1){
+                                            $age_value = "0-12";
+                                        }elseif($age_id == 2){
+                                            $age_value = "13-21";
+                                        }elseif($age_id == 3){
+                                            $age_value = "22-35";
+                                        }elseif($age_id == 4){
+                                            $age_value = "36-59";
+                                        }elseif($age_id == 5){
+                                            $age_value = "60 above";
+                                        }
                             ?>
                                         <tr>
                                             <td class="text-center"><?= $client_id ?></td>
                                             <td class="text-center"><?= $f_name ?></td>
                                             <td class="text-center"><?= $m_name ?></td>
+                                            <td class="text-center"><?= $maiden_name ?></td>
                                             <td class="text-center"><?= $l_name ?></td>
                                             <td class="text-center"><?= $suffix ?></td>
-                                            <td class="text-center"><?= $age_id ?></td>
+                                            <td class="text-center"><?= $age_value ?></td>
                                             <td class="text-center"><?= $gender ?></td>
                                             <td class="text-center"><?= $education ?></td>
                                             <td class="text-center"><?= $occupation ?></td>
@@ -194,7 +209,8 @@
                                     <td colspan="" class="text-center d-none"></td>
                                     <td colspan="" class="text-center d-none"></td>
                                     <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="11" class="text-center">No records found.</td>
+                                    <td colspan="" class="text-center d-none"></td>
+                                    <td colspan="13" class="text-center">No records found.</td>
                                 </tr>
                             <?php
                                 }

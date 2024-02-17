@@ -18,6 +18,7 @@
         require_once 'includes/sidebar.php';
         if(isset($_POST['add_qt'])){
             $add_question_type = mysqli_real_escape_string($conn, $_POST['add_question_type']);
+            $add_multiple = mysqli_real_escape_string($conn, $_POST['add_multiple']);
 
             $sql = "SELECT * FROM question_type WHERE question_type = '$add_question_type';";
             $result = mysqli_query($conn, $sql);
@@ -28,10 +29,32 @@
                 $error_message = "Question Type is required.";
                 echo "<script type='text/javascript'>alert('$error_message');</script>";
             }else{
-                $sql = "INSERT INTO question_type (question_type) VALUES ('$add_question_type');";
+                $sql = "INSERT INTO question_type (question_type, multiple_choice) VALUES ('$add_question_type', '$add_multiple');";
                 if(mysqli_query($conn, $sql)){
-                    header('location: question-type.php?add=successful');
-                    die();
+                    if($add_multiple == 1){
+
+                        $table_name = strtolower(str_replace(" ", "_", $add_question_type));
+
+                        $parts = explode("_", $table_name);
+                        $first_part = $parts[0];
+                        
+                        $primary_key = $first_part . '_id';
+
+                        $sql_table = "CREATE TABLE IF NOT EXISTS $table_name (
+                            $primary_key INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                            question_id INT(11),
+                            $table_name VARCHAR(255) NOT NULL,
+                            is_deleted tinyint NOT NULL DEFAULT 0,
+                            created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+                            updated_at timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+                            FOREIGN KEY(question_id) REFERENCES questions(question_id) ON DELETE SET NULL ON UPDATE CASCADE
+                        );";
+                        if(mysqli_query($conn, $sql_table)){
+                            header('location: question-type.php?add=successful');
+                            die();
+                        }
+                    }
                 }
             }
         }
@@ -93,6 +116,17 @@
                                                                     <input type="text" class="form-control" name="add_question_type" id="add_question_type" value="" required>
                                                                 </div>
                                                             </div>
+
+                                                            <div class="col-md-12 col-6 mt-3">
+                                                                <div class="form-group">
+                                                                    <label for="add_multiple" class="ps-2 pb-2">Does it have choices?</label>
+                                                                    <select class="form-select" aria-label="Default select example" name="add_multiple" id="add_multiple"required>
+                                                                        <option value="0" selected >No</option>
+                                                                        <option value="1">Yes</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                         <!-- end of add modal row -->
                                                     </div>
