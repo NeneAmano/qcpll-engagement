@@ -4,16 +4,19 @@
     if(isset($_SESSION['user_id'])){
         $firstname_error = '';
         $middlename_error = '';
+        $maidenname_error = '';
         $surname_error = '';
         $suffix_error = '';
 
         $firstname_success = '';
         $middlename_success = '';
+        $maidenname_success = '';
         $surname_success = '';
         $suffix_success = '';
 
         $firstname_value = '';
         $middlename_value = '';
+        $maidenname_value = '';
         $surname_value = '';
         $suffix_value = '';
         $age_value = '';
@@ -21,9 +24,11 @@
         if(isset($_POST['submit'])){
             $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
             $middlename = mysqli_real_escape_string($conn, $_POST['middlename']);
+            $maidenname = mysqli_real_escape_string($conn, $_POST['maidenname']);
             $surname = mysqli_real_escape_string($conn, $_POST['surname']);
             $suffix = mysqli_real_escape_string($conn, $_POST['suffix']);
             $birthdate = mysqli_real_escape_string($conn, $_POST['birthdate']);
+            $civilstatus = mysqli_real_escape_string($conn, $_POST['civilstatus']);
             $gender = mysqli_real_escape_string($conn, $_POST['gender']);
             $education = mysqli_real_escape_string($conn, $_POST['education']);
             $occupation = mysqli_real_escape_string($conn, $_POST['occupation']);
@@ -49,6 +54,15 @@
 
             function middlenameInvalid($middlename) {
                 if(!preg_match("/^[a-zA-Z ,.'-]+$/i", $middlename)) {
+                    $result = true;
+                } else {
+                    $result = false;
+                }
+                return $result;
+            }
+
+            function maidennameInvalid($maidenname) {
+                if(!preg_match("/^[a-zA-Z ,.'-]+$/i", $maidenname)) {
                     $result = true;
                 } else {
                     $result = false;
@@ -98,6 +112,14 @@
                 $middlename_error = '';
                 $middlename_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
                 $middlename_value = $middlename;
+            }
+            
+            if(maidennameInvalid($maidenname) !== false) {
+                $maidenname_error = ' *Invalid maiden name.';
+            } else {
+                $maidenname_error = '';
+                $maidenname_success = ' <i class="fa-sharp fa-solid fa-circle-check"></i>';
+                $maidenname_value = $maidenname;
             }
 
             if(suffixInvalid($suffix) !== false) {
@@ -205,13 +227,14 @@
                 }
             }
             
-            if (!firstnameInvalid($firstname) && !surnameInvalid($surname) && (!middlenameInvalid($middlename) || !suffixInvalid($suffix)) || (middlenameInvalid($middlename) || suffixInvalid($suffix)) && 
+            if (!firstnameInvalid($firstname) && !surnameInvalid($surname) && (!middlenameInvalid($middlename) || !suffixInvalid($suffix)) || (maidennameInvalid($maidenname)) || (middlenameInvalid($middlename) || suffixInvalid($suffix)) && 
                 !empty($birthdate) &&
+                $civilstatus !== '' &&
                 $gender !== '' &&
                 $education !== '' &&
                 $occupation !== ''
             ) {
-                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation, status) VALUES ('$firstname', '$middlename_value', '$surname', '$suffix_value', $age_value, '$gender', '$education', '$occupation', $new_status);";
+                $sql = "INSERT INTO client (f_name, m_name,maiden_name, l_name, suffix, age_id,civil_status, gender, education, occupation, status) VALUES ('$firstname', '$middlename_value', '$maidenname', '$surname', '$suffix_value', $age_value, '$civilstatus','$gender', '$education', '$occupation', $new_status);";
     
                 if(mysqli_query($conn, $sql)){
                     $client_id = mysqli_insert_id($conn);
@@ -343,19 +366,33 @@
                     </ol>
                     </nav>
                                         
+                    <!-- for married status and widow -->
+                    <select name="civilstatus" id="travel_arriveVia" onchange="showfield(this.options[this.selectedIndex].value)" class="form-control">
+                        <option value="" disabled selected>-- Civil Status --</option>
+                        <option value="Single">SINGLE</option>
+                        <option value="Married">MARRIED</option>
+                        <option value="Widow">WIDOW</option>
+                    </select>
+                    
+
                     <div class="form-group">
                         <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
                         <input type="text" name="firstname" id="" placeholder="First Name" class="form-control" value="<?= $firstname_value ?>" required>
 
                         <span class="text-danger"><?= $middlename_error ?></span><span class="text-success"><?= $middlename_success ?></span>
                         <input type="text" name="middlename" id="" placeholder="Middle Name" class="form-control" value="<?= $middlename_value ?>" >
-
+                        
+                        <div id="div1">
+                            <input type="text" class="status_others[] form-control" name="maidenname" id="status_new_1" placeholder="Maiden Name">
+                        </div>
                         <span class="text-danger"><?= $surname_error ?></span><span class="text-success"><?= $surname_success ?></span>
                         <input type="text" name="surname" id="" placeholder="Surname" class="form-control" value="<?= $surname_value ?>" required>
 
                         <span class="text-danger"><?= $suffix_error ?></span><span class="text-success"><?= $suffix_success ?></span>
                         <input type="text" name="suffix" id="" placeholder="Suffix" class="form-control" value="<?= $suffix_value ?>" >
                     </div>
+                   
+
                     <div class="form-group">
                         <input type="date" name="birthdate" id="birthdate" max="2000-13-13">
                     </div>
@@ -397,6 +434,7 @@
                             <option value="3">Pregnant</option>
                         </select>
                     </div>
+        
                     <div class="form-wrapper">
                         <h1>Please Select Services</h1>
                         
@@ -503,6 +541,19 @@
                     event.preventDefault(); // Prevent form submission
                 }
             });
+
+
+        // for adding textbox for others in status
+        function showfield(name) {
+            if (name == 'Widow' || name == 'Married') document.getElementById('div1').style.display = "block";
+            else document.getElementById('div1').style.display = "none";
+        }
+
+        function hidefield() {
+            document.getElementById('div1').style.display = 'none';
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
       </script>
    </head>
     <script src="https://unpkg.com/swup@4"></script>
