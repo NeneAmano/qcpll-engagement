@@ -19,10 +19,16 @@ if (($user_role_id_session !== 1)) {
     require_once 'includes/sidebar.php';
     ?>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
         .analytics-dashboard {
             max-height: 23%;
             overflow: scroll;
-            box-shadow: 0 10px 15px -2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             margin-top: 20;
         }
 
@@ -44,7 +50,7 @@ if (($user_role_id_session !== 1)) {
             background-color: #fff;
             box-shadow: 0 10px 15px -2px rgba(0, 0, 0, 0.1);
             padding: 10px;
-            z-index: 99;
+            z-index: 3;
         }
 
         #btn-back-to-top {
@@ -95,43 +101,43 @@ if (($user_role_id_session !== 1)) {
     <main class="analytics-dashboard">
         <!-- Main Content -->
         <?php
-    require_once 'includes/sidebar.php';
-    ?>
-    <!-- start of main section container -->
-    <div class="container-fluid mt-3">
-        <!-- start of add service modal button -->
-        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="analytics.php?filter=today" class="text-decoration-none text-light">Today</a></button>
+        require_once 'includes/sidebar.php';
+        ?>
+        <!-- start of main section container -->
+        <div class="container-fluid mt-3 top-btn">
+            <!-- start of add service modal button -->
+            <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="analytics.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
 
-        <!-- filter by month -->
-        <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
-            <div class="dropdown-content">
-                <?php
-                for ($month = 1; $month <= 12; $month++) {
-                    $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                    echo '<a href="analytics.php?filter=' . $month . '">' . $month_name . '</a>';
-                }
-                ?>
+            <!-- filter by month -->
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+                <div class="dropdown-content">
+                    <?php
+                    for ($month = 1; $month <= 12; $month++) {
+                        $month_name = date("F", mktime(0, 0, 0, $month, 1));
+                        echo '<a href="analytics.php?filter=' . $month . '">' . $month_name . '</a>';
+                    }
+                    ?>
+                </div>
+            </div>
+
+            <!-- filter by year -->
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+                <div class="dropdown-content">
+                    <?php
+                    $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
+                    $result_year = mysqli_query($conn, $sql_year);
+
+                    while ($row_year = mysqli_fetch_assoc($result_year)) {
+                        $year = $row_year['year'];
+                        echo '<a href="clients.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                    }
+                    ?>
+                </div>
             </div>
         </div>
-
-        <!-- filter by year -->
-        <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
-            <div class="dropdown-content">
-                <?php
-                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
-                $result_year = mysqli_query($conn, $sql_year);
-
-                while ($row_year = mysqli_fetch_assoc($result_year)) {
-                    $year = $row_year['year'];
-                    echo '<a href="clients.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
-                }
-                ?>
-            </div>
-        </div>
-    </div>
 
         <main class="main-content">
 

@@ -1,13 +1,14 @@
 <?php
-    require_once('../core/init.php');
-    ob_start();
-    if(($user_role_id_session !== 1)) {
-        header('location: login.php?error=accessdenied');
-        die();
-    }
+require_once('../core/init.php');
+ob_start();
+if (($user_role_id_session !== 1)) {
+    header('location: login.php?error=accessdenied');
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,32 +16,32 @@
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Questions</title>
     <?php
-        require_once 'includes/sidebar.php';
-        if(isset($_POST['add_qt'])){
-            $add_question_type = mysqli_real_escape_string($conn, $_POST['add_question_type']);
-            $add_multiple = mysqli_real_escape_string($conn, $_POST['add_multiple']);
+    require_once 'includes/sidebar.php';
+    if (isset($_POST['add_qt'])) {
+        $add_question_type = mysqli_real_escape_string($conn, $_POST['add_question_type']);
+        $add_multiple = mysqli_real_escape_string($conn, $_POST['add_multiple']);
 
-            $sql = "SELECT * FROM question_type WHERE question_type = '$add_question_type';";
-            $result = mysqli_query($conn, $sql);
-            if(mysqli_num_rows($result) > 0){
-                $error_message = "Question Type already exists.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-            }elseif(empty($add_question_type)){
-                $error_message = "Question Type is required.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-            }else{
-                $sql = "INSERT INTO question_type (question_type, multiple_choice) VALUES ('$add_question_type', '$add_multiple');";
-                if(mysqli_query($conn, $sql)){
-                    if($add_multiple == 1){
+        $sql = "SELECT * FROM question_type WHERE question_type = '$add_question_type';";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            $error_message = "Question Type already exists.";
+            echo "<script type='text/javascript'>alert('$error_message');</script>";
+        } elseif (empty($add_question_type)) {
+            $error_message = "Question Type is required.";
+            echo "<script type='text/javascript'>alert('$error_message');</script>";
+        } else {
+            $sql = "INSERT INTO question_type (question_type, multiple_choice) VALUES ('$add_question_type', '$add_multiple');";
+            if (mysqli_query($conn, $sql)) {
+                if ($add_multiple == 1) {
 
-                        $table_name = strtolower(str_replace(" ", "_", $add_question_type));
+                    $table_name = strtolower(str_replace(" ", "_", $add_question_type));
 
-                        $parts = explode("_", $table_name);
-                        $first_part = $parts[0];
-                        
-                        $primary_key = $first_part . '_id';
+                    $parts = explode("_", $table_name);
+                    $first_part = $parts[0];
 
-                        $sql_table = "CREATE TABLE IF NOT EXISTS $table_name (
+                    $primary_key = $first_part . '_id';
+
+                    $sql_table = "CREATE TABLE IF NOT EXISTS $table_name (
                             $primary_key INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
                             question_id INT(11),
                             $table_name VARCHAR(255) NOT NULL,
@@ -50,16 +51,16 @@
 
                             FOREIGN KEY(question_id) REFERENCES questions(question_id) ON DELETE SET NULL ON UPDATE CASCADE
                         );";
-                        if(mysqli_query($conn, $sql_table)){
+                    if (mysqli_query($conn, $sql_table)) {
 
 
-                            header('location: question-type.php?add=successful');
-                            die();
-                        }
+                        header('location: question-type.php?add=successful');
+                        die();
                     }
                 }
             }
         }
+    }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
@@ -100,7 +101,7 @@
                                 <!-- end of add modal eader -->
                                 <!-- start of add modal form -->
                                 <form action="" method="post">
-                                    <!-- start of add modal body -->                
+                                    <!-- start of add modal body -->
                                     <div class="modal-body">
                                         <!-- start of add modal row -->
                                         <div class="row">
@@ -122,8 +123,8 @@
                                                             <div class="col-md-12 col-6 mt-3">
                                                                 <div class="form-group">
                                                                     <label for="add_multiple" class="ps-2 pb-2">Does it have choices?</label>
-                                                                    <select class="form-select" aria-label="Default select example" name="add_multiple" id="add_multiple"required>
-                                                                        <option value="0" selected >No</option>
+                                                                    <select class="form-select" aria-label="Default select example" name="add_multiple" id="add_multiple" required>
+                                                                        <option value="0" selected>No</option>
                                                                         <option value="1">Yes</option>
                                                                     </select>
                                                                 </div>
@@ -145,7 +146,7 @@
                                         </div>
                                         <!-- end of add modal row -->
                                     </div>
-                                    <!-- end of add modal body -->                
+                                    <!-- end of add modal body -->
                                 </form>
                                 <!-- end of add modal form -->
                             </div>
@@ -156,10 +157,15 @@
                     <!-- end of add question type modal -->
                 </div>
                 <style>
-                        .table{
-                        border: 2px solid #28a745;
-                        border-top:40px solid #28a745 ;
-                        
+                    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
+
+                    * {
+                        font-family: 'Poppins', sans-serif;
+                    }
+
+                    .row {
+                        box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+                        padding: 3px;
                     }
                 </style>
                 <!-- start of first row -->
@@ -185,39 +191,39 @@
                                     <!-- end of table header -->
                                     <!-- start of table body -->
                                     <tbody>
-                                    <?php
+                                        <?php
                                         $sql_select = "SELECT * FROM question_type ORDER BY qt_id DESC;";
                                         $result_select = mysqli_query($conn, $sql_select);
-                                        if(mysqli_num_rows($result_select) > 0){
-                                            while($row_select = mysqli_fetch_assoc($result_select)){
+                                        if (mysqli_num_rows($result_select) > 0) {
+                                            while ($row_select = mysqli_fetch_assoc($result_select)) {
                                                 $qt_id = $row_select['qt_id'];
                                                 $question_type = $row_select['question_type'];
                                                 $created_at = $row_select['created_at'];
                                                 $updated_at = $row_select['updated_at'];
-                                    ?>
+                                        ?>
                                                 <tr>
                                                     <td class="text-center"><?= $qt_id ?></td>
                                                     <td class="text-center"><?= $question_type ?></td>
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_question_type_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
+                                                        <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_question_type_modal"><i class="fa-solid fa-pen-to-square"></i></a>
                                                     </td>
                                                 </tr>
-                                    <?php
+                                            <?php
                                             }
-                                        }else{
-                                    ?>
-                                        <tr>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="5" class="text-center">No records found.</td>
-                                        </tr>
-                                    <?php
+                                        } else {
+                                            ?>
+                                            <tr>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="5" class="text-center">No records found.</td>
+                                            </tr>
+                                        <?php
                                         }
-                                    ?>
+                                        ?>
                                     </tbody>
                                     <!-- end of table body -->
                                 </table>
@@ -247,7 +253,7 @@
                             <!-- end of modal header -->
                             <!-- start of edit modal form -->
                             <form action="functions/edit-question-type.php" method="post">
-                                <!-- start of edit modal body -->                
+                                <!-- start of edit modal body -->
                                 <div class="modal-body">
                                     <!-- start of edit modal row -->
                                     <div class="row">
@@ -260,7 +266,7 @@
                                                     <!-- start of edit modal row -->
                                                     <div class="row">
                                                         <input type="hidden" class="form-control" name="edit_qt_id" id="edit_qt_id" value="">
-                                                        
+
                                                         <div class="col-md-12 col-6 mt-3">
                                                             <div class="form-group">
                                                                 <label for="edit_question_type" class="ps-2 pb-2">Question Type</label>
@@ -283,7 +289,7 @@
                                     </div>
                                     <!-- end of edit modal row -->
                                 </div>
-                                <!-- end of edit modal body -->                
+                                <!-- end of edit modal body -->
                             </form>
                             <!-- end of edit modal form -->
                         </div>
@@ -292,18 +298,19 @@
                     <!-- end of edit modal dialog -->
                 </div>
                 <!-- end of edit question type modal -->
-                
+
             </div>
             <!-- end of card body -->
         </div>
         <!-- end of card -->
     </div>
     <!-- end of main section container -->
-</div>
-<!-- end of main container -->
-<?php
+    </div>
+    <!-- end of main container -->
+    <?php
     require_once 'js/scripts.php';
-?>
+    ?>
     <script src="js/question-scripts.js"></script>
-</body>
+    </body>
+
 </html>

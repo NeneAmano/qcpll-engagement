@@ -1,14 +1,15 @@
 <?php
-    require_once('../core/init.php');
-    include('../web-scraping/simple_html_dom.php');
-    ob_start();
-    if(($user_role_id_session !== 1)) {
-        header('location: login.php?error=accessdenied');
-        die();
-    }
+require_once('../core/init.php');
+include('../web-scraping/simple_html_dom.php');
+ob_start();
+if (($user_role_id_session !== 1)) {
+    header('location: login.php?error=accessdenied');
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,97 +17,96 @@
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Emoji</title>
     <?php
-        require_once 'includes/sidebar.php';
-        $file_destination = '';
-        if(isset($_POST['add_emoji'])){
-            $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
+    require_once 'includes/sidebar.php';
+    $file_destination = '';
+    if (isset($_POST['add_emoji'])) {
+        $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
 
-            //validate profile picture
-            $file = $_FILES['add_image'];
-            $file_name = $_FILES['add_image']['name'];
-            $file_tmp_name = $_FILES['add_image']['tmp_name'];
-            $file_size = $_FILES['add_image']['size'];
-            $file_error = $_FILES['add_image']['error'];
-            $file_type = $_FILES['add_image']['type'];
+        //validate profile picture
+        $file = $_FILES['add_image'];
+        $file_name = $_FILES['add_image']['name'];
+        $file_tmp_name = $_FILES['add_image']['tmp_name'];
+        $file_size = $_FILES['add_image']['size'];
+        $file_error = $_FILES['add_image']['error'];
+        $file_type = $_FILES['add_image']['type'];
 
-            $file_ext = explode('.', $file_name);
-            $file_actual_ext = strtolower(end($file_ext));
+        $file_ext = explode('.', $file_name);
+        $file_actual_ext = strtolower(end($file_ext));
 
-            $allowed = array('jpg', 'jpeg', 'png',);
+        $allowed = array('jpg', 'jpeg', 'png',);
 
-            if($_FILES["add_image"]["error"] == 4) {
-                //means there is no file uploaded
-                $error_message = "Emoji Image is required.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-                $file_destination = '';
-            }
-            if(empty($add_unicode_name)){
-                $error_message = "Unicode Name is required.";
-                echo "<script type='text/javascript'>alert('$error_message');</script>";
-            }
+        if ($_FILES["add_image"]["error"] == 4) {
+            //means there is no file uploaded
+            $error_message = "Emoji Image is required.";
+            echo "<script type='text/javascript'>alert('$error_message');</script>";
+            $file_destination = '';
+        }
+        if (empty($add_unicode_name)) {
+            $error_message = "Unicode Name is required.";
+            echo "<script type='text/javascript'>alert('$error_message');</script>";
+        }
 
-            //if all condition is met, update the profile
-            if(!empty($add_unicode_name)){
-                if(in_array($file_actual_ext, $allowed)) {
-                    if($file_error === 0) {
-                        if($file_size < 5000000) {
-                            $file_name_new = $add_unicode_name. "." .$file_actual_ext;
-                            $file_path = 'public/assets/images/emojis/' .$file_path. $file_name_new;
-                            $file_destination = '../../' .$file_path;
-                            move_uploaded_file($file_tmp_name, $file_destination);
+        //if all condition is met, update the profile
+        if (!empty($add_unicode_name)) {
+            if (in_array($file_actual_ext, $allowed)) {
+                if ($file_error === 0) {
+                    if ($file_size < 5000000) {
+                        $file_name_new = $add_unicode_name . "." . $file_actual_ext;
+                        $file_path = 'public/assets/images/emojis/' . $file_path . $file_name_new;
+                        $file_destination = '../../' . $file_path;
+                        move_uploaded_file($file_tmp_name, $file_destination);
 
-                            // Read JSON file 
-                            $jsonData = file_get_contents('../web-scraping/emoji.json');
+                        // Read JSON file 
+                        $jsonData = file_get_contents('../web-scraping/emoji.json');
 
-                            // Decode JSON data
-                            $data = json_decode($jsonData, true);
+                        // Decode JSON data
+                        $data = json_decode($jsonData, true);
 
-                            // Loop through each emoji object
-                            foreach ($data['emoji'] as $key => $emoji) {
-                                if ($emoji['Unicode name'] == $add_unicode_name) {
-                                    $add_char = $emoji['Char'];
-                                    $add_image = $emoji['Image[twemoji]'];
-                                    $add_unicode_codepoint = $emoji['Unicodecodepoint'];
-                                    $add_occurrences = $emoji['Occurrences[5...max]'];
-                                    $add_position = $emoji['Position[0...1]'];
-                                    $add_negative = $emoji['Neg[0...1]'];
-                                    $add_neutral = $emoji['Neut[0...1]'];
-                                    $add_positive = $emoji['Pos[0...1]'];
-                                    $add_sentiment_score = $emoji['Sentiment score[-1...+1]'];
-                                    $add_unicode_name = $emoji['Unicode name'];
-                                    $add_unicode_block = $emoji['Unicode block'];
-                                    $add_remarks = '';
+                        // Loop through each emoji object
+                        foreach ($data['emoji'] as $key => $emoji) {
+                            if ($emoji['Unicode name'] == $add_unicode_name) {
+                                $add_char = $emoji['Char'];
+                                $add_image = $emoji['Image[twemoji]'];
+                                $add_unicode_codepoint = $emoji['Unicodecodepoint'];
+                                $add_occurrences = $emoji['Occurrences[5...max]'];
+                                $add_position = $emoji['Position[0...1]'];
+                                $add_negative = $emoji['Neg[0...1]'];
+                                $add_neutral = $emoji['Neut[0...1]'];
+                                $add_positive = $emoji['Pos[0...1]'];
+                                $add_sentiment_score = $emoji['Sentiment score[-1...+1]'];
+                                $add_unicode_name = $emoji['Unicode name'];
+                                $add_unicode_block = $emoji['Unicode block'];
+                                $add_remarks = '';
 
-                                    $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_path', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
-                            
-                                    if(mysqli_query($conn, $sql)){
-                                        // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
-                                        // header('location: emoji.php?add=successful');
-                                        $hypen_unicode = str_replace(' ', '-', $add_unicode_name);
-                                        $small_caps_unicode = strtolower($hypen_unicode);
-                                        $emoji_id = mysqli_insert_id($conn);
-                                        echo $small_caps_unicode;
-                                        header('location: ../web-scraping/remarks-html-dom.php?remarks=' .$small_caps_unicode. '&emoji_id=' .$emoji_id);
-                                        // die();
+                                $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_path', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
 
-                                    }
+                                if (mysqli_query($conn, $sql)) {
+                                    // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
+                                    // header('location: emoji.php?add=successful');
+                                    $hypen_unicode = str_replace(' ', '-', $add_unicode_name);
+                                    $small_caps_unicode = strtolower($hypen_unicode);
+                                    $emoji_id = mysqli_insert_id($conn);
+                                    echo $small_caps_unicode;
+                                    header('location: ../web-scraping/remarks-html-dom.php?remarks=' . $small_caps_unicode . '&emoji_id=' . $emoji_id);
+                                    // die();
+
                                 }
                             }
-                            
-                        }else {
-                            $error_message = "Your file is too big.";
-                            echo "<script type='text/javascript'>alert('$error_message');</script>";
                         }
-                    }else {
-                        $error_message = "There was an error uploading your file.";
+                    } else {
+                        $error_message = "Your file is too big.";
                         echo "<script type='text/javascript'>alert('$error_message');</script>";
                     }
-                }else{
-                    $error_message = "You cannot upload file of this type.";
+                } else {
+                    $error_message = "There was an error uploading your file.";
                     echo "<script type='text/javascript'>alert('$error_message');</script>";
                 }
+            } else {
+                $error_message = "You cannot upload file of this type.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
             }
         }
+    }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
@@ -127,7 +127,7 @@
                     <!-- end of add modal eader -->
                     <!-- start of add modal form -->
                     <form action="" method="post" enctype="multipart/form-data">
-                        <!-- start of add modal body -->                
+                        <!-- start of add modal body -->
                         <div class="modal-body">
                             <!-- start of add modal row -->
                             <div class="row">
@@ -167,7 +167,7 @@
                             </div>
                             <!-- end of add modal row -->
                         </div>
-                        <!-- end of add modal body -->                
+                        <!-- end of add modal body -->
                     </form>
                     <!-- end of add modal form -->
                 </div>
@@ -177,9 +177,15 @@
         </div>
         <!-- end of add emoji modal -->
         <style>
-            .table {
-                border: 2px solid #28a745;
-                border-top: 40px solid #28a745;
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
+
+            * {
+                font-family: 'Poppins', sans-serif;
+            }
+
+            .row {
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+                padding: 3px;
             }
         </style>
         <!-- start of first row -->
@@ -217,11 +223,11 @@
                             <!-- end of table header -->
                             <!-- start of table body -->
                             <tbody>
-                            <?php
+                                <?php
                                 $sql_select = "SELECT * FROM emoji ORDER BY emoji_id DESC;";
                                 $result_select = mysqli_query($conn, $sql_select);
-                                if(mysqli_num_rows($result_select) > 0){
-                                    while($row_select = mysqli_fetch_assoc($result_select)){
+                                if (mysqli_num_rows($result_select) > 0) {
+                                    while ($row_select = mysqli_fetch_assoc($result_select)) {
                                         $emoji_id = $row_select['emoji_id'];
                                         $image_path = $row_select['image_path'];
                                         $char = $row_select['_char'];
@@ -238,7 +244,7 @@
                                         $remarks = $row_select['remarks'];
                                         $created_at = $row_select['created_at'];
                                         $updated_at = $row_select['updated_at'];
-                            ?>
+                                ?>
                                         <tr>
                                             <td class="text-center"><?= $emoji_id ?></td>
                                             <td class="text-center"><img style="height: 40px" src="../../<?= $image_path ?>" alt=""></td>
@@ -257,35 +263,35 @@
                                             <td class="text-center"><?= $created_at ?></td>
                                             <td class="text-center"><?= $updated_at ?></td>
                                             <td class="text-center">
-                                                <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_emoji_modal"><i class="fa-solid fa-pen-to-square"></i></a>  
+                                                <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_emoji_modal"><i class="fa-solid fa-pen-to-square"></i></a>
                                             </td>
                                         </tr>
-                            <?php
+                                    <?php
                                     }
-                                }else{
-                            ?>
-                                <tr>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="" class="text-center d-none"></td>
-                                    <td colspan="16" class="text-center">No records found.</td>
-                                </tr>
-                            <?php
+                                } else {
+                                    ?>
+                                    <tr>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="16" class="text-center">No records found.</td>
+                                    </tr>
+                                <?php
                                 }
-                            ?>
+                                ?>
                             </tbody>
                             <!-- end of table body -->
                         </table>
@@ -300,11 +306,12 @@
         <!-- end of first row -->
     </div>
     <!-- end of main section container -->
-</div>
-<!-- end of main container -->
-<?php
+    </div>
+    <!-- end of main container -->
+    <?php
     require_once 'js/scripts.php';
-?>
+    ?>
     <script src="js/question-scripts.js"></script>
-</body>
+    </body>
+
 </html>

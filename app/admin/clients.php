@@ -16,6 +16,12 @@ if (($user_role_id_session !== 1)) {
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Clients</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
         /* start design for filter by year */
 
         .dropdown {
@@ -28,8 +34,12 @@ if (($user_role_id_session !== 1)) {
             position: absolute;
             background-color: #f9f9f9;
             min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
+        }
+
+        .row {
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+            padding: 4px;
         }
 
         .dropdown-content a {
@@ -89,12 +99,6 @@ if (($user_role_id_session !== 1)) {
             </div>
         </div>
 
-        <style>
-            .table {
-                border: 2px solid #28a745;
-                border-top: 40px solid #28a745;
-            }
-        </style>
         <!-- end of add service modal button -->
         <!-- start of first row -->
         <div class="row">

@@ -52,7 +52,7 @@ if (($user_role_id_session !== 1)) {
             background-color: var(--color-white);
             padding: var(--card-padding) !important;
             border-radius: var(--card-border-radius);
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             transform: scale(1.1);
             margin-left: 5em;
             margin-top: 5em;
@@ -67,7 +67,7 @@ if (($user_role_id_session !== 1)) {
             background-color: var(--color-white);
             padding: var(--card-padding) !important;
             border-radius: var(--card-border-radius);
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             margin-left: 3em;
             margin-top: 5em;
             height: 20em;
@@ -84,7 +84,7 @@ if (($user_role_id_session !== 1)) {
             background-color: var(--color-white);
             padding: 20px !important;
             border-radius: var(--card-border-radius);
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
             left: 45em;
             bottom: 66em;
@@ -100,7 +100,7 @@ if (($user_role_id_session !== 1)) {
             background-color: var(--color-white);
             padding: 20px !important;
             border-radius: var(--card-border-radius);
-            box-shadow: var(--box-shadow);
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
             left: 45em;
             bottom: 72.5em;
@@ -440,7 +440,7 @@ if (($user_role_id_session !== 1)) {
                 background-color: #fff;
                 padding: 20px !important;
                 border-radius: var(--card-border-radius);
-                box-shadow: var(--box-shadow);
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 75em;
                 bottom: 119.4em;
@@ -456,7 +456,7 @@ if (($user_role_id_session !== 1)) {
                 background-color: var(--color-white);
                 padding: var(--card-padding) !important;
                 border-radius: var(--card-border-radius);
-                box-shadow: var(--box-shadow);
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 margin-left: 3em;
                 height: 20em;
                 min-width: 97em;
@@ -468,7 +468,7 @@ if (($user_role_id_session !== 1)) {
                 background-color: var(--color-white);
                 padding: 20px !important;
                 border-radius: var(--card-border-radius);
-                box-shadow: var(--box-shadow);
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 45em;
                 bottom: 66em;

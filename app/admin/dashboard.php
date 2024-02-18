@@ -7,6 +7,7 @@ if (($user_role_id_session !== 1)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,9 +41,11 @@ if (($user_role_id_session !== 1)) {
             box-sizing: border-box;
             padding: 0%;
             margin: 0;
+            max-height: 100vh !important;
 
         }
-        body{
+
+        body {
             background-color: #181a1e;
         }
 
@@ -54,6 +57,7 @@ if (($user_role_id_session !== 1)) {
             background-size: cover;
         } */
         .card {
+
             margin-top: 2em;
             cursor: pointer;
             background-color: var(--color-white);
@@ -63,7 +67,8 @@ if (($user_role_id_session !== 1)) {
             transition: all 0.3s ease;
             border: none !important;
             transform: scale(1.1);
-            margin-left: 3em;
+            position: relative;
+            left: 4em;
         }
 
         #myChart {
@@ -71,8 +76,10 @@ if (($user_role_id_session !== 1)) {
             padding: var(--card-padding);
             border-radius: var(--card-border-radius);
             box-shadow: var(--box-shadow);
-            width: 70% !important;
+            width: 60% !important;
             cursor: pointer;
+            position: relative;
+            left: 3em;
         }
 
         .card:hover {
@@ -187,17 +194,19 @@ if (($user_role_id_session !== 1)) {
 
     </section>
     <style>
-        .history-section{
+        .history-section {
+            width: 30em;
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
             position: relative;
-            bottom: 35em;
-            right:6em;
+            bottom: 40em;
+            left: 60em;
             flex-direction: column;
-            font-family:Georgia, 'Times New Roman', Times, serif !important;
+            font-family: Georgia, 'Times New Roman', Times, serif !important;
         }
-        .card-container{
+
+        .card-container {
             display: flex;
             justify-content: center;
             left: 3em;
@@ -212,10 +221,12 @@ if (($user_role_id_session !== 1)) {
             border-radius: 5px;
 
         }
-        .card-container:hover{
+
+        .card-container:hover {
             box-shadow: none;
         }
-        .notif-icon{
+
+        .notif-icon {
             position: relative;
             left: 3em;
             font-size: 2em;
@@ -226,23 +237,30 @@ if (($user_role_id_session !== 1)) {
             border-radius: 10px;
             color: #fff;
         }
-        #history-icon{
+
+        #history-icon {
             position: relative;
-            left: 6em;
+            left: 7.5em;
             top: 0.2em;
             font-size: 1.5em;
         }
+
+        .main-container h4 {
+            position: relative;
+            right: 1.5em;
+            margin-bottom: 2em;
+        }
     </style>
     <section class="history-section">
-  
+
         <div class="main-container">
-            
-        <h4><ion-icon name="alert-circle-outline" id="history-icon"></ion-icon>Recent History</h4>
-        
+
+            <h4><ion-icon name="alert-circle-outline" id="history-icon"></ion-icon>Recent Transaction</h4>
+
             <div class="history-container">
                 <div class="card-container">
-                <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
-                     Admin change questions
+                    <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
+                    Admin change questions
                     <div class="time-date">
                         <p>8:00 am - 9:00pm</p>
                     </div>
@@ -251,8 +269,8 @@ if (($user_role_id_session !== 1)) {
             <br>
             <div class="history-container">
                 <div class="card-container">
-                <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
-                     Admin change questions
+                    <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
+                    Admin change questions
                     <div class="time-date">
                         <p>8:00 am - 9:00pm</p>
                     </div>
@@ -261,8 +279,8 @@ if (($user_role_id_session !== 1)) {
             <br>
             <div class="history-container">
                 <div class="card-container">
-                <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
-                     Admin change questions
+                    <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
+                    Admin change questions
                     <div class="time-date">
                         <p>8:00 am - 9:00pm</p>
                     </div>
@@ -271,27 +289,27 @@ if (($user_role_id_session !== 1)) {
         </div>
     </section>
     <script>
-                const ctx = document.getElementById('myChart');
+        const ctx = document.getElementById('myChart');
 
-                new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                        datasets: [{
-                            label: 'Client Per Month',
-                            data: [12, 19, 3, 5, 2, 3, 6, 8, 4, 2, 7, 8],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                datasets: [{
+                    label: 'Client Per Month',
+                    data: [12, 19, 3, 5, 2, 3, 6, 8, 4, 2, 7, 8],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
-                });
-            </script>
+                }
+            }
+        });
+    </script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <?php
