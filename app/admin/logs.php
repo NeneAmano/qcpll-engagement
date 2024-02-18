@@ -60,7 +60,7 @@ if (($user_role_id_session !== 1)) {
             padding: 20px 15px;
             text-align: left;
             font-weight: 500;
-            font-size: 12px;
+            font-size: 20px;
             text-transform: uppercase;
         }
 
@@ -69,7 +69,7 @@ if (($user_role_id_session !== 1)) {
             text-align: left;
             vertical-align: middle;
             font-weight: 300;
-            font-size: 12px;
+            font-size: 16px;
             border-bottom: solid 1px rgba(255, 255, 255, 0.1);
         }
 
@@ -108,8 +108,8 @@ if (($user_role_id_session !== 1)) {
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Transaction</th>
-                        <th>TimeIn</th>
-                        <th>TimeOut</th>
+                        <th>Time-In</th>
+                        <th>Time-Out</th>
                     </tr>
                 </thead>
             </table>
