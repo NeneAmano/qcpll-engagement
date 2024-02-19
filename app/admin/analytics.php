@@ -134,13 +134,12 @@ if (($user_role_id_session !== 1)) {
                 ?>
             </div>
         </div>
-<style>
-    
-    .row {
-            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
-            padding: 4px;
-        }
-</style>
+        <style>
+            .row {
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+                padding: 4px;
+            }
+        </style>
 
         <!-- start of first row -->
         <div class="row">
@@ -178,7 +177,10 @@ if (($user_role_id_session !== 1)) {
                                             client.gender,
                                             client.education,
                                             client.occupation,
-                                            client.status FROM client INNER JOIN age ON client.age_id = age.age_id  WHERE DATE(client.created_at) = CURDATE() GROUP BY 
+                                            client.status,
+                                            GROUP_CONCAT(queue_details.service) AS services FROM client INNER JOIN age ON client.age_id = age.age_id
+                                            INNER JOIN 
+                                    queue_details ON client.client_id = queue_details.client_id  WHERE DATE(client.created_at) = CURDATE() GROUP BY 
                                         age_range, gender, education, occupation, status ;";
                                             break;
                                         case '1':
@@ -198,9 +200,12 @@ if (($user_role_id_session !== 1)) {
                                             client.education,
                                             client.occupation,
                                             client.status,
+                                            GROUP_CONCAT(queue_details.service) AS services,
                                             COUNT(*) AS count
                                      FROM client
                                      INNER JOIN age ON client.age_id = age.age_id 
+                                     INNER JOIN 
+                                    queue_details ON client.client_id = queue_details.client_id
                                      WHERE MONTH(client.created_at) = $filter
                                      GROUP BY age_range, gender, education, occupation, status;
                                      ";
@@ -211,10 +216,12 @@ if (($user_role_id_session !== 1)) {
                                         client.gender,
                                         client.education,
                                         client.occupation,
-                                        client.status FROM client INNER JOIN age ON client.age_id = age.age_id  WHERE DATE(client.created_at) = CURDATE() GROUP BY 
+                                        client.status,
+                                        GROUP_CONCAT(queue_details.service) AS services FROM client INNER JOIN age ON client.age_id = age.age_id 
+                                        INNER JOIN 
+                                    queue_details ON client.client_id = queue_details.client_id  WHERE DATE(client.created_at) = CURDATE() GROUP BY 
                                     age_range, gender, education, occupation, status  ;";
                                     }
-                                    
                                 } else {
                                     $sql_select = "SELECT 
                                     age.age_range,
@@ -277,7 +284,7 @@ if (($user_role_id_session !== 1)) {
                                         <td colspan="" class="text-center d-none"></td>
                                         <td colspan="" class="text-center d-none"></td>
 
-                                        <td colspan="8" class="text-center">No records found.</td>
+                                        <td colspan="7" class="text-center">No records found.</td>
                                     </tr>
                                 <?php
                                 }
