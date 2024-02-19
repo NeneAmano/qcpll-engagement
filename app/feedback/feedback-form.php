@@ -7,11 +7,11 @@
         if(isset($_GET['client_id'])){
             $client_id = $_GET['client_id'];
 
-            // $sql_completed = "UPDATE queue_details SET status = 1 WHERE entry_check = 1 AND client_id = $client_id;";
-            // (mysqli_query($conn, $sql_completed));
+            $sql_completed = "UPDATE queue_details SET status = 1 WHERE entry_check = 1 AND client_id = $client_id;";
+            (mysqli_query($conn, $sql_completed));
             
-            // $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
-            // (mysqli_query($conn, $sql_rejected));
+            $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
+            (mysqli_query($conn, $sql_rejected));
             
 
 
@@ -34,35 +34,34 @@
                         $q_id = $row_q_id['question_id'];
                         // echo $q_id;
                         if (isset($_POST["question{$q_id}"])) {
-                            // for ($i = 1; $i <= $total_rows; $i++) {
 
-                                $question_value = mysqli_real_escape_string($conn, $_POST["question{$q_id}"]);
-                                
-                                echo $question_value;
-                                
-                                // Handle emoji-based questions
-                                if (isset($_POST["emoji{$q_id}"])) {
-                                    $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$q_id}"]);
-                                    $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $emoji_value);";
+                            $question_value = mysqli_real_escape_string($conn, $_POST["question{$q_id}"]);
+                            
+                            // Handle emoji-based questions
+                            if (isset($_POST["emoji{$q_id}"])) {
+                                $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$q_id}"]);
+                                $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $emoji_value);";
+                                mysqli_query($conn, $sql);
+                            }
+            
+                            // Handle checkbox-based questions
+                            if (isset($_POST["choice{$q_id}"])) {
+                                $checkbox_values = $_POST["choice{$q_id}"];
+                                foreach ($checkbox_values as $choice_value) {
+                                    $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $choice_value);";
                                     mysqli_query($conn, $sql);
                                 }
-                
-                                // Handle checkbox-based questions
-                                if (isset($_POST["choice{$q_id}"])) {
-                                    $checkbox_values = $_POST["choice{$q_id}"];
-                                    foreach ($checkbox_values as $choice_value) {
-                                        $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $choice_value);";
-                                        mysqli_query($conn, $sql);
-                                    }
-                                }
-                
-                                // Handle text-based questions
-                                if (isset($_POST["text{$q_id}"])) {
-                                    $text_value = mysqli_real_escape_string($conn, $_POST["text{$q_id}"]);
-                                    $sql = "INSERT INTO feedback (client_id, question_id, text_feedback) VALUES ($client_id, $question_value, '$text_value');";
-                                    mysqli_query($conn, $sql);
-                                }
-                            // }
+                            }
+            
+                            // Handle text-based questions
+                            if (isset($_POST["text{$q_id}"])) {
+                                $text_value = mysqli_real_escape_string($conn, $_POST["text{$q_id}"]);
+                                $sql = "INSERT INTO feedback (client_id, question_id, text_feedback) VALUES ($client_id, $question_value, '$text_value');";
+                                mysqli_query($conn, $sql);
+                            }
+
+                            header('location: feedback.php');
+                            die();
                         }
                     }
                 }
