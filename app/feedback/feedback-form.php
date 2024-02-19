@@ -59,9 +59,6 @@
                                 $sql = "INSERT INTO feedback (client_id, question_id, text_feedback) VALUES ($client_id, $question_value, '$text_value');";
                                 mysqli_query($conn, $sql);
                             }
-
-                            header('location: feedback.php');
-                            die();
                         }
                     }
                 }
