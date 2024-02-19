@@ -274,26 +274,56 @@ if (($user_role_id_session !== 1)) {
                         </p>
                     </div>
                     <div class="card-body">
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                            <p>28%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                            <p>1%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                            <p>11%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                            <p>81%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                            <p>7%</p>
-                        </span>
+                    <?php
+                        $sql_overall = "WITH EmojiFeedback AS (
+                            SELECT 
+                                e.emoji_id,
+                                f.answer_id,
+                                COUNT(*) AS count_per_answer,
+                                COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage -- Calculate percentage across all rows
+                            FROM 
+                                feedback f
+                                INNER JOIN questions q USING (question_id) 
+                                INNER JOIN question_type qt USING (qt_id)
+                                INNER JOIN question_category qc USING (qc_id) 
+                                INNER JOIN emoji e ON f.answer_id = e.emoji_id
+                            WHERE 
+                                qt.question_type = 'Emoji-based'
+                            GROUP BY 
+                                e.emoji_id, f.answer_id
+                        )
+                        
+                        SELECT 
+                            e.emoji_id,
+                            ef.answer_id,
+                            COALESCE(ef.count_per_answer, 0) AS count_per_answer,  -- Use COALESCE to handle NULL values
+                            COALESCE(ef.percentage, 0) AS percentage,  -- Use COALESCE to handle NULL values
+                            e.*  -- Include other columns from the emoji table if needed
+                        FROM 
+                            emoji e
+                            LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                        WHERE 
+                            e.in_choices != 0
+                        ORDER BY 
+                            e.emoji_id DESC;
+                        ";
+                        $result_overall = mysqli_query($conn, $sql_overall);
+                        if(mysqli_num_rows($result_overall) > 0){
+                            while($row_overall = mysqli_fetch_assoc($result_overall)){
+                                $emoji_id = $row_overall['emoji_id'];
+                                $image_path = $row_overall['image_path'];
+                                $percentage = $row_overall['percentage'];
+                                $formatted_percentage = number_format($percentage, 1);
+                    ?>
+                                <span>
+                                    <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
+                                    <p><?= $formatted_percentage ?>%</p>
+                                </span>
+                    <?php
+                            }
+                        }
+                        
+                    ?>
                     </div>
                 </div>
 
@@ -311,16 +341,49 @@ if (($user_role_id_session !== 1)) {
                                 </div>
                                 <div class="card-body">
                                 <?php
-                                    $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 0 ORDER BY emoji_id DESC LIMIT 5;";
+                                    $sql_emoji = "WITH EmojiFeedback AS (
+                                        SELECT 
+                                            e.emoji_id,
+                                            f.answer_id,
+                                            COUNT(*) AS count_per_answer,
+                                            COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY qc_id) AS percentage
+                                        FROM 
+                                            feedback f
+                                            INNER JOIN questions q USING (question_id) 
+                                            INNER JOIN question_type qt USING (qt_id)
+                                            INNER JOIN question_category qc USING (qc_id) 
+                                            INNER JOIN emoji e ON f.answer_id = e.emoji_id
+                                        WHERE 
+                                            qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'
+                                        GROUP BY 
+                                            e.emoji_id, f.answer_id, qc_id
+                                    )
+                                    
+                                    SELECT 
+                                        e.emoji_id,
+                                        ef.answer_id,
+                                        COALESCE(ef.count_per_answer, 0) AS count_per_answer,  -- Use COALESCE to handle NULL values
+                                        COALESCE(ef.percentage, 0) AS percentage,  -- Use COALESCE to handle NULL values
+                                        e.*  -- Include other columns from the emoji table if needed
+                                    FROM 
+                                        emoji e
+                                        LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                                    WHERE 
+                                        e.in_choices != 0
+                                    ORDER BY 
+                                        e.emoji_id DESC
+                                    LIMIT 5;";
                                     $result_emoji = mysqli_query($conn, $sql_emoji);
                                     if (mysqli_num_rows($result_emoji) > 0) {
                                         while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
                                             $emoji_id = $row_emoji['emoji_id'];
                                             $image_path = $row_emoji['image_path'];
+                                            $percentage = $row_emoji['percentage'];
+                                            $formatted_percentage = number_format($percentage, 1);
                                 ?>
                                             <span>
                                                 <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
-                                                <p><?= $emoji_id ?>%</p>
+                                                <p><?= $formatted_percentage ?>%</p>
                                             </span>
                                 <?php
                                         }
@@ -435,64 +498,150 @@ if (($user_role_id_session !== 1)) {
                     <p>Overall Experience</p>
                 </div>
                 <div class="card-analysis">
+                    <?php
+                        $sql_a_overall = "WITH EmojiFeedback AS (
+                            SELECT 
+                                e.emoji_id,
+                                f.answer_id,
+                                COUNT(*) AS count_per_answer,
+                                COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+                            FROM 
+                                feedback f
+                                INNER JOIN questions q USING (question_id) 
+                                INNER JOIN question_type qt USING (qt_id)
+                                INNER JOIN question_category qc USING (qc_id) 
+                                INNER JOIN emoji e ON f.answer_id = e.emoji_id
+                            WHERE 
+                                qt.question_type = 'Emoji-based'
+                            GROUP BY 
+                                e.emoji_id, f.answer_id
+                        )
+                        
+                        SELECT 
+                            e.emoji_id,
+                            ef.answer_id,
+                            COALESCE(ef.count_per_answer, 0) AS count_per_answer,
+                            COALESCE(ef.percentage, 0) AS percentage,
+                            e.*
+                        FROM 
+                            emoji e
+                            LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                        WHERE 
+                            e.in_choices != 0
+                        ORDER BY 
+                            COALESCE(ef.count_per_answer, 0) DESC,
+                            COALESCE(ef.percentage, 0) DESC,
+                            e.emoji_id DESC
+                        LIMIT 1;";
+                        $result_a_overall = mysqli_query($conn, $sql_a_overall);
+                        if(mysqli_num_rows($result_a_overall) > 0){
+                            $row_a_overall = mysqli_fetch_assoc($result_a_overall);
+                            $percentage = $row_a_overall['percentage'];
+                            $image_path = $row_a_overall['image_path'];
+                            $sentiment_score = $row_a_overall['sentiment_score'];
+                            $unicode_name = $row_a_overall['unicode_name'];
+                            $remarks = $row_a_overall['remarks'];
 
+                            // Find the position of the first dot (.)
+                            $dot_position = strpos($remarks, '.');
+
+                            // Extract the substring after the first dot (.)
+                            $final_remarks = substr($remarks, $dot_position + 1);
+                        }
+                    ?>
                     <div class="card-main-contetn-analysis">
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
+                        <img src="../../<?= $image_path ?>" alt="" class="emoji-img-analysis">
+                        <p><?= $unicode_name ?></p>
                         <div class="card-body-analysis">
-                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                            <p>Sentiment score: 0.421</p>
+                            <p><b>Remarks:</b> <?= $final_remarks ?></p>
+                            <p><b>Sentiment score:</b> <?= $sentiment_score ?></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- for staff assistance -->
-                <div class="card-title-analysis">
-                    <p>Staff Experience</p>
-                </div>
-                <div class="card-analysis">
+                <?php
+                    $sql_a_category = "SELECT * FROM question_category;";
+                    $result_a_category = mysqli_query($conn, $sql_a_category);
+                    if(mysqli_num_rows($result_a_category) > 0){
+                        while($row_a_category = mysqli_fetch_assoc($result_a_category)){
+                            $qc_id = $row_a_category['qc_id'];
+                            $question_category = $row_a_category['question_category'];
+                ?>
+                            <!-- for staff assistance -->
+                            <div class="card-title-analysis">
+                                <p><?= $question_category ?></p>
+                            </div>
+                            <div class="card-analysis">
+                                <div class="card-main-contetn-analysis">
+                                    <?php
+                                        $sql_analysis = "WITH EmojiFeedback AS (
+                                            SELECT 
+                                                e.emoji_id,
+                                                f.answer_id,
+                                                COUNT(*) AS count_per_answer,
+                                                COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+                                            FROM 
+                                                feedback f
+                                                INNER JOIN questions q USING (question_id) 
+                                                INNER JOIN question_type qt USING (qt_id)
+                                                INNER JOIN question_category qc USING (qc_id) 
+                                                INNER JOIN emoji e ON f.answer_id = e.emoji_id
+                                            WHERE 
+                                                qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'
+                                            GROUP BY 
+                                                e.emoji_id, f.answer_id
+                                        )
+                                        
+                                        SELECT 
+                                            e.emoji_id,
+                                            ef.answer_id,
+                                            COALESCE(ef.count_per_answer, 0) AS count_per_answer,
+                                            COALESCE(ef.percentage, 0) AS percentage,
+                                            e.*
+                                        FROM 
+                                            emoji e
+                                            LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                                        WHERE 
+                                            e.in_choices != 0
+                                        ORDER BY 
+                                            COALESCE(ef.count_per_answer, 0) DESC,
+                                            COALESCE(ef.percentage, 0) DESC,
+                                            e.emoji_id DESC
+                                        LIMIT 1;";
+                                        $result_analysis = mysqli_query($conn, $sql_analysis);
+                                        if(mysqli_num_rows($result_analysis) > 0){
+                                            $row_analysis = mysqli_fetch_assoc($result_analysis);
 
-                    <div class="card-main-contetn-analysis">
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                        <div class="card-body-analysis">
-                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                            <p>Sentiment score: 0.421</p>
-                        </div>
-                    </div>
-                </div>
+                                            $percentage = $row_analysis['percentage'];
+                                            $image_path = $row_analysis['image_path'];
+                                            $sentiment_score = $row_analysis['sentiment_score'];
+                                            $unicode_name = $row_analysis['unicode_name'];
+                                            $remarks = $row_analysis['remarks'];
 
-                <!-- for services Experience -->
-                <div class="card-title-analysis">
-                    <p>Services Experience</p>
-                </div>
-                <div class="card-analysis">
+                                            // Find the position of the first dot (.)
+                                            $dot_position = strpos($remarks, '.');
 
-                    <div class="card-main-contetn-analysis">
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                        <div class="card-body-analysis">
-                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                            <p>Sentiment score: 0.421</p>
-                        </div>
-                    </div>
-                </div>
+                                            // Extract the substring after the first dot (.)
+                                            $final_remarks = substr($remarks, $dot_position + 1);
+                                        }
 
-                <!-- for Ambiance Experience -->
-                <div class="card-title-analysis">
-                    <p>Ambiance Experience</p>
-                </div>
-                <div class="card-analysis">
+                                    ?>  
+                                    <img src="../../<?= $image_path ?>" alt="" class="emoji-img-analysis">
+                                    <p><?= $unicode_name ?></p>
+                                    <div class="card-body-analysis">
+                                        
+                                        <p><b>Remarks:</b> <?= $final_remarks ?></p>
+                                        <p><b>Sentiment score:</b> <?= $sentiment_score ?></p>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div class="card-main-contetn-analysis">
-                        <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img-analysis">
-                        <p>SMILING FACE WITH OPEN MOUTH AND SMILING EYES</p>
-                        <div class="card-body-analysis">
-                            <p>Remarks:Often conveys general happiness and good-natured amusement</p>
-                            <p>Sentiment score: 0.421</p>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                        }
+                    }
+                ?>
+
+
 
                 <!-- for text-based ratings -->
                 <div class="card-title-analysis">
