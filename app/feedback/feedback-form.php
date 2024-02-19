@@ -317,7 +317,6 @@
                                                     <input class="form-check-input" type="checkbox" name="choice<?= $choice_id ?>[]" value="" id="<?= $choice_id ?>">
 
                                                 </div>
-                                                
                                     <?php
                                             }
                                         }
