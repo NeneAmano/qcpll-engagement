@@ -7,11 +7,11 @@
         if(isset($_GET['client_id'])){
             $client_id = $_GET['client_id'];
 
-            $sql_completed = "UPDATE queue_details SET status = 1 WHERE entry_check = 1 AND client_id = $client_id;";
-            (mysqli_query($conn, $sql_completed));
+            // $sql_completed = "UPDATE queue_details SET status = 1 WHERE entry_check = 1 AND client_id = $client_id;";
+            // (mysqli_query($conn, $sql_completed));
             
-            $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
-            (mysqli_query($conn, $sql_rejected));
+            // $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
+            // (mysqli_query($conn, $sql_rejected));
             
 
 
@@ -23,38 +23,47 @@
                     $total_rows = $row_row['total_rows'];
                 }
             }
+
             echo $total_rows;
+            
             if (isset($_POST['submit'])) {
-                // Iterate through $others and echo the values
-                for ($i = 1; $i <= $total_rows; $i++) {
-                    if (isset($_POST["question{$i}"])) {
-                        $question_value = mysqli_real_escape_string($conn, $_POST["question{$i}"]);
+                $sql_q_id = "SELECT question_id FROM questions WHERE is_deleted != 1;";
+                $result_q_id = mysqli_query($conn, $sql_q_id);
+                if (mysqli_num_rows($result_q_id) > 0) {
+                    while ($row_q_id = mysqli_fetch_assoc($result_q_id)) {
+                        $q_id = $row_q_id['question_id'];
+                        // echo $q_id;
+                        if (isset($_POST["question{$q_id}"])) {
+                            // for ($i = 1; $i <= $total_rows; $i++) {
 
-                        $sql_qt = "SELECT qt_id FROM questions WHERE question_id = $question_value;";
-                        $result_qt = mysqli_query($conn, $sql_qt);
-                        if (mysqli_num_rows($result_qt) > 0) {
-                            $row_qt = mysqli_fetch_assoc($result_qt);
-                            $question_type = $row_qt['qt_id'];
+                                $question_value = mysqli_real_escape_string($conn, $_POST["question{$q_id}"]);
+                                
+                                echo $question_value;
+                                
+                                // Handle emoji-based questions
+                                if (isset($_POST["emoji{$q_id}"])) {
+                                    $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$q_id}"]);
+                                    $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $emoji_value);";
+                                    mysqli_query($conn, $sql);
+                                }
+                
+                                // Handle checkbox-based questions
+                                if (isset($_POST["choice{$q_id}"])) {
+                                    $checkbox_values = $_POST["choice{$q_id}"];
+                                    foreach ($checkbox_values as $choice_value) {
+                                        $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $choice_value);";
+                                        mysqli_query($conn, $sql);
+                                    }
+                                }
+                
+                                // Handle text-based questions
+                                if (isset($_POST["text{$q_id}"])) {
+                                    $text_value = mysqli_real_escape_string($conn, $_POST["text{$q_id}"]);
+                                    $sql = "INSERT INTO feedback (client_id, question_id, text_feedback) VALUES ($client_id, $question_value, '$text_value');";
+                                    mysqli_query($conn, $sql);
+                                }
+                            // }
                         }
-
-                        if ($question_type == 2) {
-                            $emoji_value = 6;
-                        }
-
-                        if (isset($_POST["text{$i}"])) {
-                            // Get the value of the emoji radio button for the current question
-                            $text_value = mysqli_real_escape_string($conn, $_POST["text{$i}"]);
-                            echo $text_value;
-                        }
-
-                        if (isset($_POST["emoji{$i}"])) {
-                            // Get the value of the emoji radio button for the current question
-                            $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$i}"]);
-                            echo $emoji_value;
-                        }
-
-                        $sql = "INSERT INTO feedback (client_id, question_id, emoji_id, text_feedback) VALUES ($client_id, $question_value, $emoji_value, '$text_value');";
-                        mysqli_query($conn, $sql);
                     }
                 }
             }
@@ -246,21 +255,18 @@
     button:active,.btn-lg:active {
     transform: scale(0.95);
     }
-
-
     </style>
 
 <body>
 <section id="swup" class="transtion-fade">\
-    
     <div class="logo">
-            <img src="../../public/assets/images/qclogo.jpg" alt="">
-            <div class="title">
-            <p>Quezon City Public Library</p>
-            <p>Quezon City Government</p>
-            </div>
-            <img src="../../public/assets/images/qcplLogo.png" alt="">
+        <img src="../../public/assets/images/qclogo.jpg" alt="">
+        <div class="title">
+        <p>Quezon City Public Library</p>
+        <p>Quezon City Government</p>
         </div>
+        <img src="../../public/assets/images/qcplLogo.png" alt="">
+    </div>
 
     <form id="regForm" method="post" action="">
         <!-- One "tab" for each step in the form: -->
@@ -314,7 +320,7 @@
                                                 <label class="form-check-label" for="<?= $choice_id ?>">
                                                         <?= $choice ?>
                                                     </label>
-                                                    <input class="form-check-input" type="checkbox" name="choice<?= $choice_id ?>[]" value="" id="<?= $choice_id ?>">
+                                                    <input class="form-check-input" type="checkbox" name="choice<?= $question_id ?>[]" value="<?= $choice_id ?>" id="<?= $choice_id ?>">
 
                                                 </div>
                                     <?php
