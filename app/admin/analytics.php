@@ -239,7 +239,7 @@ if (($user_role_id_session !== 1)) {
                                     `education`,
                                     `occupation`,
                                     `status` ;";
-                                                                    }
+                                      }
                                 } else {
                                     $sql_select = "SELECT 
                                     age.age_range,
@@ -338,11 +338,58 @@ if (($user_role_id_session !== 1)) {
 
             <!-- start of data analysis of age -->
             <?php
+
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+
+    switch ($filter) {
+        case 'today':
             $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
-                FROM age
-                INNER JOIN client ON age.age_id = client.age_id
-                GROUP BY age.age_range;
-                ";
+        FROM age
+        INNER JOIN client ON age.age_id = client.age_id
+        WHERE DATE(client.created_at) = CURDATE()
+        GROUP BY age.age_range;
+        ";
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+        case '11':
+        case '12':
+            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+            FROM age
+            INNER JOIN client ON age.age_id = client.age_id
+            WHERE MONTH(client.created_at) = $filter
+            GROUP BY age.age_range;
+            ";
+            break;
+    }
+    if ($filter == 'today') {
+        $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+        FROM age
+        INNER JOIN client ON age.age_id = client.age_id
+        WHERE DATE(client.created_at) = CURDATE()
+        GROUP BY age.age_range;
+        ";
+      }
+
+
+} else {
+    $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+    FROM age
+    INNER JOIN client ON age.age_id = client.age_id
+    GROUP BY age.age_range;
+    ";
+}
+
+
             $result1 = mysqli_query($conn, $query1);
             $age_range = array();
             $client_count = array();
