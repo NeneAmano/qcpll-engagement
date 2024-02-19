@@ -444,6 +444,7 @@
         </tbody>
     </table>
 </body>
+
 <script>
     new DataTable('#example', {
     layout: {
@@ -453,5 +454,4 @@
     }
 });
 </script>
-
 </html>
