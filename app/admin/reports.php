@@ -297,95 +297,41 @@ if (($user_role_id_session !== 1)) {
                     </div>
                 </div>
 
-                <div class="card-content">
-                    <div class="card-title">
-                        <p>
-                            Staff Assistance
-                        </p>
-                    </div>
-                    <div class="card-body">
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                            <p>3%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                            <p>11%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                            <p>56%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                            <p>78%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                            <p>90%</p>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="card-content">
-                    <div class="card-title">
-                        <p>
-                            Services Experience
-                        </p>
-                    </div>
-                    <div class="card-body">
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                            <p>32%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                            <p>12%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                            <p>10%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                            <p>78%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                            <p>56%</p>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="card-content">
-                    <div class="card-title">
-                        <p>
-                            Ambiance Experience
-                        </p>
-                    </div>
-                    <div class="card-body">
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png" alt="" class="emoji-img">
-                            <p>15%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png" alt="" class="emoji-img">
-                            <p>14%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/NEUTRAL FACE.png" alt="" class="emoji-img">
-                            <p>74%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/DISAPPOINTED FACE.png" alt="" class="emoji-img">
-                            <p>13%</p>
-                        </span>
-                        <span>
-                            <img src="../../public/assets/images/emojis/ANGRY FACE.png" alt="" class="emoji-img">
-                            <p>87%</p>
-                        </span>
-                    </div>
-                </div>
+                <?php
+                    $sql_category = "SELECT * FROM question_category;";
+                    $result_category = mysqli_query($conn, $sql_category);
+                    if(mysqli_num_rows($result_category) > 0){
+                        while($row_category = mysqli_fetch_assoc($result_category)){
+                            $qc_id = $row_category['qc_id'];
+                            $question_category = $row_category['question_category'];
+                ?>
+                            <div class="card-content">
+                                <div class="card-title">
+                                    <p><?= $question_category; ?></p>
+                                </div>
+                                <div class="card-body">
+                                <?php
+                                    $sql_emoji = "SELECT * FROM emoji WHERE in_choices != 0 ORDER BY emoji_id DESC LIMIT 5;";
+                                    $result_emoji = mysqli_query($conn, $sql_emoji);
+                                    if (mysqli_num_rows($result_emoji) > 0) {
+                                        while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
+                                            $emoji_id = $row_emoji['emoji_id'];
+                                            $image_path = $row_emoji['image_path'];
+                                ?>
+                                            <span>
+                                                <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
+                                                <p><?= $emoji_id ?>%</p>
+                                            </span>
+                                <?php
+                                        }
+                                    }
+                                ?>
+                                </div>
+                            </div>
+                <?php
+                        }
+                    }
+                ?>
             </div>
         </div>
     </section>
