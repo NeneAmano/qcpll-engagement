@@ -88,13 +88,13 @@ if (($user_role_id_session !== 1)) {
             <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
             <div class="dropdown-content">
                 <?php
-                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
-                $result_year = mysqli_query($conn, $sql_year);
+                    $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
+                    $result_year = mysqli_query($conn, $sql_year);
 
-                while ($row_year = mysqli_fetch_assoc($result_year)) {
-                    $year = $row_year['year'];
-                    echo '<a href="clients.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
-                }
+                    while ($row_year = mysqli_fetch_assoc($result_year)) {
+                        $year = $row_year['year'];
+                        echo '<a href="clients.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                    }
                 ?>
             </div>
         </div>
@@ -133,29 +133,28 @@ if (($user_role_id_session !== 1)) {
                                 <?php
                                 if (isset($_GET['filter'])) {
                                     $filter = $_GET['filter'];
-
-                                    switch ($filter) {
-                                        case 'today':
-                                            $sql_select = "SELECT * FROM client WHERE DATE(created_at) = CURDATE() ORDER BY client_id DESC;";
-                                            break;
-                                        case '1':
-                                        case '2':
-                                        case '3':
-                                        case '4':
-                                        case '5':
-                                        case '6':
-                                        case '7':
-                                        case '8':
-                                        case '9':
-                                        case '10':
-                                        case '11':
-                                        case '12':
-                                            $sql_select = "SELECT * FROM client WHERE MONTH(created_at) = $filter ORDER BY client_id DESC;";
-                                            break;
-                                    }
-                                    if ($filter == 'today') {
-                                        $sql_select = "SELECT * FROM client WHERE DATE(created_at) = CURDATE() ORDER BY client_id DESC;";
-                                    }
+                                        switch ($filter) {
+                                            case 'today':
+                                                $sql_select = "SELECT * FROM client WHERE DATE(created_at) = CURDATE() ORDER BY client_id DESC;";
+                                                break;
+                                            case '1':
+                                            case '2':
+                                            case '3':
+                                            case '4':
+                                            case '5':
+                                            case '6':
+                                            case '7':
+                                            case '8':
+                                            case '9':
+                                            case '10':
+                                            case '11':
+                                            case '12':
+                                                $sql_select = "SELECT * FROM client WHERE MONTH(created_at) = $filter ORDER BY client_id DESC;";
+                                                break;
+                                            case $filter:
+                                                $sql_select = "SELECT * FROM client WHERE YEAR(created_at) = $filter ORDER BY client_id DESC;";
+                                                break;
+                                        }
                                 } else {
                                     $sql_select = "SELECT * FROM client ORDER BY client_id DESC;";
                                 }
