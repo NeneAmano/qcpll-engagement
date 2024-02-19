@@ -179,14 +179,17 @@ if (($user_role_id_session !== 1)) {
                                         <div class="card-body">
                                             <!-- start of edit modal row -->
                                             <div class="row">
-                                                <input type="text" class="form-control" name="edit_qd_id" id="edit_qd_id" value="">
-                                                <input type="text" class="form-control" name="edit_client_id" id="edit_client_id" value="">
+                                                <input type="hidden" class="form-control" name="edit_qd_id" id="edit_qd_id" value="">
+                                                <input type="hidden" class="form-control" name="edit_client_id" id="edit_client_id" value="">
 
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
                                                         <label for="edit_queue_number" class="ps-2 pb-2">Queue Number</label>
                                                         <input type="text" class="form-control" name="edit_queue_number" id="edit_queue_number" value="" disabled>
                                                     </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
                                                 </div>
 
                                                 <div class="col-md-6 col-6 mt-3">
