@@ -72,13 +72,13 @@ if (($user_role_id_session !== 1)) {
 
         <!-- filter by month -->
         <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Month</button>
             <div class="dropdown-content">
                 <?php
-                for ($month = 1; $month <= 12; $month++) {
-                    $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                    echo '<a href="clients.php?filter=' . $month . '">' . $month_name . '</a>';
-                }
+                    for ($month = 1; $month <= 12; $month++) {
+                        $month_name = date("F", mktime(0, 0, 0, $month, 1));
+                        echo '<a href="clients.php?filter=' . $month . '">' . $month_name . '</a>';
+                    }
                 ?>
             </div>
         </div>
