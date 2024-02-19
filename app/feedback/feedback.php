@@ -158,7 +158,7 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
                     WHERE 
                         queue_number = '$id' 
                         AND DATE(queue_details.created_at) = CURDATE() 
-                       
+                        AND queue_details.status != 2 AND queue_details.entry_check = 1
                     LIMIT 1;
                     ";
                         $res = mysqli_query($conn, $sql);

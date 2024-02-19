@@ -48,6 +48,7 @@ if (($user_role_id_session !== 1)) {
                                     <th class="table-light text-uppercase text-center">Queue Number</th>
                                     <th class="table-light text-uppercase text-center">Service</th>
                                     <th class="table-light text-uppercase text-center">Status</th>
+                                    <th class="table-light text-uppercase text-center">Entry Check</th>
                                     <th class="table-light text-uppercase text-center">Created_at</th>
                                     <th class="table-light text-uppercase text-center">Updated_at</th>
                                     <th class="table-light text-uppercase text-center">Action</th>
@@ -57,10 +58,10 @@ if (($user_role_id_session !== 1)) {
                             <!-- start of table body -->
                             <tbody>
                                 <?php
-                                $sql_select = "SELECT queue_details.qd_id,CONCAT(client.f_name, ' ' , client.l_name) AS client,queue_details.queue_number, queue_details.client_id, queue_details.service,queue_details.`status`,queue_details.created_at,queue_details.updated_at
+                                $sql_select = "SELECT queue_details.qd_id,CONCAT(client.f_name, ' ' , client.l_name) AS client,queue_details.queue_number, queue_details.client_id, queue_details.service,queue_details.`status`,queue_details.entry_check,queue_details.created_at,queue_details.updated_at
                                     FROM queue_details
                                     JOIN client ON queue_details.client_id = client.client_id
-                                     WHERE DATE(queue_details.created_at) = CURDATE() AND queue_details.status != 2
+                                     WHERE DATE(queue_details.created_at) = CURDATE() AND queue_details.status != 2 AND queue_details.entry_check = 1
                                      GROUP BY queue_details.qd_id ;";
                                 $result_select = mysqli_query($conn, $sql_select);
                                 if (mysqli_num_rows($result_select) > 0) {
@@ -71,6 +72,7 @@ if (($user_role_id_session !== 1)) {
                                         $qnumber = $row_select['queue_number'];
                                         $service = $row_select['service'];
                                         $status = $row_select['status'];
+                                        $entry = $row_select['entry_check'];
                                         $created_at = $row_select['created_at'];
                                         $updated_at = $row_select['updated_at'];
 
@@ -80,6 +82,12 @@ if (($user_role_id_session !== 1)) {
                                             $new_status = 'Completed';
                                         } elseif ($status == 2) {
                                             $new_status = 'Cancelled';
+                                        }
+
+                                        if($entry == 0){
+                                            $new_entry = 'Rejected';
+                                        }elseif($entry == 1){
+                                            $new_entry = 'Passed';
                                         }
                                 ?>
                                         <tr>
@@ -95,6 +103,13 @@ if (($user_role_id_session !== 1)) {
                                                 echo '<td class="text-center"><button class="btn bg-success text-light">' . $new_status . '</button></td>';
                                             } elseif ($status == 2) {
                                                 echo '<td class="text-center"><button class="btn bg-danger text-light">' . $new_status . '</button></td>';
+                                            }
+                                            ?>
+                                            <?php
+                                            if ($entry == 0) {
+                                                echo '<td class="text-center"><button class="btn bg-danger text-light">' . $new_entry. '</button></td>';
+                                            } elseif ($entry == 1) {
+                                                echo '<td class="text-center"><button class="btn bg-success text-light">' . $new_entry . '</button></td>';
                                             }
                                             ?>
                                             <td class="text-center"><?= $created_at ?></td>
@@ -116,7 +131,8 @@ if (($user_role_id_session !== 1)) {
                                         <td colspan="" class="text-center d-none"></td>
                                         <td colspan="" class="text-center d-none"></td>
                                         <td colspan="" class="text-center d-none"></td>
-                                        <td colspan="9" class="text-center">No records found.</td>
+                                        <td colspan="" class="text-center d-none"></td>
+                                        <td colspan="10" class="text-center">No records found.</td>
                                     </tr>
                                 <?php
                                 }
@@ -180,6 +196,17 @@ if (($user_role_id_session !== 1)) {
                                                             <option value="0">Pending</option>
                                                             <option value="1">Completed</option>
                                                             <option value="2">Cancelled</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="edit_entry" class="ps-2 pb-2">Documents</label>
+                                                        <select class="form-select" name="edit_entry" id="edit_entry">
+                                                            <option value="1">Passed</option>
+                                                            <option value="0">Rejected</option>
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
