@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   PRIMARY KEY (`client_id`),
   KEY `age_id` (`age_id`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`age_id`) REFERENCES `age` (`age_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.client: ~48 rows (approximately)
 INSERT INTO `client` (`client_id`, `f_name`, `m_name`, `l_name`, `suffix`, `age_id`, `gender`, `education`, `occupation`, `status`, `created_at`, `updated_at`) VALUES
@@ -174,7 +174,8 @@ INSERT INTO `client` (`client_id`, `f_name`, `m_name`, `l_name`, `suffix`, `age_
 	(96, 'Kentavious', 'Caldwell', 'Pope', '', 3, 'Male', 'Elementary Graduate', 'Student', 2, '2024-02-19 17:42:22', '2024-02-19 17:42:22'),
 	(97, 'Lebron', 'asd', 'James', '', 5, 'Male', 'Elementary Graduate', 'Student', 1, '2024-02-19 17:42:55', '2024-02-19 17:42:55'),
 	(98, 'Dirk', 'asd', 'Nowitzki', '', 2, 'Male', 'Elementary Graduate', 'Student', 0, '2024-02-19 17:43:27', '2024-02-19 17:43:27'),
-	(99, 'Bam', '', 'Adebayo', '', 2, 'Male', 'Elementary Graduate', 'Student', 0, '2024-02-19 18:35:52', '2024-02-19 18:35:52');
+	(99, 'Bam', '', 'Adebayo', '', 2, 'Male', 'Elementary Graduate', 'Student', 0, '2024-02-19 18:35:52', '2024-02-19 18:35:52'),
+	(100, 'Marc', '', 'Campbell', '', 4, 'Male', 'Elementary Graduate', 'Student', 0, '2024-02-20 02:53:39', '2024-02-20 02:53:39');
 
 -- Dumping structure for table qcpl_engagement.emoji
 CREATE TABLE IF NOT EXISTS `emoji` (
@@ -222,7 +223,7 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   KEY `question_id` (`question_id`),
   CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `feedback_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=455 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.feedback: ~0 rows (approximately)
 INSERT INTO `feedback` (`feedback_id`, `client_id`, `question_id`, `answer_id`, `text_feedback`, `created_at`, `updated_at`) VALUES
@@ -288,7 +289,18 @@ INSERT INTO `feedback` (`feedback_id`, `client_id`, `question_id`, `answer_id`, 
 	(451, 99, 23, 12, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
 	(452, 99, 23, 14, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
 	(453, 99, 24, 20, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(454, 99, 24, 22, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50');
+	(454, 99, 24, 22, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
+	(455, 100, 9, 108, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(456, 100, 10, 107, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(457, 100, 11, 110, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(458, 100, 12, 110, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(459, 100, 13, 109, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(460, 100, 14, 108, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(461, 100, 15, NULL, 'Test', '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(462, 100, 22, 8, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(463, 100, 22, 9, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(464, 100, 23, 12, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
+	(465, 100, 24, 22, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14');
 
 -- Dumping structure for table qcpl_engagement.questions
 CREATE TABLE IF NOT EXISTS `questions` (
@@ -390,7 +402,7 @@ INSERT INTO `queue` (`queue_id`, `total_queue`, `queue_date`, `updated_at`) VALU
 	(13, 6, '2024-02-16 16:00:00', '2024-02-17 15:58:39'),
 	(14, 2, '2024-02-17 16:00:00', '2024-02-17 16:07:49'),
 	(15, 5, '2024-02-18 16:00:00', '2024-02-19 15:53:38'),
-	(16, 12, '2024-02-19 16:00:00', '2024-02-19 18:35:52');
+	(16, 13, '2024-02-19 16:00:00', '2024-02-20 02:53:39');
 
 -- Dumping structure for table qcpl_engagement.queue_details
 CREATE TABLE IF NOT EXISTS `queue_details` (
@@ -405,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `queue_details` (
   PRIMARY KEY (`qd_id`),
   KEY `client_id` (`client_id`),
   CONSTRAINT `queue_details_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.queue_details: ~47 rows (approximately)
 INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `entry_check`, `updated_at`, `created_at`) VALUES
@@ -482,7 +494,8 @@ INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `s
 	(141, 96, 'P-00005', 'Police', 1, 1, '2024-02-19 17:44:05', '2024-02-19 17:42:22'),
 	(142, 97, 'P-00006', 'NBI', 1, 1, '2024-02-19 17:44:58', '2024-02-19 17:42:55'),
 	(143, 98, 'N-00005', 'Police', 1, 1, '2024-02-19 17:45:38', '2024-02-19 17:43:27'),
-	(144, 99, 'N-00006', 'Police', 1, 1, '2024-02-19 18:36:08', '2024-02-19 18:35:52');
+	(144, 99, 'N-00006', 'Police', 1, 1, '2024-02-19 18:36:08', '2024-02-19 18:35:52'),
+	(145, 100, 'N-00007', 'NBI', 1, 1, '2024-02-20 02:53:54', '2024-02-20 02:53:39');
 
 -- Dumping structure for table qcpl_engagement.service
 CREATE TABLE IF NOT EXISTS `service` (
