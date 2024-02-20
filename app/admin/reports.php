@@ -87,9 +87,9 @@ if (($user_role_id_session !== 1)) {
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
             left: 45em;
-            bottom: 66em;
+            bottom: 70em;
             width: 25em;
-            height: 45em;
+            height: auto;
             display: grid;
 
         }
@@ -102,9 +102,9 @@ if (($user_role_id_session !== 1)) {
             border-radius: var(--card-border-radius);
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
-            left: 45em;
-            bottom: 72.5em;
-            width: 25em;
+            left: 3em;
+            bottom: 105em;
+            width: 38em;
             height: 20.4em;
             display: grid;
         }
@@ -125,7 +125,6 @@ if (($user_role_id_session !== 1)) {
 
         span p {
             font-size: 0.8em;
-            font-style: italic;
             color: #212121;
         }
 
@@ -258,10 +257,17 @@ if (($user_role_id_session !== 1)) {
                 opacity: 1;
             }
         }
+        main{
+            overflow: scroll;
+            height:100vh;
+        }
+        main::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 
-<body>
+<body><main>
     <section>
         <div class="try col-md-2">
             <div class="main-card">
@@ -398,6 +404,7 @@ if (($user_role_id_session !== 1)) {
             </div>
         </div>
     </section>
+    
     <section class="bar-graph bar-graph-horizontal bar-graph-one">
         <div class="text-based-title">
             <h3>Text-Based Ratings</h3>
@@ -421,24 +428,24 @@ if (($user_role_id_session !== 1)) {
         }
 
         .card-main-contetn-analysis {
-            display: flex;
+            display: block;
+            gap:1em;
+            
         }
 
         .emoji-img-analysis {
             width: 4em !important;
-            height: 2em;
+            height: 3em;
             margin-top: 0.8em;
         }
 
         .card-main-contetn-analysis p {
-            font-size: 0.7em;
-            font-style: italic;
+            font-size: 0.8em;
             color: #212121;
         }
 
         .card-body-analysis-text p {
-            font-size: 0.7em;
-            font-style: italic;
+            font-size: 1em;
             color: #212121;
         }
 
@@ -452,7 +459,7 @@ if (($user_role_id_session !== 1)) {
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 75em;
-                bottom: 119.4em;
+                bottom: 170em;
                 width: 25em;
                 height: 20.4em;
                 display: grid;
@@ -460,7 +467,6 @@ if (($user_role_id_session !== 1)) {
 
             .bar-graph {
                 position: relative;
-                top: 6em;
                 cursor: pointer;
                 background-color: var(--color-white);
                 padding: var(--card-padding) !important;
@@ -468,7 +474,7 @@ if (($user_role_id_session !== 1)) {
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 margin-left: 3em;
                 height: 20em;
-                min-width: 97em;
+                min-width: 38em;
             }
 
             .card-1 {
@@ -480,18 +486,21 @@ if (($user_role_id_session !== 1)) {
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 45em;
-                bottom: 66em;
+                bottom: 70em;
                 width: 25em;
                 height: auto;
                 display: grid;
 
+            }
+            .card-title-analysis{
+                font-size: 1.5em;
             }
         }
     </style>
     <section>
         <div class="card-1">
             <div class="card-title">
-                <p>Analysis</p>
+                <p style="font-size: 1.5em;text-transform:capitalize;">Analysis</p>
 
                 <!-- for overall Experience -->
                 <div class="card-title-analysis">
@@ -670,6 +679,7 @@ if (($user_role_id_session !== 1)) {
 
         </div>
     </section>
+    </main>
 </body>
 
 </html>
