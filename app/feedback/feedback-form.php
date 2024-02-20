@@ -12,8 +12,6 @@
             
             $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
             (mysqli_query($conn, $sql_rejected));
-            
-
 
             // get the total rows of question table
             $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions WHERE is_deleted != 1;";
@@ -24,8 +22,6 @@
                 }
             }
 
-            echo $total_rows;
-            
             if (isset($_POST['submit'])) {
                 $sql_q_id = "SELECT question_id FROM questions WHERE is_deleted != 1;";
                 $result_q_id = mysqli_query($conn, $sql_q_id);
@@ -41,7 +37,7 @@
                             if (isset($_POST["emoji{$q_id}"])) {
                                 $emoji_value = mysqli_real_escape_string($conn, $_POST["emoji{$q_id}"]);
                                 $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $emoji_value);";
-                                mysqli_query($conn, $sql);
+                                $emoji_query = mysqli_query($conn, $sql);
                             }
             
                             // Handle checkbox-based questions
@@ -49,7 +45,7 @@
                                 $checkbox_values = $_POST["choice{$q_id}"];
                                 foreach ($checkbox_values as $choice_value) {
                                     $sql = "INSERT INTO feedback (client_id, question_id, answer_id) VALUES ($client_id, $question_value, $choice_value);";
-                                    mysqli_query($conn, $sql);
+                                    $choice_query = mysqli_query($conn, $sql);
                                 }
                             }
             
@@ -57,9 +53,13 @@
                             if (isset($_POST["text{$q_id}"])) {
                                 $text_value = mysqli_real_escape_string($conn, $_POST["text{$q_id}"]);
                                 $sql = "INSERT INTO feedback (client_id, question_id, text_feedback) VALUES ($client_id, $question_value, '$text_value');";
-                                mysqli_query($conn, $sql);
+                                $text_query = mysqli_query($conn, $sql);
                             }
                         }
+                    }
+                    if($emoji_query == true && $choice_query == true && $text_query == true){
+                        header('location: feedback.php');
+                        die();
                     }
                 }
             }
@@ -68,7 +68,6 @@
             die();
         }
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

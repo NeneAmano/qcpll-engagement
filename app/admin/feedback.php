@@ -164,7 +164,9 @@ if (($user_role_id_session !== 1)) {
                                             <td class="text-center"><?= $client_id ?></td>
                                             <td class="text-center"><?= $created_at ?></td>
                                             <td class="text-center"><?= $updated_at ?></td>
-                                            <td class="text-center"><?= $updated_at ?></td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm btn-primary edit" href="#" data-bs-toggle="" data-bs-target="">View Details</a>
+                                            </td>
                                         </tr>
                                     <?php
                                     }
