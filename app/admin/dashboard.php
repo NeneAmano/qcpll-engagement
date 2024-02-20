@@ -166,7 +166,15 @@ if (($user_role_id_session !== 1)) {
                 <div class="card">
                     <ion-icon name="book" class="book-icon"></ion-icon>
                     <h5 class="card-title">Feedbacks Received</h5>
-                    <p class="card-text">4</p>
+                    <?php
+                    $sql_clients = "SELECT COUNT(feedback_id) AS total_feedback FROM feedback;";
+                    $result_clients = mysqli_query($conn, $sql_clients);
+                    if (mysqli_num_rows($result_clients) > 0) {
+                        $row_clients = mysqli_fetch_assoc($result_clients);
+                        echo '<p class="card-text">' . $row_clients['total_feedback'] . '</p>';
+                    }
+                    ?>
+                   
                 </div>
             </div>
             <!-- end of feedbacks received card -->
@@ -176,7 +184,14 @@ if (($user_role_id_session !== 1)) {
                 <div class="card ">
                     <ion-icon name="briefcase" class="case-icon"></ion-icon>
                     <h5 class="card-title">Completed Transaction</h5>
-                    <p class="card-text">10</p>
+                    <?php
+                    $sql_clients = "SELECT COUNT(qd_id) AS total_transaction FROM queue_details WHERE STATUS = 1;";
+                    $result_clients = mysqli_query($conn, $sql_clients);
+                    if (mysqli_num_rows($result_clients) > 0) {
+                        $row_clients = mysqli_fetch_assoc($result_clients);
+                        echo '<p class="card-text">' . $row_clients['total_transaction'] . '</p>';
+                    }
+                    ?>
                 </div>
             </div>
             <!-- end of completed transaction card -->
