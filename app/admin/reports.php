@@ -340,13 +340,21 @@ if (($user_role_id_session !== 1)) {
                         while($row_category = mysqli_fetch_assoc($result_category)){
                             $qc_id = $row_category['qc_id'];
                             $question_category = $row_category['question_category'];
+
+                            $sql_count = "SELECT COUNT(feedback_id) AS count, feedback.question_id, questions.qt_id, questions.qc_id, question_type.question_type, question_category.question_category FROM feedback INNER JOIN questions USING (question_id) INNER JOIN question_type USING (qt_id) INNER JOIN question_category USING (qc_id) WHERE question_type = 'Emoji-based' AND question_category = '$question_category';";
+                            $result_count = mysqli_query($conn, $sql_count);
+                            if(mysqli_num_rows($result_count) > 0){
+                                $row_count = mysqli_fetch_assoc($result_count);
+                                $count = $row_count['count'];
+                            }
                 ?>
                             <div class="card-content">
                                 <div class="card-title">
-                                    <p><?= $question_category; ?></p>
+                                    <p><?= $question_category . '<span class=""> Experience</span> <span class="fs-6">(' .$count. ')</span>' ?></p>
                                 </div>
                                 <div class="card-body">
                                 <?php
+                                
                                     $sql_emoji = "WITH EmojiFeedback AS (
                                         SELECT 
                                             e.emoji_id,
