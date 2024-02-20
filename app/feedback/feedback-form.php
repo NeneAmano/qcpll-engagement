@@ -12,8 +12,6 @@
             
             $sql_rejected = "UPDATE queue_details SET status = 2 WHERE entry_check = 0 AND client_id = $client_id;";
             (mysqli_query($conn, $sql_rejected));
-            
-
 
             // get the total rows of question table
             $sql_row = "SELECT COUNT(question_id) AS total_rows FROM questions WHERE is_deleted != 1;";
@@ -24,8 +22,6 @@
                 }
             }
 
-            echo $total_rows;
-            
             if (isset($_POST['submit'])) {
                 $sql_q_id = "SELECT question_id FROM questions WHERE is_deleted != 1;";
                 $result_q_id = mysqli_query($conn, $sql_q_id);
@@ -72,7 +68,6 @@
             die();
         }
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
