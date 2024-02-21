@@ -154,7 +154,7 @@ if (($user_role_id_session !== 1)) {
                     $result_clients = mysqli_query($conn, $sql_clients);
                     if (mysqli_num_rows($result_clients) > 0) {
                         $row_clients = mysqli_fetch_assoc($result_clients);
-                        echo '<p class="card-text">' . $row_clients['total_clients'] . '</p>';
+                        echo '<a href="clients.php" style="text-decoration:none; color:#212121;"><p class="card-text">' . $row_clients['total_clients'] . '</a></p>';
                     }
                     ?>
                 </div>
@@ -171,7 +171,7 @@ if (($user_role_id_session !== 1)) {
                     $result_clients = mysqli_query($conn, $sql_clients);
                     if (mysqli_num_rows($result_clients) > 0) {
                         $row_clients = mysqli_fetch_assoc($result_clients);
-                        echo '<p class="card-text">' . $row_clients['total_feedback'] . '</p>';
+                        echo '<a href="feedback.php" style="text-decoration:none; color:#212121;"><p class="card-text">' . $row_clients['total_feedback'] . '</a></p>';
                     }
                     ?>
                    
@@ -215,7 +215,7 @@ if (($user_role_id_session !== 1)) {
             justify-content: flex-end;
             align-items: flex-end;
             position: relative;
-            bottom: 40em;
+            bottom: 45em;
             left: 60em;
             flex-direction: column;
             font-family: Georgia, 'Times New Roman', Times, serif !important;
@@ -234,7 +234,7 @@ if (($user_role_id_session !== 1)) {
             border: none !important;
             transition: all 0.3s ease;
             border-radius: 5px;
-
+            border-right: 7px solid #6C9BCF !important;
         }
 
         .card-container:hover {
@@ -265,6 +265,10 @@ if (($user_role_id_session !== 1)) {
             right: 1.5em;
             margin-bottom: 2em;
         }
+        .queue_number{
+            font-size: 1.3em !important;
+            font-weight: 600 !important;
+        }
     </style>
     <section class="history-section">
 
@@ -272,35 +276,41 @@ if (($user_role_id_session !== 1)) {
 
             <h4><ion-icon name="alert-circle-outline" id="history-icon"></ion-icon>Recent Transaction</h4>
 
-            <div class="history-container">
-                <div class="card-container">
-                    <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
-                    Admin change questions
-                    <div class="time-date">
-                        <p>8:00 am - 9:00pm</p>
-                    </div>
-                </div>
-            </div>
+                    <?php
+                        $sql_recent_transac = "SELECT queue_number,created_at, GROUP_CONCAT(DISTINCT service ORDER BY service) AS services
+                        FROM queue_details
+                        WHERE DATE(created_at) = CURDATE()
+                        GROUP BY queue_number
+                        ORDER BY queue_number DESC LIMIT 3;";
+
+                        $res_recent_transac = mysqli_query($conn,$sql_recent_transac);
+                        if (mysqli_num_rows($res_recent_transac) > 0) {
+                            while ($row = mysqli_fetch_assoc($res_recent_transac)) {
+                                $queue_number = $row['queue_number'];
+                                $transaction = $row['services'];
+                                $date = $row['created_at'];
+
+                                $date_string = $date;
+                                $timestamp = strtotime($date_string);
+                                $formattedDate = date("F j, Y", $timestamp);
+
+                                echo '<div class="history-container">';
+                                    echo '<div class="card-container">';
+                                        echo '<ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>';
+                                        echo '<p>'.$formattedDate.'</p>';
+                                        echo '<span class="queue_number">'.$queue_number.'</span>';
+                                            echo '<div class="time-date">';
+                                                echo '<p>'.$transaction.'</p>';
+                                            echo '</div>';
+                                        echo '</div>';
+                                        echo '<br>';
+                                echo '</div>';
+                            }
+                        }
+
+                    ?>
+
             <br>
-            <div class="history-container">
-                <div class="card-container">
-                    <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
-                    Admin change questions
-                    <div class="time-date">
-                        <p>8:00 am - 9:00pm</p>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="history-container">
-                <div class="card-container">
-                    <ion-icon name="notifications-circle-outline" class="notif-icon"></ion-icon>
-                    Admin change questions
-                    <div class="time-date">
-                        <p>8:00 am - 9:00pm</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
     <script>
