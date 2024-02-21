@@ -104,7 +104,7 @@ if (($user_role_id_session !== 1)) {
     <div class="container-fluid mt-3">
         <!-- start of add service modal button -->
         <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="analytics.php?filter=today" class="text-decoration-none text-light">Today</a></button>
-
+        
 
         <!-- filter by month -->
         <div class="dropdown">
@@ -294,7 +294,7 @@ if (($user_role_id_session !== 1)) {
                                         }
                                 ?>
                                         <tr>
-                                            
+
                                             <td class="text-center"><?= $age_range ?></td>
                                             <td class="text-center"><?= $gender ?></td>
                                             <td class="text-center"><?= $education ?></td>
@@ -345,24 +345,69 @@ if (($user_role_id_session !== 1)) {
         <!-- Analyses -->
         <div>
 
+
+
+
+
+
+        <?php
+                                if (isset($_GET['filter'])) {
+                                    $filter = $_GET['filter'];
+
+                                    switch ($filter) {
+                                        case 'today':
+                                            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                                            FROM age
+                                            INNER JOIN client ON age.age_id = client.age_id
+                                            AND DATE(client.created_at) = CURDATE()
+                                            GROUP BY age.age_range;
+                                            ;";
+                                            break;
+                                        case '1':
+                                        case '2':
+                                        case '3':
+                                        case '4':
+                                        case '5':
+                                        case '6':
+                                        case '7':
+                                        case '8':
+                                        case '9':
+                                        case '10':
+                                        case '11':
+                                        case '12':
+                                            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                                            FROM age
+                                            INNER JOIN client ON age.age_id = client.age_id
+                                            AND MONTH(client.created_at) = $filter
+                                            GROUP BY age.age_range;
+                                     ";
+                                            break;
+                                        case $filter:
+                                            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                                            FROM age
+                                            INNER JOIN client ON age.age_id = client.age_id
+                                            AND YEAR(client.created_at) = $filter
+                                            GROUP BY age.age_range;";
+                                            break;
+                                    }
+                                } else {
+                                    $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                                    FROM age
+                                    INNER JOIN client ON age.age_id = client.age_id
+                                    GROUP BY age.age_range;";
+                                }
+                                $result1 = mysqli_query($conn, $query1);
+                                $age_range = array();
+                                $client_count = array();
+                                foreach ($result1 as $data1) {
+                                    $age_range[] = $data1['AGE_RANGE'];
+                                    $client_count[] = $data1['client_count'];
+                                }
+?>
             <!-- start of data analysis of age -->
-            <?php
-            
-            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
-                FROM age
-                INNER JOIN client ON age.age_id = client.age_id
-                GROUP BY age.age_range;
-                ";
-            $result1 = mysqli_query($conn, $query1);
-            $age_range = array();
-            $client_count = array();
-            foreach ($result1 as $data1) {
-                $age_range[] = $data1['AGE_RANGE'];
-                $client_count[] = $data1['client_count'];
-            }
-            ?>
             <div class="barchart1">
                 <canvas id="myChart1"></canvas>
+                                <p></p>
             </div>
 
             <script>
@@ -371,7 +416,7 @@ if (($user_role_id_session !== 1)) {
                 const data = {
                     labels: labels,
                     datasets: [{
-                        label: 'TOTAL AGE COUNT PER MONTH',
+                        label: 'TOTAL AGE',
                         data: <?php echo json_encode($client_count); ?>,
                         backgroundColor: [
                             '#12372A',
@@ -432,26 +477,91 @@ if (($user_role_id_session !== 1)) {
 
             <!-- end of data analysis of age -->
 
-            <!-- start of data analysis of gender -->
-            <?php
+
+
+
+
+
+
+
+<?php
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+
+    switch ($filter) {
+        case 'today':
             $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
-FROM (
-  SELECT 'Male' AS gender
-  UNION
-  SELECT 'Female'
-  UNION
-  SELECT 'Other'
-) AS all_genders
-LEFT JOIN client ON all_genders.gender = client.gender
-GROUP BY all_genders.gender
-";
-            $result2 = mysqli_query($conn, $query2);
+            FROM (
+              SELECT 'Male' AS gender
+              UNION
+              SELECT 'Female'
+              UNION
+              SELECT 'Other'
+            ) AS all_genders
+            LEFT JOIN client ON all_genders.gender = client.gender AND DATE(client.created_at) = CURDATE()
+            GROUP BY all_genders.gender
+            ;";
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+        case '11':
+        case '12':
+            $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+            FROM (
+                SELECT 'Male' AS gender
+                UNION
+                SELECT 'Female'
+                UNION
+                SELECT 'Other'
+            ) AS all_genders
+            LEFT JOIN client ON all_genders.gender = client.gender AND MONTH(client.created_at) = $filter
+            GROUP BY all_genders.gender;
+            
+     ";
+            break;
+        case $filter:
+            $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+            FROM (
+                SELECT 'Male' AS gender
+                UNION
+                SELECT 'Female'
+                UNION
+                SELECT 'Other'
+            ) AS all_genders
+            LEFT JOIN client ON all_genders.gender = client.gender AND YEAR(client.created_at) = $filter
+            GROUP BY all_genders.gender;";
+            break;
+    }
+} else {
+    $query2= "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+    FROM (
+      SELECT 'Male' AS gender
+      UNION
+      SELECT 'Female'
+      UNION
+      SELECT 'Other'
+    ) AS all_genders
+    LEFT JOIN client ON all_genders.gender = client.gender
+    GROUP BY all_genders.gender;";
+}
+
+$result2 = mysqli_query($conn, $query2);
 
             foreach ($result2 as $data2) {
                 $genders[] = $data2['genders'];
                 $gender_count[] = $data2['gender_count'];
             }
-            ?>
+?>
+            
+            <!-- start of data analysis of gender -->
             <div class="barchart1">
                 <canvas id="myChart2"></canvas>
             </div>
@@ -462,7 +572,7 @@ GROUP BY all_genders.gender
                 const data_gender = {
                     labels: labels_gender,
                     datasets: [{
-                        label: 'TOTAL GENDER COUNT PER MONTH',
+                        label: 'TOTAL GENDER',
                         data: <?php echo json_encode($gender_count); ?>,
                         backgroundColor: [
                             '#12372A',
@@ -496,39 +606,132 @@ GROUP BY all_genders.gender
 
             <!-- end of data analysis of gender -->
 
-            <!-- start of data analysis of education -->
+
+
+
+
+
             <?php
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+
+    switch ($filter) {
+        case 'today':
             $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
-FROM (
-  SELECT 'Elementary Graduate' AS education
-  UNION
-  SELECT 'HighSchool Level'
-  UNION
-  SELECT 'HighSchool Graduate'
-  UNION
-  SELECT 'College Level'
-  UNION
-  SELECT 'College Graduate'
-  UNION
-  SELECT 'Master''s Degree' -- Corrected single quote usage
-  UNION
-  SELECT 'Doctorate Degree'
-  UNION
-  SELECT 'Vocational'
-) AS all_education
-LEFT JOIN client ON all_education.education = client.education
-GROUP BY all_education.education;
+            FROM (
+              SELECT 'Elementary Graduate' AS education
+              UNION
+              SELECT 'High School Level'
+              UNION
+              SELECT 'High School Graduate'
+              UNION
+              SELECT 'College Level'
+              UNION
+              SELECT 'College Graduate'
+              UNION
+              SELECT 'Master''s Degree' -- Corrected single quote usage
+              UNION
+              SELECT 'Doctorate Degree'
+              UNION
+              SELECT 'Vocational'
+            ) AS all_education
+            LEFT JOIN client ON all_education.education = client.education AND DATE(client.created_at) = CURDATE()
+            GROUP BY all_education.education
+            ;";
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+        case '11':
+        case '12':
+            $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+            FROM (
+              SELECT 'Elementary Graduate' AS education
+              UNION
+              SELECT 'High School Level'
+              UNION
+              SELECT 'High School Graduate'
+              UNION
+              SELECT 'College Level'
+              UNION
+              SELECT 'College Graduate'
+              UNION
+              SELECT 'Master''s Degree' -- Corrected single quote usage
+              UNION
+              SELECT 'Doctorate Degree'
+              UNION
+              SELECT 'Vocational'
+            ) AS all_education
+            LEFT JOIN client ON all_education.education = client.education AND MONTH(client.created_at) = $filter
+            GROUP BY all_education.education;
+            
+     ";
+            break;
+        case $filter:
+            $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+            FROM (
+              SELECT 'Elementary Graduate' AS education
+              UNION
+              SELECT 'High School Level'
+              UNION
+              SELECT 'High School Graduate'
+              UNION
+              SELECT 'College Level'
+              UNION
+              SELECT 'College Graduate'
+              UNION
+              SELECT 'Master''s Degree' -- Corrected single quote usage
+              UNION
+              SELECT 'Doctorate Degree'
+              UNION
+              SELECT 'Vocational'
+            ) AS all_education
+            LEFT JOIN client ON all_education.education = client.education AND YEAR(client.created_at) = $filter
+            GROUP BY all_education.education;";
+            break;
+    }
+} else {
+    $query3= "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+    FROM (
+      SELECT 'Elementary Graduate' AS education
+      UNION
+      SELECT 'High School Level'
+      UNION
+      SELECT 'High School Graduate'
+      UNION
+      SELECT 'College Level'
+      UNION
+      SELECT 'College Graduate'
+      UNION
+      SELECT 'Master''s Degree' -- Corrected single quote usage
+      UNION
+      SELECT 'Doctorate Degree'
+      UNION
+      SELECT 'Vocational'
+    ) AS all_education
+    LEFT JOIN client ON all_education.education = client.education
+    GROUP BY all_education.education;";
+}
+$result3 = mysqli_query($conn, $query3);
+$education = array();
+$education_count = array();
 
-";
-            $result3 = mysqli_query($conn, $query3);
-            $education = array();
-            $education_count = array();
+foreach ($result3 as $data3) {
+    $education[] = $data3['educations'];
+    $education_count[] = $data3['education_count'];
+}
 
-            foreach ($result3 as $data3) {
-                $education[] = $data3['educations'];
-                $education_count[] = $data3['education_count'];
-            }
-            ?>
+
+?>
+
+            <!-- start of data analysis of education -->
             <div class="barchart1">
                 <canvas id="myChart3"></canvas>
             </div>
@@ -539,7 +742,7 @@ GROUP BY all_education.education;
                 const data_education = {
                     labels: labels_education,
                     datasets: [{
-                        label: 'TOTAL EDUCATION COUNT PER MONTH',
+                        label: 'TOTAL EDUCATION ',
                         data: <?php echo json_encode($education_count); ?>,
                         backgroundColor: [
                             '#12372A',
@@ -575,28 +778,99 @@ GROUP BY all_education.education;
 
 
 
-            <!-- start of data analysis of occupation -->
+
+
+
+
+
+
+
+
             <?php
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+
+    switch ($filter) {
+        case 'today':
             $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
-FROM (
-  SELECT 'Student' AS occupation
-  UNION
-  SELECT 'Unemployed'
-  UNION
-  SELECT 'Employed'
-  UNION
-  SELECT 'Retired'
-) AS all_occupation
-LEFT JOIN client ON all_occupation.occupation = client.occupation
-GROUP BY all_occupation.occupation;
-";
-            $result4 = mysqli_query($conn, $query4);
+            FROM (
+              SELECT 'Student' AS occupation
+              UNION
+              SELECT 'Unemployed'
+              UNION
+              SELECT 'Employed'
+              UNION
+              SELECT 'Retired'
+            ) AS all_occupation
+            LEFT JOIN client ON all_occupation.occupation = client.occupation AND DATE(client.created_at) = CURDATE()
+            GROUP BY all_occupation.occupation;";
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+        case '11':
+        case '12':
+            $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+            FROM (
+              SELECT 'Student' AS occupation
+              UNION
+              SELECT 'Unemployed'
+              UNION
+              SELECT 'Employed'
+              UNION
+              SELECT 'Retired'
+            ) AS all_occupation
+            LEFT JOIN client ON all_occupation.occupation = client.occupation AND MONTH(client.created_at) = $filter
+            GROUP BY all_occupation.occupation;     
+     ";
+            break;
+        case $filter:
+            $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+            FROM (
+              SELECT 'Student' AS occupation
+              UNION
+              SELECT 'Unemployed'
+              UNION
+              SELECT 'Employed'
+              UNION
+              SELECT 'Retired'
+            ) AS all_occupation
+            LEFT JOIN client ON all_occupation.occupation = client.occupation AND YEAR(client.created_at) = $filter
+            GROUP BY all_occupation.occupation;";
+            break;
+    }
+} else {
+    $query4= "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+    FROM (
+      SELECT 'Student' AS occupation
+      UNION
+      SELECT 'Unemployed'
+      UNION
+      SELECT 'Employed'
+      UNION
+      SELECT 'Retired'
+    ) AS all_occupation
+    LEFT JOIN client ON all_occupation.occupation = client.occupation
+    GROUP BY all_occupation.occupation;";
+}
+$result4 = mysqli_query($conn, $query4);
 
             foreach ($result4 as $data4) {
                 $occupations[] = $data4['occupations'];
                 $occupation_count[] = $data4['occupation_count'];
             }
-            ?>
+
+
+
+?>
+            <!-- start of data analysis of occupation -->
             <div class="barchart1">
                 <canvas id="myChart4"></canvas>
             </div>
@@ -606,7 +880,7 @@ GROUP BY all_occupation.occupation;
                 const data_occupations = {
                     labels: labels_occupations,
                     datasets: [{
-                        label: 'TOTAL OCCUPATION COUNT PER MONTH',
+                        label: 'TOTAL OCCUPATION ',
                         data: <?php echo json_encode($occupation_count); ?>,
                         backgroundColor: [
                             '#12372A',
@@ -642,17 +916,46 @@ GROUP BY all_occupation.occupation;
 
 
 
-            <!-- start of data analysis of services -->
+
             <?php
-            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details GROUP BY service;
-";
-            $result5 = mysqli_query($conn, $query5);
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+
+    switch ($filter) {
+        case 'today':
+            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where DATE(created_at) = CURDATE() GROUP BY service;";
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+        case '11':
+        case '12':
+            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where MONTH(created_at) = $filter GROUP BY service;     
+     ";
+            break;
+        case $filter:
+            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where YEAR(created_at) = $filter GROUP BY service;";
+            break;
+    }
+} else {
+    $query5= "SELECT service, COUNT(service) AS count_service FROM queue_details GROUP BY service;";
+}
+$result5 = mysqli_query($conn, $query5);
 
             foreach ($result5 as $data5) {
                 $service[] = $data5['service'];
                 $count_service[] = $data5['count_service'];
             }
-            ?>
+
+?>
+            <!-- start of data analysis of services -->
             <div class="barchart1">
                 <canvas id="myChart5"></canvas>
             </div>
@@ -662,7 +965,7 @@ GROUP BY all_occupation.occupation;
                 const data_service = {
                     labels: labels_service,
                     datasets: [{
-                        label: 'TOTAL SERVICE COUNT PER MONTH',
+                        label: 'TOTAL SERVICE',
                         data: <?php echo json_encode($count_service); ?>,
                         backgroundColor: [
                             '#12372A',
