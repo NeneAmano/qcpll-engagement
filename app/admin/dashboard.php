@@ -132,6 +132,9 @@ if (($user_role_id_session !== 1)) {
         .card-title {
             font-size: 15px;
         }
+        .card{
+            border-right: 9px solid #1B9C85 !important;
+        }
     </style>
     <?php
     require_once 'includes/sidebar.php';
@@ -215,8 +218,8 @@ if (($user_role_id_session !== 1)) {
             justify-content: flex-end;
             align-items: flex-end;
             position: relative;
-            bottom: 45em;
-            left: 60em;
+            bottom: 35em;
+            left: 47em;
             flex-direction: column;
             font-family: Georgia, 'Times New Roman', Times, serif !important;
         }
@@ -306,6 +309,8 @@ if (($user_role_id_session !== 1)) {
                                         echo '<br>';
                                 echo '</div>';
                             }
+                        }else{
+                            
                         }
 
                     ?>
