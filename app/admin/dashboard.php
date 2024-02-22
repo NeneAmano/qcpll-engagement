@@ -14,6 +14,11 @@ if (($user_role_id_session !== 1)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Dashboard</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
 
@@ -202,24 +207,199 @@ if (($user_role_id_session !== 1)) {
         <!-- end of main row -->
         <br>
         <br>
-        <div class="data-client-analytics">
-            <div>
-                <canvas id="myChart" width="400" height="100" aria-label="Hello ARIA World" role="img"></canvas>
-            </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
     </section>
+
+
+    <p class="new_user_title">New Users</p>
+    <section class="new_user">
+   
+        <div class="main-user-content">
+        <?php
+                                        $sql_select = "SELECT username,created_at FROM users LIMIT 3;";
+                                        $result_select = mysqli_query($conn, $sql_select);
+                                        if (mysqli_num_rows($result_select) > 0) {
+                                            while ($row_select = mysqli_fetch_assoc($result_select)) {
+                                                $username = $row_select['username'];
+                                                $created_at = $row_select['created_at'];
+
+                                                $date_string = $created_at;
+                                                $timestamp = strtotime($date_string);
+                                                $formattedDate = date("F j, Y", $timestamp);
+
+                                                echo '<div class="user-content">';
+                                                echo '<p>'.$username.'</p>';
+                                                echo '<div class="user-date">';
+                                                        echo '<span>'.$formattedDate.'</span>';
+                                                echo '</div>';
+                                                echo '</div>';
+
+                                            }
+                                        }
+                                        ?>
+            <div class="user-content">
+                <a href="users.php">
+            <ion-icon name="add-circle-outline" class="add_icon"></ion-icon>
+            </a>
+            <div class="user-date">
+                        <span>Add User</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Recent Orders Table -->
+    <main>
+    <div class="recent-feedback">
+    <p class="new_user_title">Recent Feedback</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Queue Number</th>
+                            <th>Time Submitted</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                                $sql_select = "SELECT  client.f_name, queue_details.queue_number, feedback.created_at 
+                                FROM feedback 
+                                INNER JOIN client ON feedback.client_id = client.client_id 
+                                INNER JOIN queue_details ON feedback.client_id = queue_details.client_id 
+                                WHERE DATE(feedback.created_at) = CURDATE() 
+                                GROUP BY feedback.client_id 
+                                ORDER BY feedback.client_id DESC 
+                                LIMIT 3;
+                                ;";
+                                $result_select = mysqli_query($conn, $sql_select);
+                                if (mysqli_num_rows($result_select) > 0) {
+                                    while ($row_select = mysqli_fetch_assoc($result_select)) {
+                                        $fname = $row_select['f_name'];
+                                        $queue_number = $row_select['queue_number'];
+                                        $created_at = $row_select['created_at'];
+                                        
+                                        $date_string = $created_at;
+                                        $timestamp = strtotime($date_string);
+                                        $formattedDate = date("F j, Y", $timestamp);
+
+
+                                        echo '<tr>';
+                                        echo '<th scope="row">'.$fname.'</th>';
+                                        echo '<td>'.$queue_number.'</td>';
+                                        echo '<td>'.$created_at.'</td>';
+                                        echo '<td>';
+                                        echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailModal">Details</button>';
+                                        echo '</td>';
+                                      echo '</tr>';
+                                    }
+                                }else{
+                                   echo '<tr>';
+                                        echo '<td colspan="" class="text-center d-none"></td>';
+                                        echo '<td colspan="" class="text-center d-none"></td>';
+                                        echo '<td colspan="3" class="text-center">No records found.</td>';
+                                    echo '</tr>';
+                                }
+                            ?>
+                            
+                    </tbody>
+                </table>
+                <a href="feedback.php">Show All</a>
+            </div>
+            <!-- End of Recent Orders -->
+            </main>
     <style>
+        main .recent-feedback{
+            margin-top: 1.3rem;
+        }
+
+        main .recent-feedback h2{
+            margin-bottom: 0.8rem;
+        }
+
+        main .recent-feedback table{
+            background-color: var(--color-white);
+            width: 100%;
+            padding: var(--card-padding);
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            border-radius: var(--card-border-radius);
+            transition: all 0.3s ease;
+        }
+
+        main .recent-feedback table:hover{
+            box-shadow: none;
+        }
+
+        main table tbody td{
+            height: 2.8rem;
+            border-bottom: 1px solid var(--color-light);
+            color: var(--color-dark-variant);
+        }
+
+        main table tbody tr:last-child td{
+            border: none;
+        }
+
+        main .recent-feedback a{
+            text-align: center;
+            display: block;
+            margin: 1rem auto;
+            color: var(--color-primary);
+        }
+        .new_user_title{
+            position: relative;
+            left: 2em;
+            font-size: 1.5em;
+            font-weight: 600;
+            width: fit-content;
+        }
+        .new_user{
+            cursor: pointer;
+            background-color: var(--color-white);
+            padding: var(--card-padding);
+            box-shadow: var(--box-shadow);
+            max-width: 61%;
+            margin-left: 3em;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            flex-wrap: nowrap;
+        }
+        .new_user:hover {
+            box-shadow: none;
+        }
+        .main-user-content{
+            display: flex;
+            gap: 6em;
+            flex-wrap: nowrap;
+        }
+        .user-content{
+            display: flex;
+            justify-content: center;    
+            align-items: center;
+            flex-direction: column;
+            flex-wrap: nowrap;
+        }
+        .user-content p{
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+        .user-content span{
+            font-weight: 100;
+            font-size: .8em;
+        }
+        .user-content .add_icon{
+            font-size: 3em;
+        }
         .history-section {
             width: 30em;
             display: flex;
             justify-content: flex-end;
             align-items: flex-end;
             position: relative;
-            bottom: 35em;
-            left: 47em;
+            bottom: 40em;
+            left: 46em;
             flex-direction: column;
             font-family: Georgia, 'Times New Roman', Times, serif !important;
         }
@@ -238,6 +418,20 @@ if (($user_role_id_session !== 1)) {
             transition: all 0.3s ease;
             border-radius: 5px;
             border-right: 7px solid #6C9BCF !important;
+        }
+        @media only screen and (min-width: 1900px){
+            .history-section {
+            width: 30em;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            position: relative;
+            bottom: 40em;
+            left: 60em;
+            flex-direction: column;
+            font-family: Georgia, 'Times New Roman', Times, serif !important;
+        }
+
         }
 
         .card-container:hover {
@@ -318,28 +512,7 @@ if (($user_role_id_session !== 1)) {
             <br>
         </div>
     </section>
-    <script>
-        const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['January', 'Febraury', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                datasets: [{
-                    label: 'Client Per Month',
-                    data: [12, 19, 3, 5, 2, 3, 6, 8, 4, 2, 7, 8],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <?php
