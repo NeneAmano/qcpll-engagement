@@ -78,7 +78,7 @@ if (($user_role_id_session !== 1)) {
     }
     ?>
     <!-- start of main section container -->
-    <div class="container-fluid mt-3">
+    <div class="container-fluid mt-3 container">
         <!-- start of card -->
         <div class="card">
             <!-- start of card header -->
@@ -231,6 +231,7 @@ if (($user_role_id_session !== 1)) {
                         box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                         padding: 3px;
                     }
+
                 </style>
                 <!-- start of first row -->
                 <div class="row">

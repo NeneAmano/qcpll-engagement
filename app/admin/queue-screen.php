@@ -26,6 +26,16 @@ if (($user_role_id_session !== 1)) {
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             padding: 6px;
         }
+        .container{
+            overflow: scroll;
+            height: 97vh;
+        }
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+        body{
+        
+        }
     </style>
 </head>
 <body>
