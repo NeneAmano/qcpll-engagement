@@ -1,3 +1,6 @@
+
+
+
 <?php
 require_once('../core/init.php');
 ob_start();
@@ -30,7 +33,9 @@ if (($user_role_id_session !== 1)) {
             font-family: 'Poppins', sans-serif;
         }
 
-        body {}
+        body {
+
+        }
 
         .uk-timeline .uk-timeline-item .uk-card {
             max-height: 300px;
@@ -66,11 +71,15 @@ if (($user_role_id_session !== 1)) {
 
         .uk-container {
             overflow: scroll;
-            height: 48em;
+            height: 39em;
         }
 
         .uk-container::-webkit-scrollbar {
             display: none;
+        }
+        .uk-card{
+            border-right: 8px solid #1B9C85;
+            border-radius: 5px;
         }
     </style>
 </head>
