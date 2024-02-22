@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`age_id`) REFERENCES `age` (`age_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.client: ~48 rows (approximately)
+-- Dumping data for table qcpl_engagement.client: ~63 rows (approximately)
 INSERT INTO `client` (`client_id`, `f_name`, `m_name`, `l_name`, `suffix`, `age_id`, `gender`, `education`, `occupation`, `status`, `created_at`, `updated_at`) VALUES
 	(35, 'da', 'das', 'das', 'das', 5, 'Male', 'Doctorate Degree', 'Employed', 1, '2024-02-08 01:26:03', '2024-02-08 01:26:03'),
 	(36, 'dasd', 'dsad', 'dasd', 'da', 3, 'Female', 'College Level', 'Unemployed', 2, '2024-02-08 01:29:29', '2024-02-08 01:29:29'),
@@ -225,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   CONSTRAINT `feedback_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.feedback: ~0 rows (approximately)
+-- Dumping data for table qcpl_engagement.feedback: ~71 rows (approximately)
 INSERT INTO `feedback` (`feedback_id`, `client_id`, `question_id`, `answer_id`, `text_feedback`, `created_at`, `updated_at`) VALUES
 	(392, 95, 9, 106, NULL, '2024-02-19 17:39:39', '2024-02-19 17:47:13'),
 	(393, 95, 10, 107, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
@@ -319,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`qc_id`) REFERENCES `question_category` (`qc_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.questions: ~15 rows (approximately)
+-- Dumping data for table qcpl_engagement.questions: ~10 rows (approximately)
 INSERT INTO `questions` (`question_id`, `qt_id`, `qc_id`, `english_question`, `tagalog_question`, `is_deleted`, `created_at`, `updated_at`) VALUES
 	(9, 1, 1, 'Is our staff helpful?', 'Matulungin ba ang aming mga tauhan?', 0, '2024-02-10 09:07:13', '2024-02-10 09:07:13'),
 	(10, 1, 1, 'How was your experience with our staff?', 'Kumusta ang iyong karanasan sa aming mga tauhan?', 0, '2024-02-10 09:09:56', '2024-02-10 09:09:56'),
@@ -358,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `question_type` (
   PRIMARY KEY (`qt_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.question_type: ~15 rows (approximately)
+-- Dumping data for table qcpl_engagement.question_type: ~13 rows (approximately)
 INSERT INTO `question_type` (`qt_id`, `question_type`, `multiple_choice`, `created_at`, `updated_at`) VALUES
 	(1, 'Emoji-based', 0, '2024-01-22 08:51:53', '2024-01-22 08:51:53'),
 	(2, 'Multiple Selection', 0, '2024-02-10 06:56:20', '2024-02-12 20:21:51'),
@@ -419,7 +419,7 @@ CREATE TABLE IF NOT EXISTS `queue_details` (
   CONSTRAINT `queue_details_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.queue_details: ~47 rows (approximately)
+-- Dumping data for table qcpl_engagement.queue_details: ~71 rows (approximately)
 INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `entry_check`, `updated_at`, `created_at`) VALUES
 	(65, 40, 'N-00001', 'NBI', 0, 1, '2024-02-09 14:03:09', '2024-02-08 20:02:46'),
 	(66, 40, 'N-00001', 'Police', 0, 1, '2024-02-09 14:03:09', '2024-02-08 20:02:46'),
@@ -554,7 +554,7 @@ CREATE TABLE IF NOT EXISTS `test_ulit` (
   CONSTRAINT `test_ulit_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.test_ulit: ~0 rows (approximately)
+-- Dumping data for table qcpl_engagement.test_ulit: ~3 rows (approximately)
 INSERT INTO `test_ulit` (`test_id`, `question_id`, `test_ulit`, `is_deleted`, `created_at`, `updated_at`) VALUES
 	(1, NULL, 'test choice 1', 0, '2024-02-19 09:42:10', '2024-02-19 09:42:10'),
 	(2, NULL, 'test choice 2', 0, '2024-02-19 09:42:10', '2024-02-19 09:42:10'),
