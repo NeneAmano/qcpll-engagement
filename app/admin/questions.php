@@ -1,23 +1,23 @@
 <?php
-require_once('../core/init.php');
-ob_start();
-if (($user_role_id_session !== 1)) {
-    header('location: login.php?error=accessdenied');
-    die();
-} else {
-    if (isset($_GET['archived-records'])) {
-        $archived = $_GET['archived-records'];
-
-        if ($archived == 'yes') {
-            $is_deleted = 1;
-        } elseif ($archived == 'no') {
-            $is_deleted = 0;
-        }
-    } else {
-        header('location: dashboard.php');
+    require_once('../core/init.php');
+    ob_start();
+    if (($user_role_id_session !== 1)) {
+        header('location: login.php?error=accessdenied');
         die();
+    } else {
+        if (isset($_GET['archived-records'])) {
+            $archived = $_GET['archived-records'];
+
+            if ($archived == 'yes') {
+                $is_deleted = 1;
+            } elseif ($archived == 'no') {
+                $is_deleted = 0;
+            }
+        } else {
+            header('location: dashboard.php');
+            die();
+        }
     }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
