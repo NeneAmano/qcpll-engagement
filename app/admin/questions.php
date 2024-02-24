@@ -78,7 +78,7 @@ if (($user_role_id_session !== 1)) {
     }
     ?>
     <!-- start of main section container -->
-    <div class="container-fluid mt-3 container">
+    <div class="container-fluid mt-3">
         <!-- start of card -->
         <div class="card">
             <!-- start of card header -->
