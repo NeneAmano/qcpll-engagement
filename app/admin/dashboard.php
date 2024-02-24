@@ -1,13 +1,12 @@
 <?php
-require_once('../core/init.php');
-if (($user_role_id_session !== 1)) {
-    header('location: login.php?error=accessdenied');
-    die();
-}
+    require_once('../core/init.php');
+    if (($user_role_id_session !== 1)) {
+        header('location: login.php?error=accessdenied');
+        die();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
