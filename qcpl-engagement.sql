@@ -36,24 +36,6 @@ INSERT INTO `age` (`age_id`, `age_range`, `created_at`, `updated_at`) VALUES
 	(4, '36-59', '2023-12-06 15:21:25', '2023-12-06 15:21:25'),
 	(5, '60 above', '2023-12-06 15:21:37', '2023-12-06 15:21:52');
 
--- Dumping structure for table qcpl_engagement.bakla_ako
-CREATE TABLE IF NOT EXISTS `bakla_ako` (
-  `bakla_id` int NOT NULL AUTO_INCREMENT,
-  `question_id` int DEFAULT NULL,
-  `bakla_ako` varchar(255) NOT NULL,
-  `is_deleted` tinyint NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`bakla_id`),
-  KEY `question_id` (`question_id`),
-  CONSTRAINT `bakla_ako_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Dumping data for table qcpl_engagement.bakla_ako: ~2 rows (approximately)
-INSERT INTO `bakla_ako` (`bakla_id`, `question_id`, `bakla_ako`, `is_deleted`, `created_at`, `updated_at`) VALUES
-	(1, NULL, 'ads', 0, '2024-02-17 20:33:03', '2024-02-17 20:33:03'),
-	(2, NULL, '12', 0, '2024-02-17 20:33:03', '2024-02-17 20:33:03');
-
 -- Dumping structure for table qcpl_engagement.choices
 CREATE TABLE IF NOT EXISTS `choices` (
   `choice_id` int NOT NULL AUTO_INCREMENT,
@@ -69,25 +51,25 @@ CREATE TABLE IF NOT EXISTS `choices` (
 
 -- Dumping data for table qcpl_engagement.choices: ~19 rows (approximately)
 INSERT INTO `choices` (`choice_id`, `question_id`, `choice`, `is_deleted`, `created_at`, `updated_at`) VALUES
-	(5, 22, 'Online Search [Sa Internet]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(6, 22, 'Word of Mouth [Kwento ng Iba]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(7, 22, 'Social Media [Facebook, Twitter, Instagram, etc.]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(8, 22, 'Government Website [Sa website ng pamahalaan]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(9, 22, 'Printed Materials (Flyers, Brochures) [Naka-print na Materyales]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(10, 22, 'Referral from a Friend or Family [Sa payo ng kaibigan o kamag-anak]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(11, 23, 'Helpful customer service. [Matulunging customer service.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(12, 23, 'Diverse services for specific needs. [Iba\'t ibang serbisyo para sa pangangailangan.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(13, 23, 'Clean and organized facilities. [Malinis at maayos na pasilidad.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(14, 23, 'Timely service delivery. [Mabilis na paghahatid ng serbisyo.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(15, 23, 'Easy accessibility. [Madaling ma-access.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(16, 23, 'Knowledgeable staff. [Maraming kaalaman ang mga kawani.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(17, 24, 'Customer Service [Serbisyo sa customer]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(18, 24, 'Service Variety [Iba\'t ibang uri ng serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(19, 24, 'Facility Cleanliness and Organization [Kalinisan at ayos ng pasilidad]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(20, 24, 'Timeliness of Service [Bilis ng serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(21, 24, 'Service Accessibility [Aksisibilidad sa serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(22, 24, 'Staff Knowledge and Training [Kaalaman at kasanayan ng kawani]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(23, 24, 'None', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01');
+	(5, NULL, 'Online Search [Sa Internet]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
+	(6, NULL, 'Word of Mouth [Kwento ng Iba]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
+	(7, NULL, 'Social Media [Facebook, Twitter, Instagram, etc.]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
+	(8, NULL, 'Government Website [Sa website ng pamahalaan]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
+	(9, NULL, 'Printed Materials (Flyers, Brochures) [Naka-print na Materyales]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
+	(10, NULL, 'Referral from a Friend or Family [Sa payo ng kaibigan o kamag-anak]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
+	(11, NULL, 'Helpful customer service. [Matulunging customer service.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
+	(12, NULL, 'Diverse services for specific needs. [Iba\'t ibang serbisyo para sa pangangailangan.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
+	(13, NULL, 'Clean and organized facilities. [Malinis at maayos na pasilidad.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
+	(14, NULL, 'Timely service delivery. [Mabilis na paghahatid ng serbisyo.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
+	(15, NULL, 'Easy accessibility. [Madaling ma-access.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
+	(16, NULL, 'Knowledgeable staff. [Maraming kaalaman ang mga kawani.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
+	(17, NULL, 'Customer Service [Serbisyo sa customer]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
+	(18, NULL, 'Service Variety [Iba\'t ibang uri ng serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
+	(19, NULL, 'Facility Cleanliness and Organization [Kalinisan at ayos ng pasilidad]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
+	(20, NULL, 'Timeliness of Service [Bilis ng serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
+	(21, NULL, 'Service Accessibility [Aksisibilidad sa serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
+	(22, NULL, 'Staff Knowledge and Training [Kaalaman at kasanayan ng kawani]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
+	(23, NULL, 'None', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01');
 
 -- Dumping structure for table qcpl_engagement.client
 CREATE TABLE IF NOT EXISTS `client` (
@@ -197,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `emoji` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`emoji_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.emoji: ~7 rows (approximately)
 INSERT INTO `emoji` (`emoji_id`, `image_path`, `_char`, `image`, `unicode_codepoint`, `occurrences`, `_position`, `negative`, `neutral`, `positive`, `sentiment_score`, `unicode_name`, `unicode_block`, `remarks`, `in_choices`, `created_at`, `updated_at`) VALUES
@@ -207,7 +189,9 @@ INSERT INTO `emoji` (`emoji_id`, `image_path`, `_char`, `image`, `unicode_codepo
 	(109, 'public/assets/images/emojis/SMILING FACE WITH SMILING EYES.png', '😊', '😊', '0x1f60a', 3186, 0.813, 0.060, 0.237, 0.704, 0.644, 'SMILING FACE WITH SMILING EYES', 'Emoticons', 'A yellow face with smiling eyes and a broad, closed smile turning up to rosy cheeks. Often expresses genuine happiness and warm, positive feelings. An emoji form of the ^^ emoticon.', 1, '2024-02-12 20:01:33', '2024-02-12 20:01:33'),
 	(110, 'public/assets/images/emojis/SMILING FACE WITH OPEN MOUTH AND SMILING EYES.png', '😄', '😄', '0x1f604', 1398, 0.795, 0.137, 0.305, 0.558, 0.421, 'SMILING FACE WITH OPEN MOUTH AND SMILING EYES', 'Emoticons', 'A yellow face with smiling eyes and a broad, open smile, showing upper teeth and tongue on some platforms. Often conveys general happiness and good-natured amusement. Similar to 😀 Grinning Face and 😃 Grinning Face With Big Eyes, but with warmer, less excited eyes.', 1, '2024-02-12 20:01:49', '2024-02-12 20:01:51'),
 	(111, 'public/assets/images/emojis/GROWING HEART.png', '💗', '💗', '0x1f497', 836, 0.800, 0.051, 0.241, 0.708, 0.657, 'GROWING HEART', 'Miscellaneous Symbols and Pictographs', 'A pink heart, inside a slightly larger pink heart, inside a larger-again pink heart. Intended to give the impression of a heart increasing in size. An early Apple design displayed as a plain Pink Heart.', 0, '2024-02-12 20:02:47', '2024-02-12 20:03:03'),
-	(112, 'public/assets/images/emojis/TWO HEARTS.png', '💕', '💕', '0x1f495', 2400, 0.766, 0.042, 0.285, 0.674, 0.632, 'TWO HEARTS', 'Miscellaneous Symbols and Pictographs', 'Two pink love hearts. One larger than the other. Can be used to display that “love is in the air”. On Snapchat, this emoji next to a contact denotes that you have been #1 BFs with each other for two consecutive months. A bug in October 2019 has a yellow heart emoji showing instead of 💕 for some Snapchat users.', 0, '2024-02-17 05:14:52', '2024-02-19 09:46:46');
+	(112, 'public/assets/images/emojis/TWO HEARTS.png', '💕', '💕', '0x1f495', 2400, 0.766, 0.042, 0.285, 0.674, 0.632, 'TWO HEARTS', 'Miscellaneous Symbols and Pictographs', 'Two pink love hearts. One larger than the other. Can be used to display that “love is in the air”. On Snapchat, this emoji next to a contact denotes that you have been #1 BFs with each other for two consecutive months. A bug in October 2019 has a yellow heart emoji showing instead of 💕 for some Snapchat users.', 0, '2024-02-17 05:14:52', '2024-02-19 09:46:46'),
+	(113, 'public/assets/images/emojis/CLAPPING HANDS SIGN.png', '👏', '👏', '0x1f44f', 2336, 0.787, 0.104, 0.271, 0.624, 0.520, 'CLAPPING HANDS SIGN', 'Miscellaneous Symbols and Pictographs', '', 0, '2024-02-22 11:13:18', '2024-02-22 13:58:33'),
+	(114, 'public/assets/images/emojis/WINKING FACE.png', '😉', '😉', '0x1f609', 1521, 0.845, 0.100, 0.337, 0.563, 0.463, 'WINKING FACE', 'Emoticons', ' ', 0, '2024-02-22 11:16:42', '2024-02-22 13:58:34');
 
 -- Dumping structure for table qcpl_engagement.feedback
 CREATE TABLE IF NOT EXISTS `feedback` (
@@ -226,81 +210,6 @@ CREATE TABLE IF NOT EXISTS `feedback` (
 ) ENGINE=InnoDB AUTO_INCREMENT=466 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.feedback: ~71 rows (approximately)
-INSERT INTO `feedback` (`feedback_id`, `client_id`, `question_id`, `answer_id`, `text_feedback`, `created_at`, `updated_at`) VALUES
-	(392, 95, 9, 106, NULL, '2024-02-19 17:39:39', '2024-02-19 17:47:13'),
-	(393, 95, 10, 107, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(394, 95, 11, 108, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(395, 95, 12, 110, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(396, 95, 13, 109, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(397, 95, 14, 110, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(398, 95, 15, NULL, 'cxz', '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(399, 95, 22, 8, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(400, 95, 23, 13, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(401, 95, 23, 14, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(402, 95, 24, 23, NULL, '2024-02-19 17:39:39', '2024-02-19 17:39:39'),
-	(403, 96, 9, 109, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(404, 96, 10, 107, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(405, 96, 11, 106, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(406, 96, 12, 109, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(407, 96, 13, 108, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(408, 96, 14, 108, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(409, 96, 15, NULL, '', '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(410, 96, 22, 8, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(411, 96, 23, 13, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(412, 96, 24, 22, NULL, '2024-02-19 17:44:21', '2024-02-19 17:44:21'),
-	(413, 97, 9, 108, NULL, '2024-02-19 17:45:19', '2024-02-19 17:47:29'),
-	(414, 97, 10, 107, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(415, 97, 11, 106, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(416, 97, 12, 106, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(417, 97, 13, 107, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(418, 97, 14, 110, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(419, 97, 15, NULL, 'xzc', '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(420, 97, 22, 6, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(421, 97, 22, 7, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(422, 97, 22, 8, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(423, 97, 22, 10, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(424, 97, 23, 12, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(425, 97, 23, 13, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(426, 97, 23, 14, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(427, 97, 24, 17, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(428, 97, 24, 18, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(429, 97, 24, 19, NULL, '2024-02-19 17:45:19', '2024-02-19 17:45:19'),
-	(430, 98, 9, 110, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(431, 98, 10, 110, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(432, 98, 11, 109, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(433, 98, 12, 108, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(434, 98, 13, 108, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(435, 98, 14, 107, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(436, 98, 15, NULL, 'cvcx', '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(437, 98, 22, 6, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(438, 98, 22, 8, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(439, 98, 23, 12, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(440, 98, 23, 14, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(441, 98, 23, 15, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(442, 98, 24, 23, NULL, '2024-02-19 17:45:57', '2024-02-19 17:45:57'),
-	(443, 99, 9, 109, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(444, 99, 10, 108, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(445, 99, 11, 107, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(446, 99, 12, 110, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(447, 99, 13, 108, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(448, 99, 14, 107, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(449, 99, 15, NULL, '', '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(450, 99, 22, 9, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(451, 99, 23, 12, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(452, 99, 23, 14, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(453, 99, 24, 20, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(454, 99, 24, 22, NULL, '2024-02-19 18:36:50', '2024-02-19 18:36:50'),
-	(455, 100, 9, 108, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(456, 100, 10, 107, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(457, 100, 11, 110, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(458, 100, 12, 110, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(459, 100, 13, 109, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(460, 100, 14, 108, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(461, 100, 15, NULL, 'Test', '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(462, 100, 22, 8, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(463, 100, 22, 9, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(464, 100, 23, 12, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14'),
-	(465, 100, 24, 22, NULL, '2024-02-20 02:54:14', '2024-02-20 02:54:14');
 
 -- Dumping structure for table qcpl_engagement.questions
 CREATE TABLE IF NOT EXISTS `questions` (
@@ -320,17 +229,6 @@ CREATE TABLE IF NOT EXISTS `questions` (
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.questions: ~10 rows (approximately)
-INSERT INTO `questions` (`question_id`, `qt_id`, `qc_id`, `english_question`, `tagalog_question`, `is_deleted`, `created_at`, `updated_at`) VALUES
-	(9, 1, 1, 'Is our staff helpful?', 'Matulungin ba ang aming mga tauhan?', 0, '2024-02-10 09:07:13', '2024-02-10 09:07:13'),
-	(10, 1, 1, 'How was your experience with our staff?', 'Kumusta ang iyong karanasan sa aming mga tauhan?', 0, '2024-02-10 09:09:56', '2024-02-10 09:09:56'),
-	(11, 1, 2, 'How was our service?', 'Kumusta ang aming serbisyo?', 0, '2024-02-10 09:10:21', '2024-02-10 09:10:21'),
-	(12, 1, 2, 'Are you satisfied with the service you received?', 'Nasiyahan ka ba sa iyong serbisyong natanggap?', 0, '2024-02-10 09:10:38', '2024-02-10 09:10:38'),
-	(13, 1, 3, 'Is the facility clean?', 'Malinis ba ang pasilidad?', 0, '2024-02-10 09:10:53', '2024-02-10 09:10:53'),
-	(14, 1, 3, 'Do you feel comfortable while waiting?', 'Komportable ka ba habang naghihintay?\r\n', 0, '2024-02-10 09:11:10', '2024-02-10 09:11:10'),
-	(15, 3, 2, 'How was your overall experience with our services?', 'Kumusta ang iyong pangkalahatang karanasan sa aming mga serbisyo?', 0, '2024-02-10 09:11:37', '2024-02-13 01:26:30'),
-	(22, 2, 2, 'How did you learn about our service?', 'Paano mo natuklasan ang aming serbisyo?', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(23, 2, 4, 'What positive aspects or experiences would you like to share?', 'Ano ang mga positibong aspeto o karanasan na nais mong ibahagi?', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(24, 2, 4, 'Category of concerns or issues faced?', 'Alin ang mga isyu na iyong nakita o naranasan?', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01');
 
 -- Dumping structure for table qcpl_engagement.question_category
 CREATE TABLE IF NOT EXISTS `question_category` (
@@ -345,8 +243,7 @@ CREATE TABLE IF NOT EXISTS `question_category` (
 INSERT INTO `question_category` (`qc_id`, `question_category`, `created_at`, `updated_at`) VALUES
 	(1, 'Staff', '2024-01-22 06:54:45', '2024-01-22 06:54:45'),
 	(2, 'Service', '2024-01-22 06:54:53', '2024-01-22 06:54:53'),
-	(3, 'Facility', '2024-01-22 06:55:01', '2024-01-22 06:55:01'),
-	(4, 'System', '2024-01-22 09:03:22', '2024-02-10 17:02:09');
+	(3, 'Facility', '2024-01-22 06:55:01', '2024-01-22 06:55:01');
 
 -- Dumping structure for table qcpl_engagement.question_type
 CREATE TABLE IF NOT EXISTS `question_type` (
@@ -362,19 +259,7 @@ CREATE TABLE IF NOT EXISTS `question_type` (
 INSERT INTO `question_type` (`qt_id`, `question_type`, `multiple_choice`, `created_at`, `updated_at`) VALUES
 	(1, 'Emoji-based', 0, '2024-01-22 08:51:53', '2024-01-22 08:51:53'),
 	(2, 'Multiple Selection', 0, '2024-02-10 06:56:20', '2024-02-12 20:21:51'),
-	(3, 'Text-based', 0, '2024-01-22 08:52:02', '2024-02-12 20:21:50'),
-	(6, 'sad', 0, '2024-02-17 16:40:36', '2024-02-17 16:40:36'),
-	(7, 'Multiple choice', 0, '2024-02-17 16:44:17', '2024-02-17 16:44:17'),
-	(8, 'zxcxzc', 1, '2024-02-17 18:43:38', '2024-02-17 18:43:38'),
-	(9, 'ASD zxcD', 1, '2024-02-17 18:49:39', '2024-02-17 18:49:39'),
-	(10, 'ASDASD zxczxc', 1, '2024-02-17 18:50:16', '2024-02-17 18:50:16'),
-	(11, 'SADSAD zcxD', 1, '2024-02-17 18:53:29', '2024-02-17 18:53:29'),
-	(12, 'Test type', 1, '2024-02-17 19:03:48', '2024-02-17 19:03:48'),
-	(13, 'Testing lang', 1, '2024-02-17 19:11:54', '2024-02-17 19:11:54'),
-	(14, 'Bakla ako', 1, '2024-02-17 19:21:57', '2024-02-17 19:21:57'),
-	(15, 'Test choice', 1, '2024-02-17 20:35:00', '2024-02-17 20:35:00'),
-	(16, 'test lang', 0, '2024-02-19 09:14:59', '2024-02-19 09:14:59'),
-	(17, 'test ulit', 1, '2024-02-19 09:15:10', '2024-02-19 09:15:10');
+	(3, 'Text-based', 0, '2024-01-22 08:52:02', '2024-02-12 20:21:50');
 
 -- Dumping structure for table qcpl_engagement.queue
 CREATE TABLE IF NOT EXISTS `queue` (
@@ -508,58 +393,6 @@ CREATE TABLE IF NOT EXISTS `service` (
 
 -- Dumping data for table qcpl_engagement.service: ~0 rows (approximately)
 
--- Dumping structure for table qcpl_engagement.testing_lang
-CREATE TABLE IF NOT EXISTS `testing_lang` (
-  `testing_id` int NOT NULL AUTO_INCREMENT,
-  `question_id` int DEFAULT NULL,
-  `testing_lang` varchar(255) NOT NULL,
-  `is_deleted` tinyint NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`testing_id`),
-  KEY `question_id` (`question_id`),
-  CONSTRAINT `testing_lang_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Dumping data for table qcpl_engagement.testing_lang: ~0 rows (approximately)
-
--- Dumping structure for table qcpl_engagement.test_choice
-CREATE TABLE IF NOT EXISTS `test_choice` (
-  `test_id` int NOT NULL AUTO_INCREMENT,
-  `question_id` int DEFAULT NULL,
-  `test_choice` varchar(255) NOT NULL,
-  `is_deleted` tinyint NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`test_id`),
-  KEY `question_id` (`question_id`),
-  CONSTRAINT `test_choice_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Dumping data for table qcpl_engagement.test_choice: ~2 rows (approximately)
-INSERT INTO `test_choice` (`test_id`, `question_id`, `test_choice`, `is_deleted`, `created_at`, `updated_at`) VALUES
-	(1, NULL, 'sadasd', 0, '2024-02-17 20:35:27', '2024-02-17 20:35:27'),
-	(2, NULL, 'xzc', 0, '2024-02-17 20:35:27', '2024-02-17 20:35:27');
-
--- Dumping structure for table qcpl_engagement.test_ulit
-CREATE TABLE IF NOT EXISTS `test_ulit` (
-  `test_id` int NOT NULL AUTO_INCREMENT,
-  `question_id` int DEFAULT NULL,
-  `test_ulit` varchar(255) NOT NULL,
-  `is_deleted` tinyint NOT NULL DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`test_id`),
-  KEY `question_id` (`question_id`),
-  CONSTRAINT `test_ulit_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Dumping data for table qcpl_engagement.test_ulit: ~3 rows (approximately)
-INSERT INTO `test_ulit` (`test_id`, `question_id`, `test_ulit`, `is_deleted`, `created_at`, `updated_at`) VALUES
-	(1, NULL, 'test choice 1', 0, '2024-02-19 09:42:10', '2024-02-19 09:42:10'),
-	(2, NULL, 'test choice 2', 0, '2024-02-19 09:42:10', '2024-02-19 09:42:10'),
-	(3, NULL, 'test choice 3', 0, '2024-02-19 09:42:10', '2024-02-19 09:42:10');
-
 -- Dumping structure for table qcpl_engagement.users
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int NOT NULL AUTO_INCREMENT,
@@ -578,8 +411,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table qcpl_engagement.users: ~3 rows (approximately)
 INSERT INTO `users` (`user_id`, `user_role_id`, `username`, `password`, `is_active`, `last_login`, `created_at`, `updated_at`) VALUES
-	(4, 1, 'admin', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 1, '2024-02-19 13:10:04', '2023-12-28 02:52:00', '2024-02-19 13:10:04'),
-	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 1, '0000-00-00 00:00:00', '2023-12-28 02:53:48', '2023-12-28 02:53:48'),
+	(4, 1, 'admin', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 1, '2024-02-24 14:29:28', '2023-12-28 02:52:00', '2024-02-24 14:29:28'),
+	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 1, '2024-02-24 14:28:41', '2023-12-28 02:53:48', '2024-02-24 14:28:41'),
 	(7, 1, 'bogart123', '$2y$10$uH24T.acTZWVm3Mt8fjO9.d.xV3jKgXxlJR/ch8swhPZKEImZgLw6', 1, '0000-00-00 00:00:00', '2024-01-23 02:35:23', '2024-01-23 02:35:23');
 
 -- Dumping structure for table qcpl_engagement.user_role
