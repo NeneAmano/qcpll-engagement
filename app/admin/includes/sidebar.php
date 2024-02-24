@@ -57,8 +57,10 @@
                 <div class="text-white">
                     <hr class="mx-2">
                 </div>
+                <?php
+                    if($user_role_id_session == 1){
+                ?>
                         <li class=""><a href="dashboard.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-house"></i> Dashboard</a></li>
-
                         <li class=""><a href="users.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-user"></i><span class="ps-2">Users</span></a></li>
                         <li class=""><a href="clients.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-users"></i><span class="ps-2">Clients</span></a></li>
                         <li class=""><a href="history.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-book-open"></i><span class="ps-2">History</span></a></li>
@@ -72,6 +74,18 @@
                         <div class="text-white">
                             <hr class="mx-2">
                         </div>
+                <?php
+                    }elseif($user_role_id_session == 2){
+                ?>
+                        <li class=""><a href="dashboard.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+                        <li class=""><a href="queue-screen.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-display"></i><span class="ps-2">Queue Monitoring</span></a></li>
+                        <div class="text-white">
+                            <hr class="mx-2">
+                        </div>
+                <?php
+                    }
+                ?>
+                        
             </ul>
             <ul class="list-unstyled px-2">
                 <li class=""><a href="includes/logout.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
