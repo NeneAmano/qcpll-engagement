@@ -144,11 +144,8 @@ if (($user_role_id_session !== 1)) {
         <p class="admin-title">WELCOME, ADMIN</p>
         <!-- start of main row -->
         <div class="row">
-
-
             <!-- start of total clients card -->
             <div class="col-md-2">
-
                 <div class="card">
                     <ion-icon name="person-circle" class="person-icon"></ion-icon>
                     <h5 class="card-title">Total Clients</h5>
