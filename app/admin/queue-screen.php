@@ -38,7 +38,7 @@
     </style>
 </head>
 <body>
-    <div class="container mt-3">
+    <div class="container-fluid mt-3">
         <h1 class="d-flex justify-content-center">QUEUEING NUMBER MONITORING</h1>
         <div class="row">
             <div class="container">
