@@ -66,9 +66,12 @@ if (($user_role_id_session !== 1)) {
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">
-        <!-- start of add service modal button -->
+
+        <!-- filter by today-->
         <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="feedback.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
+        <!-- filter by 7 days -->
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="feedback.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
 
         <!-- filter by month -->
         <div class="dropdown">
@@ -129,6 +132,9 @@ if (($user_role_id_session !== 1)) {
                                         switch ($filter) {
                                             case 'today':
                                                 $sql_select = "SELECT MIN(feedback_id) AS feedback_id, client_id, created_at, updated_at FROM feedback WHERE DATE(created_at) = CURDATE() GROUP BY client_id;";
+                                                break;
+                                            case '7days':
+                                                $sql_select = "SELECT MIN(feedback_id) AS feedback_id, client_id, created_at, updated_at FROM feedback WHERE created_at >= CURRENT_DATE - INTERVAL 7 DAY GROUP BY client_id;;";
                                                 break;
                                             case '1':
                                             case '2':
