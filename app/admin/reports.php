@@ -8,14 +8,13 @@ if (($user_role_id_session !== 1)) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Reports</title>
     <?php
-    require_once 'includes/sidebar.php';
+        require_once 'includes/sidebar.php';
     ?>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
@@ -266,8 +265,7 @@ if (($user_role_id_session !== 1)) {
         }
     </style>
 </head>
-
-<body><main>
+<main>
     <section>
         <div class="try col-md-2">
             <div class="main-card">
