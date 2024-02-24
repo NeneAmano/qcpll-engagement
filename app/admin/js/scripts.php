@@ -37,7 +37,7 @@
                 "ordering": true,
                 layout: {
                     top2Start: {
-                        buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+                        buttons: ['copy', 'csv', 'excel', 'print']
                     }
                 }
             });
