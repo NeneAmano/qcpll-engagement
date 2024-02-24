@@ -33,6 +33,8 @@
                             $_SESSION['username'] = $row['username'];
                             $_SESSION['user_role_id'] = $row['user_role_id'];
 
+                            $query = "UPDATE users SET last_login = NOW() WHERE user_id = '" .$_SESSION['user_id']. "' AND username = '$username_value';";
+                            $result = mysqli_query($conn, $query);
                             header("location: portal.php");
                             die();
                         }
@@ -80,7 +82,6 @@
                             <span>Password</span>
                         </div>
                         <button type="submit" name="login" class="button" style="text-decoration: none;">Log in</button>
-
                     </form>
                 </div>
                <!-- <a href="../app/queuing/queue.php" class="button" style="text-decoration: none;">Log in</a> -->
