@@ -1,6 +1,7 @@
 <?php
     require_once('../core/init.php');
-    if (($user_role_id_session !== 1)) {
+    ob_start();
+    if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
         header('location: login.php?error=accessdenied');
         die();
     }
@@ -141,7 +142,7 @@
         }
     </style>
     <?php
-    require_once 'includes/sidebar.php';
+        require_once 'includes/sidebar.php';
     ?>
     <!-- start of main section container -->
     <section>
@@ -205,10 +206,8 @@
         <br>
     </section>
 
-
     <p class="new_user_title">New Users</p>
     <section class="new_user">
-   
         <div class="main-user-content">
         <?php
                                         $sql_select = "SELECT username,created_at FROM users LIMIT 3;";
@@ -285,7 +284,7 @@
                                         echo '<td>';
                                         echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailModal">Details</button>';
                                         echo '</td>';
-                                      echo '</tr>';
+                                        echo '</tr>';
                                     }
                                 }else{
                                    echo '<tr>';
@@ -464,11 +463,8 @@
         }
     </style>
     <section class="history-section">
-
         <div class="main-container">
-
             <h4><ion-icon name="alert-circle-outline" id="history-icon"></ion-icon>Recent Transaction</h4>
-
                     <?php
                         $sql_recent_transac = "SELECT queue_number,created_at, GROUP_CONCAT(DISTINCT service ORDER BY service) AS services
                         FROM queue_details
@@ -502,19 +498,14 @@
                         }else{
                             
                         }
-
                     ?>
-
             <br>
         </div>
     </section>
-    
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <?php
-    require_once 'js/scripts.php';
+        require_once 'js/scripts.php';
     ?>
-
     </body>
-
 </html>

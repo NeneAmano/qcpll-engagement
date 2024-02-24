@@ -1,7 +1,7 @@
 <?php
     require_once('../core/init.php');
     ob_start();
-    if (($user_role_id_session !== 1)) {
+    if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
         header('location: login.php?error=accessdenied');
         die();
     }
