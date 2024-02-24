@@ -567,12 +567,22 @@ if (($user_role_id_session !== 1)) {
                         }
                     ?>
                     <div class="card-main-contetn-analysis">
-                        <img src="../../<?= $image_path ?>" alt="" class="emoji-img-analysis">
-                        <p><?= $unicode_name ?></p>
-                        <div class="card-body-analysis">
-                            <p><b>Remarks:</b> <?= $final_remarks ?></p>
-                            <p><b>Sentiment score:</b> <?= $sentiment_score ?></p>
-                        </div>
+                        <?php
+                            if($percentage == 0){
+                                echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
+                                echo '<div class="card-body-analysis">';
+                                echo '<p><b>Remarks:</b> No data found.</p>';
+                                echo '<p><b>Sentiment Score:</b> No data found.</p>';
+                                echo '</div>';
+                            }else{
+                                echo '<img src="../../' .$image_path. '" alt="" class="emoji-img-analysis">';
+                                echo '<div class="card-body-analysis">';
+                                echo '<p><b>Remarks:</b>' .$final_remarks. '</p>';
+                                echo '<p><b>Sentiment Score:</b>' .$sentiment_score. '</p>';
+                                echo '</div>';
+                            }
+                        ?>
+                        <hr class="border border-dark">
                     </div>
                 </div>
 
@@ -589,79 +599,83 @@ if (($user_role_id_session !== 1)) {
                                 <p><?= $question_category ?></p>
                             </div>
                             <div class="card-analysis">
-                                <div class="card-main-contetn-analysis">
-                                    <?php
-                                        $sql_analysis = "WITH EmojiFeedback AS (
-                                            SELECT 
-                                                e.emoji_id,
-                                                f.answer_id,
-                                                COUNT(*) AS count_per_answer,
-                                                COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
-                                            FROM 
-                                                feedback f
-                                                INNER JOIN questions q USING (question_id) 
-                                                INNER JOIN question_type qt USING (qt_id)
-                                                INNER JOIN question_category qc USING (qc_id) 
-                                                INNER JOIN emoji e ON f.answer_id = e.emoji_id
-                                            WHERE 
-                                                qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'
-                                            GROUP BY 
-                                                e.emoji_id, f.answer_id
-                                        )
-                                        
+                                <?php
+                                    $sql_analysis = "WITH EmojiFeedback AS (
                                         SELECT 
                                             e.emoji_id,
-                                            ef.answer_id,
-                                            COALESCE(ef.count_per_answer, 0) AS count_per_answer,
-                                            COALESCE(ef.percentage, 0) AS percentage,
-                                            e.*
+                                            f.answer_id,
+                                            COUNT(*) AS count_per_answer,
+                                            COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
                                         FROM 
-                                            emoji e
-                                            LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                                            feedback f
+                                            INNER JOIN questions q USING (question_id) 
+                                            INNER JOIN question_type qt USING (qt_id)
+                                            INNER JOIN question_category qc USING (qc_id) 
+                                            INNER JOIN emoji e ON f.answer_id = e.emoji_id
                                         WHERE 
-                                            e.in_choices != 0
-                                        ORDER BY 
-                                            COALESCE(ef.count_per_answer, 0) DESC,
-                                            COALESCE(ef.percentage, 0) DESC,
-                                            e.emoji_id DESC
-                                        LIMIT 1;";
-                                        $result_analysis = mysqli_query($conn, $sql_analysis);
-                                        if(mysqli_num_rows($result_analysis) > 0){
-                                            $row_analysis = mysqli_fetch_assoc($result_analysis);
+                                            qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'
+                                        GROUP BY 
+                                            e.emoji_id, f.answer_id
+                                    )
+                                    
+                                    SELECT 
+                                        e.emoji_id,
+                                        ef.answer_id,
+                                        COALESCE(ef.count_per_answer, 0) AS count_per_answer,
+                                        COALESCE(ef.percentage, 0) AS percentage,
+                                        e.*
+                                    FROM 
+                                        emoji e
+                                        LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                                    WHERE 
+                                        e.in_choices != 0
+                                    ORDER BY 
+                                        COALESCE(ef.count_per_answer, 0) DESC,
+                                        COALESCE(ef.percentage, 0) DESC,
+                                        e.emoji_id DESC
+                                    LIMIT 1;";
+                                    $result_analysis = mysqli_query($conn, $sql_analysis);
+                                    if(mysqli_num_rows($result_analysis) > 0){
+                                        $row_analysis = mysqli_fetch_assoc($result_analysis);
 
-                                            $percentage = $row_analysis['percentage'];
-                                            $image_path = $row_analysis['image_path'];
-                                            $sentiment_score = $row_analysis['sentiment_score'];
-                                            $unicode_name = $row_analysis['unicode_name'];
-                                            $remarks = $row_analysis['remarks'];
+                                        $percentage = $row_analysis['percentage'];
+                                        $image_path = $row_analysis['image_path'];
+                                        $sentiment_score = $row_analysis['sentiment_score'];
+                                        $unicode_name = $row_analysis['unicode_name'];
+                                        $remarks = $row_analysis['remarks'];
 
-                                            // Find the position of the first dot (.)
-                                            $dot_position = strpos($remarks, '.');
+                                        // Find the position of the first dot (.)
+                                        $dot_position = strpos($remarks, '.');
 
-                                            // Extract the substring after the first dot (.)
-                                            $final_remarks = substr($remarks, $dot_position + 1);
+                                        // Extract the substring after the first dot (.)
+                                        $final_remarks = substr($remarks, $dot_position + 1);
+                                    }
+                                ?>
+                                <div class="card-main-contetn-analysis">
+                                    <?php
+                                        if($percentage == 0){
+                                            echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
+                                            echo '<div class="card-body-analysis">';
+                                            echo '<p><b>Remarks:</b> No data found.</p>';
+                                            echo '<p><b>Sentiment Score:</b> No data found.</p>';
+                                            echo '</div>';
+                                        }else{
+                                            echo '<img src="../../' .$image_path. '" alt="" class="emoji-img-analysis">';
+                                            echo '<div class="card-body-analysis">';
+                                            echo '<p><b>Remarks:</b>' .$final_remarks. '</p>';
+                                            echo '<p><b>Sentiment Score:</b>' .$sentiment_score. '</p>';
+                                            echo '</div>';
                                         }
-
-                                    ?>  
-                                    <img src="../../<?= $image_path ?>" alt="" class="emoji-img-analysis">
-                                    <p><?= $unicode_name ?></p>
-                                    <div class="card-body-analysis">
-                                        
-                                        <p><b>Remarks:</b> <?= $final_remarks ?></p>
-                                        <p><b>Sentiment score:</b> <?= $sentiment_score ?></p>
-                                    </div>
+                                    ?>
+                                <hr class="border border-dark">
                                 </div>
                             </div>
-
                 <?php
                         }
                     }
                 ?>
-
-
-
                 <!-- for text-based ratings -->
-                <div class="card-title-analysis">
+                <div class="card-title-analysis mb-5">
                     <p>Overall Text-Based Ratings</p>
                 </div>
                 <div class="card-analysis">
@@ -670,9 +684,13 @@ if (($user_role_id_session !== 1)) {
                         <p>Score: 69.1%</p>
                     </div>
                 </div>
-
-
-
+                <!-- reference website -->
+                <div class="card-analysis">
+                    <div class="card-body-analysis-text">
+                        <p><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
+                        <p><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
+                    </div>
+                </div>
             </div>
             <p></p>
         </div>
