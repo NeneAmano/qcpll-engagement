@@ -46,7 +46,7 @@
             text-decoration: none !important;
             color: gray;
         }
-        li a:hover{
+        .link:hover{
             text-decoration: underline !important;
         }
     </style>
@@ -55,9 +55,9 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="queue-screen.php" >Pending Transaction</a></li>&nbsp;
-    <li class="breadcrumb-item"><a href="queue-screen-completed.php">Completed Transaction</a></li>&nbsp;
-    <li class="breadcrumb-item active" aria-current="page"><a href="queue-screen-cancelled.php">Cancelled Transaction</a></li>
+    <li class="breadcrumb-item"><a href="queue-screen.php" class="link">Pending Transaction</a></li>&nbsp;
+    <li class="breadcrumb-item"><a href="queue-screen-completed.php"  class="link">Completed Transaction</a></li>&nbsp;
+    <li class="breadcrumb-item active" aria-current="page" class="link"><a href="queue-screen-cancelled.php">Cancelled Transaction</a></li>
   </ol>
 </nav>
         <!-- starts here -->
