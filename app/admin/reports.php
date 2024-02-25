@@ -61,7 +61,7 @@
         }
 
         .bar-graph {
-            margin-top: 2em;
+            margin-top: 7em;
             cursor: pointer;
             background-color: var(--color-white);
             padding: var(--card-padding) !important;
@@ -78,7 +78,7 @@
         }
 
         .card-1 {
-            margin-top: 2em;
+            margin-top: 6em;
             cursor: pointer;
             background-color: var(--color-white);
             padding: 20px !important;
@@ -94,7 +94,7 @@
         }
 
         .card-2 {
-            margin-top: 4em;
+            margin-top: 25em;
             cursor: pointer;
             background-color: var(--color-white);
             padding: 20px !important;
@@ -263,6 +263,79 @@
         main::-webkit-scrollbar {
             display: none;
         }
+        .card-analysis {
+            display: flex;
+        }
+
+        .card-main-contetn-analysis {
+            display: block;
+            gap:1em;
+            
+        }
+
+        .emoji-img-analysis {
+            width: 4em !important;
+            height: 3em;
+            margin-top: 0.8em;
+        }
+
+        .card-main-contetn-analysis p {
+            font-size: 0.8em;
+            color: #212121;
+        }
+
+        .card-body-analysis-text p {
+            font-size: 1em;
+            color: #212121;
+        }
+
+        @media only screen and (min-width: 1900px) {
+            .card-2 {
+
+                cursor: pointer;
+                background-color: #fff;
+                padding: 20px !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+                position: relative;
+                left: 75em;
+                bottom: 175em;
+                width: 25em;
+                height: 20.4em;
+                display: grid;
+            }
+
+            .bar-graph {
+                position: relative;
+                cursor: pointer;
+                background-color: var(--color-white);
+                padding: var(--card-padding) !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+                margin-left: 3em;
+                height: 20em;
+                min-width: 38em;
+            }
+
+            .card-1 {
+                margin-top: 8em;
+                cursor: pointer;
+                background-color: var(--color-white);
+                padding: 20px !important;
+                border-radius: var(--card-border-radius);
+                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+                position: relative;
+                left: 45em;
+                bottom: 70em;
+                width: 25em;
+                height: auto;
+                display: grid;
+
+            }
+            .card-title-analysis{
+                font-size: 1.5em;
+            }
+        }
     </style>
 </head>
 <main>
@@ -428,81 +501,6 @@
             <div class="bar" data-percentage="74.7%" style="background-color: #508D69;"></div>
         </div>
     </section>
-    <style>
-        .card-analysis {
-            display: flex;
-        }
-
-        .card-main-contetn-analysis {
-            display: block;
-            gap:1em;
-            
-        }
-
-        .emoji-img-analysis {
-            width: 4em !important;
-            height: 3em;
-            margin-top: 0.8em;
-        }
-
-        .card-main-contetn-analysis p {
-            font-size: 0.8em;
-            color: #212121;
-        }
-
-        .card-body-analysis-text p {
-            font-size: 1em;
-            color: #212121;
-        }
-
-        @media only screen and (min-width: 1900px) {
-            .card-2 {
-
-                cursor: pointer;
-                background-color: #fff;
-                padding: 20px !important;
-                border-radius: var(--card-border-radius);
-                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
-                position: relative;
-                left: 75em;
-                bottom: 170em;
-                width: 25em;
-                height: 20.4em;
-                display: grid;
-            }
-
-            .bar-graph {
-                position: relative;
-                cursor: pointer;
-                background-color: var(--color-white);
-                padding: var(--card-padding) !important;
-                border-radius: var(--card-border-radius);
-                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
-                margin-left: 3em;
-                height: 20em;
-                min-width: 38em;
-            }
-
-            .card-1 {
-                margin-top: 2em;
-                cursor: pointer;
-                background-color: var(--color-white);
-                padding: 20px !important;
-                border-radius: var(--card-border-radius);
-                box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
-                position: relative;
-                left: 45em;
-                bottom: 70em;
-                width: 25em;
-                height: auto;
-                display: grid;
-
-            }
-            .card-title-analysis{
-                font-size: 1.5em;
-            }
-        }
-    </style>
     <section>
         <div class="card-1">
             <div class="card-title">
@@ -685,8 +683,8 @@
                 <!-- reference website -->
                 <div class="card-analysis">
                     <div class="card-body-analysis-text">
-                        <p><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
-                        <p><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
+                        <p style="font-size: small; "><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
+                        <p style="font-size: small;"><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
                     </div>
                 </div>
             </div>
