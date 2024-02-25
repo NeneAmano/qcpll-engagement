@@ -104,8 +104,9 @@ if (($user_role_id_session !== 1)) {
     <div class="container-fluid mt-3">
         <!-- start of add service modal button -->
         <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="analytics.php?filter=today" class="text-decoration-none text-light">Today</a></button>
-        
 
+        <!-- filter by 7 days -->
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="analytics.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
         <!-- filter by month -->
         <div class="dropdown">
             <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Month</button>
@@ -193,6 +194,33 @@ if (($user_role_id_session !== 1)) {
                                         `education`,
                                         `occupation`,
                                         `status`;";
+                                            break;
+                                        case '7days':
+                                            $sql_select = "SELECT 
+                                            age.age_range,
+                                            client.gender,
+                                            client.education,
+                                            client.occupation,
+                                            client.status,
+                                            GROUP_CONCAT(queue_details.service) AS services,
+                                            COUNT(client.client_id) AS count
+                                        FROM client 
+                                        INNER JOIN age ON client.age_id = age.age_id
+                                        INNER JOIN queue_details ON client.client_id = queue_details.client_id
+                                        WHERE client.created_at >= CURRENT_DATE - INTERVAL 7 DAY 
+                                        GROUP BY 
+                                            age.age_range, 
+                                            client.gender, 
+                                            client.education, 
+                                            client.occupation, 
+                                            client.status 
+                                        ORDER BY
+                                            age.age_range,
+                                            client.gender,
+                                            client.education,
+                                            client.occupation,
+                                            client.status;
+                                        ;";
                                             break;
                                         case '1':
                                         case '2':
@@ -350,64 +378,73 @@ if (($user_role_id_session !== 1)) {
 
 
 
-        <?php
-                                if (isset($_GET['filter'])) {
-                                    $filter = $_GET['filter'];
+            <?php
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
 
-                                    switch ($filter) {
-                                        case 'today':
-                                            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                switch ($filter) {
+                    case 'today':
+                        $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
                                             FROM age
                                             INNER JOIN client ON age.age_id = client.age_id
                                             AND DATE(client.created_at) = CURDATE()
                                             GROUP BY age.age_range;
                                             ;";
-                                            break;
-                                        case '1':
-                                        case '2':
-                                        case '3':
-                                        case '4':
-                                        case '5':
-                                        case '6':
-                                        case '7':
-                                        case '8':
-                                        case '9':
-                                        case '10':
-                                        case '11':
-                                        case '12':
-                                            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                        break;
+                    case '7days':
+                        $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                            FROM age
+                            INNER JOIN client ON age.age_id = client.age_id
+                            AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY
+                            GROUP BY age.age_range;";
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    case '12':
+                        $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
                                             FROM age
                                             INNER JOIN client ON age.age_id = client.age_id
                                             AND MONTH(client.created_at) = $filter
                                             GROUP BY age.age_range;
                                      ";
-                                            break;
-                                        case $filter:
-                                            $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                        break;
+                    case $filter:
+                        $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
                                             FROM age
                                             INNER JOIN client ON age.age_id = client.age_id
                                             AND YEAR(client.created_at) = $filter
                                             GROUP BY age.age_range;";
-                                            break;
-                                    }
-                                } else {
-                                    $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
+                        break;
+                }
+            } else {
+                $query1 = "SELECT age.age_range AS AGE_RANGE, COUNT(client.client_id) AS client_count
                                     FROM age
                                     INNER JOIN client ON age.age_id = client.age_id
                                     GROUP BY age.age_range;";
-                                }
-                                $result1 = mysqli_query($conn, $query1);
-                                $age_range = array();
-                                $client_count = array();
-                                foreach ($result1 as $data1) {
-                                    $age_range[] = $data1['AGE_RANGE'];
-                                    $client_count[] = $data1['client_count'];
-                                }
-?>
+            }
+            $result1 = mysqli_query($conn, $query1);
+            $age_range = array();
+            $client_count = array();
+            foreach ($result1 as $data1) {
+                $age_range[] = $data1['AGE_RANGE'];
+                $client_count[] = $data1['client_count'];
+            }
+
+            ?>
+
             <!-- start of data analysis of age -->
             <div class="barchart1">
                 <canvas id="myChart1"></canvas>
-                                <p></p>
+                <p></p>
             </div>
 
             <script>
@@ -474,6 +511,74 @@ if (($user_role_id_session !== 1)) {
                     document.documentElement.scrollTop = 0;
                 }
             </script>
+            <?php
+            // Initialize variables
+            $max_index = null;
+            $second_max_index = null;
+            $third_max_index = null;
+            $fourth_max_index = null;
+
+            if (isset($age_range) && isset($client_count)) {
+
+
+                if (!empty($client_count)) {
+                    // Find the index of the maximum client count
+                    $max_index = array_search(max($client_count), $client_count);
+                    // Display the highest age range and its client count
+                    echo "The highest age range is " . $age_range[$max_index] . " with " . $client_count[$max_index] . " clients.<br>";
+                }
+
+
+
+                // Remove the highest age range and its count to find the second highest
+                unset($age_range[$max_index]);
+                unset($client_count[$max_index]);
+
+                if (!empty($client_count)) {
+                    // Find the index of the new maximum client count (second highest)
+                    $second_max_index = array_search(max($client_count), $client_count);
+                    // Display the second highest age range and its client count
+                    echo "The second highest age range is " . $age_range[$second_max_index] . " with " . $client_count[$second_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($age_range[$second_max_index]);
+                unset($client_count[$second_max_index]);
+
+                if (!empty($client_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $third_max_index = array_search(max($client_count), $client_count);
+                    // Display the third highest age range and its client count
+                    echo "The third highest age range is " . $age_range[$third_max_index] . " with " . $client_count[$third_max_index] . " clients.<br>";
+                }
+
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($age_range[$third_max_index]);
+                unset($client_count[$third_max_index]);
+
+                if (!empty($client_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $fourth_max_index = array_search(max($client_count), $client_count);
+                    // Display the third highest age range and its client count
+                    echo "The fourth highest age range is " . $age_range[$fourth_max_index] . " with " . $client_count[$fourth_max_index] . " clients.<br>";
+                }
+
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($age_range[$fourth_max_index]);
+                unset($client_count[$fourth_max_index]);
+
+                if (!empty($client_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $fifth_max_index = array_search(max($client_count), $client_count);
+                    // Display the third highest age range and its client count
+                    echo "The fifth highest age range is " . $age_range[$fifth_max_index] . " with " . $client_count[$fifth_max_index] . " clients.<br>";
+                }
+            } else {
+                echo "There are no age ranges to analyze.<br>";
+            }
+            ?>
 
             <!-- end of data analysis of age -->
 
@@ -484,13 +589,13 @@ if (($user_role_id_session !== 1)) {
 
 
 
-<?php
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
+            <?php
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
 
-    switch ($filter) {
-        case 'today':
-            $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+                switch ($filter) {
+                    case 'today':
+                        $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
             FROM (
               SELECT 'Male' AS gender
               UNION
@@ -501,20 +606,32 @@ if (isset($_GET['filter'])) {
             LEFT JOIN client ON all_genders.gender = client.gender AND DATE(client.created_at) = CURDATE()
             GROUP BY all_genders.gender
             ;";
-            break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-        case '11':
-        case '12':
-            $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+                        break;
+                    case '7days':
+                        $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+                            FROM (
+                              SELECT 'Male' AS gender
+                              UNION
+                              SELECT 'Female'
+                              UNION
+                              SELECT 'Other'
+                            ) AS all_genders
+                            LEFT JOIN client ON all_genders.gender = client.gender AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY 
+                            GROUP BY all_genders.gender;";
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    case '12':
+                        $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
             FROM (
                 SELECT 'Male' AS gender
                 UNION
@@ -526,9 +643,9 @@ if (isset($_GET['filter'])) {
             GROUP BY all_genders.gender;
             
      ";
-            break;
-        case $filter:
-            $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+                        break;
+                    case $filter:
+                        $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
             FROM (
                 SELECT 'Male' AS gender
                 UNION
@@ -538,10 +655,10 @@ if (isset($_GET['filter'])) {
             ) AS all_genders
             LEFT JOIN client ON all_genders.gender = client.gender AND YEAR(client.created_at) = $filter
             GROUP BY all_genders.gender;";
-            break;
-    }
-} else {
-    $query2= "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
+                        break;
+                }
+            } else {
+                $query2 = "SELECT all_genders.gender as genders, COALESCE(COUNT(client.gender), 0) AS gender_count
     FROM (
       SELECT 'Male' AS gender
       UNION
@@ -551,16 +668,16 @@ if (isset($_GET['filter'])) {
     ) AS all_genders
     LEFT JOIN client ON all_genders.gender = client.gender
     GROUP BY all_genders.gender;";
-}
+            }
 
-$result2 = mysqli_query($conn, $query2);
+            $result2 = mysqli_query($conn, $query2);
 
             foreach ($result2 as $data2) {
                 $genders[] = $data2['genders'];
                 $gender_count[] = $data2['gender_count'];
             }
-?>
-            
+            ?>
+
             <!-- start of data analysis of gender -->
             <div class="barchart1">
                 <canvas id="myChart2"></canvas>
@@ -603,6 +720,49 @@ $result2 = mysqli_query($conn, $query2);
                     config_gender
                 );
             </script>
+            <?php
+            // Initialize variables
+            $max_index = null;
+            $second_max_index = null;
+            $third_max_index = null;
+
+            if (isset($genders) && isset($gender_count)) {
+
+
+                if (!empty($gender_count)) {
+                    // Find the index of the maximum client count
+                    $max_index = array_search(max($gender_count), $gender_count);
+                    // Display the highest age range and its client count
+                    echo "The highest gender count is " . $genders[$max_index] . " with " . $gender_count[$max_index] . " clients.<br>";
+                }
+
+
+
+                // Remove the highest age range and its count to find the second highest
+                unset($genders[$max_index]);
+                unset($gender_count[$max_index]);
+
+                if (!empty($gender_count)) {
+                    // Find the index of the new maximum client count (second highest)
+                    $second_max_index = array_search(max($gender_count), $gender_count);
+                    // Display the second highest age range and its client count
+                    echo "The second highest gender count is " . $genders[$second_max_index] . " with " . $gender_count[$second_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($genders[$second_max_index]);
+                unset($gender_count[$second_max_index]);
+
+                if (!empty($gender_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $third_max_index = array_search(max($gender_count), $gender_count);
+                    // Display the third highest age range and its client count
+                    echo "The third highest gender count is " . $genders[$third_max_index] . " with " . $gender_count[$third_max_index] . " clients.<br>";
+                }
+            } else {
+                echo "There are no age ranges to analyze.<br>";
+            }
+            ?>
 
             <!-- end of data analysis of gender -->
 
@@ -612,12 +772,12 @@ $result2 = mysqli_query($conn, $query2);
 
 
             <?php
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
 
-    switch ($filter) {
-        case 'today':
-            $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+                switch ($filter) {
+                    case 'today':
+                        $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
             FROM (
               SELECT 'Elementary Graduate' AS education
               UNION
@@ -638,20 +798,42 @@ if (isset($_GET['filter'])) {
             LEFT JOIN client ON all_education.education = client.education AND DATE(client.created_at) = CURDATE()
             GROUP BY all_education.education
             ;";
-            break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-        case '11':
-        case '12':
-            $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+                        break;
+                    case '7days':
+                        $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+                            FROM (
+                              SELECT 'Elementary Graduate' AS education
+                              UNION
+                              SELECT 'High School Level'
+                              UNION
+                              SELECT 'High School Graduate'
+                              UNION
+                              SELECT 'College Level'
+                              UNION
+                              SELECT 'College Graduate'
+                              UNION
+                              SELECT 'Master''s Degree' -- Corrected single quote usage
+                              UNION
+                              SELECT 'Doctorate Degree'
+                              UNION
+                              SELECT 'Vocational'
+                            ) AS all_education
+                            LEFT JOIN client ON all_education.education = client.education AND created_at >= CURRENT_DATE - INTERVAL 7 DAY
+                            GROUP BY all_education.education;";
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    case '12':
+                        $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
             FROM (
               SELECT 'Elementary Graduate' AS education
               UNION
@@ -673,9 +855,9 @@ if (isset($_GET['filter'])) {
             GROUP BY all_education.education;
             
      ";
-            break;
-        case $filter:
-            $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+                        break;
+                    case $filter:
+                        $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
             FROM (
               SELECT 'Elementary Graduate' AS education
               UNION
@@ -695,10 +877,10 @@ if (isset($_GET['filter'])) {
             ) AS all_education
             LEFT JOIN client ON all_education.education = client.education AND YEAR(client.created_at) = $filter
             GROUP BY all_education.education;";
-            break;
-    }
-} else {
-    $query3= "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
+                        break;
+                }
+            } else {
+                $query3 = "SELECT all_education.education as educations, COALESCE(COUNT(client.education), 0) AS education_count
     FROM (
       SELECT 'Elementary Graduate' AS education
       UNION
@@ -718,18 +900,18 @@ if (isset($_GET['filter'])) {
     ) AS all_education
     LEFT JOIN client ON all_education.education = client.education
     GROUP BY all_education.education;";
-}
-$result3 = mysqli_query($conn, $query3);
-$education = array();
-$education_count = array();
+            }
+            $result3 = mysqli_query($conn, $query3);
+            $education = array();
+            $education_count = array();
 
-foreach ($result3 as $data3) {
-    $education[] = $data3['educations'];
-    $education_count[] = $data3['education_count'];
-}
+            foreach ($result3 as $data3) {
+                $education[] = $data3['educations'];
+                $education_count[] = $data3['education_count'];
+            }
 
 
-?>
+            ?>
 
             <!-- start of data analysis of education -->
             <div class="barchart1">
@@ -773,6 +955,109 @@ foreach ($result3 as $data3) {
                     config_education
                 );
             </script>
+            <?php
+            // Initialize variables
+            $max_index = null;
+            $second_max_index = null;
+            $third_max_index = null;
+            $fourth_max_index = null;
+            $fifth_max_index = null;
+            $sixth_max_index = null;
+            $second_max_index = null;
+            $eight_max_index = null;
+
+            if (isset($education) && isset($education_count)) {
+
+
+                if (!empty($education_count)) {
+                    // Find the index of the maximum client count
+                    $max_index = array_search(max($education_count), $education_count);
+                    // Display the highest age range and its client count
+                    echo "The highest education count is " . $education[$max_index] . " with " . $education_count[$max_index] . " clients.<br>";
+                }
+
+
+
+                // Remove the highest age range and its count to find the second highest
+                unset($education[$max_index]);
+                unset($education_count[$max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (second highest)
+                    $second_max_index = array_search(max($education_count), $education_count);
+                    // Display the second highest age range and its client count
+                    echo "The second highest education count is " . $education[$second_max_index] . " with " . $education_count[$second_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($education[$second_max_index]);
+                unset($education_count[$second_max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $third_max_index = array_search(max($education_count), $education_count);
+                    // Display the third highest age range and its client count
+                    echo "The third highest education count is " . $education[$third_max_index] . " with " . $education_count[$third_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($education[$third_max_index]);
+                unset($education_count[$third_max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $fourth_max_index = array_search(max($education_count), $education_count);
+                    // Display the third highest age range and its client count
+                    echo "The Fourth highest education count is " . $education[$fourth_max_index] . " with " . $education_count[$fourth_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($education[$fourth_max_index]);
+                unset($education_count[$fourth_max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $fifth_max_index = array_search(max($education_count), $education_count);
+                    // Display the third highest age range and its client count
+                    echo "The Fifth highest education count is " . $education[$fifth_max_index] . " with " . $education_count[$fifth_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($education[$fifth_max_index]);
+                unset($education_count[$fifth_max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $sixth_max_index = array_search(max($education_count), $education_count);
+                    // Display the third highest age range and its client count
+                    echo "The Sixth highest education count is " . $education[$sixth_max_index] . " with " . $education_count[$sixth_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($education[$sixth_max_index]);
+                unset($education_count[$sixth_max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $seven_max_index = array_search(max($education_count), $education_count);
+                    // Display the third highest age range and its client count
+                    echo "The Seven highest education count is " . $education[$seven_max_index] . " with " . $education_count[$seven_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($education[$seven_max_index]);
+                unset($education_count[$seven_max_index]);
+
+                if (!empty($education_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $eight_max_index = array_search(max($education_count), $education_count);
+                    // Display the third highest age range and its client count
+                    echo "The Eight highest education count is " . $education[$eight_max_index] . " with " . $education_count[$eight_max_index] . " clients.<br>";
+                }
+            } else {
+                echo "There are no age ranges to analyze.<br>";
+            }
+            ?>
 
             <!-- end of data analysis of education -->
 
@@ -787,12 +1072,12 @@ foreach ($result3 as $data3) {
 
 
             <?php
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
 
-    switch ($filter) {
-        case 'today':
-            $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+                switch ($filter) {
+                    case 'today':
+                        $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
             FROM (
               SELECT 'Student' AS occupation
               UNION
@@ -804,20 +1089,34 @@ if (isset($_GET['filter'])) {
             ) AS all_occupation
             LEFT JOIN client ON all_occupation.occupation = client.occupation AND DATE(client.created_at) = CURDATE()
             GROUP BY all_occupation.occupation;";
-            break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-        case '11':
-        case '12':
-            $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+                        break;
+                    case '7days':
+                        $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+                            FROM (
+                              SELECT 'Student' AS occupation
+                              UNION
+                              SELECT 'Unemployed'
+                              UNION
+                              SELECT 'Employed'
+                              UNION
+                              SELECT 'Retired'
+                            ) AS all_occupation
+                            LEFT JOIN client ON all_occupation.occupation = client.occupation AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY
+                            GROUP BY all_occupation.occupation;";
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    case '12':
+                        $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
             FROM (
               SELECT 'Student' AS occupation
               UNION
@@ -830,9 +1129,9 @@ if (isset($_GET['filter'])) {
             LEFT JOIN client ON all_occupation.occupation = client.occupation AND MONTH(client.created_at) = $filter
             GROUP BY all_occupation.occupation;     
      ";
-            break;
-        case $filter:
-            $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+                        break;
+                    case $filter:
+                        $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
             FROM (
               SELECT 'Student' AS occupation
               UNION
@@ -844,10 +1143,10 @@ if (isset($_GET['filter'])) {
             ) AS all_occupation
             LEFT JOIN client ON all_occupation.occupation = client.occupation AND YEAR(client.created_at) = $filter
             GROUP BY all_occupation.occupation;";
-            break;
-    }
-} else {
-    $query4= "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
+                        break;
+                }
+            } else {
+                $query4 = "SELECT all_occupation.occupation as occupations, COALESCE(COUNT(client.occupation), 0) AS occupation_count
     FROM (
       SELECT 'Student' AS occupation
       UNION
@@ -859,8 +1158,8 @@ if (isset($_GET['filter'])) {
     ) AS all_occupation
     LEFT JOIN client ON all_occupation.occupation = client.occupation
     GROUP BY all_occupation.occupation;";
-}
-$result4 = mysqli_query($conn, $query4);
+            }
+            $result4 = mysqli_query($conn, $query4);
 
             foreach ($result4 as $data4) {
                 $occupations[] = $data4['occupations'];
@@ -869,7 +1168,7 @@ $result4 = mysqli_query($conn, $query4);
 
 
 
-?>
+            ?>
             <!-- start of data analysis of occupation -->
             <div class="barchart1">
                 <canvas id="myChart4"></canvas>
@@ -911,50 +1210,111 @@ $result4 = mysqli_query($conn, $query4);
                     config_occupations
                 );
             </script>
+            <?php
+            // Initialize variables
+            $max_index = null;
+            $second_max_index = null;
+            $third_max_index = null;
+            $fourth_max_index = null;
+            $fifth_max_index = null;
+            $sixth_max_index = null;
+            $second_max_index = null;
+            $eight_max_index = null;
 
+            if (isset($occupations) && isset($occupation_count)) {
+
+
+                if (!empty($occupation_count)) {
+                    // Find the index of the maximum client count
+                    $max_index = array_search(max($occupation_count), $occupation_count);
+                    // Display the highest age range and its client count
+                    echo "The highest occupation count is " . $occupations[$max_index] . " with " . $occupation_count[$max_index] . " clients.<br>";
+                }
+
+
+
+                // Remove the highest age range and its count to find the second highest
+                unset($occupations[$max_index]);
+                unset($occupation_count[$max_index]);
+
+                if (!empty($occupation_count)) {
+                    // Find the index of the new maximum client count (second highest)
+                    $second_max_index = array_search(max($occupation_count), $occupation_count);
+                    // Display the second highest age range and its client count
+                    echo "The second highest occupation count is " . $occupations[$second_max_index] . " with " . $occupation_count[$second_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($occupations[$second_max_index]);
+                unset($occupation_count[$second_max_index]);
+
+                if (!empty($occupation_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $third_max_index = array_search(max($occupation_count), $occupation_count);
+                    // Display the third highest age range and its client count
+                    echo "The third highest occupation count is " . $occupations[$third_max_index] . " with " . $occupation_count[$third_max_index] . " clients.<br>";
+                }
+
+                // Remove the second highest age range and its count to find the third highest
+                unset($occupations[$third_max_index]);
+                unset($occupation_count[$third_max_index]);
+
+                if (!empty($occupation_count)) {
+                    // Find the index of the new maximum client count (third highest)
+                    $fourth_max_index = array_search(max($occupation_count), $occupation_count);
+                    // Display the third highest age range and its client count
+                    echo "The Fourth highest occupation count is " . $occupations[$fourth_max_index] . " with " . $occupation_count[$fourth_max_index] . " clients.<br>";
+                }
+            } else {
+                echo "There are no age ranges to analyze.<br>";
+            }
+            ?>
             <!-- end of data analysis of education -->
 
 
 
 
             <?php
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
 
-    switch ($filter) {
-        case 'today':
-            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where DATE(created_at) = CURDATE() GROUP BY service;";
-            break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-        case '11':
-        case '12':
-            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where MONTH(created_at) = $filter GROUP BY service;     
+                switch ($filter) {
+                    case 'today':
+                        $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where DATE(created_at) = CURDATE() GROUP BY service;";
+                        break;
+                    case '7days':
+                        $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details WHERE created_at >= CURRENT_DATE - INTERVAL 7 DAY GROUP BY service;";
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    case '12':
+                        $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where MONTH(created_at) = $filter GROUP BY service;     
      ";
-            break;
-        case $filter:
-            $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where YEAR(created_at) = $filter GROUP BY service;";
-            break;
-    }
-} else {
-    $query5= "SELECT service, COUNT(service) AS count_service FROM queue_details GROUP BY service;";
-}
-$result5 = mysqli_query($conn, $query5);
+                        break;
+                    case $filter:
+                        $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details where YEAR(created_at) = $filter GROUP BY service;";
+                        break;
+                }
+            } else {
+                $query5 = "SELECT service, COUNT(service) AS count_service FROM queue_details GROUP BY service;";
+            }
+            $result5 = mysqli_query($conn, $query5);
 
             foreach ($result5 as $data5) {
                 $service[] = $data5['service'];
                 $count_service[] = $data5['count_service'];
             }
 
-?>
+            ?>
             <!-- start of data analysis of services -->
             <div class="barchart1">
                 <canvas id="myChart5"></canvas>
