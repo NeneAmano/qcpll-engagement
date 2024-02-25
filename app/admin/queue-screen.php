@@ -37,15 +37,27 @@
         body{
         
         }
+        .breadcrumb-item{
+            border: 2px solid gray;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .breadcrumb-item a{
+            text-decoration: none !important;
+            color: gray;
+        }
+        li a:hover{
+            text-decoration: underline !important;
+        }
     </style>
 </head>
 <body>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="queue-screen.php">Pending Transaction</a></li>
-    <li class="breadcrumb-item"><a href="queue-screen-completed.php">Completed Transaction</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="queue-screen-cancelled.php">Completed Transaction</a></li>
+    <li class="breadcrumb-item"><a href="queue-screen.php" >Pending Transaction</a></li>&nbsp;
+    <li class="breadcrumb-item"><a href="queue-screen-completed.php">Completed Transaction</a></li>&nbsp;
+    <li class="breadcrumb-item active" aria-current="page"><a href="queue-screen-cancelled.php">Cancelled Transaction</a></li>
   </ol>
 </nav>
         <!-- starts here -->
