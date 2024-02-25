@@ -1,8 +1,10 @@
 <?php
-require_once('../core/init.php');
+    require_once('../core/init.php');
     ob_start();
-    if (($user_role_id_session !== 1)) {
-        header('location: login.php?error=accessdenied');
+    if($user_role_id_session !== 1){
+        session_unset();
+        session_destroy();
+        header("Location: login.php?error=accessdenied");
         die();
     }
 ?>
@@ -15,33 +17,33 @@ require_once('../core/init.php');
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Users</title>
     <?php
-    require_once 'includes/sidebar.php';
-    if (isset($_POST['add_user'])) {
-        $add_user_role = mysqli_real_escape_string($conn, $_POST['add_user_role']);
-        $add_username = mysqli_real_escape_string($conn, $_POST['add_username']);
-        $add_password = mysqli_real_escape_string($conn, $_POST['add_password']);
-        $add_repeat_password = mysqli_real_escape_string($conn, $_POST['add_repeat_password']);
+        require_once 'includes/sidebar.php';
+        if (isset($_POST['add_user'])) {
+            $add_user_role = mysqli_real_escape_string($conn, $_POST['add_user_role']);
+            $add_username = mysqli_real_escape_string($conn, $_POST['add_username']);
+            $add_password = mysqli_real_escape_string($conn, $_POST['add_password']);
+            $add_repeat_password = mysqli_real_escape_string($conn, $_POST['add_repeat_password']);
 
-        $sql = "SELECT * FROM users WHERE username = '$add_username';";
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) > 0) {
-            $error_message = "Username already taken.";
-            echo "<script type='text/javascript'>alert('$error_message');</script>";
-        } elseif (empty($add_user_role) || empty($add_username) || empty($add_password) || empty($add_repeat_password)) {
-            $error_message = "All fields are required.";
-            echo "<script type='text/javascript'>alert('$error_message');</script>";
-        } elseif ($add_password !== $add_repeat_password) {
-            $error_message = "Password does not match.";
-            echo "<script type='text/javascript'>alert('$error_message');</script>";
-        } else {
-            $hashed_password = password_hash($add_password, PASSWORD_DEFAULT);
+            $sql = "SELECT * FROM users WHERE username = '$add_username';";
+            $result = mysqli_query($conn, $sql);
+            if (mysqli_num_rows($result) > 0) {
+                $error_message = "Username already taken.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            } elseif (empty($add_user_role) || empty($add_username) || empty($add_password) || empty($add_repeat_password)) {
+                $error_message = "All fields are required.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            } elseif ($add_password !== $add_repeat_password) {
+                $error_message = "Password does not match.";
+                echo "<script type='text/javascript'>alert('$error_message');</script>";
+            } else {
+                $hashed_password = password_hash($add_password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO users (user_role_id, username, password) VALUES ($add_user_role, '$add_username', '$hashed_password');";
-            if (mysqli_query($conn, $sql)) {
-                header('location: users.php?add=successful');
+                $sql = "INSERT INTO users (user_role_id, username, password) VALUES ($add_user_role, '$add_username', '$hashed_password');";
+                if (mysqli_query($conn, $sql)) {
+                    header('location: users.php?add=successful');
+                }
             }
         }
-    }
     ?>
     <!-- start of main section container -->
     <div class="container-fluid mt-3">

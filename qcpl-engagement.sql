@@ -19,6 +19,8 @@
 CREATE DATABASE IF NOT EXISTS `qcpl_engagement` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `qcpl_engagement`;
 
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+
 -- Dumping structure for table qcpl_engagement.age
 CREATE TABLE IF NOT EXISTS `age` (
   `age_id` int NOT NULL AUTO_INCREMENT,
@@ -411,8 +413,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table qcpl_engagement.users: ~3 rows (approximately)
 INSERT INTO `users` (`user_id`, `user_role_id`, `username`, `password`, `is_active`, `last_login`, `created_at`, `updated_at`) VALUES
-	(4, 1, 'admin', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 1, '2024-02-24 14:29:28', '2023-12-28 02:52:00', '2024-02-24 14:29:28'),
-	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 1, '2024-02-24 14:28:41', '2023-12-28 02:53:48', '2024-02-24 14:28:41'),
+	(4, 1, 'admin', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 1, '2024-02-25 09:39:55', '2023-12-28 02:52:00', '2024-02-25 09:39:55'),
+	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 1, '2024-02-25 09:39:33', '2023-12-28 02:53:48', '2024-02-25 09:39:33'),
 	(7, 1, 'bogart123', '$2y$10$uH24T.acTZWVm3Mt8fjO9.d.xV3jKgXxlJR/ch8swhPZKEImZgLw6', 1, '0000-00-00 00:00:00', '2024-01-23 02:35:23', '2024-01-23 02:35:23');
 
 -- Dumping structure for table qcpl_engagement.user_role
