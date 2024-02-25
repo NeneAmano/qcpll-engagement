@@ -43,11 +43,11 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="queue-screen.php">Pending Transaction</a></li>
     <li class="breadcrumb-item"><a href="queue-screen-completed.php">Completed Transaction</a></li>
-    <li class="breadcrumb-item active" aria-current="page"><a href="queue-screen-cancelled.php">Completed Transaction</a></li>
+    <li class="breadcrumb-item active" aria-current="page"><a href="queue-screen-cancelled.php">Cancelled Transaction</a></li>
   </ol>
 </nav>
-        <!-- starts here -->
-        <div class="container-fluid mt-3">
+
+     <div class="container-fluid mt-3">
         <h1 class="d-flex justify-content-center">QUEUEING NUMBER MONITORING</h1>
         <div class="row">
             <div class="container">
@@ -168,12 +168,11 @@
         <!-- ends here -->
 
 
-
     <script>
         $(document).ready(function() {
     function fetchQueueData() {
         $.ajax({
-            url: 'fetch_queue_data.php',
+            url: 'fetch_queue_data_cancelled.php',
             type: 'GET',
             dataType: 'json',
             success: function(data) {

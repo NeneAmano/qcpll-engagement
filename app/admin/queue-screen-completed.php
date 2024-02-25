@@ -38,7 +38,6 @@
     </style>
 </head>
 <body>
-
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="queue-screen.php">Pending Transaction</a></li>
@@ -46,8 +45,8 @@
     <li class="breadcrumb-item active" aria-current="page"><a href="queue-screen-cancelled.php">Completed Transaction</a></li>
   </ol>
 </nav>
-        <!-- starts here -->
-        <div class="container-fluid mt-3">
+
+     <div class="container-fluid mt-3">
         <h1 class="d-flex justify-content-center">QUEUEING NUMBER MONITORING</h1>
         <div class="row">
             <div class="container">
@@ -65,7 +64,6 @@
                                     <th class="table-light text-uppercase text-center">Entry Check</th>
                                     <th class="table-light text-uppercase text-center">Created_at</th>
                                     <th class="table-light text-uppercase text-center">Updated_at</th>
-                                    <th class="table-light text-uppercase text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -168,12 +166,11 @@
         <!-- ends here -->
 
 
-
     <script>
         $(document).ready(function() {
     function fetchQueueData() {
         $.ajax({
-            url: 'fetch_queue_data.php',
+            url: 'fetch_queue_data_completed.php',
             type: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -216,7 +213,7 @@
                         
                         newRow.append('<td>' + row.created_at + '</td>');
                         newRow.append('<td>' + row.updated_at + '</td>');
-                        newRow.append('<td><a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a></td>');
+                       
                         tableBody.append(newRow);
                     });
                 } else {
