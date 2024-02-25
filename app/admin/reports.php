@@ -103,10 +103,10 @@
             border-radius: var(--card-border-radius);
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
-            left: 3em;
-            bottom: 105em;
+            left: 45em;
+            bottom: 98em;
             width: 38em;
-            height: 20.4em;
+            min-height: 50em !important;
             display: grid;
         }
 
@@ -303,8 +303,11 @@
                 left: 75em;
                 bottom: 175em;
                 width: 25em;
-                height: 20.4em;
+                min-height: 50em !important;
                 display: grid;
+            }   
+            .card-2 p{
+                font-size: 0.8em;
             }
 
             .bar-graph {
@@ -502,7 +505,9 @@
             <span class="feelings">Negative</span>
             <div class="bar" data-percentage="74.7%" style="background-color: #508D69;"></div>
         </div>
+        
     </section>
+    
     <section>
         <div class="card-1">
             <div class="card-title">
@@ -699,6 +704,28 @@
         <div class="card-2">
             <div class="card-title">
                 <p>Recommendations</p>
+                <p>Staff:
+                    <br>
+                    Emoji-based recommendation: Improving staff satisfaction through regular training and team-building activities can significantly boost morale and create a positive work environment.
+                    <br>
+                    <br>
+                    Text-based recommendation: Recognizing and rewarding staff members for their hard work and dedication can help improve overall satisfaction and motivation, leading to better service for customers.
+                    <br>
+                    <br>
+                    Facility:
+                    <br>
+                    Emoji-based recommendation: Ensuring that facilities are regularly maintained and kept clean can help improve overall satisfaction and create a positive impression for visitors.
+                    <br>
+                    <br>
+                    Text-based recommendation: Addressing any issues or concerns raised by customers regarding the facilities, such as temperature control, can help improve satisfaction and prevent negative experiences.
+                    <br>
+                    <br>
+                    Service:
+                    <br>
+                    Emoji-based recommendation: Implementing training programs for service staff to improve customer interaction and problem-solving skills can greatly enhance overall satisfaction.
+                    <br>
+                    <br>
+                    Text-based recommendation: Improving service quality and response time can help address any negative feedback and enhance overall customer satisfaction levels.</p>
             </div>
 
         </div>
