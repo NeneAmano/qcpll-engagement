@@ -156,10 +156,10 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                         <button class="nav-link " id="nbi-tab" data-bs-toggle="tab" data-bs-target="#nbi" type="button" role="tab" aria-controls="nbi" aria-selected="true">NBI LOGS</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="police-tab" data-bs-toggle="tab" data-bs-target="#police" type="button" role="tab" aria-controls="police" aria-selected="false" onclick="window.location.href='police_logs.php'">POLICE LOGS</button>
+                        <button class="nav-link" id="police-tab" data-bs-toggle="tab" data-bs-target="#police" type="button" role="tab" aria-controls="police" aria-selected="false" onclick="window.location.href='police-logs.php'">POLICE LOGS</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#others" type="button" role="tab" aria-controls="contact" aria-selected="false" onclick="window.location.href='others_logs.php'">OTHERS LOGS</button>
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#others" type="button" role="tab" aria-controls="contact" aria-selected="false" onclick="window.location.href='others-logs.php'">OTHERS LOGS</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">

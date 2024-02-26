@@ -153,23 +153,23 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
             <div class="card-header">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link " id="nbi-tab" data-bs-toggle="tab" data-bs-target="#nbi" type="button" role="tab" aria-controls="nbi" aria-selected="true" onclick="window.location.href='nbi_logs.php'">NBI LOGS</button>
+                        <button class="nav-link " id="nbi-tab" data-bs-toggle="tab" data-bs-target="#nbi" type="button" role="tab" aria-controls="nbi" aria-selected="true" onclick="window.location.href='nbi-logs.php'">NBI LOGS</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#police" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="window.location.href='police_logs.php'">POLICE LOGS</button>
+                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#police" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="window.location.href='police-logs.php'">POLICE LOGS</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#others" type="button" role="tab" aria-controls="contact" aria-selected="false">OTHERS LOGS</button>
+                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#others" type="button" role="tab" aria-controls="contact" aria-selected="false" onclick="window.location.href='others-logs.php'">OTHERS LOGS</button>
                     </li>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="nbi" role="tabpanel" aria-labelledby="nbi-tab">
 
                         <!-- filter by today -->
-                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="others_logs.php?filter=today" class="text-decoration-none text-light">Today</a></button>
+                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="police_logs.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
                         <!-- filter by 7 days -->
-                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="others_logs.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
+                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="police_logs.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
 
                         <!-- filter by month -->
                         <div class="dropdown">
@@ -178,7 +178,7 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                 <?php
                                 for ($month = 1; $month <= 12; $month++) {
                                     $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                                    echo '<a href="others_logs.php?filter=' . $month . '">' . $month_name . '</a>';
+                                    echo '<a href="police_logs.php?filter=' . $month . '">' . $month_name . '</a>';
                                 }
                                 ?>
                             </div>
@@ -194,7 +194,7 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
 
                                 while ($row_year = mysqli_fetch_assoc($result_year)) {
                                     $year = $row_year['year'];
-                                    echo '<a href="others_logs.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                                    echo '<a href="police_logs.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
                                 }
                                 ?>
                             </div>
@@ -233,11 +233,11 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                             switch ($filter) {
                                                 case 'today':
                                                     $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
+                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'Police' AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
                                                     break;
                                                 case '7days':
                                                     $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY;";
+                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'Police' AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY;";
                                                     break;
                                                 case '1':
                                                 case '2':
@@ -252,16 +252,16 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                                 case '11':
                                                 case '12':
                                                     $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND MONTH(client.created_at) = $filter ORDER BY client.client_id DESC;";
+                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'Police' AND MONTH(client.created_at) = $filter ORDER BY client.client_id DESC;";
                                                     break;
                                                 case $filter:
                                                     $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND YEAR(client.created_at) = $filter ORDER BY client.client_id DESC;";
+                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'Police' AND YEAR(client.created_at) = $filter ORDER BY client.client_id DESC;";
                                                     break;
                                             }
                                         } else {
                                             $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service  NOT IN ('NBI', 'Police') AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
+                                                                ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'Police' AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
                                         }
                                         $result_select = mysqli_query($conn, $sql_select);
                                         if (mysqli_num_rows($result_select) > 0) {
