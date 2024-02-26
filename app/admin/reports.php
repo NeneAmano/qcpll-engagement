@@ -370,7 +370,7 @@
                                 INNER JOIN question_category qc USING (qc_id) 
                                 INNER JOIN emoji e ON f.answer_id = e.emoji_id
                             WHERE 
-                                qt.question_type = 'Emoji-based'
+                                qt.question_type = 'Emoji-based' AND e.in_choices != 0
                             GROUP BY 
                                 e.emoji_id, f.answer_id
                         )
@@ -387,7 +387,7 @@
                         WHERE 
                             e.in_choices != 0
                         ORDER BY 
-                            e.emoji_id DESC;
+                            e.emoji_id DESC LIMIT 5;
                         ";
                         $result_overall = mysqli_query($conn, $sql_overall);
                         if(mysqli_num_rows($result_overall) > 0){
@@ -444,7 +444,7 @@
                                             INNER JOIN question_category qc USING (qc_id) 
                                             INNER JOIN emoji e ON f.answer_id = e.emoji_id
                                         WHERE 
-                                            qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'
+                                            qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based' AND e.in_choices != 0
                                         GROUP BY 
                                             e.emoji_id, f.answer_id, qc_id
                                     )
