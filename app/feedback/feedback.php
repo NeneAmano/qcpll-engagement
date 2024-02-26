@@ -19,6 +19,8 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <style>
     .dropdown {
@@ -158,13 +160,26 @@ $client_id = isset($_POST['id']) ? $_POST['id'] : null;
                     WHERE 
                         queue_number = '$id' 
                         AND DATE(queue_details.created_at) = CURDATE() 
-                        AND queue_details.status != 2 AND queue_details.entry_check = 1
+                        AND queue_details.status = 0 AND queue_details.entry_check = 1
                     LIMIT 1;
                     ";
                         $res = mysqli_query($conn, $sql);
 
                         if ($row = mysqli_fetch_array($res)) {
-                            $client_id = $row['client_id']
+                            $client_id = $row['client_id'];
+
+                            echo '<script>
+                            $(document).ready(function(){
+                                swal({
+                                    title: "", 
+                                    text: "Loading...",
+                                    icon: "",
+                                    buttons: false,      
+                                    closeOnClickOutside: false,
+                                    timer: 3000,
+                                })
+                            });
+                        </script>';
                     ?>
                             <p style="font-size: 1.5em;">Client Identifier</p>
                             <p style="font-size: 0.7em; font-style:italic;">Note* This is a type box that will auto-fill when your account exists.</p>
