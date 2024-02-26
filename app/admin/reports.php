@@ -489,7 +489,7 @@
         </div>
     </section>
     
-    <section class="bar-graph bar-graph-horizontal bar-graph-one">
+    <!-- <section class="bar-graph bar-graph-horizontal bar-graph-one">
         <div class="text-based-title">
             <h3>Text-Based Ratings</h3>
         </div>
@@ -505,9 +505,101 @@
             <span class="feelings">Negative</span>
             <div class="bar" data-percentage="74.7%" style="background-color: #508D69;"></div>
         </div>
-        
-    </section>
+    </section> -->
     
+    <!-- text-based ratings for staff -->
+    <?php
+        $sql_text_staff = "SELECT
+        question_id,
+        question_type.question_type,
+        question_category.question_category,
+        COUNT(*) AS total_feedback,
+        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive
+        FROM
+        feedback INNER JOIN questions USING (question_id) INNER JOIN question_category USING (qc_id) INNER JOIN question_type USING (qt_id)
+        WHERE question_type = 'Text-based' AND question_category = 'Staff'
+        GROUP BY
+        question_id;";
+        $result_text_staff = mysqli_query($conn, $sql_text_staff);
+        foreach($result_text_staff as $data1){
+            $staff_question_id[] = $data1['question_id'];
+            $staff_question_category[] = $data1['question_category'];
+            $staff_total_feedback[] = $data1['total_feedback'];
+            $staff_negative[] = $data1['negative'];
+            $staff_neutral[] = $data1['neutral'];
+            $staff_positive[] = $data1['positive'];
+        }
+    ?>
+    <div class="container ms-5 mt-5 mb-5"style="height: 300px; width: 400px;">
+        <h4 class="ms-5"><?= $staff_question_category[0] ?> Text-based Ratings</h4>
+        <canvas id="myChart1"></canvas>
+    </div>
+    <br>
+
+    <!-- text-based ratings for service -->
+    <?php
+        $sql_text_service = "SELECT
+        question_id,
+        question_type.question_type,
+        question_category.question_category,
+        COUNT(*) AS total_feedback,
+        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive
+        FROM
+        feedback INNER JOIN questions USING (question_id) INNER JOIN question_category USING (qc_id) INNER JOIN question_type USING (qt_id)
+        WHERE question_type = 'Text-based' AND question_category = 'Service'
+        GROUP BY
+        question_id;";
+        $result_text_service = mysqli_query($conn, $sql_text_service);
+        foreach($result_text_service as $data1){
+            $service_question_id[] = $data1['question_id'];
+            $service_question_category[] = $data1['question_category'];
+            $service_total_feedback[] = $data1['total_feedback'];
+            $service_negative[] = $data1['negative'];
+            $service_neutral[] = $data1['neutral'];
+            $service_positive[] = $data1['positive'];
+        }
+    ?>
+    <div class="container ms-5 mt-5 mb-5"style="height: 300px; width: 400px;">
+        <h4 class="ms-5"><?= $service_question_category[0] ?> Text-based Ratings</h4>
+        <canvas id="myChart2"></canvas>
+    </div>
+    <br>
+
+    <!-- text-based ratings for facility -->
+    <?php
+        $sql_text_facility = "SELECT
+        question_id,
+        question_type.question_type,
+        question_category.question_category,
+        COUNT(*) AS total_feedback,
+        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive
+        FROM
+        feedback INNER JOIN questions USING (question_id) INNER JOIN question_category USING (qc_id) INNER JOIN question_type USING (qt_id)
+        WHERE question_type = 'Text-based' AND question_category = 'Facility'
+        GROUP BY
+        question_id;";
+        $result_text_facility = mysqli_query($conn, $sql_text_facility);
+        foreach($result_text_facility as $data1){
+            $facility_question_id[] = $data1['question_id'];
+            $facility_question_category[] = $data1['question_category'];
+            $facility_total_feedback[] = $data1['total_feedback'];
+            $facility_negative[] = $data1['negative'];
+            $facility_neutral[] = $data1['neutral'];
+            $facility_positive[] = $data1['positive'];
+        }
+    ?>
+    <div class="container ms-5 mt-5 mb-5"style="height: 300px; width: 400px;">
+        <h4 class="ms-5"><?= $facility_question_category[0] ?> Text-based Ratings</h4>
+        <canvas id="myChart3"></canvas>
+    </div>
+    <br>
+
     <section>
         <div class="card-1">
             <div class="card-title">
@@ -731,6 +823,102 @@
         </div>
     </section>
     </main>
-</body>
+    <script>
+        const ctx1 = document.getElementById('myChart1');
+        const data1 = {
+            labels: ['Negative', 'Neutral', 'Positive'],
+            datasets: [{
+                label: 'Sentiment Score',
+                data: <?php echo json_encode([$staff_negative[0], $staff_neutral[0], $staff_positive[0]]); ?>,
+                backgroundColor: [
+                    'rgb(255, 99, 132)', // Negative
+                    'rgb(54, 162, 235)', // Neutral
+                    'rgb(255, 205, 86)', // Positive
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                ],
+                borderWidth: 1
+            }]
+        };
 
+        new Chart(ctx1, {
+            type: 'pie', // Change the chart type to 'pie'
+            data: data1,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }); 
+
+        const ctx2 = document.getElementById('myChart2');
+        const data2 = {
+            labels: ['Negative', 'Neutral', 'Positive'],
+            datasets: [{
+                label: 'Sentiment Score',
+                data: <?php echo json_encode([$service_negative[0], $service_neutral[0], $service_positive[0]]); ?>,
+                backgroundColor: [
+                    'rgb(255, 99, 132)', // Negative
+                    'rgb(54, 162, 235)', // Neutral
+                    'rgb(255, 205, 86)', // Positive
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx2, {
+            type: 'pie', // Change the chart type to 'pie'
+            data: data2,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }); 
+
+        const ctx3 = document.getElementById('myChart3');
+        const data3 = {
+            labels: ['Negative', 'Neutral', 'Positive'],
+            datasets: [{
+                label: 'Sentiment Score',
+                data: <?php echo json_encode([$facility_negative[0], $facility_neutral[0], $facility_positive[0]]); ?>,
+                backgroundColor: [
+                    'rgb(255, 99, 132)', // Negative
+                    'rgb(54, 162, 235)', // Neutral
+                    'rgb(255, 205, 86)', // Positive
+                ],
+                borderColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 205, 86)',
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx3, {
+            type: 'pie', // Change the chart type to 'pie'
+            data: data3,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        }); 
+    </script>
+</body>
 </html>
