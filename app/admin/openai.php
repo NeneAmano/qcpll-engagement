@@ -1,4 +1,5 @@
 <?php
+$openApiKey = "";
 
 $searchkeyWord = "I have a staff category on my system and i conduct a survey
 
