@@ -57,10 +57,8 @@
                             }
                         }
                     }
-                    if($emoji_query == true && $choice_query == true && $text_query == true){
-                        header('location: feedback.php');
-                        die();
-                    }
+                    header('location: feedback.php');
+                    die();
                 }
             }
         }else{
