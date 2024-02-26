@@ -1,5 +1,9 @@
 <?php
+    error_reporting(E_ERROR | E_PARSE);
     require_once('../core/init.php');
+    require_once('../vendor/autoload.php');
+    $sentiment = new Sentiment\Analyzer();
+
     if (!isset($_SESSION['user_id'])) {
         header('location: ../../public/index.php');
         die();
@@ -51,9 +55,34 @@
             
                             // Handle text-based questions
                             if (isset($_POST["text{$q_id}"])) {
+                                $strings = [];
                                 $text_value = mysqli_real_escape_string($conn, $_POST["text{$q_id}"]);
-                                $sql = "INSERT INTO feedback (client_id, question_id, text_feedback) VALUES ($client_id, $question_value, '$text_value');";
-                                $text_query = mysqli_query($conn, $sql);
+
+                                $strings[] = $text_value;
+
+                                foreach ($strings as $string) {
+                                    // calculations:
+                                    $scores = $sentiment->getSentiment($string);
+                                    // output:
+                                    echo "String: $string\n";
+                                    print_r(json_encode($scores));
+                                    echo "<br>";
+
+                                    // Find the maximum value among "neg", "neu", and "pos"
+                                    $maxValue = max($scores['neg'], $scores['neu'], $scores['pos']);
+                                    
+                                    // Output the result
+                                    if ($maxValue == $scores['neg']) {
+                                        echo $sentiment_score = 0;
+                                    } elseif ($maxValue == $scores['neu']) {
+                                        echo $sentiment_score = 1;
+                                    } elseif ($maxValue == $scores['pos']) {
+                                        echo $sentiment_score = 2;
+                                    }
+                                    $sql = "INSERT INTO feedback (client_id, question_id, text_feedback, text_sentiment) VALUES ($client_id, $question_value, '$text_value', $sentiment_score);";
+                                    $text_query = mysqli_query($conn, $sql);
+                                }
+                                
                             }
                         }
                     }
