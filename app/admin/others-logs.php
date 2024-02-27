@@ -178,7 +178,7 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                 <?php
                                 for ($month = 1; $month <= 12; $month++) {
                                     $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                                    echo '<a href="others_logs.php?filter=' . $month . '">' . $month_name . '</a>';
+                                    echo '<a href="others-logs.php?filter=' . $month . '">' . $month_name . '</a>';
                                 }
                                 ?>
                             </div>
