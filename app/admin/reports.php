@@ -88,7 +88,7 @@
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
             left: 45em;
-            bottom: 70em;
+            bottom: 123em !important; 
             width: 25em;
             height: auto;
             display: grid;
@@ -103,8 +103,8 @@
             border-radius: var(--card-border-radius);
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
-            left: 45em;
-            bottom: 98em;
+            left: 38em;
+            bottom: 152em !important;
             width: 38em;
             min-height: 50em !important;
             display: grid;
@@ -301,7 +301,7 @@
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 75em;
-                bottom: 175em;
+                bottom: 269em !important;
                 width: 25em;
                 min-height: 50em !important;
                 display: grid;
@@ -331,7 +331,7 @@
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 45em;
-                bottom: 70em;
+                bottom: 124em;
                 width: 25em;
                 height: auto;
                 display: grid;
@@ -751,8 +751,8 @@
                 <?php
                         }
                     }
-                ?>
-                <!-- for text-based ratings -->
+                    ?>
+<!-- for text-based ratings -->
                 <div class="card-title-analysis mb-5">
                     <p>Text-based</p>
                 </div>
@@ -826,13 +826,13 @@
                         }
                     ?>
                 
-                <!-- reference website -->
-                <div class="card-analysis">
-                    <div class="card-body-analysis-text">
-                        <p style="font-size: small; "><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
-                        <p style="font-size: small;"><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
+                    <!-- reference website -->
+                    <div class="card-analysis">
+                        <div class="card-body-analysis-text">
+                            <p style="font-size: small; "><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
+                            <p style="font-size: small;"><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
+                        </div>
                     </div>
-                </div>
             </div>
             <p></p>
         </div>
