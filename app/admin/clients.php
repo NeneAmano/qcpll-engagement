@@ -244,7 +244,7 @@
     </div>
     <!-- end of main container -->
     <?php
-    require_once 'js/scripts.php';
+    require_once 'js/client-scripts.php';
     ?>
     <!-- <script src="js/question-scripts.js"></script> -->
     </body>
