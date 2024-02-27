@@ -585,9 +585,11 @@
         <div class="card-1">
             <div class="card-title">
                 <p style="font-size: 1.5em;text-transform:capitalize;">Analysis</p>
+                <hr>
 
                 <!-- for overall Experience -->
                 <div class="card-title-analysis">
+                    <p>Emoji-based</p>
                     <p>Overall Experience</p>
                 </div>
                 <div class="card-analysis">
@@ -672,7 +674,7 @@
                 ?>
                             <!-- for staff assistance -->
                             <div class="card-title-analysis">
-                                <p><?= $question_category ?></p>
+                                <p><?= $question_category ?> Experience</p>
                             </div>
                             <div class="card-analysis">
                                 <?php
@@ -752,13 +754,76 @@
                 ?>
                 <!-- for text-based ratings -->
                 <div class="card-title-analysis mb-5">
-                    <p>Overall Text-Based Ratings</p>
+                    <p>Text-based</p>
                 </div>
-                <div class="card-analysis">
-                    <div class="card-body-analysis-text">
-                        <p>Remarks:Positive</p>
-                        <p>Score: 69.1%</p>
-                    </div>
+                    <?php
+                        $sql_category = "SELECT * FROM question_category;";
+                        $result_category = mysqli_query($conn, $sql_category);
+                        if(mysqli_num_rows($result_category) > 0){
+                            while($row_category = mysqli_fetch_assoc($result_category)){
+                                $qc_id = $row_category['qc_id'];
+                                $question_category = $row_category['question_category'];
+
+                                
+                                $sql_text = "SELECT
+                                question_id,
+                                question_type.question_type,
+                                question_category.question_category,
+                                COUNT(*) AS total_feedback,
+                                (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+                                (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+                                (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive,
+                                CASE
+                                    WHEN GREATEST(
+                                        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                    ) = (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Negative'
+                                    WHEN GREATEST(
+                                        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                    ) = (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Neutral'
+                                    WHEN GREATEST(
+                                        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                    ) = (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Positive'
+                                END AS highest_sentiment,
+                                GREATEST(
+                                    (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                    (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                    (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                ) AS highest_percentage
+                            FROM
+                                feedback
+                                INNER JOIN questions USING (question_id)
+                                INNER JOIN question_category USING (qc_id)
+                                INNER JOIN question_type USING (qt_id)
+                            WHERE question_type.question_type = 'Text-based' AND question_category.question_category = '$question_category'
+                            GROUP BY question_id, question_type.question_type, question_category.question_category;
+                            ";
+                                $result_text = mysqli_query($conn, $sql_text);
+                                if(mysqli_num_rows($result_text) > 0){
+                                    while($row_text = mysqli_fetch_assoc($result_text)){
+                                        $highest_sentiment = $row_text['highest_sentiment'];
+                                        $highest_percentage = $row_text['highest_percentage'];
+                        ?>
+                                        <div class="card-analysis">
+                                            <div class="card-body-analysis-text">
+                                                <p><b><?= $question_category ?> Experience</b></p>
+
+                                                <p><b>Highest Sentiment:</b> <?= $highest_sentiment ?></p>
+                                                <p><b>Percentage:</b> <?= $highest_percentage ?>%</p>
+                                                <br>
+                                            </div>
+                                        </div>
+                        <?php
+                                    }
+                                }
+                            }
+                        }
+                    ?>
                 </div>
                 <!-- reference website -->
                 <div class="card-analysis">
