@@ -151,17 +151,18 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
         <div class="card">
             <!-- start of card header -->
             <div class="card-header">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link " id="nbi-tab" data-bs-toggle="tab" data-bs-target="#nbi" type="button" role="tab" aria-controls="nbi" aria-selected="true" onclick="window.location.href='nbi-logs.php'">NBI LOGS</button>
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" id="nbi-logs" href="nbi-logs.php">NBI Logs</a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#police" type="button" role="tab" aria-controls="profile" aria-selected="false" onclick="window.location.href='police-logs.php'">POLICE LOGS</button>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" id="police-logs" href="police-logs.php">Police Logs</a>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#others" type="button" role="tab" aria-controls="contact" aria-selected="false">OTHERS LOGS</button>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" id="others-logs" href="others-logs.php">Others Logs</a>
                     </li>
                 </ul>
+            </div>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="nbi" role="tabpanel" aria-labelledby="nbi-tab">
 
@@ -194,7 +195,7 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
 
                                 while ($row_year = mysqli_fetch_assoc($result_year)) {
                                     $year = $row_year['year'];
-                                    echo '<a href="others_logs.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                                    echo '<a href="others-logs.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
                                 }
                                 ?>
                             </div>
@@ -312,7 +313,6 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
     <?php
     require_once 'js/scripts.php';
     ?>
-
+    <script src="js/logs-scripts.js"></script>
 </body>
-
 </html>
