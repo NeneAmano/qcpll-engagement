@@ -1,58 +1,75 @@
 <?php
-    require_once('../core/init.php');
-    if(isset($_SESSION['user_id'])){
-        if(isset($_GET['queue_no']) && isset($_GET['client_id']) && isset($_GET['birthdate']) && isset($_GET['birthdate'])){
-            $queue_no = $_GET['queue_no'];
-            $client_id = $_GET['client_id'];
-            $birthdate = $_GET['birthdate'];
-            $service = $_GET['service'];
+require_once('../core/init.php');
+if (isset($_SESSION['user_id'])) {
+    if (isset($_GET['queue_no']) && isset($_GET['client_id']) && isset($_GET['birthdate']) && isset($_GET['birthdate'])) {
+        $queue_no = $_GET['queue_no'];
+        $client_id = $_GET['client_id'];
+        $birthdate = $_GET['birthdate'];
 
-            $sql = "SELECT * FROM client WHERE client_id = $client_id;";
-            $result = mysqli_query($conn, $sql);
-            if(mysqli_num_rows($result) > 0){
-                while($row = mysqli_fetch_assoc($result)){
-                    $f_name = $row['f_name'];
-                    $m_name = $row['m_name'];
-                    $l_name = $row['l_name'];
-                    $suffix = $row['suffix'];
-                    $age_id = $row['age_id'];
-                    $gender = $row['gender'];
-                    $education = $row['education'];
-                    $occupation = $row['occupation'];
-                    $status = $row['status'];
-                    $created_at = $row['created_at'];
+        $sql = "SELECT * FROM client WHERE client_id = $client_id;";
+        $result = mysqli_query($conn, $sql);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $civil_status = $row['civil_status'];
+                $f_name = $row['f_name'];
+                $m_name = $row['m_name'];
+                $l_name = $row['l_name'];
+                $suffix = $row['suffix'];
+                $age_id = $row['age_id'];
+                $gender = $row['gender'];
+                $education = $row['education'];
+                $occupation = $row['occupation'];
+                $status = $row['status'];
+                $created_at = $row['created_at'];
 
-                    if($status == 0){
-                        $new_status = 'Normal';
-                    }elseif($status == 1){
-                        $new_status = 'Senior';
-                    }elseif($status == 2){
-                        $new_status = 'PWD';
-                    }elseif($status == 3){
-                        $new_status = 'Pregnant';
-                    }
+                $maiden_middle_name = ""; // Initialize maiden middle name variable
+                $maiden_last_name = ""; // Initialize maiden last name variable
+
+                if ($gender == "female") {
+                    // Remove the suffix input box
+                    $suffix = "";
                 }
-            }else{
-                header('location: ../../public/index.php');
-                die();
+
+                if ($civil_status == "married" || $civil_status == "widow") {
+                    // Change middle name input to maiden middle name
+                    $m_name = $row['maiden_middle_name'];
+                    // Add maiden last name input
+                    $maiden_last_name = $row['maiden_last_name'];
+                }
+
+                if ($status == 0) {
+                    $new_status = 'Normal';
+                } elseif ($status == 1) {
+                    $new_status = 'Senior';
+                } elseif ($status == 2) {
+                    $new_status = 'PWD';
+                } elseif ($status == 3) {
+                    $new_status = 'Pregnant';
+                }
             }
+        } else {
+            header('location: ../../public/index.php');
+            die();
         }
-    }else{
-        header('location: ../../public/index.php');
-        die();
     }
+} else {
+    header('location: ../../public/index.php');
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NBI Clearance</title>
+    <title>FORM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../../public/assets/css/style-nbi-clearance-form.css">
 
 </head>
+
 <body>
     <!-- nasa media query
 input[type="radio"],
@@ -64,10 +81,6 @@ select -->
     <div class="container my-4">
         <div class="formbg">
             <div class="row">
-                <div class="col-12 sm-2 col-print-6" style="text-align: center;">
-
-                    <h1 style="text-transform: uppercase;"><?=$service?> CLEARANCE FORM</h1>
-                </div>
             </div>
             <div class="row">
                 <div class="col-10">
@@ -91,37 +104,71 @@ select -->
                                 </div>
                             </div>
                             <br>
-                            <!-- first name and middle name -->
+                            <!-- first name -->
                             <div class="row">
                                 <div class="col-6">
                                     <form>
                                         <label class="form-label" for="first-name">First Name:</label>
-                                        <input type="text" class="form-control" id="first-name" placeholder="" value="<?= $f_name ?>">
+                                        <input type="text" class="form-control custom-input" id="first-name" placeholder="" value="<?= $f_name ?>">
                                     </form>
                                 </div>
-                                <div class="col-6">
-                                    <form>
+                                <?php if ($gender == "Male") : ?>
+                                    <!-- middle name -->
+                                    <div class="col-6">
+                                        <form>
+                                            <label class="form-label" for="middle-name">Middle Name:</label>
+                                            <input type="text" class="form-control custom-input" id="middle-name" placeholder="" value="<?= $m_name ?>">
+                                        </form>
+                                    </div>
+                                <?php elseif ($civil_status == "Married" || $civil_status == "Widow") : ?>
+                                    <!-- maiden middle name -->
+                                    <div class="col-6">
+                                        <form>
+                                            <label class="form-label" for="maiden-middle-name">Maiden Middle Name:</label>
+                                            <input type="text" class="form-control custom-input" id="maiden-middle-name" placeholder="" value="">
+                                        </form>
+                                    </div>
+                                <?php else : ?>
+                                    <!-- middle name -->
+                                    <div class="col-6">
+
                                         <label class="form-label" for="middle-name">Middle Name:</label>
-                                        <input type="text" class="form-control" id="middle-name" placeholder="" value="<?= $m_name ?>">
-                                    </form>
-                                </div>
+                                        <input type="text" class="form-control custom-input" id="middle-name" placeholder="" value="<?= $m_name ?>">
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
                             </div>
+
+
+
                             <br>
-                            <!-- last name and suffix -->
+                            <!-- last name -->
                             <div class="row">
-                                <div class="col-7">
+                                <div class="col-6">
                                     <form>
                                         <label class="form-label" for="last-name">Last Name:</label>
                                         <input type="text" class="form-control" id="last-name" placeholder="" value="<?= $l_name ?>">
                                     </form>
                                 </div>
-                                <div class="col-5">
-                                    <form>
-                                        <label class="form-label" for="suffix">Suffix: <span class="fst-italic">(Jr./Sr./II/III)</span></label>
-                                        <input type="text" class="form-control" id="suffix" placeholder="" value="<?= $suffix ?>">
-                                    </form>
-                                </div>
+                                <?php if ($gender != "Female") : ?>
+                                    <!-- suffix input -->
+                                    <div class="col-6">
+                                        <form>
+                                            <label class="form-label" for="suffix">Suffix: <span class="fst-italic">(Jr./Sr./II/III)</span></label>
+                                            <input type="text" class="form-control" id="suffix" placeholder="" value="<?= $suffix ?>">
+                                        </form>
+                                    </div>
+                                <?php elseif ($civil_status == "Married" || $civil_status == "Widow") : ?>
+                                    <!-- maiden last name input -->
+                                    <div class="col-5">
+                                        <form>
+                                            <label class="form-label" for="maiden-last-name">Maiden Last Name:</label>
+                                            <input type="text" class="form-control" id="maiden-last-name" placeholder="" value="<?= $maiden_last_name ?>">
+                                        </form>
+                                    </div>
+                                <?php endif; ?>
                             </div>
+
 
                             <!-- gender options -->
                             <div class="row">
@@ -131,19 +178,11 @@ select -->
                                         <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
                                     </form>
                                 </div>
-                                <div class="col-1">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-                                        <label class="form-check-label" for="inlineCheckbox1">Single</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-                                        <label class="form-check-label" for="inlineCheckbox2">Married</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-                                        <label class="form-check-label" for="inlineCheckbox3">Widow</label>
-                                    </div>
+                                <div class="col-6">
+                                    <form>
+                                        <label for="gender" class="form-label">Civil Status</label>
+                                        <input type="text" class="form-control" id="civilstatus" value="<?= $civil_status ?>">
+                                    </form>
                                 </div>
                             </div>
 
@@ -194,7 +233,7 @@ select -->
 
 
                         <!-- OTHER INFORMATION COLUMN -->
-                        <div class="col-7">
+                        <div class="col-6">
                             <div class="row">
                                 <div class="col" style="text-align: center;">
                                     <h4>Other Information</h4>
@@ -210,7 +249,7 @@ select -->
                             </div>
 
                             <!-- first time job seeker? -->
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-7" style="text-align: center;">
                                     <label>First Time Job Seeker:</label>
                                 </div>
@@ -224,7 +263,7 @@ select -->
                                         <label class="form-check-label" for="inlineCheckbox2">No</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <!-- height and weight -->
                             <div class="row">
@@ -461,23 +500,24 @@ select -->
             flex-direction: column !important;
             justify-content: center !important;
             align-items: center !important;
-            margin-top: 5px;
+            margin-top: 0px;
         }
     </style>
     <!-- style="text-align: center;" -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script>
-    window.onload = function() {
-    window.print();
-    };
+        window.onload = function() {
+            window.print();
+        };
 
-    window.onafterprint = function(e) {
-        closePrintView();
-    };
+        window.onafterprint = function(e) {
+            closePrintView();
+        };
 
-    function closePrintView() {
-        window.location.href = 'queue.php';   
-    }
+        function closePrintView() {
+            window.location.href = 'queue.php';
+        }
     </script>
 </body>
+
 </html>

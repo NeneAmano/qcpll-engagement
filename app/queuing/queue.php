@@ -19,6 +19,7 @@
         $age_value = '';
 
         if(isset($_POST['submit'])){
+            $civilstatus = mysqli_real_escape_string($conn,$_POST['civilstatus']);
             $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
             $middlename = mysqli_real_escape_string($conn, $_POST['middlename']);
             $surname = mysqli_real_escape_string($conn, $_POST['surname']);
@@ -211,7 +212,7 @@
                 $education !== '' &&
                 $occupation !== ''
             ) {
-                $sql = "INSERT INTO client (f_name, m_name, l_name, suffix, age_id, gender, education, occupation, status) VALUES ('$firstname', '$middlename_value', '$surname', '$suffix_value', $age_value, '$gender', '$education', '$occupation', $new_status);";
+                $sql = "INSERT INTO client (civil_status, f_name, m_name, l_name, suffix, age_id, gender, education, occupation, status) VALUES ('$civilstatus', '$firstname', '$middlename_value', '$surname', '$suffix_value', $age_value, '$gender', '$education', '$occupation', $new_status);";
     
                 if(mysqli_query($conn, $sql)){
                     $client_id = mysqli_insert_id($conn);
@@ -238,7 +239,7 @@
                         if(!empty($value) || $value !== ''){
                             $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
                             if(mysqli_query($conn, $sql_others)){
-                                header("location: other-form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate);
+                                header("location: form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate. "&service=" .$value);
                             }
                         }
                     }
@@ -342,7 +343,14 @@
                         <li class="breadcrumb-item active" aria-current="page">Demographic Profile</li>
                     </ol>
                     </nav>
-                                        
+                    <div class="form-wrapper">
+                        <select name="civilstatus" id="" class="form-control">
+                            <option value="" disabled selected>--Civil Status --</option>
+                            <option value="Single">Single</option>
+                            <option value="Widow">Widow</option>
+                            <option value="Married">Married</option>
+                        </select>
+                    </div>             
                     <div class="form-group">
                         <span class="text-danger"><?= $firstname_error ?></span><span class="text-success"><?= $firstname_success ?></span>
                         <input type="text" name="firstname" id="" placeholder="First Name" class="form-control" value="<?= $firstname_value ?>" required>

@@ -2,8 +2,10 @@
     require_once('../core/init.php');
     include('../web-scraping/simple_html_dom.php');
     ob_start();
-    if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
-        header('location: login.php?error=accessdenied');
+    if($user_role_id_session !== 1){
+        session_unset();
+        session_destroy();
+        header("Location: login.php?error=accessdenied");
         die();
     }
 ?>
@@ -20,6 +22,7 @@
     $file_destination = '';
     if (isset($_POST['add_emoji'])) {
         $add_unicode_name = mysqli_real_escape_string($conn, $_POST['add_unicode_name']);
+        $add_in_choices = mysqli_real_escape_string($conn, $_POST['add_in_choices']);
 
         //validate profile picture
         $file = $_FILES['add_image'];
@@ -77,7 +80,7 @@
                                 $add_unicode_block = $emoji['Unicode block'];
                                 $add_remarks = '';
 
-                                $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks) VALUES ('$file_path', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks');";
+                                $sql = "INSERT INTO emoji (image_path, _char, image, unicode_codepoint, occurrences, _position, negative, neutral, positive, sentiment_score, unicode_name, unicode_block, remarks, in_choices) VALUES ('$file_path', '$add_char', '$add_image', '$add_unicode_codepoint', $add_occurrences, $add_position, $add_negative, $add_neutral, $add_positive, $add_sentiment_score, '$add_unicode_name', '$add_unicode_block', '$add_remarks', $add_in_choices);";
 
                                 if (mysqli_query($conn, $sql)) {
                                     // echo '../web-scraping/remarks-html-dom.php?remarks=' .$url_unicode_name;
@@ -140,11 +143,20 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-6 mt-3">
                                                     <div class="form-group">
-                                                        <label for="add_unicode_name" class="ps-2 pb-2">Unicode Name</label>
+                                                        <label for="add_unicode_name" class="ps-2 pb-2">Unicode Name <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji" class="">(Get Unicode Name here.)</a></label>
                                                         <input type="text" class="form-control" name="add_unicode_name" id="add_unicode_name" value="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-6 mt-3">
+                                                    <div class="form-group">
+                                                        <label for="add_unicode_name" class="ps-2 pb-2">Do you want this emoji to be in selection?</label>
+                                                        <select class="form-select" name="add_in_choices" aria-label="Default select example">
+                                                            <option value="1" selected>Yes</option>
+                                                            <option value="0">No</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-6 mt-3">
                                                     <div class="form-group">
                                                         <label for="add_image" class="ps-2 pb-2">Emoji Image</label>
                                                         <input type="file" class="form-control" name="add_image" id="add_image" value="" required>

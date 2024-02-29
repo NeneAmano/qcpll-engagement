@@ -2,7 +2,6 @@ var questions = document.getElementById('questions');
 var questionType = document.getElementById('question-type');
 var questionCategory = document.getElementById('question-category');
 const url = window.location.pathname.split('/');
-console.log(url);
 
 if(url[4] == 'questions.php'){
     questions.classList.add("border");

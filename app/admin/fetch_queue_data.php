@@ -6,7 +6,7 @@ require_once('../core/init.php');
 $sql_select = "SELECT queue_details.qd_id,CONCAT(client.f_name, ' ' , client.l_name) AS client,queue_details.queue_number, queue_details.client_id, queue_details.service,queue_details.`status`,queue_details.entry_check,queue_details.created_at,queue_details.updated_at
 FROM queue_details
 JOIN client ON queue_details.client_id = client.client_id
- WHERE DATE(queue_details.created_at) = CURDATE() AND queue_details.status != 2 AND queue_details.entry_check = 1
+ WHERE DATE(queue_details.created_at) = CURDATE() AND queue_details.status = 0 AND queue_details.entry_check = 1
  GROUP BY queue_details.qd_id ;";
 
 $result = mysqli_query($conn, $sql_select);

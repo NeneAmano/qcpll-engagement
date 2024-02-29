@@ -2,6 +2,8 @@
     require_once('../core/init.php');
     ob_start();
     if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
+        session_unset();
+        session_destroy();
         header('location: login.php?error=accessdenied');
         die();
     }
@@ -35,10 +37,31 @@
         body{
         
         }
+        .breadcrumb-item{
+            border: 2px solid gray;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .breadcrumb-item a{
+            text-decoration: none !important;
+            color: gray;
+        }
+        .link:hover{
+            text-decoration: underline !important;
+        }
     </style>
 </head>
 <body>
-    <div class="container-fluid mt-3">
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="queue-screen.php" class="link">Pending Transaction</a></li>&nbsp;
+    <li class="breadcrumb-item"><a href="queue-screen-completed.php"  class="link">Completed Transaction</a></li>&nbsp;
+    <li class="breadcrumb-item active" aria-current="page" class="link"><a href="queue-screen-cancelled.php">Cancelled Transaction</a></li>
+  </ol>
+</nav>
+        <!-- starts here -->
+        <div class="container-fluid mt-3">
         <h1 class="d-flex justify-content-center">QUEUEING NUMBER MONITORING</h1>
         <div class="row">
             <div class="container">
@@ -156,6 +179,9 @@
             <!-- end of edit modal dialog -->
         </div>
         <!-- end of edit user modal -->
+        <!-- ends here -->
+
+
 
     <script>
         $(document).ready(function() {

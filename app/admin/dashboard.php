@@ -1,7 +1,12 @@
 <?php
     require_once('../core/init.php');
     ob_start();
+    $sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
+    mysqli_query($conn, $sql);
+
     if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
+        session_unset();
+        session_destroy();
         header('location: login.php?error=accessdenied');
         die();
     }
@@ -139,6 +144,167 @@
         }
         .card{
             border-right: 9px solid #1B9C85 !important;
+        }
+        main .recent-feedback{
+            margin-top: 1.3rem;
+            width: 61%;
+            margin-left: 3rem;
+        }
+
+        main .recent-feedback h2{
+            margin-bottom: 0.8rem;
+        }
+
+        main .recent-feedback table{
+            background-color: var(--color-white);
+            width: 100%;
+            padding: var(--card-padding);
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s ease;
+        }
+
+        main .recent-feedback table:hover{
+            box-shadow: none;
+        }
+
+        main table tbody td{
+            height: 2.8rem;
+            border-bottom: 1px solid var(--color-light);
+            color: var(--color-dark-variant);
+        }
+
+        main table tbody tr:last-child td{
+            border: none;
+        }
+
+        main .recent-feedback a{
+            text-align: center;
+            display: block;
+            margin: 1rem auto;
+            color: var(--color-primary);
+        }
+        .new_user_title{
+            position: relative;
+            left: 2em;
+            font-size: 1.5em;
+            font-weight: 600;
+            width: fit-content;
+        }
+        .new_user{
+            cursor: pointer;
+            background-color: var(--color-white);
+            padding: var(--card-padding);
+            box-shadow: var(--box-shadow);
+            max-width: 61%;
+            margin-left: 3em;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            flex-wrap: nowrap;
+        }
+        .new_user:hover {
+            box-shadow: none;
+        }
+        .main-user-content{
+            display: flex;
+            gap: 6em;
+            flex-wrap: nowrap;
+        }
+        .user-content{
+            display: flex;
+            justify-content: center;    
+            align-items: center;
+            flex-direction: column;
+            flex-wrap: nowrap;
+        }
+        .user-content p{
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+        .user-content span{
+            font-weight: 100;
+            font-size: .8em;
+        }
+        .user-content .add_icon{
+            font-size: 3em;
+        }
+        .history-section {
+            width: 30em;
+            height: 70vh;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            position: relative;
+            margin-top: 10em;
+            left: 46em;
+            flex-direction: column;
+            font-family: Georgia, 'Times New Roman', Times, serif !important;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            left: 3em;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            background-color: var(--color-white);
+            padding: var(--card-padding);
+            box-shadow: var(--box-shadow);
+            border: none !important;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            border-right: 7px solid #6C9BCF !important;
+        }
+        @media only screen and (min-width: 1900px){
+            .history-section {
+            width: 30em;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            position: relative;
+            bottom: 40em;
+            left: 60em;
+            flex-direction: column;
+            font-family: Georgia, 'Times New Roman', Times, serif !important;
+        }
+
+        }
+
+        .card-container:hover {
+            box-shadow: none;
+        }
+
+        .notif-icon {
+            position: relative;
+            left: 3em;
+            font-size: 2em;
+            background-color: #1B9C85;
+            width: 20px;
+            height: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            color: #fff;
+        }
+
+        #history-icon {
+            position: relative;
+            left: 7.5em;
+            top: 0.2em;
+            font-size: 1.5em;
+        }
+
+        .main-container h4 {
+            position: relative;
+            right: 1.5em;
+            margin-bottom: 2em;
+        }
+        .queue_number{
+            font-size: 1.3em !important;
+            font-weight: 600 !important;
         }
     </style>
     <?php
@@ -301,167 +467,7 @@
             </div>
             <!-- End of Recent Orders -->
             </main>
-    <style>
-        main .recent-feedback{
-            margin-top: 1.3rem;
-        }
 
-        main .recent-feedback h2{
-            margin-bottom: 0.8rem;
-        }
-
-        main .recent-feedback table{
-            background-color: var(--color-white);
-            width: 100%;
-            padding: var(--card-padding);
-            text-align: center;
-            box-shadow: var(--box-shadow);
-            border-radius: var(--card-border-radius);
-            transition: all 0.3s ease;
-        }
-
-        main .recent-feedback table:hover{
-            box-shadow: none;
-        }
-
-        main table tbody td{
-            height: 2.8rem;
-            border-bottom: 1px solid var(--color-light);
-            color: var(--color-dark-variant);
-        }
-
-        main table tbody tr:last-child td{
-            border: none;
-        }
-
-        main .recent-feedback a{
-            text-align: center;
-            display: block;
-            margin: 1rem auto;
-            color: var(--color-primary);
-        }
-        .new_user_title{
-            position: relative;
-            left: 2em;
-            font-size: 1.5em;
-            font-weight: 600;
-            width: fit-content;
-        }
-        .new_user{
-            cursor: pointer;
-            background-color: var(--color-white);
-            padding: var(--card-padding);
-            box-shadow: var(--box-shadow);
-            max-width: 61%;
-            margin-left: 3em;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            border-radius: 5px;
-            flex-wrap: nowrap;
-        }
-        .new_user:hover {
-            box-shadow: none;
-        }
-        .main-user-content{
-            display: flex;
-            gap: 6em;
-            flex-wrap: nowrap;
-        }
-        .user-content{
-            display: flex;
-            justify-content: center;    
-            align-items: center;
-            flex-direction: column;
-            flex-wrap: nowrap;
-        }
-        .user-content p{
-            font-weight: 700;
-            font-size: 1.3em;
-        }
-        .user-content span{
-            font-weight: 100;
-            font-size: .8em;
-        }
-        .user-content .add_icon{
-            font-size: 3em;
-        }
-        .history-section {
-            width: 30em;
-            display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
-            position: relative;
-            bottom: 40em;
-            left: 46em;
-            flex-direction: column;
-            font-family: Georgia, 'Times New Roman', Times, serif !important;
-        }
-
-        .card-container {
-            display: flex;
-            justify-content: center;
-            left: 3em;
-            align-items: center;
-            flex-direction: column;
-            cursor: pointer;
-            background-color: var(--color-white);
-            padding: var(--card-padding);
-            box-shadow: var(--box-shadow);
-            border: none !important;
-            transition: all 0.3s ease;
-            border-radius: 5px;
-            border-right: 7px solid #6C9BCF !important;
-        }
-        @media only screen and (min-width: 1900px){
-            .history-section {
-            width: 30em;
-            display: flex;
-            justify-content: flex-end;
-            align-items: flex-end;
-            position: relative;
-            bottom: 40em;
-            left: 60em;
-            flex-direction: column;
-            font-family: Georgia, 'Times New Roman', Times, serif !important;
-        }
-
-        }
-
-        .card-container:hover {
-            box-shadow: none;
-        }
-
-        .notif-icon {
-            position: relative;
-            left: 3em;
-            font-size: 2em;
-            background-color: #1B9C85;
-            width: 20px;
-            height: 20px;
-            padding: 10px;
-            border-radius: 10px;
-            color: #fff;
-        }
-
-        #history-icon {
-            position: relative;
-            left: 7.5em;
-            top: 0.2em;
-            font-size: 1.5em;
-        }
-
-        .main-container h4 {
-            position: relative;
-            right: 1.5em;
-            margin-bottom: 2em;
-        }
-        .queue_number{
-            font-size: 1.3em !important;
-            font-weight: 600 !important;
-        }
-    </style>
     <section class="history-section">
         <div class="main-container">
             <h4><ion-icon name="alert-circle-outline" id="history-icon"></ion-icon>Recent Transaction</h4>
