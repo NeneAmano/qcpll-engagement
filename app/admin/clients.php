@@ -243,9 +243,7 @@
     <!-- end of main section container -->
     </div>
     <!-- end of main container -->
-    <?php
-    require_once 'js/client-scripts.js';
-    ?>
+    <script src="js/client-scripts.js"></script>
     <!-- <script src="js/question-scripts.js"></script> -->
     </body>
 
