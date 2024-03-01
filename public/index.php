@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-</head>
-<body>
     <?php 
         require_once("../app/includes/header.php");
         if(!isset($_SESSION['user_id'])){
@@ -72,6 +62,7 @@
             exit(); // Terminate script execution after redirection
         }
     ?>
+<body>
     <section id="swup" class="transtion-fade">
         <div class="logo">
             <img src="assets/images/qclogo.jpg" alt="">
