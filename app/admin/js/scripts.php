@@ -92,14 +92,16 @@
                             .prepend(
                                 '<img src="https://i.imgur.com/bknTY9u.png" style=" display: block;  margin-left: auto;  margin-right: auto; margin-top: 1.25rem;    padding: 0.313rem;   width: 400px;"/>');
 
-                        var text = 'Name: ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟    ㅤ ㅤ ㅤ ㅤ ㅤ Signature: ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟ ‎͟   ';
+                        
+
+                        
                         var body = $(win.document.body);
 
                         // Find the last page content
-                        var lastPage = body.children().last();
+var lastPage = body.children().last();
 
-                        // Append the custom text below the last page content
-                        lastPage.append('<div style="text-align: center; margin-top: 7.5rem;">' + text + '</div>');
+// Append the custom image below the last page content
+lastPage.append('<div style="text-align: center;  margin-top: 7.5rem"><img src="../../public/assets/images/namesig.png" alt="Custom Image" style="width: 80%; height 100%:; margin-top: 7.5rem"></div>');
                     }
                 }
             ],
