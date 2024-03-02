@@ -167,10 +167,10 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                     <div class="tab-pane fade show active" id="police" role="tabpanel" aria-labelledby="police-tab">
 
                         <!-- filter by today -->
-                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="police_logs.php?filter=today" class="text-decoration-none text-light">Today</a></button>
+                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="police-logs.php?filter=today" class="text-decoration-none text-light">Today</a></button>
 
                         <!-- filter by 7 days -->
-                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="police_logs.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
+                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="police-logs.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
 
                         <!-- filter by month -->
                         <div class="dropdown">
