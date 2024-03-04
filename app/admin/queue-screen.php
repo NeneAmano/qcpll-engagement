@@ -90,7 +90,6 @@
         </div>
     </div>
 
-
         <!-- start of edit user modal -->
         <div class="modal fade" id="edit_entry_status">
             <!-- start of edit modal dialog -->
