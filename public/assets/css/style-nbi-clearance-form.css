@@ -102,13 +102,13 @@ h4 {
 
     .newSecM1{
         position: relative;
-        top: -60px;
+        top: -3.75rem;
     }
 
     /* this is a class for reducing top margin of the first part of the form's content / from birthplace to complete address*/
     .BCC-section {
         position: relative;
-        top: -70px;
+        top: -4.375rem;
     }
 
     /* contact number */
@@ -120,13 +120,13 @@ h4 {
     /* complete address */
     .ca-top {
         position: relative;
-        top: -30px;
+        top: -1.875rem;
     }
 
     /* line for complete address */
     .lineCA {
         position: relative;
-        top: -5px;
+        top: -0.313rem;
     }
 
     .subtop {
@@ -151,17 +151,17 @@ h4 {
 
     .subtop-4 {
         position: relative;
-        top: -70px;
+        top: -4.375rem;
     }
 
     .subtop-5 {
         position: relative;
-        top: -60px;
+        top: -3.75rem;
     }
 
     .subtop-6 {
         position: relative;
-        top: -50px;
+        top: -3.125rem;
     }
 
     .subtop-7 {
