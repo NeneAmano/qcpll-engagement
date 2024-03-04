@@ -65,7 +65,8 @@ if (isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FORM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="../../public/assets/css/style-nbi-clearance-form.css">
 
 </head>
@@ -97,44 +98,69 @@ select -->
                             <!-- email address -->
                             <div class="row">
                                 <div class="col">
-                                    <form>
-                                        <label class="form-label" for="email">Email Address:</label>
-                                        <input type="email" class="form-control" id="email" placeholder="">
-                                    </form>
+                                    <div class="invi">
+                                        <label>Email Address:</label>
+                                        <p>_______________________________________
+                                        <p>
+                                    </div>
+                                    <div class="visi">
+                                        <form>
+                                            <label class="form-label" for="email">Email Address:</label>
+                                            <input type="email" class="form-control" id="email" placeholder="">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                             <br>
                             <!-- first name -->
                             <div class="row">
                                 <div class="col-6">
-                                    <form>
-                                        <label class="form-label" for="first-name">First Name:</label>
-                                        <input type="text" class="form-control custom-input" id="first-name" placeholder="" value="<?= $f_name ?>">
-                                    </form>
-                                </div>
-                                <?php if ($gender == "Male") : ?>
-                                    <!-- middle name -->
-                                    <div class="col-6">
+                                    <div class="newSecM">
                                         <form>
-                                            <label class="form-label" for="middle-name">Middle Name:</label>
-                                            <input type="text" class="form-control custom-input" id="middle-name" placeholder="" value="<?= $m_name ?>">
+                                            <label class="form-label" for="first-name">First Name:</label>
+                                            <input type="text" class="form-control custom-input" id="first-name"
+                                                placeholder="" value="<?= $f_name ?>">
                                         </form>
                                     </div>
-                                <?php elseif ($civil_status == "Married" || $civil_status == "Widow") : ?>
+                                </div>
+                                <?php if ($gender == "Male"): ?>
+                                    <!-- middle name -->
+                                    <div class="col-6">
+                                        <div class="newSecM">
+                                            <form>
+                                                <label class="form-label" for="middle-name">Middle Name:</label>
+                                                <input type="text" class="form-control custom-input" id="middle-name"
+                                                    placeholder="" value="<?= $m_name ?>">
+                                            </form>
+                                        </div>
+                                    </div>
+                                <?php elseif ($civil_status == "Married" || $civil_status == "Widow"): ?>
                                     <!-- maiden middle name -->
                                     <div class="col-6">
-                                        <form>
-                                            <label class="form-label" for="maiden-middle-name">Maiden Middle Name:</label>
-                                            <input type="text" class="form-control custom-input" id="maiden-middle-name" placeholder="" value="">
-                                        </form>
+                                        <div class="newSecM">
+
+                                            <label>Maiden Middle Name:</label>
+                                            <p>___________________
+                                            <p>
+
+                                                <!-- <form>
+                                                <label class="form-label" for="maiden-middle-name">Maiden Middle
+                                                    Name:</label>
+                                                <input type="text" class="form-control custom-input" id="maiden-middle-name"
+                                                    placeholder="" value="">
+                                            </form> -->
+                                        </div>
                                     </div>
-                                <?php else : ?>
+                                <?php else: ?>
                                     <!-- middle name -->
                                     <div class="col-6">
-
-                                        <label class="form-label" for="middle-name">Middle Name:</label>
-                                        <input type="text" class="form-control custom-input" id="middle-name" placeholder="" value="<?= $m_name ?>">
-                                        </form>
+                                        <div class="newSecM">
+                                            <form>
+                                                <label class="form-label" for="middle-name">Middle Name:</label>
+                                                <input type="text" class="form-control custom-input" id="middle-name"
+                                                    placeholder="" value="<?= $m_name ?>">
+                                            </form>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -145,26 +171,37 @@ select -->
                             <!-- last name -->
                             <div class="row">
                                 <div class="col-6">
-                                    <form>
-                                        <label class="form-label" for="last-name">Last Name:</label>
-                                        <input type="text" class="form-control" id="last-name" placeholder="" value="<?= $l_name ?>">
-                                    </form>
-                                </div>
-                                <?php if ($gender != "Female") : ?>
-                                    <!-- suffix input -->
-                                    <div class="col-6">
+                                    <div class="newSecM1">
                                         <form>
-                                            <label class="form-label" for="suffix">Suffix: <span class="fst-italic">(Jr./Sr./II/III)</span></label>
-                                            <input type="text" class="form-control" id="suffix" placeholder="" value="<?= $suffix ?>">
+                                            <label class="form-label" for="last-name">Last Name:</label>
+                                            <input type="text" class="form-control" id="last-name" placeholder=""
+                                                value="<?= $l_name ?>">
                                         </form>
                                     </div>
-                                <?php elseif ($civil_status == "Married" || $civil_status == "Widow") : ?>
+                                </div>
+                                <?php if ($gender != "Female"): ?>
+                                    <!-- suffix input -->
+                                    <div class="col-6">
+                                        <div class="newSecM1">
+                                            <form>
+                                                <label class="form-label" for="suffix">Suffix: <span
+                                                        class="fst-italic">(Jr./Sr./II/III)</span></label>
+                                                <input type="text" class="form-control" id="suffix" placeholder=""
+                                                    value="<?= $suffix ?>">
+                                            </form>
+                                        </div>
+                                    </div>
+                                <?php elseif ($civil_status == "Married" || $civil_status == "Widow"): ?>
                                     <!-- maiden last name input -->
-                                    <div class="col-5">
-                                        <form>
-                                            <label class="form-label" for="maiden-last-name">Maiden Last Name:</label>
-                                            <input type="text" class="form-control" id="maiden-last-name" placeholder="" value="<?= $maiden_last_name ?>">
-                                        </form>
+                                    <div class="col-6">
+                                        <div class="newSecM1">
+                                            <form>
+                                                <label class="form-label" for="maiden-last-name">Maiden Last Name:</label>
+                                                <input type="text" class="form-control" id="maiden-last-name" placeholder=""
+                                                    value="
+                                            <?= $maiden_last_name ?>">
+                                            </form>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
                             </div>
@@ -173,49 +210,70 @@ select -->
                             <!-- gender options -->
                             <div class="row">
                                 <div class="col-6">
-                                    <form>
-                                        <label for="gender" class="form-label">Gender:</label>
-                                        <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
-                                    </form>
+                                    <div class="newSecM1">
+                                        <form>
+                                            <label for="gender" class="form-label">Gender:</label>
+                                            <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
+                                        </form>
+                                    </div>
                                 </div>
                                 <div class="col-6">
-                                    <form>
-                                        <label for="gender" class="form-label">Civil Status</label>
-                                        <input type="text" class="form-control" id="civilstatus" value="<?= $civil_status ?>">
-                                    </form>
+                                    <div class="newSecM1">
+                                        <form>
+                                            <label for="gender" class="form-label">Civil Status</label>
+                                            <input type="text" class="form-control" id="civilstatus"
+                                                value="<?= $civil_status ?>">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
 
-                            <!-- birthday and birthplace -->
+                            <!-- birthday and nationality -->
                             <div class="row">
-                                <div class="col-5">
-                                    <form>
-                                        <label for="birthday" class="form-label mt-3">Birthdate:</label>
-                                        <input type="date" class="form-control" id="birthday" value="<?= $birthdate ?>">
-                                    </form>
+                                <div class="col-6">
+                                    <div class="newSecM1">
+                                        <form>
+                                            <label for="birthday" class="form-label mt-3">Birthdate:</label> <input
+                                                type="date" class="form-control" id="birthday"
+                                                value="<?= $birthdate ?>">
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-7">
-                                    <form>
-                                        <label for="birthplace" class="form-label mt-3">Birth Place:</label>
-                                        <input type="text" class="form-control" id="birthplace">
-                                    </form>
+                                <div class="col-6">
+                                    <div class="newSecM1">
+                                        <div class="invi">
+                                            <label>Nationality:</label>
+                                            <p>___________________
+                                            <p>
+                                        </div>
+                                    </div>
+                                    <div class="visi">
+                                        <form>
+                                            <label for="nationality" class="form-label mt-3">Nationality:</label>
+                                            <input type="text" class="form-control" id="nationality">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- nationality and contact number -->
+                            <!-- birthplace and contact number -->
                             <div class="row">
-                                <div class="col-5">
-                                    <form>
-                                        <label for="nationality" class="form-label mt-3">Nationality:</label>
-                                        <input type="text" class="form-control" id="nationality">
-                                    </form>
+                                <div class="col-6">
+                                    <div class="visi">
+                                        <form>
+                                            <label for="birthplace" class="form-label mt-3">Birth Place:</label>
+                                            <input type="text" class="form-control" id="birthplace">
+                                        </form>
+                                    </div>
                                 </div>
-                                <div class="col-7">
-                                    <form>
-                                        <label for="contactNumber" class="form-label mt-3">Contact Number:</label>
-                                        <input type="text" class="form-control" id="contactNumber" placeholder="">
-                                    </form>
+                                <div class="col-6">
+                                    <div class="visi">
+                                        <form>
+                                            <label for="contactNumber" class="form-label mt-3">Contact Number:</label>
+                                            <input type="text" class="form-control" id="contactNumber" placeholder="">
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
@@ -223,10 +281,36 @@ select -->
                             <!-- complete address -->
                             <div class="row">
                                 <div class="col">
-                                    <form>
-                                        <label for="completeAddress" class="form-label mt-3">Complete Address:</label>
-                                        <textarea class="form-control" id="completeAddress" row="3"></textarea>
-                                    </form>
+                                    <div class="invi">
+                                        <div class="col">
+                                            <div class="BCC-section">
+                                                <label>Birthplace:</label>
+                                                <p>_______________________________________
+                                                <p>
+                                                <div class="cn-top">
+                                                    <label>Contact Number:</label>
+                                                    <p>_______________________________________
+                                                    <p>
+                                                </div>
+                                                <div class="ca-top">
+                                                    <label>Complete Address:</label>
+                                                    <div class="lineCA">
+                                                        <p>_______________________________________
+                                                        <p>
+                                                        <p>_______________________________________
+                                                        <p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="visi">
+                                        <form>
+                                            <label for="completeAddress" class="form-label mt-3">Complete
+                                                Address:</label>
+                                            <textarea class="form-control" id="completeAddress" row="3"></textarea>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -354,13 +438,13 @@ select -->
                             <div class="row">
                                 <div class="col worksec">
                                     <div class="invi subtop-2">
-                                        <label>Work:</label>
+                                        <label>Occupation:</label>
                                         <p>____________________________________________________
                                         <p>
                                     </div>
                                     <div class="visi">
                                         <form>
-                                            <label for="work" class="form-label">Work:</label>
+                                            <label for="work" class="form-label">Occupation:</label>
                                             <input type="text" class="form-control" id="work">
                                         </form>
                                     </div>
@@ -457,7 +541,8 @@ select -->
                                     </div>
                                     <div class="visi">
                                         <form class="form-pad">
-                                            <label for="spouse-birthplace" class="form-label">Spouse's Birthplace:</label>
+                                            <label for="spouse-birthplace" class="form-label">Spouse's
+                                                Birthplace:</label>
                                             <input type="text" class="form-control" id="spouse-birthplace">
                                         </form>
                                     </div>
@@ -477,12 +562,16 @@ select -->
                         <div class="col" style="text-align: center;">
                             <h4>Queue Number</h4>
                             <div class="card">
-                                <h4><?= $queue_no ?></h4>
+                                <h4>
+                                    <?= $queue_no ?>
+                                </h4>
                             </div>
                         </div>
                         <div class="sub-information">
                             <h4>Main Library</h4>
-                            <h4 class="ps-4"><?= $created_at ?></h4>
+                            <h4 class="ps-4">
+                                <?= $created_at ?>
+                            </h4>
                             <h4>2 Gov. ID</h4>
                             <p>1.___________
                             <p>
@@ -504,13 +593,15 @@ select -->
         }
     </style>
     <!-- style="text-align: center;" -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
     <script>
-        window.onload = function() {
+        window.onload = function () {
             window.print();
         };
 
-        window.onafterprint = function(e) {
+        window.onafterprint = function (e) {
             closePrintView();
         };
 
