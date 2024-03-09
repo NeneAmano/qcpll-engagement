@@ -233,11 +233,11 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                             $filter = $_GET['filter'];
                                             switch ($filter) {
                                                 case 'today':
-                                                    $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
+                                                    $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
                                                                             ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
                                                     break;
                                                 case '7days':
-                                                    $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
+                                                    $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
                                                                             ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY;";
                                                     break;
                                                 case '1':
@@ -252,16 +252,16 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                                 case '10':
                                                 case '11':
                                                 case '12':
-                                                    $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
+                                                    $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
                                                                             ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND MONTH(client.created_at) = $filter ORDER BY client.client_id DESC;";
                                                     break;
                                                 case $filter:
-                                                    $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
+                                                    $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
                                                                             ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service NOT IN ('NBI', 'Police') AND YEAR(client.created_at) = $filter ORDER BY client.client_id DESC;";
                                                     break;
                                             }
                                         } else {
-                                            $sql_select = "SELECT CONCAT(client.f_name, ' ' , client.l_name) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
+                                            $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
                                                                 ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service  NOT IN ('NBI', 'Police') AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
                                         }
                                         $result_select = mysqli_query($conn, $sql_select);
