@@ -448,7 +448,7 @@
                                         echo '<td>'.$queue_number.'</td>';
                                         echo '<td>'.$created_at.'</td>';
                                         echo '<td>';
-                                        echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailModal">Details</button>';
+                                        //echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailModal">Details</button>';
                                         echo '</td>';
                                         echo '</tr>';
                                     }
