@@ -180,20 +180,21 @@ if (($user_role_id_session !== 1)) {
                                             client.education,
                                             client.occupation,
                                             client.status,
-                                            GROUP_CONCAT(queue_details.service) AS services,
-                                            COUNT(CASE WHEN DATE(client.created_at) = CURDATE() THEN 1 ELSE NULL END) AS count
-                                        FROM client 
-                                        INNER JOIN age ON client.age_id = age.age_id
+                                            queue_details.service AS services,
+                                            COUNT(*) AS count
+                                        FROM 
+                                            client
                                         INNER JOIN 
-                                        queue_details ON client.client_id = queue_details.client_id
-                                          WHERE DATE(client.created_at) = CURDATE() GROUP BY 
-                                        age_range, gender, education, occupation, status 
+                                            age ON client.age_id = age.age_id 
+                                        INNER JOIN 
+                                            queue_details ON client.client_id = queue_details.client_id
+                                            WHERE 
+                                                                                    DATE(client.created_at) = CURDATE()
+                                        GROUP BY 
+                                            age.age_range, client.gender, client.education, client.occupation, client.status, queue_details.service
                                         ORDER BY
-                                        `age_range`,
-                                        `gender`,
-                                        `education`,
-                                        `occupation`,
-                                        `status`;";
+                                            age.age_range, client.gender, client.education, client.occupation, client.status;                                        
+                                        ";
                                             break;
                                         case '7days':
                                             $sql_select = "SELECT 
@@ -202,25 +203,21 @@ if (($user_role_id_session !== 1)) {
                                             client.education,
                                             client.occupation,
                                             client.status,
-                                            GROUP_CONCAT(queue_details.service) AS services,
-                                            COUNT(client.client_id) AS count
-                                        FROM client 
-                                        INNER JOIN age ON client.age_id = age.age_id
-                                        INNER JOIN queue_details ON client.client_id = queue_details.client_id
-                                        WHERE client.created_at >= CURRENT_DATE - INTERVAL 7 DAY 
+                                            queue_details.service AS services,
+                                            COUNT(*) AS count
+                                        FROM 
+                                            client
+                                        INNER JOIN 
+                                            age ON client.age_id = age.age_id 
+                                        INNER JOIN 
+                                            queue_details ON client.client_id = queue_details.client_id
+                                            WHERE 
+                                               client.created_at >= CURRENT_DATE - INTERVAL 7 DAY 
                                         GROUP BY 
-                                            age.age_range, 
-                                            client.gender, 
-                                            client.education, 
-                                            client.occupation, 
-                                            client.status 
+                                            age.age_range, client.gender, client.education, client.occupation, client.status, queue_details.service
                                         ORDER BY
-                                            age.age_range,
-                                            client.gender,
-                                            client.education,
-                                            client.occupation,
-                                            client.status;
-                                        ;";
+                                            age.age_range, client.gender, client.education, client.occupation, client.status;                                                                                
+                                        ";
                                             break;
                                         case '1':
                                         case '2':
@@ -234,45 +231,50 @@ if (($user_role_id_session !== 1)) {
                                         case '10':
                                         case '11':
                                         case '12':
-                                            $sql_select = "SELECT age.age_range,
+                                            $sql_select = "SELECT 
+                                            age.age_range,
                                             client.gender,
                                             client.education,
                                             client.occupation,
                                             client.status,
-                                            GROUP_CONCAT(queue_details.service) AS services,
+                                            queue_details.service AS services,
                                             COUNT(*) AS count
-                                     FROM client
-                                     INNER JOIN age ON client.age_id = age.age_id 
-                                     INNER JOIN 
-                                    queue_details ON client.client_id = queue_details.client_id
-                                     WHERE MONTH(client.created_at) = $filter
-                                     GROUP BY age_range, gender, education, occupation, status
-                                     ORDER BY
-                                        `age_range`,
-                                        `gender`,
-                                        `education`,
-                                        `occupation`,
-                                        `status`;
+                                        FROM 
+                                            client
+                                        INNER JOIN 
+                                            age ON client.age_id = age.age_id 
+                                        INNER JOIN 
+                                            queue_details ON client.client_id = queue_details.client_id
+                                            WHERE 
+                                               MONTH(client.created_at) = $filter
+                                        GROUP BY 
+                                            age.age_range, client.gender, client.education, client.occupation, client.status, queue_details.service
+                                        ORDER BY
+                                            age.age_range, client.gender, client.education, client.occupation, client.status;                                                                                
                                      ";
                                             break;
                                         case $filter:
-                                            $sql_select = "SELECT age.age_range,
-                                                client.gender,
-                                                client.education,
-                                                client.occupation,
-                                                client.status,
-                                                GROUP_CONCAT(queue_details.service) AS services,
-                                                COUNT(*) AS count
-                                         FROM client
-                                         INNER JOIN age ON client.age_id = age.age_id 
-                                         INNER JOIN 
-                                        queue_details ON client.client_id = queue_details.client_id WHERE YEAR(client.created_at) = $filter GROUP BY age_range, gender, education, occupation, status
+                                            $sql_select = "SELECT 
+                                            age.age_range,
+                                            client.gender,
+                                            client.education,
+                                            client.occupation,
+                                            client.status,
+                                            queue_details.service AS services,
+                                            COUNT(*) AS count
+                                        FROM 
+                                            client
+                                        INNER JOIN 
+                                            age ON client.age_id = age.age_id 
+                                        INNER JOIN 
+                                            queue_details ON client.client_id = queue_details.client_id
+                                            WHERE 
+                                               YEAR(client.created_at) = $filter 
+                                        GROUP BY 
+                                            age.age_range, client.gender, client.education, client.occupation, client.status, queue_details.service
                                         ORDER BY
-                                        `age_range`,
-                                        `gender`,
-                                        `education`,
-                                        `occupation`,
-                                        `status`;";
+                                            age.age_range, client.gender, client.education, client.occupation, client.status;                                          
+                                        ";
                                             break;
                                     }
                                 } else {
@@ -282,7 +284,7 @@ if (($user_role_id_session !== 1)) {
                                     client.education,
                                     client.occupation,
                                     client.status,
-                                    GROUP_CONCAT(queue_details.service) AS services,
+                                    queue_details.service AS services,
                                     COUNT(*) AS count
                                 FROM 
                                     client
@@ -291,14 +293,10 @@ if (($user_role_id_session !== 1)) {
                                 INNER JOIN 
                                     queue_details ON client.client_id = queue_details.client_id
                                 GROUP BY 
-                                    age_range, gender, education, occupation, status, service
-                                    ORDER BY
-                                `age_range`,
-                                `gender`,
-                                `education`,
-                                `occupation`,
-                                `status`
-                                ;";
+                                    age.age_range, client.gender, client.education, client.occupation, client.status, queue_details.service
+                                ORDER BY
+                                    age.age_range, client.gender, client.education, client.occupation, client.status;                                
+                                ";
                                 }
                                 $result_select = mysqli_query($conn, $sql_select);
                                 if (mysqli_num_rows($result_select) > 0) {
