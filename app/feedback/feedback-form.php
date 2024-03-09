@@ -363,11 +363,24 @@
                                         position: absolute;
                                         right: 10em;
                                     }
+                                    #myInput:focus {
+                                    border: none !important;
+                                    outline: none !important;
+                                }
+                                
                                 </style>
                             <?php
                             }elseif($qt_id == 3){
                                 ?>
-                                <input class="form-control form-control-lg" type="text" placeholder="" name="text<?= $question_id ?>" aria-label=".form-control-lg example" value="">
+                                <div class="input-field" style="display:flex; flex-direction: column; background-color:#fff; width:60%; padding:20px; border-radius:5px;">
+                                <input  style="border: none; outline: none; border-bottom:2px solid grey;" type="text" placeholder="Type Something....." name="text<?= $question_id ?>" id="myInput">
+
+                                <div class="button-fields" style="display:flex; gap:0.8em; margin-top:9px; justify-content:center; align-items: center;">
+                                <button id="good-button" onclick="setValue('Good')"  style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Good</button>
+                                <button id="fair-button" onclick="setValue('Fair enough')" style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Fair Enough</button>
+                                <button id="poor-button" onclick="setValue('Poor')" style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Poor</button>
+                                </div>
+                                </div>
                             <?php
                             }
                             ?>
@@ -491,6 +504,25 @@
             //... and adds the "active" class on the current step:
             x[n].className += " active";
         }
+
+
+// auto word recommendations
+        function setValue(value) {
+        var inputField = document.getElementById('myInput');
+        inputField.value = value;
+        }
+
+        function clearInput() {
+        var inputField = document.getElementById('myInput');
+        inputField.value = '';
+        }
+
+        // Prevent buttons from hiding when clicked
+        document.querySelectorAll('.input-field button').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+        });
+        });
     </script>
     <!-- latest bootstrap js popper -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
