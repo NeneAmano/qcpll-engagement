@@ -161,152 +161,222 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                         <a class="nav-link text-dark" id="others-logs" href="others-logs.php">Others Logs</a>
                     </li>
                 </ul>
-            </div>     
-                <div class="tab-content" id="myTabContent">
-                        <!-- filter by today -->
-                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="nbi-logs.php?filter=today" class="text-decoration-none text-light">Today</a></button>
-
-                        <!-- filter by 7 days -->
-                        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="nbi-logs.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
-
-                        <!-- filter by month -->
-                        <div class="dropdown">
-                            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Month</button>
-                            <div class="dropdown-content">
-                                <?php
-                                for ($month = 1; $month <= 12; $month++) {
-                                    $month_name = date("F", mktime(0, 0, 0, $month, 1));
-                                    echo '<a href="nbi-logs.php?filter=' . $month . '">' . $month_name . '</a>';
-                                }
-                                ?>
-                            </div>
-                        </div>
-
-                        <!-- filter by year -->
-                        <div class="dropdown">
-                            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
-                            <div class="dropdown-content">
-                                <?php
-                                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
-                                $result_year = mysqli_query($conn, $sql_year);
-
-                                while ($row_year = mysqli_fetch_assoc($result_year)) {
-                                    $year = $row_year['year'];
-                                    echo '<a href="nbi-logs.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
-                                }
-                                ?>
-                            </div>
-                        </div>
-                        <!-- start of first row -->
-                        <div class="row">
-                            <!-- start of second container -->
-                            <div class="container">
-                                <!-- start of second row -->
-                                <div class="row">
-                                    <!-- start of div on center -->
-                                    <div class="col-md-12">
-                                        <!-- start of table -->
-                                        <table class="table table-bordered table-striped" id="datatable">
-                                            <!-- start of table header -->
-                                            <thead>
-                                                <tr>
-                                                    <th class="table-light text-uppercase text-center">Name</th>
-                                                    <th class="table-light text-uppercase text-center">Age</th>
-                                                    <th class="table-light text-uppercase text-center">Gender</th>
-                                                    <th class="table-light text-uppercase text-center">TimeIn</th>
-                                                    <th class="table-light text-uppercase text-center">TimeOut</th>
-                                                </tr>
-                                            </thead>
-                                            <!-- end of table header -->
-                                            <!-- start of table body -->
-                                            <tbody>
-                                                <?php
-                                                if (isset($_GET['filter'])) {
-                                                    $filter = $_GET['filter'];
-                                                    switch ($filter) {
-                                                        case 'today':
-                                                            $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'NBI' AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
-                                                            break;
-                                                        case '7days':
-                                                            $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'NBI' AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY;";
-                                                            break;
-                                                        case '1':
-                                                        case '2':
-                                                        case '3':
-                                                        case '4':
-                                                        case '5':
-                                                        case '6':
-                                                        case '7':
-                                                        case '8':
-                                                        case '9':
-                                                        case '10':
-                                                        case '11':
-                                                        case '12':
-                                                            $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'NBI' AND MONTH(client.created_at) = $filter ORDER BY client.client_id DESC;";
-                                                            break;
-                                                        case $filter:
-                                                            $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'NBI' AND YEAR(client.created_at) = $filter ORDER BY client.client_id DESC;";
-                                                            break;
-                                                    }
-                                                } else {
-                                                    $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
-                                                                ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'NBI' AND DATE(client.created_at) = CURDATE() ORDER BY client.client_id DESC;";
-                                                }
-                                                $result_select = mysqli_query($conn, $sql_select);
-                                                if (mysqli_num_rows($result_select) > 0) {
-                                                    while ($row_select = mysqli_fetch_assoc($result_select)) {
-                                                        $Name = $row_select['Name'];
-                                                        $Age = $row_select['Age'];
-                                                        $Gender = $row_select['Gender'];
-                                                        $TimeIn = $row_select['TimeIn'];
-                                                        $TimeOut = $row_select['TimeOut'];
-                                                ?>
-                                                        <tr>
-                                                            <td class="text-center"><?= $Name ?></td>
-                                                            <td class="text-center"><?= $Age ?></td>
-                                                            <td class="text-center"><?= $Gender ?></td>
-                                                            <td class="text-center"><?= $TimeIn ?></td>
-                                                            <td class="text-center"><?= $TimeOut ?></td>
-                                                        </tr>
-                                                    <?php
-                                                    }
-                                                } else {
-                                                    ?>
-                                                    <tr>
-                                                        <td colspan="" class="text-center d-none"></td>
-                                                        <td colspan="" class="text-center d-none"></td>
-                                                        <td colspan="" class="text-center d-none"></td>
-                                                        <td colspan="" class="text-center d-none"></td>
-                                                        <td colspan="5" class="text-center">No records found.</td>
-                                                    </tr>
-                                                <?php
-                                                }
-                                                ?>
-                                            </tbody>
-                                            <!-- end of table body -->
-                                        </table>
-
-                                        <!-- end of table -->
-                                    </div>
-                                    <!-- end of div on center -->
-                                </div>
-                                <!-- end of second row -->
-                            </div>
-                            <!-- end of second container -->
-                        </div>
-                        <!-- end of first row -->
-                    </div>
-
-                </div>
             </div>
+            <div class="tab-content" id="myTabContent">
+                <!-- filter by today -->
+                <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="nbi-logs.php?filter=today" class="text-decoration-none text-light">Today</a></button>
+
+                <!-- filter by 7 days -->
+                <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="nbi-logs.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
+
+                <!-- filter by month -->
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Month</button>
+                    <div class="dropdown-content">
+                        <?php
+                        for ($month = 1; $month <= 12; $month++) {
+                            $month_name = date("F", mktime(0, 0, 0, $month, 1));
+                            echo '<a href="nbi-logs.php?filter=' . $month . '">' . $month_name . '</a>';
+                        }
+                        ?>
+                    </div>
+                </div>
+
+                <!-- filter by year -->
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+                    <div class="dropdown-content">
+                        <?php
+                        $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
+                        $result_year = mysqli_query($conn, $sql_year);
+
+                        while ($row_year = mysqli_fetch_assoc($result_year)) {
+                            $year = $row_year['year'];
+                            echo '<a href="nbi-logs.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                        }
+                        ?>
+                    </div>
+                </div>
+                <!-- start of first row -->
+                <div class="row">
+                    <!-- start of second container -->
+                    <div class="container">
+                        <!-- start of second row -->
+                        <div class="row">
+                            <!-- start of div on center -->
+                            <div class="col-md-12">
+                                <!-- start of table -->
+                                <table class="table table-bordered table-striped" id="datatable">
+                                    <!-- start of table header -->
+                                    <thead>
+                                        <tr>
+                                            <th class="table-light text-uppercase text-center">Name</th>
+                                            <th class="table-light text-uppercase text-center">Age</th>
+                                            <th class="table-light text-uppercase text-center">Gender</th>
+                                            <th class="table-light text-uppercase text-center">TimeIn</th>
+                                            <th class="table-light text-uppercase text-center">TimeOut</th>
+                                        </tr>
+                                    </thead>
+                                    <!-- end of table header -->
+                                    <!-- start of table body -->
+                                    <tbody>
+                                        <?php
+                                        if (isset($_GET['filter'])) {
+                                            $filter = $_GET['filter'];
+                                            switch ($filter) {
+                                                case 'today':
+                                                    $sql_select = "SELECT DISTINCT 
+                                                            CONCAT(client.f_name, ' ', client.l_name, ' ', IFNULL(client.suffix, '')) AS Name, 
+                                                            age.age_range AS Age, 
+                                                            client.Gender, 
+                                                            queue_details.created_at AS TimeIn,
+                                                            GREATEST(IFNULL(feedback.created_at, '0000-00-00 00:00:00'), queue_details.updated_at) AS TimeOut 
+                                                        FROM 
+                                                            client 
+                                                        INNER JOIN 
+                                                            queue_details ON client.client_id = queue_details.client_id 
+                                                        INNER JOIN 
+                                                            age ON client.age_id = age.age_id 
+                                                        LEFT JOIN 
+                                                            feedback ON client.client_id = feedback.client_id 
+                                                        WHERE 
+                                                            queue_details.service = 'NBI' 
+                                                            AND DATE(client.created_at) = CURDATE() 
+                                                        ORDER BY 
+                                                            client.client_id DESC;
+                                                        ";
+                                                    break;
+                                                case '7days':
+                                                    $sql_select = "SELECT DISTINCT 
+                                                            CONCAT(client.f_name, ' ', client.l_name, ' ', IFNULL(client.suffix, '')) AS Name, 
+                                                            age.age_range AS Age, 
+                                                            client.Gender, 
+                                                            queue_details.created_at AS TimeIn,
+                                                            GREATEST(IFNULL(feedback.created_at, '0000-00-00 00:00:00'), queue_details.updated_at) AS TimeOut 
+                                                        FROM 
+                                                            client 
+                                                        INNER JOIN 
+                                                            queue_details ON client.client_id = queue_details.client_id 
+                                                        INNER JOIN 
+                                                            age ON client.age_id = age.age_id 
+                                                        LEFT JOIN 
+                                                            feedback ON client.client_id = feedback.client_id 
+                                                        WHERE 
+                                                            queue_details.service = 'NBI' AND client.created_at >= CURRENT_DATE - INTERVAL 7 DAY
+                                                        ORDER BY 
+                                                            client.client_id DESC;                                                  ";
+                                                    break;
+                                                case '1':
+                                                case '2':
+                                                case '3':
+                                                case '4':
+                                                case '5':
+                                                case '6':
+                                                case '7':
+                                                case '8':
+                                                case '9':
+                                                case '10':
+                                                case '11':
+                                                case '12':
+                                                    $sql_select = "SELECT DISTINCT CONCAT(client.f_name, ' ' , client.l_name, ' ' ,client.suffix) AS Name, age.age_range AS Age, client.Gender, queue_details.created_at AS TimeIn, feedback.created_at AS TimeOut FROM client INNER JOIN queue_details
+                                                                            ON client.client_id = queue_details.client_id INNER JOIN age ON  client.age_id = age.age_id INNER JOIN feedback ON client.client_id = feedback.client_id WHERE queue_details.service = 'NBI' AND MONTH(client.created_at) = $filter ORDER BY client.client_id DESC;";
+                                                    break;
+                                                case $filter:
+                                                    $sql_select = "SELECT DISTINCT 
+                                                            CONCAT(client.f_name, ' ', client.l_name, ' ', IFNULL(client.suffix, '')) AS Name, 
+                                                            age.age_range AS Age, 
+                                                            client.Gender, 
+                                                            queue_details.created_at AS TimeIn,
+                                                            GREATEST(IFNULL(feedback.created_at, '0000-00-00 00:00:00'), queue_details.updated_at) AS TimeOut 
+                                                        FROM 
+                                                            client 
+                                                        INNER JOIN 
+                                                            queue_details ON client.client_id = queue_details.client_id 
+                                                        INNER JOIN 
+                                                            age ON client.age_id = age.age_id 
+                                                        LEFT JOIN 
+                                                            feedback ON client.client_id = feedback.client_id 
+                                                        WHERE 
+                                                            queue_details.service = 'NBI' 
+                                                            AND YEAR(client.created_at) = $filter 
+                                                        ORDER BY 
+                                                            client.client_id DESC;
+                                                        ";
+                                                    break;
+                                            }
+                                        } else {
+                                            $sql_select = "SELECT DISTINCT 
+                                                    CONCAT(client.f_name, ' ', client.l_name, ' ', IFNULL(client.suffix, '')) AS Name, 
+                                                    age.age_range AS Age, 
+                                                    client.Gender, 
+                                                    queue_details.created_at AS TimeIn,
+                                                    GREATEST(IFNULL(feedback.created_at, '0000-00-00 00:00:00'), queue_details.updated_at) AS TimeOut 
+                                                FROM 
+                                                    client 
+                                                INNER JOIN 
+                                                    queue_details ON client.client_id = queue_details.client_id 
+                                                INNER JOIN 
+                                                    age ON client.age_id = age.age_id 
+                                                LEFT JOIN 
+                                                    feedback ON client.client_id = feedback.client_id 
+                                                WHERE 
+                                                    queue_details.service = 'NBI' 
+                                                ORDER BY 
+                                                    client.client_id DESC;
+                                                ";
+                                        }
+                                        $result_select = mysqli_query($conn, $sql_select);
+                                        if (mysqli_num_rows($result_select) > 0) {
+                                            while ($row_select = mysqli_fetch_assoc($result_select)) {
+                                                $Name = $row_select['Name'];
+                                                $Age = $row_select['Age'];
+                                                $Gender = $row_select['Gender'];
+                                                $TimeIn = $row_select['TimeIn'];
+                                                $TimeOut = $row_select['TimeOut'];
+                                        ?>
+                                                <tr>
+                                                    <td class="text-center"><?= $Name ?></td>
+                                                    <td class="text-center"><?= $Age ?></td>
+                                                    <td class="text-center"><?= $Gender ?></td>
+                                                    <td class="text-center"><?= $TimeIn ?></td>
+                                                    <td class="text-center"><?= $TimeOut ?></td>
+                                                </tr>
+                                            <?php
+                                            }
+                                        } else {
+                                            ?>
+                                            <tr>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="" class="text-center d-none"></td>
+                                                <td colspan="5" class="text-center">No records found.</td>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
+                                    </tbody>
+                                    <!-- end of table body -->
+                                </table>
+
+                                <!-- end of table -->
+                            </div>
+                            <!-- end of div on center -->
+                        </div>
+                        <!-- end of second row -->
+                    </div>
+                    <!-- end of second container -->
+                </div>
+                <!-- end of first row -->
+            </div>
+
         </div>
-        <?php
-            require_once 'js/scripts.php';
-        ?>
-        <script src="js/logs-scripts.js"></script>
+    </div>
+    </div>
+    <?php
+    require_once 'js/scripts.php';
+    ?>
+    <script src="js/logs-scripts.js"></script>
 </body>
+
 </html>
