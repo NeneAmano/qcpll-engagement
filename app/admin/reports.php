@@ -1,22 +1,23 @@
 <?php
-    require_once('../core/init.php');
-    ob_start();
-    if($user_role_id_session !== 1){
-        session_unset();
-        session_destroy();
-        header("Location: login.php?error=accessdenied");
-        die();
-    }
+require_once('../core/init.php');
+ob_start();
+if ($user_role_id_session !== 1) {
+    session_unset();
+    session_destroy();
+    header("Location: login.php?error=accessdenied");
+    die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="../../public/assets/images/qcplLogo.png" type="image/x-icon">
     <title>Reports</title>
     <?php
-        require_once 'includes/sidebar.php';
+    require_once 'includes/sidebar.php';
     ?>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&family=Roboto:wght@300;400;500&display=swap');
@@ -88,7 +89,7 @@
             box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
             position: relative;
             left: 45em;
-            bottom: 123em !important; 
+            bottom: 123em !important;
             width: 25em;
             height: auto;
             display: grid;
@@ -258,21 +259,24 @@
                 opacity: 1;
             }
         }
-        main{
+
+        main {
             overflow: scroll;
-            height:100vh;
+            height: 100vh;
         }
+
         main::-webkit-scrollbar {
             display: none;
         }
+
         .card-analysis {
             display: flex;
         }
 
         .card-main-contetn-analysis {
             display: block;
-            gap:1em;
-            
+            gap: 1em;
+
         }
 
         .emoji-img-analysis {
@@ -305,8 +309,9 @@
                 width: 25em;
                 min-height: 50em !important;
                 display: grid;
-            }   
-            .card-2 p{
+            }
+
+            .card-2 p {
                 font-size: 0.8em;
             }
 
@@ -337,27 +342,110 @@
                 display: grid;
 
             }
-            .card-title-analysis{
+
+            .card-title-analysis {
                 font-size: 1.5em;
             }
         }
+
+
+
+        /* start design for filter by year */
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .row {
+            box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
+            padding: 4px;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 8px 7px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: #3e8e41;
+        }
     </style>
 </head>
-<main>
-    <section>
-        <div class="try col-md-2">
-            <div class="main-card">
-                <h3>Emoji-based Feedback Ratings</h3>
 
-                <div class="card-content">
-                    <div class="card-title">
-                        <p>
-                            Overall Experience
-                        </p>
-                    </div>
-                    <div class="card-body">
-                    <?php
-                        $sql_overall = "WITH EmojiFeedback AS (
+<body>
+    <?php
+    require_once 'includes/sidebar.php';
+    ?>
+    <!-- start of main section container -->
+    <div class="container-fluid mt-3">
+        <!-- filter by today -->
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="feedback.php?filter=today" class="text-decoration-none text-light">Today</a></button>
+
+        <!-- filter by 7 days -->
+        <button type="button" class="btn btn-success mb-3 mt-3 me-2" data-bs-toggle="" data-bs-target=""><a href="feedback.php?filter=7days" class="text-decoration-none text-light">Past 7 Days</a></button>
+
+        <!-- filter by month -->
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Month</button>
+            <div class="dropdown-content">
+                <?php
+                for ($month = 1; $month <= 12; $month++) {
+                    $month_name = date("F", mktime(0, 0, 0, $month, 1));
+                    echo '<a href="feedback.php?filter=' . $month . '">' . $month_name . '</a>';
+                }
+                ?>
+            </div>
+        </div>
+
+        <!-- filter by year -->
+        <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle mb-3 mt-3 me-2">Filter by Year</button>
+            <div class="dropdown-content">
+                <?php
+                $sql_year = "SELECT DISTINCT YEAR(`created_at`) AS year FROM `client` ORDER BY year ASC";
+                $result_year = mysqli_query($conn, $sql_year);
+
+                while ($row_year = mysqli_fetch_assoc($result_year)) {
+                    $year = $row_year['year'];
+                    echo '<a href="feedback.php?filter=' . $year . '" class="text-decoration-none text-dark">' . $year . '</a>';
+                }
+                ?>
+            </div>
+        </div>
+        <main>
+            <section>
+                <div class="try col-md-2">
+                    <div class="main-card">
+                        <h3>Emoji-based Feedback Ratings</h3>
+
+                        <div class="card-content">
+                            <div class="card-title">
+                                <p>
+                                    Overall Experience
+                                </p>
+                            </div>
+                            <div class="card-body">
+                                <?php
+                                $sql_overall = "WITH EmojiFeedback AS (
                             SELECT 
                                 e.emoji_id,
                                 f.answer_id,
@@ -389,48 +477,48 @@
                         ORDER BY 
                             e.emoji_id DESC LIMIT 5;
                         ";
-                        $result_overall = mysqli_query($conn, $sql_overall);
-                        if(mysqli_num_rows($result_overall) > 0){
-                            while($row_overall = mysqli_fetch_assoc($result_overall)){
-                                $emoji_id = $row_overall['emoji_id'];
-                                $image_path = $row_overall['image_path'];
-                                $percentage = $row_overall['percentage'];
-                                $formatted_percentage = number_format($percentage, 1);
-                    ?>
-                                <span>
-                                    <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
-                                    <p><?= $formatted_percentage ?>%</p>
-                                </span>
-                    <?php
-                            }
-                        }
-                    ?>
-                    </div>
-                </div>
-
-                <?php
-                    $sql_category = "SELECT * FROM question_category;";
-                    $result_category = mysqli_query($conn, $sql_category);
-                    if(mysqli_num_rows($result_category) > 0){
-                        while($row_category = mysqli_fetch_assoc($result_category)){
-                            $qc_id = $row_category['qc_id'];
-                            $question_category = $row_category['question_category'];
-
-                            $sql_count = "SELECT COUNT(feedback_id) AS count, feedback.question_id, questions.qt_id, questions.qc_id, question_type.question_type, question_category.question_category FROM feedback INNER JOIN questions USING (question_id) INNER JOIN question_type USING (qt_id) INNER JOIN question_category USING (qc_id) WHERE question_type = 'Emoji-based' AND question_category = '$question_category';";
-                            $result_count = mysqli_query($conn, $sql_count);
-                            if(mysqli_num_rows($result_count) > 0){
-                                $row_count = mysqli_fetch_assoc($result_count);
-                                $count = $row_count['count'];
-                            }
-                ?>
-                            <div class="card-content">
-                                <div class="card-title">
-                                    <p><?= $question_category . '<span class=""> Experience</span> <span class="fs-6">(' .$count. ')</span>' ?></p>
-                                </div>
-                                <div class="card-body">
+                                $result_overall = mysqli_query($conn, $sql_overall);
+                                if (mysqli_num_rows($result_overall) > 0) {
+                                    while ($row_overall = mysqli_fetch_assoc($result_overall)) {
+                                        $emoji_id = $row_overall['emoji_id'];
+                                        $image_path = $row_overall['image_path'];
+                                        $percentage = $row_overall['percentage'];
+                                        $formatted_percentage = number_format($percentage, 1);
+                                ?>
+                                        <span>
+                                            <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
+                                            <p><?= $formatted_percentage ?>%</p>
+                                        </span>
                                 <?php
-                                
-                                    $sql_emoji = "WITH EmojiFeedback AS (
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+
+                        <?php
+                        $sql_category = "SELECT * FROM question_category;";
+                        $result_category = mysqli_query($conn, $sql_category);
+                        if (mysqli_num_rows($result_category) > 0) {
+                            while ($row_category = mysqli_fetch_assoc($result_category)) {
+                                $qc_id = $row_category['qc_id'];
+                                $question_category = $row_category['question_category'];
+
+                                $sql_count = "SELECT COUNT(feedback_id) AS count, feedback.question_id, questions.qt_id, questions.qc_id, question_type.question_type, question_category.question_category FROM feedback INNER JOIN questions USING (question_id) INNER JOIN question_type USING (qt_id) INNER JOIN question_category USING (qc_id) WHERE question_type = 'Emoji-based' AND question_category = '$question_category';";
+                                $result_count = mysqli_query($conn, $sql_count);
+                                if (mysqli_num_rows($result_count) > 0) {
+                                    $row_count = mysqli_fetch_assoc($result_count);
+                                    $count = $row_count['count'];
+                                }
+                        ?>
+                                <div class="card-content">
+                                    <div class="card-title">
+                                        <p><?= $question_category . '<span class=""> Experience</span> <span class="fs-6">(' . $count . ')</span>' ?></p>
+                                    </div>
+                                    <div class="card-body">
+                                        <?php
+
+                                        $sql_emoji = "WITH EmojiFeedback AS (
                                         SELECT 
                                             e.emoji_id,
                                             f.answer_id,
@@ -462,35 +550,35 @@
                                     ORDER BY 
                                         e.emoji_id DESC
                                     LIMIT 5;";
-                                    $result_emoji = mysqli_query($conn, $sql_emoji);
-                                    if (mysqli_num_rows($result_emoji) > 0) {
-                                        while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
-                                            $emoji_id = $row_emoji['emoji_id'];
-                                            $image_path = $row_emoji['image_path'];
-                                            $percentage = $row_emoji['percentage'];
-                                            $formatted_percentage = number_format($percentage, 1);
-                                ?>
-                                            <span>
-                                                <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
-                                                <p><?= $formatted_percentage ?>%</p>
-                                            </span>
-                                <?php
+                                        $result_emoji = mysqli_query($conn, $sql_emoji);
+                                        if (mysqli_num_rows($result_emoji) > 0) {
+                                            while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
+                                                $emoji_id = $row_emoji['emoji_id'];
+                                                $image_path = $row_emoji['image_path'];
+                                                $percentage = $row_emoji['percentage'];
+                                                $formatted_percentage = number_format($percentage, 1);
+                                        ?>
+                                                <span>
+                                                    <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
+                                                    <p><?= $formatted_percentage ?>%</p>
+                                                </span>
+                                        <?php
+                                            }
                                         }
-                                    }
-                                ?>
+                                        ?>
+                                    </div>
                                 </div>
-                            </div>
-                <?php
+                        <?php
+                            }
                         }
-                    }
-                ?>
-            </div>
-        </div>
-    </section>
-    
-    <!-- text-based ratings for staff -->
-    <?php
-        $sql_text_staff = "SELECT
+                        ?>
+                    </div>
+                </div>
+            </section>
+
+            <!-- text-based ratings for staff -->
+            <?php
+            $sql_text_staff = "SELECT
         question_id,
         question_type.question_type,
         question_category.question_category,
@@ -503,25 +591,25 @@
         WHERE question_type = 'Text-based' AND question_category = 'Staff'
         GROUP BY
         question_id;";
-        $result_text_staff = mysqli_query($conn, $sql_text_staff);
-        foreach($result_text_staff as $data1){
-            $staff_question_id[] = $data1['question_id'];
-            $staff_question_category[] = $data1['question_category'];
-            $staff_total_feedback[] = $data1['total_feedback'];
-            $staff_negative[] = $data1['negative'];
-            $staff_neutral[] = $data1['neutral'];
-            $staff_positive[] = $data1['positive'];
-        }
-    ?>
-    <div class="container ms-5 mt-5 mb-5"style="height: 300px; width: 400px;">
-        <h4 class="ms-5"><?= $staff_question_category[0] ?> Text-based Ratings</h4>
-        <canvas id="myChart1"></canvas>
-    </div>
-    <br>
+            $result_text_staff = mysqli_query($conn, $sql_text_staff);
+            foreach ($result_text_staff as $data1) {
+                $staff_question_id[] = $data1['question_id'];
+                $staff_question_category[] = $data1['question_category'];
+                $staff_total_feedback[] = $data1['total_feedback'];
+                $staff_negative[] = $data1['negative'];
+                $staff_neutral[] = $data1['neutral'];
+                $staff_positive[] = $data1['positive'];
+            }
+            ?>
+            <div class="container ms-5 mt-5 mb-5" style="height: 300px; width: 400px;">
+                <h4 class="ms-5"><?= $staff_question_category[0] ?> Text-based Ratings</h4>
+                <canvas id="myChart1"></canvas>
+            </div>
+            <br>
 
-    <!-- text-based ratings for service -->
-    <?php
-        $sql_text_service = "SELECT
+            <!-- text-based ratings for service -->
+            <?php
+            $sql_text_service = "SELECT
         question_id,
         question_type.question_type,
         question_category.question_category,
@@ -534,25 +622,25 @@
         WHERE question_type = 'Text-based' AND question_category = 'Service'
         GROUP BY
         question_id;";
-        $result_text_service = mysqli_query($conn, $sql_text_service);
-        foreach($result_text_service as $data1){
-            $service_question_id[] = $data1['question_id'];
-            $service_question_category[] = $data1['question_category'];
-            $service_total_feedback[] = $data1['total_feedback'];
-            $service_negative[] = $data1['negative'];
-            $service_neutral[] = $data1['neutral'];
-            $service_positive[] = $data1['positive'];
-        }
-    ?>
-    <div class="container ms-5 mt-5 mb-5"style="height: 300px; width: 400px;">
-        <h4 class="ms-5"><?= $service_question_category[0] ?> Text-based Ratings</h4>
-        <canvas id="myChart2"></canvas>
-    </div>
-    <br>
+            $result_text_service = mysqli_query($conn, $sql_text_service);
+            foreach ($result_text_service as $data1) {
+                $service_question_id[] = $data1['question_id'];
+                $service_question_category[] = $data1['question_category'];
+                $service_total_feedback[] = $data1['total_feedback'];
+                $service_negative[] = $data1['negative'];
+                $service_neutral[] = $data1['neutral'];
+                $service_positive[] = $data1['positive'];
+            }
+            ?>
+            <div class="container ms-5 mt-5 mb-5" style="height: 300px; width: 400px;">
+                <h4 class="ms-5"><?= $service_question_category[0] ?> Text-based Ratings</h4>
+                <canvas id="myChart2"></canvas>
+            </div>
+            <br>
 
-    <!-- text-based ratings for facility -->
-    <?php
-        $sql_text_facility = "SELECT
+            <!-- text-based ratings for facility -->
+            <?php
+            $sql_text_facility = "SELECT
         question_id,
         question_type.question_type,
         question_category.question_category,
@@ -565,36 +653,36 @@
         WHERE question_type = 'Text-based' AND question_category = 'Facility'
         GROUP BY
         question_id;";
-        $result_text_facility = mysqli_query($conn, $sql_text_facility);
-        foreach($result_text_facility as $data1){
-            $facility_question_id[] = $data1['question_id'];
-            $facility_question_category[] = $data1['question_category'];
-            $facility_total_feedback[] = $data1['total_feedback'];
-            $facility_negative[] = $data1['negative'];
-            $facility_neutral[] = $data1['neutral'];
-            $facility_positive[] = $data1['positive'];
-        }
-    ?>
-    <div class="container ms-5 mt-5 mb-5"style="height: 300px; width: 400px;">
-        <h4 class="ms-5"><?= $facility_question_category[0] ?> Text-based Ratings</h4>
-        <canvas id="myChart3"></canvas>
-    </div>
-    <br>
+            $result_text_facility = mysqli_query($conn, $sql_text_facility);
+            foreach ($result_text_facility as $data1) {
+                $facility_question_id[] = $data1['question_id'];
+                $facility_question_category[] = $data1['question_category'];
+                $facility_total_feedback[] = $data1['total_feedback'];
+                $facility_negative[] = $data1['negative'];
+                $facility_neutral[] = $data1['neutral'];
+                $facility_positive[] = $data1['positive'];
+            }
+            ?>
+            <div class="container ms-5 mt-5 mb-5" style="height: 300px; width: 400px;">
+                <h4 class="ms-5"><?= $facility_question_category[0] ?> Text-based Ratings</h4>
+                <canvas id="myChart3"></canvas>
+            </div>
+            <br>
 
-    <section>
-        <div class="card-1">
-            <div class="card-title">
-                <p style="font-size: 1.5em;text-transform:capitalize;">Analysis</p>
-                <hr>
+            <section>
+                <div class="card-1">
+                    <div class="card-title">
+                        <p style="font-size: 1.5em;text-transform:capitalize;">Analysis</p>
+                        <hr>
 
-                <!-- for overall Experience -->
-                <div class="card-title-analysis">
-                    <p>Emoji-based</p>
-                    <p>Overall Experience</p>
-                </div>
-                <div class="card-analysis">
-                    <?php
-                        $sql_a_overall = "WITH EmojiFeedback AS (
+                        <!-- for overall Experience -->
+                        <div class="card-title-analysis">
+                            <p>Emoji-based</p>
+                            <p>Overall Experience</p>
+                        </div>
+                        <div class="card-analysis">
+                            <?php
+                            $sql_a_overall = "WITH EmojiFeedback AS (
                             SELECT 
                                 e.emoji_id,
                                 f.answer_id,
@@ -628,56 +716,56 @@
                             COALESCE(ef.percentage, 0) DESC,
                             e.emoji_id DESC
                         LIMIT 1;";
-                        $result_a_overall = mysqli_query($conn, $sql_a_overall);
-                        if(mysqli_num_rows($result_a_overall) > 0){
-                            $row_a_overall = mysqli_fetch_assoc($result_a_overall);
-                            $percentage = $row_a_overall['percentage'];
-                            $image_path = $row_a_overall['image_path'];
-                            $sentiment_score = $row_a_overall['sentiment_score'];
-                            $unicode_name = $row_a_overall['unicode_name'];
-                            $remarks = $row_a_overall['remarks'];
+                            $result_a_overall = mysqli_query($conn, $sql_a_overall);
+                            if (mysqli_num_rows($result_a_overall) > 0) {
+                                $row_a_overall = mysqli_fetch_assoc($result_a_overall);
+                                $percentage = $row_a_overall['percentage'];
+                                $image_path = $row_a_overall['image_path'];
+                                $sentiment_score = $row_a_overall['sentiment_score'];
+                                $unicode_name = $row_a_overall['unicode_name'];
+                                $remarks = $row_a_overall['remarks'];
 
-                            // Find the position of the first dot (.)
-                            $dot_position = strpos($remarks, '.');
+                                // Find the position of the first dot (.)
+                                $dot_position = strpos($remarks, '.');
 
-                            // Extract the substring after the first dot (.)
-                            $final_remarks = substr($remarks, $dot_position + 1);
-                        }
-                    ?>
-                    <div class="card-main-contetn-analysis">
-                        <?php
-                            if($percentage == 0){
-                                echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
-                                echo '<div class="card-body-analysis">';
-                                echo '<p><b>Remarks:</b> No data found.</p>';
-                                echo '<p><b>Sentiment Score:</b> No data found.</p>';
-                                echo '</div>';
-                            }else{
-                                echo '<img src="../../' .$image_path. '" alt="" class="emoji-img-analysis">';
-                                echo '<div class="card-body-analysis">';
-                                echo '<p><b>Remarks:</b>' .$final_remarks. '</p>';
-                                echo '<p><b>Sentiment Score:</b>' .$sentiment_score. '</p>';
-                                echo '</div>';
+                                // Extract the substring after the first dot (.)
+                                $final_remarks = substr($remarks, $dot_position + 1);
                             }
-                        ?>
-                        <hr class="border border-dark">
-                    </div>
-                </div>
-
-                <?php
-                    $sql_a_category = "SELECT * FROM question_category;";
-                    $result_a_category = mysqli_query($conn, $sql_a_category);
-                    if(mysqli_num_rows($result_a_category) > 0){
-                        while($row_a_category = mysqli_fetch_assoc($result_a_category)){
-                            $qc_id = $row_a_category['qc_id'];
-                            $question_category = $row_a_category['question_category'];
-                ?>
-                            <!-- for staff assistance -->
-                            <div class="card-title-analysis">
-                                <p><?= $question_category ?> Experience</p>
-                            </div>
-                            <div class="card-analysis">
+                            ?>
+                            <div class="card-main-contetn-analysis">
                                 <?php
+                                if ($percentage == 0) {
+                                    echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
+                                    echo '<div class="card-body-analysis">';
+                                    echo '<p><b>Remarks:</b> No data found.</p>';
+                                    echo '<p><b>Sentiment Score:</b> No data found.</p>';
+                                    echo '</div>';
+                                } else {
+                                    echo '<img src="../../' . $image_path . '" alt="" class="emoji-img-analysis">';
+                                    echo '<div class="card-body-analysis">';
+                                    echo '<p><b>Remarks:</b>' . $final_remarks . '</p>';
+                                    echo '<p><b>Sentiment Score:</b>' . $sentiment_score . '</p>';
+                                    echo '</div>';
+                                }
+                                ?>
+                                <hr class="border border-dark">
+                            </div>
+                        </div>
+
+                        <?php
+                        $sql_a_category = "SELECT * FROM question_category;";
+                        $result_a_category = mysqli_query($conn, $sql_a_category);
+                        if (mysqli_num_rows($result_a_category) > 0) {
+                            while ($row_a_category = mysqli_fetch_assoc($result_a_category)) {
+                                $qc_id = $row_a_category['qc_id'];
+                                $question_category = $row_a_category['question_category'];
+                        ?>
+                                <!-- for staff assistance -->
+                                <div class="card-title-analysis">
+                                    <p><?= $question_category ?> Experience</p>
+                                </div>
+                                <div class="card-analysis">
+                                    <?php
                                     $sql_analysis = "WITH EmojiFeedback AS (
                                         SELECT 
                                             e.emoji_id,
@@ -713,7 +801,7 @@
                                         e.emoji_id DESC
                                     LIMIT 1;";
                                     $result_analysis = mysqli_query($conn, $sql_analysis);
-                                    if(mysqli_num_rows($result_analysis) > 0){
+                                    if (mysqli_num_rows($result_analysis) > 0) {
                                         $row_analysis = mysqli_fetch_assoc($result_analysis);
 
                                         $percentage = $row_analysis['percentage'];
@@ -728,43 +816,43 @@
                                         // Extract the substring after the first dot (.)
                                         $final_remarks = substr($remarks, $dot_position + 1);
                                     }
-                                ?>
-                                <div class="card-main-contetn-analysis">
-                                    <?php
-                                        if($percentage == 0){
+                                    ?>
+                                    <div class="card-main-contetn-analysis">
+                                        <?php
+                                        if ($percentage == 0) {
                                             echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
                                             echo '<div class="card-body-analysis">';
                                             echo '<p><b>Remarks:</b> No data found.</p>';
                                             echo '<p><b>Sentiment Score:</b> No data found.</p>';
                                             echo '</div>';
-                                        }else{
-                                            echo '<img src="../../' .$image_path. '" alt="" class="emoji-img-analysis">';
+                                        } else {
+                                            echo '<img src="../../' . $image_path . '" alt="" class="emoji-img-analysis">';
                                             echo '<div class="card-body-analysis">';
-                                            echo '<p><b>Remarks:</b>' .$final_remarks. '</p>';
-                                            echo '<p><b>Sentiment Score:</b>' .$sentiment_score. '</p>';
+                                            echo '<p><b>Remarks:</b>' . $final_remarks . '</p>';
+                                            echo '<p><b>Sentiment Score:</b>' . $sentiment_score . '</p>';
                                             echo '</div>';
                                         }
-                                    ?>
-                                <hr class="border border-dark">
+                                        ?>
+                                        <hr class="border border-dark">
+                                    </div>
                                 </div>
-                            </div>
-                <?php
+                        <?php
+                            }
                         }
-                    }
-                    ?>
-<!-- for text-based ratings -->
-                <div class="card-title-analysis mb-5">
-                    <p>Text-based</p>
-                </div>
-                    <?php
+                        ?>
+                        <!-- for text-based ratings -->
+                        <div class="card-title-analysis mb-5">
+                            <p>Text-based</p>
+                        </div>
+                        <?php
                         $sql_category = "SELECT * FROM question_category;";
                         $result_category = mysqli_query($conn, $sql_category);
-                        if(mysqli_num_rows($result_category) > 0){
-                            while($row_category = mysqli_fetch_assoc($result_category)){
+                        if (mysqli_num_rows($result_category) > 0) {
+                            while ($row_category = mysqli_fetch_assoc($result_category)) {
                                 $qc_id = $row_category['qc_id'];
                                 $question_category = $row_category['question_category'];
 
-                                
+
                                 $sql_text = "SELECT
                                 question_id,
                                 question_type.question_type,
@@ -804,8 +892,8 @@
                             GROUP BY question_id, question_type.question_type, question_category.question_category;
                             ";
                                 $result_text = mysqli_query($conn, $sql_text);
-                                if(mysqli_num_rows($result_text) > 0){
-                                    while($row_text = mysqli_fetch_assoc($result_text)){
+                                if (mysqli_num_rows($result_text) > 0) {
+                                    while ($row_text = mysqli_fetch_assoc($result_text)) {
                                         $highest_sentiment = $row_text['highest_sentiment'];
                                         $highest_percentage = $row_text['highest_percentage'];
                         ?>
@@ -818,135 +906,140 @@
                                                 <br>
                                             </div>
                                         </div>
-                        
+
                         <?php
                                     }
                                 }
                             }
                         }
-                    ?>
-                
-                    <!-- reference website -->
-                    <div class="card-analysis">
-                        <div class="card-body-analysis-text">
-                            <p style="font-size: small; "><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
-                            <p style="font-size: small;"><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
+                        ?>
+
+                        <!-- reference website -->
+                        <div class="card-analysis">
+                            <div class="card-body-analysis-text">
+                                <p style="font-size: small; "><span><i class="fa-solid fa-circle-info"></i></span> Sentiment scoring was based on <a href="https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji">Emoji Sentiment Ranking v1.0</a></p>
+                                <p style="font-size: small;"><span><i class="fa-solid fa-circle-info"></i></span> Remarks was based on <a href="https://emojipedia.org/">Emojipedia.org</a></p>
+                            </div>
                         </div>
                     </div>
-            </div>
-            <p></p>
-        </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="card-2">
-            <div class="card-title">
-                <p>Recommendations:</p>
-               <?php
-                    include 'includes/openai-prompt.php';
-               ?>
-               <p><?= $generatedContent; ?></p>
-            </div>
-        </div>
-    </section>
-    </main>
-    <script>
-        const ctx1 = document.getElementById('myChart1');
-        const data1 = {
-            labels: ['Negative', 'Neutral', 'Positive'],
-            datasets: [{
-                label: 'Sentiment Score',
-                data: <?php echo json_encode([$staff_negative[0], $staff_neutral[0], $staff_positive[0]]); ?>,
-                backgroundColor: [
-                    'rgb(255, 99, 132)', // Negative
-                    'rgb(54, 162, 235)', // Neutral
-                    'rgb(255, 205, 86)', // Positive
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                ],
-                borderWidth: 1
-            }]
-        };
+                    <p></p>
+                </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="card-2">
+                    <div class="card-title">
+                        <p>Recommendations:</p>
+                        <?php
+                        include 'includes/openai-prompt.php';
+                        ?>
+                        <p><?= $generatedContent; ?></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <script>
+            const ctx1 = document.getElementById('myChart1');
+            const data1 = {
+                labels: ['Negative', 'Neutral', 'Positive'],
+                datasets: [{
+                    label: 'Sentiment Score',
+                    data: <?php echo json_encode([$staff_negative[0], $staff_neutral[0], $staff_positive[0]]); ?>,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)', // Negative
+                        'rgb(54, 162, 235)', // Neutral
+                        'rgb(255, 205, 86)', // Positive
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                    ],
+                    borderWidth: 1
+                }]
+            };
 
-        new Chart(ctx1, {
-            type: 'pie', // Change the chart type to 'pie'
-            data: data1,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            new Chart(ctx1, {
+                type: 'pie', // Change the chart type to 'pie'
+                data: data1,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        }); 
+            });
 
-        const ctx2 = document.getElementById('myChart2');
-        const data2 = {
-            labels: ['Negative', 'Neutral', 'Positive'],
-            datasets: [{
-                label: 'Sentiment Score',
-                data: <?php echo json_encode([$service_negative[0], $service_neutral[0], $service_positive[0]]); ?>,
-                backgroundColor: [
-                    'rgb(255, 99, 132)', // Negative
-                    'rgb(54, 162, 235)', // Neutral
-                    'rgb(255, 205, 86)', // Positive
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                ],
-                borderWidth: 1
-            }]
-        };
+            const ctx2 = document.getElementById('myChart2');
+            const data2 = {
+                labels: ['Negative', 'Neutral', 'Positive'],
+                datasets: [{
+                    label: 'Sentiment Score',
+                    data: <?php echo json_encode([$service_negative[0], $service_neutral[0], $service_positive[0]]); ?>,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)', // Negative
+                        'rgb(54, 162, 235)', // Neutral
+                        'rgb(255, 205, 86)', // Positive
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                    ],
+                    borderWidth: 1
+                }]
+            };
 
-        new Chart(ctx2, {
-            type: 'pie', // Change the chart type to 'pie'
-            data: data2,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            new Chart(ctx2, {
+                type: 'pie', // Change the chart type to 'pie'
+                data: data2,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        }); 
+            });
 
-        const ctx3 = document.getElementById('myChart3');
-        const data3 = {
-            labels: ['Negative', 'Neutral', 'Positive'],
-            datasets: [{
-                label: 'Sentiment Score',
-                data: <?php echo json_encode([$facility_negative[0], $facility_neutral[0], $facility_positive[0]]); ?>,
-                backgroundColor: [
-                    'rgb(255, 99, 132)', // Negative
-                    'rgb(54, 162, 235)', // Neutral
-                    'rgb(255, 205, 86)', // Positive
-                ],
-                borderColor: [
-                    'rgb(255, 99, 132)',
-                    'rgb(54, 162, 235)',
-                    'rgb(255, 205, 86)',
-                ],
-                borderWidth: 1
-            }]
-        };
+            const ctx3 = document.getElementById('myChart3');
+            const data3 = {
+                labels: ['Negative', 'Neutral', 'Positive'],
+                datasets: [{
+                    label: 'Sentiment Score',
+                    data: <?php echo json_encode([$facility_negative[0], $facility_neutral[0], $facility_positive[0]]); ?>,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)', // Negative
+                        'rgb(54, 162, 235)', // Neutral
+                        'rgb(255, 205, 86)', // Positive
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                    ],
+                    borderWidth: 1
+                }]
+            };
 
-        new Chart(ctx3, {
-            type: 'pie', // Change the chart type to 'pie'
-            data: data3,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            new Chart(ctx3, {
+                type: 'pie', // Change the chart type to 'pie'
+                data: data3,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        }); 
-    </script>
+            });
+        </script>
+    </div>
+    <?php
+    require_once 'js/scripts.php';
+    ?>
 </body>
+
 </html>
