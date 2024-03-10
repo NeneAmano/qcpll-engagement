@@ -193,32 +193,7 @@
 
 
 // start of text query
-    // start of query for text staff
-    $sql_tst = "SELECT
-        question_id,
-        question_type.question_type,
-        question_category.question_category,
-        COUNT(*) AS total_feedback,
-        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
-        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
-        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive
-        FROM
-        feedback INNER JOIN questions USING (question_id) INNER JOIN question_category USING (qc_id) INNER JOIN question_type USING (qt_id)
-        WHERE question_type = 'Text-based' AND question_category = 'Staff'
-        GROUP BY
-        question_id;";
-        $result_tst = mysqli_query($conn, $sql_tst);
-        $output_lines_tst = array(); // Array to store concatenated values
     
-    if(mysqli_num_rows($result_tst) > 0){
-        while($row_tst = mysqli_fetch_assoc($result_tst)){
-            $total_feedback_tst = $row_tst['total_feedback'];
-            $negative_tst = $row_tst['negative'];
-            $neutral_tst = $row_tst['neutral'];
-            $positive_tst = $row_tst['positive'];
-        }
-    }
-    // end of query for text staff
 
     // start of query for text service
     $sql_ts = "SELECT
@@ -246,33 +221,6 @@
         }
     }
     // end of query for text service
-
-    // start of query for text facility
-    $sql_tf = "SELECT
-        question_id,
-        question_type.question_type,
-        question_category.question_category,
-        COUNT(*) AS total_feedback,
-        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
-        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
-        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive
-        FROM
-        feedback INNER JOIN questions USING (question_id) INNER JOIN question_category USING (qc_id) INNER JOIN question_type USING (qt_id)
-        WHERE question_type = 'Text-based' AND question_category = 'Facility'
-        GROUP BY
-        question_id;";
-        $result_tf = mysqli_query($conn, $sql_tf);
-        $output_lines_tf = array(); // Array to store concatenated values
-    
-    if(mysqli_num_rows($result_tf) > 0){
-        while($row_tf = mysqli_fetch_assoc($result_tf)){
-            $total_feedback_tf = $row_tf['total_feedback'];
-            $negative_tf = $row_tf['negative'];
-            $neutral_tf = $row_tf['neutral'];
-            $positive_tf = $row_tf['positive'];
-        }
-    }
-    // end of query for text facility
 // end of text query
 
 
@@ -288,12 +236,6 @@
     foreach ($output_lines_est as $output_line_est) {
         $searchkeyWord .= "\n" . $output_line_est;
     }
-
-    $searchkeyWord .= "\n
-    Text-based ratings:
-    Negative: $negative_tst
-    Neutral: $neutral_tst
-    Positive: $positive_tst";
 
     $searchkeyWord .= "\n
     Service
@@ -317,13 +259,7 @@
         $searchkeyWord .= "\n" . $output_line_ef;
     }
 
-    $searchkeyWord .= "\n
-    Text-based ratings:
-    Negative: $negative_tf
-    Neutral: $neutral_tf
-    Positive: $positive_tf";
-
-    $searchkeyWord .= "\n\nBased on the conducted survey, give me the best recommendation to improve each category on emoji-based and text-based. Separate the recommendation for emoji-based and text-based .Only show the result for highest percentage on each category and only show the percentage not the emotion";
+    $searchkeyWord .= "\n\nBased on the conducted survey, give me the best recommendation to improve each category on emoji-based and text-based. Separate the recommendation for emoji-based and text-based. Only show the result for highest percentage on each category and only show the percentage not the emotion. And every end of each recommendation, wrap it to html <p> tag and <br> tag so I can output it on my web app in a more presentable way.";
 
     // Echo the final string
     // echo nl2br($searchkeyWord); // Use nl2br to preserve line breaks in HTML output
