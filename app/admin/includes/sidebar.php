@@ -44,7 +44,7 @@
                     <img class="text-white rounded-circle" src="../../public/assets/images/qclogo.jpg" alt="" style="width: 20%; height: 30%;">
                     <?php
                         if(isset($_SESSION['user_id'])){
-                            $sql = "SELECT * FROM users WHERE user_id = $user_id_session AND is_active = 1;";
+                            $sql = "SELECT * FROM users WHERE user_id = $user_id_session AND is_active = 0;";
                             $result = mysqli_query($conn, $sql);
                             if(mysqli_num_rows($result) > 0){
                                 $row = mysqli_fetch_assoc($result);
