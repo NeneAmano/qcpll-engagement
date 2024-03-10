@@ -26,6 +26,9 @@
         }else{
             $sql = "UPDATE users SET user_role_id = $edit_user_role, username = '$edit_username' WHERE user_id = $edit_user_id;";
             if(mysqli_query($conn, $sql)){
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'users', $edit_user_id, 'Edit');";
+                $logs_result = mysqli_query($conn, $logs_sql);
+
                 header("location: ../users.php?edit=successful");
                 die();
             }
