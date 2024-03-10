@@ -290,8 +290,14 @@
                                                     <td class="text-center"><?= $created_at ?></td>
                                                     <td class="text-center"><?= $updated_at ?></td>
                                                     <td class="text-center">
-                                                        <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_question_modal" data-modal-type="question"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                        <a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_question_modal"><i class="fa-solid fa-trash"></i></a>
+                                                        <?php
+                                                            if($is_deleted == 1){
+                                                                echo '<a class="btn btn-sm btn-success restore" href="#" data-bs-toggle="modal" data-bs-target="#restore_question_modal" data-modal-type="question"><i class="fa-solid fa-trash-arrow-up"></i></a>';
+                                                            }elseif($is_deleted == 0){
+                                                                echo '<a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_question_modal" data-modal-type="question"><i class="fa-solid fa-pen-to-square"></i></a>';
+                                                                echo '<a class="btn btn-sm btn-danger delete" href="#" data-bs-toggle="modal" data-bs-target="#delete_question_modal"><i class="fa-solid fa-trash"></i></a>';
+                                                            }
+                                                        ?>
                                                     </td>
                                                 </tr>
                                     <?php
@@ -397,7 +403,7 @@
         </div>
         <!-- end of card -->
 
-        <!-- start of deactivate user modal -->
+        <!-- start of deactivate question modal -->
         <div class="modal fade" id="delete_question_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <!-- start of deactivate modal dialog -->
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -405,13 +411,13 @@
                 <div class="modal-content">
                     <!-- start of deactivate modal header -->
                     <div class="modal-header bg-dark text-white">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Deactivate user</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Question</h1>
                         <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
                     </div>
                     <!-- end of deactivate modal header -->
 
-                    <!-- start of delete question modal form -->
-                    <form action="functions/delete-question-modal.php" method="post">
+                    <!-- start of deactivate question modal form -->
+                    <form action="functions/delete-question.php" method="post">
                         <!-- start of deactivate modal body -->                
                         <div class="modal-body">
                             <!-- start of deactivate modal row -->
@@ -455,7 +461,68 @@
             </div>
             <!-- end of deactivate modal dialog -->
         </div>
-        <!-- end of delete question modal -->
+        <!-- end of deactivate question modal -->
+
+
+        <!-- start of restore question modal -->
+        <div class="modal fade" id="restore_question_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- start of restore modal dialog -->
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <!-- start of restore modal content -->
+                <div class="modal-content">
+                    <!-- start of restore modal header -->
+                    <div class="modal-header bg-dark text-white">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Restore Question</h1>
+                        <button type="button" class="btn btn-danger close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fa-solid fa-xmark"></i></span></button>
+                    </div>
+                    <!-- end of restore modal header -->
+
+                    <!-- start of restore question modal form -->
+                    <form action="functions/restore-question.php" method="post">
+                        <!-- start of restore modal body -->                
+                        <div class="modal-body">
+                            <!-- start of restore modal row -->
+                            <div class="row">
+                                <!-- start of restore modal col -->
+                                <div class="col-md-12">
+                                    <!-- start of restore modal card -->
+                                    <div class="card card-primary">
+                                        <!-- start of restore modal card body -->
+                                        <div class="card-body">
+                                            <!-- start of restore modal row -->
+                                            <div class="row">
+                                                <div class="col-md-12 col-12 mt-3">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="restore_question_id" id="restore_question_id" class="form-control mb-3">
+                                                        <h4>Are you sure you want to restore this question?</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end of restore modal row -->
+                                        </div>
+                                        <!-- end of restore modal card body -->
+                                        <!-- start of restore modal footer -->
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <button type="submit" name="restore_question" class="btn btn-success">Yes</button>
+                                        </div>
+                                        <!-- end of restore modal footer -->
+                                    </div>
+                                    <!-- end of restore modal card -->
+                                </div>
+                                <!-- end of restore modal col -->
+                            </div>
+                            <!-- end of restore modal row -->
+                        </div>
+                        <!-- end of restore modal body -->                
+                    </form>
+                    <!-- end of restore modal form -->
+                </div>
+                <!-- end of restore modal content -->
+            </div>
+            <!-- end of restore modal dialog -->
+        </div>
+        <!-- end of restore question modal -->
     </div>
     <!-- end of main section container -->
 </div>
