@@ -55,12 +55,18 @@
         if ($add_question_type !== $add_question_type) {
             $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
             if (mysqli_query($conn, $sql)) {
+                $latest_question_id = mysqli_insert_id($conn);
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'questions', $latest_question_id, 'Add');";
+                $logs_result = mysqli_query($conn, $logs_sql);
+
                 header('location: questions.php?archived-records=no&add=successful');
             }
         } else {
             $sql = "INSERT INTO questions (qt_id, qc_id, english_question, tagalog_question) VALUES ($add_question_type, $add_question_category, '$add_english_question', '$add_tagalog_question');";
             if (mysqli_query($conn, $sql)) {
                 $add_question_id = mysqli_insert_id($conn);
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'questions', $add_question_id, 'Add');";
+                $logs_result = mysqli_query($conn, $logs_sql);
                 // Use a loop to create $_POST['others'][] based on $total_input
                 for ($i = 0; $i < $total_input; $i++) {
                     // Use mysqli_real_escape_string or any other necessary validation/sanitization
@@ -71,6 +77,7 @@
                     if (!empty($value) || $value !== '') {
                         $sql_others = "INSERT INTO $table_name (question_id, $table_name) VALUES ($add_question_id, '$value');";
                         if (mysqli_query($conn, $sql_others)) {
+                            
                             header('location: questions.php?archived-records=no&add=successful');
                         }
                     }

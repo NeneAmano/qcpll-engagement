@@ -56,6 +56,8 @@
                     $hashedPassword = password_hash($edit_password, PASSWORD_DEFAULT);
                     $sql = "UPDATE users SET password = '$hashedPassword' WHERE user_id = $edit_user_password_id;";
                     if(mysqli_query($conn, $sql)){
+                        $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'users', $edit_user_password_id, 'Edit Password');";
+                        $logs_result = mysqli_query($conn, $logs_sql);
                         header("location: ../users.php?edit=successful");
                         die();
                     }

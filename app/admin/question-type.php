@@ -33,6 +33,9 @@
         } else {
             $sql = "INSERT INTO question_type (question_type, multiple_choice) VALUES ('$add_question_type', '$add_multiple');";
             if (mysqli_query($conn, $sql)) {
+                $latest_qt_id = mysqli_insert_id($conn);
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'question-type', $latest_qt_id, 'Add');";
+                $logs_result = mysqli_query($conn, $logs_sql);
                 if ($add_multiple == 1) {
 
                     $table_name = strtolower(str_replace(" ", "_", $add_question_type));

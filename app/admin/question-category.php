@@ -32,6 +32,9 @@
         } else {
             $sql = "INSERT INTO question_category (question_category) VALUES ('$add_question_category');";
             if (mysqli_query($conn, $sql)) {
+                $latest_qc_id = mysqli_insert_id($conn);
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'question-category', $latest_qc_id, 'Add');";
+                $logs_result = mysqli_query($conn, $logs_sql);
                 header('location: question-category.php?add=successful');
                 die();
             }

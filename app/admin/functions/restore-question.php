@@ -10,6 +10,6 @@
             die();
         }
     }else{
-        header("location: ../questions?archived-records=no.php");
+        header("location: ../questions.php?archived-records=no");
         die();
     }

@@ -25,6 +25,8 @@
         }else{
             $sql = "UPDATE question_category SET question_category = '$edit_question_category' WHERE qc_id = $edit_qc_id;";
             if(mysqli_query($conn, $sql)){
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'question-category', $edit_qc_id, 'Edit');";
+                $logs_result = mysqli_query($conn, $logs_sql);
                 header("location: ../question-category.php?edit=successful");
                 die();
             }

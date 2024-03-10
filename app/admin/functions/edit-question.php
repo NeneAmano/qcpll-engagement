@@ -26,6 +26,8 @@
         }else{
             $sql = "UPDATE questions SET english_question = '$edit_english_question', tagalog_question = '$edit_tagalog_question' WHERE question_id = $edit_question_id;";
             if(mysqli_query($conn, $sql)){
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'questions', $edit_question_id, 'Edit');";
+                $logs_result = mysqli_query($conn, $logs_sql);
                 header("location: ../questions.php?archived-records=no&edit=successful");
                 die();
             }

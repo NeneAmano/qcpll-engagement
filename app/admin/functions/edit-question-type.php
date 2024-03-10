@@ -25,6 +25,8 @@
         }else{
             $sql = "UPDATE question_type SET question_type = '$edit_question_type' WHERE qt_id = $edit_qt_id;";
             if(mysqli_query($conn, $sql)){
+                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'question-type', $edit_qt_id, 'Edit');";
+                $logs_result = mysqli_query($conn, $logs_sql);
                 header("location: ../question-type.php?edit=successful");
                 die();
             }
