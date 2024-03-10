@@ -3,6 +3,7 @@
     ob_start();
     $sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
     mysqli_query($conn, $sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -357,6 +358,8 @@
                     $query = "UPDATE users SET last_login = NOW() WHERE user_id = '" .$usernameExists['user_id']. "' AND username = '" .$usernameExists['username']. "';";
                     $result = mysqli_query($conn, $query);
 
+                    $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES (".$_SESSION['user_id'].", 'login', 0, 'Log in');";
+                    $logs_result = mysqli_query($conn, $logs_sql);
                     echo '<script>
                     $(document).ready(function(){
                         swal({
