@@ -219,12 +219,20 @@
                     if($nbi !== ''){
                         $sql_nbi = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$nbi');";
                         if(mysqli_query($conn, $sql_nbi)){
+                            $latest_client_id = mysqli_insert_id($conn);
+                            $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'queue', $latest_client_id, 'Add');";
+                            $logs_result = mysqli_query($conn, $logs_sql);
+
                             header("location: form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate. "&service=" .$nbi);
                         }
                     }
                     if($police !== ''){
                         $sql_police = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$police');";
                         if(mysqli_query($conn, $sql_police)){
+                            $latest_client_id = mysqli_insert_id($conn);
+                            $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'queue', $latest_client_id, 'Add');";
+                            $logs_result = mysqli_query($conn, $logs_sql);
+
                             header("location: form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate. "&service=" .$police);
                         }
                     }
@@ -239,6 +247,10 @@
                         if(!empty($value) || $value !== ''){
                             $sql_others = "INSERT INTO queue_details (client_id, queue_number, service) VALUES ($client_id, '$new_queue_number', '$value');";
                             if(mysqli_query($conn, $sql_others)){
+                                $latest_client_id = mysqli_insert_id($conn);
+                                $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'queue', $latest_client_id, 'Add');";
+                                $logs_result = mysqli_query($conn, $logs_sql);
+
                                 header("location: form.php?queue_no=" .$new_queue_number. "&client_id=" .$client_id. "&birthdate=" .$birthdate. "&service=" .$value);
                             }
                         }
@@ -253,15 +265,15 @@
                     if(mysqli_num_rows($result_date) > 0){
                         while($row_date = mysqli_fetch_assoc($result_date)){
                             $sql_update = "UPDATE queue SET total_queue = total_queue + 1 WHERE queue_date = '$date_today';";
-                            if(mysqli_query($conn, $sql_update)){
-                                // header("location: queue-number.php?queue_no=" .$new_queue_number . "&client_id=" .$client_id);
-                            }
+                            mysqli_query($conn, $sql_update);
+                            // header("location: queue-number.php?queue_no=" .$new_queue_number . "&client_id=" .$client_id);
+                            
                         }
                     }else{
                         $sql_date_insert = "INSERT INTO queue (total_queue, queue_date) VALUES (1, '$date_today');";
-                        if(mysqli_query($conn, $sql_date_insert)){
-                            // header("location: queue-number.php?queue_no=" .$new_queue_number . "&client_id=" .$client_id);
-                        }
+                        mysqli_query($conn, $sql_date_insert);
+                        // header("location: queue-number.php?queue_no=" .$new_queue_number . "&client_id=" .$client_id);
+                        
                     }
                 }else{
                     echo 'Error: ' . mysqli_error($conn);
@@ -328,9 +340,8 @@
                         $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
                         $res = mysqli_query($conn,$sql);
                         while($row = mysqli_fetch_assoc($res)){
-        
                             echo '<div class="logout-btn">';
-                                echo '<a href="../includes/logout.php"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
+                                echo '<a href="../includes/logout.php?user_id=' .$user_id_session. '"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
                             echo '</div>';
                         }
                     }
