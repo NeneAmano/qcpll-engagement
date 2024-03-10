@@ -40,6 +40,10 @@
 
                 $sql = "INSERT INTO users (user_role_id, username, password) VALUES ($add_user_role, '$add_username', '$hashed_password');";
                 if (mysqli_query($conn, $sql)) {
+                    $latest_user_id = mysqli_insert_id($conn);
+                    $logs_sql = "INSERT INTO history_logs (user_id, content, content_id, _action) VALUES ($user_id_session, 'users', $latest_user_id, 'Add');";
+                    $logs_result = mysqli_query($conn, $logs_sql);
+
                     header('location: users.php?add=successful');
                 }
             }
@@ -176,7 +180,7 @@
                                 <!-- start of table body -->
                                 <tbody>
                                     <?php
-                                    $sql_select = "SELECT user_role.user_role, user_role.user_role_id, users.* FROM user_role INNER JOIN users USING (user_role_id) WHERE users.is_active != 0 ORDER BY users.user_id DESC;";
+                                    $sql_select = "SELECT user_role.user_role, user_role.user_role_id, users.* FROM user_role INNER JOIN users USING (user_role_id) WHERE users.is_active != 1 ORDER BY users.user_id DESC;";
                                     $result_select = mysqli_query($conn, $sql_select);
                                     if (mysqli_num_rows($result_select) > 0) {
                                         while ($row_select = mysqli_fetch_assoc($result_select)) {
@@ -190,9 +194,9 @@
                                             $updated_at = $row_select['updated_at'];
 
                                             if ($is_active == 0) {
-                                                $is_active = 'Not active';
-                                            } elseif ($is_active == 1) {
                                                 $is_active = 'Active';
+                                            } elseif ($is_active !== 1) {
+                                                $is_active = 'Not active';
                                             }
                                     ?>
                                             <tr>
