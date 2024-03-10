@@ -88,7 +88,7 @@
                         
             </ul>
             <ul class="list-unstyled px-2">
-                <li class=""><a href="includes/logout.php" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+                <li class=""><a href="includes/logout.php?user_id=<?= $user_id_session ?>" class="text-decoration-none px-3 py-2 d-block"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
             </ul>
         </div>
         <!-- end of sidebar -->
