@@ -6,10 +6,10 @@
 
         $sql = "UPDATE questions SET is_deleted = 1 WHERE question_id = $delete_question_id;";
         if(mysqli_query($conn, $sql)){
-            header("location: ../questions.php?delete=successful");
+            header("location: ../questions.php?archived-records=no&delete=successful");
             die();
         }
     }else{
-        header("location: ../questions.php");
+        header("location: ../questions.php?archived-records=no");
         die();
     }
