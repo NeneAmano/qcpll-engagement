@@ -36,6 +36,17 @@ INSERT INTO `age` (`age_id`, `age_range`, `created_at`, `updated_at`) VALUES
 	(4, '36-59', '2023-12-06 15:21:25', '2023-12-06 15:21:25'),
 	(5, '60 above', '2023-12-06 15:21:37', '2023-12-06 15:21:52');
 
+-- Dumping structure for view qcpl_engagement.busiest_times
+-- Creating temporary table to overcome VIEW dependency errors
+CREATE TABLE `busiest_times` (
+	`hour` VARCHAR(5) NULL COLLATE 'utf8mb4_0900_ai_ci',
+	`monday` DECIMAL(23,0) NULL,
+	`tuesday` DECIMAL(23,0) NULL,
+	`wednesday` DECIMAL(23,0) NULL,
+	`thursday` DECIMAL(23,0) NULL,
+	`friday` DECIMAL(23,0) NULL
+) ENGINE=MyISAM;
+
 -- Dumping structure for table qcpl_engagement.choices
 CREATE TABLE IF NOT EXISTS `choices` (
   `choice_id` int NOT NULL AUTO_INCREMENT,
@@ -49,27 +60,7 @@ CREATE TABLE IF NOT EXISTS `choices` (
   CONSTRAINT `choices_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.choices: ~19 rows (approximately)
-INSERT INTO `choices` (`choice_id`, `question_id`, `choice`, `is_deleted`, `created_at`, `updated_at`) VALUES
-	(5, NULL, 'Online Search [Sa Internet]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(6, NULL, 'Word of Mouth [Kwento ng Iba]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(7, NULL, 'Social Media [Facebook, Twitter, Instagram, etc.]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(8, NULL, 'Government Website [Sa website ng pamahalaan]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(9, NULL, 'Printed Materials (Flyers, Brochures) [Naka-print na Materyales]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(10, NULL, 'Referral from a Friend or Family [Sa payo ng kaibigan o kamag-anak]', 0, '2024-02-12 20:41:35', '2024-02-12 20:41:35'),
-	(11, NULL, 'Helpful customer service. [Matulunging customer service.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(12, NULL, 'Diverse services for specific needs. [Iba\'t ibang serbisyo para sa pangangailangan.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(13, NULL, 'Clean and organized facilities. [Malinis at maayos na pasilidad.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(14, NULL, 'Timely service delivery. [Mabilis na paghahatid ng serbisyo.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(15, NULL, 'Easy accessibility. [Madaling ma-access.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(16, NULL, 'Knowledgeable staff. [Maraming kaalaman ang mga kawani.]', 0, '2024-02-12 20:43:26', '2024-02-12 20:43:26'),
-	(17, NULL, 'Customer Service [Serbisyo sa customer]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(18, NULL, 'Service Variety [Iba\'t ibang uri ng serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(19, NULL, 'Facility Cleanliness and Organization [Kalinisan at ayos ng pasilidad]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(20, NULL, 'Timeliness of Service [Bilis ng serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(21, NULL, 'Service Accessibility [Aksisibilidad sa serbisyo]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(22, NULL, 'Staff Knowledge and Training [Kaalaman at kasanayan ng kawani]', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01'),
-	(23, NULL, 'None', 0, '2024-02-12 20:45:01', '2024-02-12 20:45:01');
+-- Dumping data for table qcpl_engagement.choices: ~0 rows (approximately)
 
 -- Dumping structure for table qcpl_engagement.client
 CREATE TABLE IF NOT EXISTS `client` (
@@ -89,9 +80,9 @@ CREATE TABLE IF NOT EXISTS `client` (
   PRIMARY KEY (`client_id`),
   KEY `age_id` (`age_id`),
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`age_id`) REFERENCES `age` (`age_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.client: ~75 rows (approximately)
+-- Dumping data for table qcpl_engagement.client: ~94 rows (approximately)
 INSERT INTO `client` (`client_id`, `civil_status`, `f_name`, `m_name`, `l_name`, `suffix`, `age_id`, `gender`, `education`, `occupation`, `status`, `created_at`, `updated_at`) VALUES
 	(35, '', 'da', 'das', 'das', 'das', 5, 'Male', 'Doctorate Degree', 'Employed', 1, '2024-02-08 01:26:03', '2024-02-08 01:26:03'),
 	(36, '', 'dasd', 'dsad', 'dasd', 'da', 3, 'Female', 'College Level', 'Unemployed', 2, '2024-02-08 01:29:29', '2024-02-08 01:29:29'),
@@ -171,7 +162,22 @@ INSERT INTO `client` (`client_id`, `civil_status`, `f_name`, `m_name`, `l_name`,
 	(110, 'Single', 'James', '', 'Harden', '', 3, 'Male', 'High School Level', 'Unemployed', 2, '2024-02-26 10:26:49', '2024-02-26 10:26:49'),
 	(111, '', 'Jim', '', 'Carrey', '', 3, 'Male', 'High School Graduate', 'Student', 2, '2024-02-26 10:42:30', '2024-02-26 10:42:30'),
 	(112, 'Single', 'Jeff', '', 'Daniels', '', 3, 'Male', 'Elementary Graduate', 'Student', 2, '2024-02-26 10:43:18', '2024-02-26 10:43:18'),
-	(113, 'Single', 'Ja', '', 'Morant', '', 3, 'Male', 'High School Graduate', 'Unemployed', 0, '2024-02-26 12:53:05', '2024-02-26 12:53:05');
+	(113, 'Single', 'Ja', '', 'Morant', '', 3, 'Male', 'High School Graduate', 'Unemployed', 0, '2024-02-26 12:53:05', '2024-02-26 12:53:05'),
+	(114, 'Single', 'sasdas', 'xz', 'zx', '', 3, 'Male', 'Elementary Graduate', 'Employed', 0, '2024-03-03 13:34:14', '2024-03-03 13:34:14'),
+	(115, 'Single', 'asd', 'asd', 'asd', '', 3, 'Male', 'Elementary Graduate', 'Student', 2, '2024-03-04 13:27:48', '2024-03-04 13:27:48'),
+	(116, 'Widow', 'asd', 'xzc', 'zxc', '', 3, 'Male', 'Elementary Graduate', 'Unemployed', 2, '2024-03-04 13:28:10', '2024-03-04 13:28:10'),
+	(117, 'Married', 'sda', 'cx', 'asd', '', 3, 'Others', 'High School Level', 'Student', 2, '2024-03-04 13:28:33', '2024-03-04 13:28:33'),
+	(118, 'Single', 'asd', 'zx', 'c', '', 3, 'Female', 'High School Level', 'Employed', 3, '2024-03-04 13:29:19', '2024-03-04 13:29:19'),
+	(119, 'Married', 'asd', 'asd', 'asd', '', 3, 'Female', 'Elementary Graduate', 'Student', 0, '2024-03-04 13:29:39', '2024-03-04 13:29:39'),
+	(120, 'Married', 'asdsad', 'sadsad', 'asd', '', 3, 'Male', 'Elementary Graduate', 'Student', 0, '2024-03-09 05:09:40', '2024-03-09 05:09:40'),
+	(121, 'Widow', 'asd', 'asd', 'qwe', 'qwe', 3, 'Male', 'Elementary Graduate', 'Student', 0, '2024-03-10 01:56:30', '2024-03-10 01:56:30'),
+	(122, '', 'sdasd', 'xc', 'zxc', 'asd', 3, 'Male', 'Elementary Graduate', 'Student', 0, '2024-03-10 02:17:11', '2024-03-10 02:17:11'),
+	(123, 'Widow', 'asd', 'asd', 'dsa', 'as', 3, 'Others', 'High School Level', 'Student', 2, '2024-03-10 02:21:18', '2024-03-10 02:21:18'),
+	(124, '', 'asd', 'asd', 'asd', '', 3, 'Male', 'Elementary Graduate', 'Student', 2, '2024-03-10 03:41:39', '2024-03-10 03:41:39'),
+	(125, 'Widow', 'asdasd', 'asd', 'asdsad', '', 3, 'Male', 'Elementary Graduate', 'Student', 2, '2024-03-10 03:49:03', '2024-03-10 03:49:03'),
+	(126, '', 'asd', 'zxc', 'asd', '', 3, 'Female', 'Elementary Graduate', 'Student', 0, '2024-03-10 10:14:58', '2024-03-10 10:14:58'),
+	(127, '', 'asd', 'asd', 'zxc', '', 3, 'Male', 'High School Level', 'Student', 0, '2024-03-10 10:23:26', '2024-03-10 10:23:26'),
+	(128, 'Widow', 'Testingers', '', 'test', '', 3, 'Male', 'High School Level', 'Student', 0, '2024-03-10 11:17:46', '2024-03-10 11:17:46');
 
 -- Dumping structure for table qcpl_engagement.emoji
 CREATE TABLE IF NOT EXISTS `emoji` (
@@ -218,52 +224,84 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   KEY `question_id` (`question_id`),
   CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `feedback_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=522 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=566 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.feedback: ~38 rows (approximately)
+-- Dumping data for table qcpl_engagement.feedback: ~14 rows (approximately)
 INSERT INTO `feedback` (`feedback_id`, `client_id`, `question_id`, `answer_id`, `text_feedback`, `text_sentiment`, `created_at`, `updated_at`) VALUES
-	(466, 101, 31, 108, NULL, NULL, '2024-02-26 01:59:08', '2024-02-26 01:59:08'),
-	(467, 101, 32, 107, NULL, NULL, '2024-02-26 01:59:08', '2024-02-26 01:59:08'),
-	(468, 101, 33, 109, NULL, NULL, '2024-02-26 01:59:08', '2024-02-26 01:59:08'),
-	(469, 101, 34, NULL, 'Test', 1, '2024-02-26 01:59:08', '2024-02-26 11:02:32'),
-	(470, 101, 35, NULL, 'Very bad', 0, '2024-02-26 01:59:08', '2024-02-26 11:02:36'),
-	(471, 101, 36, NULL, 'good', 2, '2024-02-26 01:59:08', '2024-02-26 11:02:39'),
-	(478, 103, 31, 110, NULL, NULL, '2024-02-26 02:00:55', '2024-02-26 02:00:55'),
-	(479, 103, 32, 110, NULL, NULL, '2024-02-26 02:00:55', '2024-02-26 02:00:55'),
-	(480, 103, 33, 109, NULL, NULL, '2024-02-26 02:00:55', '2024-02-26 02:00:55'),
-	(481, 103, 34, NULL, 'Test', 1, '2024-02-26 02:00:55', '2024-02-26 11:02:40'),
-	(482, 103, 35, NULL, 'bad', 0, '2024-02-26 02:00:55', '2024-02-26 11:02:44'),
-	(483, 103, 36, NULL, 'good', 2, '2024-02-26 02:00:55', '2024-02-26 11:02:45'),
-	(485, 104, 31, 108, NULL, NULL, '2024-02-26 02:02:54', '2024-02-26 02:02:54'),
-	(486, 104, 32, 107, NULL, NULL, '2024-02-26 02:02:54', '2024-02-26 02:02:54'),
-	(487, 104, 33, 106, NULL, NULL, '2024-02-26 02:02:54', '2024-02-26 02:02:54'),
-	(488, 104, 34, NULL, 'asd', 1, '2024-02-26 02:02:54', '2024-02-26 11:02:49'),
-	(489, 104, 35, NULL, 'maingay', 0, '2024-02-26 02:02:54', '2024-02-26 11:02:52'),
-	(490, 104, 36, NULL, 'zxc', 1, '2024-02-26 02:02:54', '2024-02-26 11:02:50'),
-	(498, 106, 31, 108, NULL, NULL, '2024-02-26 10:01:44', '2024-02-26 10:01:44'),
-	(499, 106, 32, 107, NULL, NULL, '2024-02-26 10:01:44', '2024-02-26 10:01:44'),
-	(500, 106, 33, 109, NULL, NULL, '2024-02-26 10:01:44', '2024-02-26 10:01:44'),
-	(501, 106, 34, NULL, 'The staffs are accommodating', 2, '2024-02-26 10:01:44', '2024-02-26 10:01:44'),
-	(502, 106, 35, NULL, 'malinis ang facility', 2, '2024-02-26 10:01:44', '2024-02-26 10:01:44'),
-	(503, 106, 36, NULL, 'maging moderno', 2, '2024-02-26 10:01:44', '2024-02-26 10:01:44'),
-	(504, 107, 31, 108, NULL, NULL, '2024-02-26 10:02:57', '2024-02-26 10:02:57'),
-	(505, 107, 32, 107, NULL, NULL, '2024-02-26 10:02:57', '2024-02-26 10:02:57'),
-	(506, 107, 33, 109, NULL, NULL, '2024-02-26 10:02:57', '2024-02-26 10:02:57'),
-	(507, 107, 34, NULL, 'mabagal ang tauhan', 0, '2024-02-26 10:02:57', '2024-02-26 10:02:57'),
-	(508, 107, 35, NULL, 'madumi', 0, '2024-02-26 10:02:57', '2024-02-26 10:02:57'),
-	(509, 107, 36, NULL, 'maging malinis', 2, '2024-02-26 10:02:57', '2024-02-26 10:02:57'),
-	(510, 108, 31, 107, NULL, NULL, '2024-02-26 10:45:28', '2024-02-26 10:45:28'),
-	(511, 108, 32, 106, NULL, NULL, '2024-02-26 10:45:28', '2024-02-26 10:45:28'),
-	(512, 108, 33, 107, NULL, NULL, '2024-02-26 10:45:28', '2024-02-26 10:45:28'),
-	(513, 108, 34, NULL, 'Mabilis', 2, '2024-02-26 10:45:28', '2024-02-26 10:45:28'),
-	(514, 108, 35, NULL, 'Clean', 2, '2024-02-26 10:45:28', '2024-02-26 10:45:28'),
-	(515, 108, 36, NULL, 'asd asd asd', 1, '2024-02-26 10:45:28', '2024-02-26 10:50:38'),
-	(516, 113, 31, 107, NULL, NULL, '2024-02-26 12:56:20', '2024-02-26 12:56:20'),
-	(517, 113, 32, 106, NULL, NULL, '2024-02-26 12:56:20', '2024-02-26 12:56:20'),
-	(518, 113, 33, 106, NULL, NULL, '2024-02-26 12:56:20', '2024-02-26 12:56:20'),
-	(519, 113, 34, NULL, 'Mabait', 2, '2024-02-26 12:56:20', '2024-02-26 12:56:20'),
-	(520, 113, 35, NULL, 'Magulo', 0, '2024-02-26 12:56:20', '2024-02-26 12:56:20'),
-	(521, 113, 36, NULL, 'organize', 1, '2024-02-26 12:56:20', '2024-02-26 12:56:20');
+	(552, 126, 31, 108, NULL, NULL, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(553, 126, 32, 107, NULL, NULL, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(554, 126, 33, 108, NULL, NULL, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(555, 126, 38, 107, NULL, NULL, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(556, 126, 39, 107, NULL, NULL, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(557, 126, 40, 106, NULL, NULL, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(558, 126, 41, NULL, 'Poor', 0, '2024-03-10 10:19:40', '2024-03-10 10:19:40'),
+	(559, 127, 31, 108, NULL, NULL, '2024-03-10 10:30:13', '2024-03-10 10:30:13'),
+	(560, 127, 32, 107, NULL, NULL, '2024-03-10 10:30:13', '2024-03-10 10:30:13'),
+	(561, 127, 33, 107, NULL, NULL, '2024-03-10 10:30:13', '2024-03-10 10:30:13'),
+	(562, 127, 38, 108, NULL, NULL, '2024-03-10 10:30:13', '2024-03-10 10:30:13'),
+	(563, 127, 39, 107, NULL, NULL, '2024-03-10 10:30:13', '2024-03-10 10:30:13'),
+	(564, 127, 40, 106, NULL, NULL, '2024-03-10 10:30:13', '2024-03-10 10:30:13'),
+	(565, 127, 41, NULL, 'Average', 1, '2024-03-10 10:30:13', '2024-03-10 10:30:13');
+
+-- Dumping structure for table qcpl_engagement.history_logs
+CREATE TABLE IF NOT EXISTS `history_logs` (
+  `hl_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int DEFAULT NULL,
+  `content` varchar(255) NOT NULL,
+  `content_id` int NOT NULL,
+  `_action` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`hl_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `history_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Dumping data for table qcpl_engagement.history_logs: ~41 rows (approximately)
+INSERT INTO `history_logs` (`hl_id`, `user_id`, `content`, `content_id`, `_action`, `created_at`) VALUES
+	(1, 5, 'login', 0, 'Log in', '2024-03-10 11:07:15'),
+	(2, 4, 'queue', 186, 'Add', '2024-03-10 11:17:46'),
+	(3, 4, 'login', 0, 'Log in', '2024-03-10 11:28:42'),
+	(4, 4, 'login', 0, 'Log in', '2024-03-10 11:31:49'),
+	(5, 4, 'logout', 0, 'Log out', '2024-03-10 11:38:17'),
+	(6, 4, 'login', 0, 'Log in', '2024-03-10 11:41:51'),
+	(7, 4, 'logout', 0, 'Log out', '2024-03-10 11:47:31'),
+	(8, 4, 'login', 0, 'Log in', '2024-03-10 11:50:07'),
+	(9, 4, 'logout', 0, 'Log out', '2024-03-10 11:52:37'),
+	(10, 4, 'login', 0, 'Log in', '2024-03-10 11:52:48'),
+	(11, 4, 'logout', 0, 'Log out', '2024-03-10 11:53:31'),
+	(12, 5, 'login', 0, 'Log in', '2024-03-10 11:53:43'),
+	(13, 5, 'logout', 0, 'Log out', '2024-03-10 11:53:51'),
+	(14, 4, 'login', 0, 'Log in', '2024-03-10 11:54:00'),
+	(15, 4, 'logout', 0, 'Log out', '2024-03-10 12:25:53'),
+	(16, 4, 'login', 0, 'Log in', '2024-03-10 12:26:00'),
+	(17, 4, 'users', 8, 'Add', '2024-03-10 13:13:43'),
+	(18, 4, 'logout', 0, 'Log out', '2024-03-10 13:18:17'),
+	(19, 4, 'login', 0, 'Log in', '2024-03-10 13:19:51'),
+	(20, 4, 'users', 0, 'Edit', '2024-03-10 13:34:28'),
+	(21, 4, 'users', 8, 'Edit', '2024-03-10 13:35:18'),
+	(22, 4, 'users', 8, 'Deactivate', '2024-03-10 13:58:12'),
+	(23, 4, 'users', 8, 'Edit', '2024-03-10 14:09:42'),
+	(24, 4, 'users', 8, 'Edit', '2024-03-10 14:09:55'),
+	(25, 4, 'users', 4, 'Edit', '2024-03-10 14:10:06'),
+	(26, 4, 'users', 8, 'Edit', '2024-03-10 14:10:13'),
+	(27, 4, 'questions', 51, 'Add', '2024-03-10 14:26:52'),
+	(28, 4, 'questions', 52, 'Add', '2024-03-10 14:27:23'),
+	(29, 4, 'users', 7, 'Edit Password', '2024-03-10 14:32:04'),
+	(30, 4, 'questions', 53, 'Add', '2024-03-10 14:34:34'),
+	(31, 4, 'questions', 53, 'Edit', '2024-03-10 14:34:45'),
+	(32, 4, 'questions', 53, 'Delete', '2024-03-10 14:34:53'),
+	(33, 4, 'question-type', 18, 'Edit', '2024-03-10 14:54:47'),
+	(34, 4, 'question-type', 18, 'Edit', '2024-03-10 14:55:07'),
+	(35, 4, 'question-category', 3, 'Edit', '2024-03-10 14:55:21'),
+	(36, 4, 'question-category', 3, 'Edit', '2024-03-10 14:55:29'),
+	(37, 4, 'question-category', 7, 'Add', '2024-03-10 14:58:23'),
+	(38, 4, 'question-type', 0, 'Add', '2024-03-10 14:59:16'),
+	(39, 4, 'question-type', 19, 'Edit', '2024-03-10 15:01:40'),
+	(40, 4, 'question-type', 0, 'Add', '2024-03-10 15:03:35'),
+	(41, 4, 'question-type', 21, 'Add', '2024-03-10 15:13:54'),
+	(42, 4, 'logout', 0, 'Log out', '2024-03-10 15:45:12'),
+	(43, 8, 'login', 0, 'Log in', '2024-03-10 15:45:17'),
+	(44, 8, 'logout', 0, 'Log out', '2024-03-10 15:45:30');
 
 -- Dumping structure for table qcpl_engagement.questions
 CREATE TABLE IF NOT EXISTS `questions` (
@@ -280,16 +318,32 @@ CREATE TABLE IF NOT EXISTS `questions` (
   KEY `qc_id` (`qc_id`),
   CONSTRAINT `questions_ibfk_1` FOREIGN KEY (`qt_id`) REFERENCES `question_type` (`qt_id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`qc_id`) REFERENCES `question_category` (`qc_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.questions: ~6 rows (approximately)
+-- Dumping data for table qcpl_engagement.questions: ~22 rows (approximately)
 INSERT INTO `questions` (`question_id`, `qt_id`, `qc_id`, `english_question`, `tagalog_question`, `is_deleted`, `created_at`, `updated_at`) VALUES
 	(31, 1, 1, 'Is our staff helpful?', 'Matulungin ba ang aming mga tauhan?', 0, '2024-02-26 01:34:49', '2024-02-26 01:34:49'),
 	(32, 1, 2, 'Are you satisfied with the service you received?', 'Nasiyahan ka ba sa iyong serbisyong natanggap?', 0, '2024-02-26 01:37:02', '2024-02-26 01:37:02'),
 	(33, 1, 3, 'Is the facility clean?', 'Malinis ba ang pasilidad?', 0, '2024-02-26 01:38:00', '2024-02-26 01:38:00'),
-	(34, 3, 1, 'What qualities should our staff possess to better meet the needs of our customers?', 'Ano ang mga dapat na katangian ng aming mga tauhan para maging maganda ang serbisyo sa mga customer?', 0, '2024-02-26 01:44:05', '2024-02-26 01:44:05'),
-	(35, 3, 3, 'How would you describe the overall ambiance and atmosphere of our facilities during your visit?', ' Paano mo ilalarawan ang overall na atmospera ng aming pasilidad sa iyong pagbisita?', 0, '2024-02-26 01:45:04', '2024-02-26 01:45:04'),
-	(36, 3, 2, 'In your opinion, what enhancements or additions could be made to our services to enhance your overall experience?', 'Ano ang mga puwedeng idagdag sa aming serbisyo upang mapabuti ang iyong karanasan?', 0, '2024-02-26 01:47:13', '2024-02-26 01:47:13');
+	(34, 3, 1, 'What qualities should our staff possess to better meet the needs of our customers?', 'Ano ang mga dapat na katangian ng aming mga tauhan para maging maganda ang serbisyo sa mga customer?', 1, '2024-02-26 01:44:05', '2024-03-10 09:51:41'),
+	(35, 3, 3, 'How would you describe the overall ambiance and atmosphere of our facilities during your visit?', 'Paano mo ilalarawan ang overall na atmospera ng aming pasilidad sa iyong pagbisita?', 1, '2024-02-26 01:45:04', '2024-03-10 09:51:39'),
+	(36, 3, 2, 'In your opinion, what enhancements or additions could be made to our services to enhance your overall experience?', 'Ano ang mga puwedeng idagdag sa aming serbisyo upang mapabuti ang iyong karanasan?', 1, '2024-02-26 01:47:13', '2024-03-10 09:51:36'),
+	(38, 1, 1, 'How was your experience with our staffs?', 'Kumusta ang iyong karanasan sa aming mga tauhan?', 0, '2024-03-10 10:05:40', '2024-03-10 10:05:40'),
+	(39, 1, 2, 'How was our service?', 'Kumusta ang aming serbisyo?', 0, '2024-03-10 10:06:36', '2024-03-10 10:10:11'),
+	(40, 1, 3, 'Do you feel comfortable while waiting?', 'Komportable ka ba habang naghihintay?', 0, '2024-03-10 10:11:15', '2024-03-10 10:11:15'),
+	(41, 3, 2, 'How was your overall experience in our service?\r\n', 'Kumusta ang iyong pangkalahatang karanasan sa aming serbisyo?', 0, '2024-03-10 10:14:32', '2024-03-10 10:14:32'),
+	(42, 1, 1, 'asd', 'asd', 1, '2024-03-10 14:07:44', '2024-03-10 14:09:15'),
+	(43, 1, 1, 'asd', 'asd', 1, '2024-03-10 14:08:32', '2024-03-10 14:09:17'),
+	(44, 1, 1, 'ad', 'adasd', 1, '2024-03-10 14:13:31', '2024-03-10 14:15:12'),
+	(45, 1, 1, 'ad', 'adasd', 1, '2024-03-10 14:14:57', '2024-03-10 14:15:10'),
+	(46, 1, 1, 'asdsad', 'asdasd', 1, '2024-03-10 14:15:18', '2024-03-10 14:15:32'),
+	(47, 1, 1, 'asdsad', 'asdasd', 1, '2024-03-10 14:15:25', '2024-03-10 14:15:34'),
+	(48, 1, 2, 'ad', 'asdsad', 1, '2024-03-10 14:16:16', '2024-03-10 14:16:29'),
+	(49, 1, 1, 'asdsad', 'xzcxzc', 1, '2024-03-10 14:16:39', '2024-03-10 14:24:52'),
+	(50, 1, 1, 'asdzxcz', 'asdzxc', 1, '2024-03-10 14:23:51', '2024-03-10 14:24:51'),
+	(51, 1, 1, 'asd', 'asd', 1, '2024-03-10 14:26:52', '2024-03-10 14:27:41'),
+	(52, 1, 1, 'asd', 'asd', 1, '2024-03-10 14:27:23', '2024-03-10 14:27:39'),
+	(53, 1, 1, 'test1', 'test1', 1, '2024-03-10 14:34:34', '2024-03-10 14:34:53');
 
 -- Dumping structure for table qcpl_engagement.question_category
 CREATE TABLE IF NOT EXISTS `question_category` (
@@ -298,13 +352,13 @@ CREATE TABLE IF NOT EXISTS `question_category` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`qc_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.question_category: ~4 rows (approximately)
+-- Dumping data for table qcpl_engagement.question_category: ~3 rows (approximately)
 INSERT INTO `question_category` (`qc_id`, `question_category`, `created_at`, `updated_at`) VALUES
 	(1, 'Staff', '2024-01-22 06:54:45', '2024-01-22 06:54:45'),
 	(2, 'Service', '2024-01-22 06:54:53', '2024-01-22 06:54:53'),
-	(3, 'Facility', '2024-01-22 06:55:01', '2024-01-22 06:55:01');
+	(3, 'Facility', '2024-01-22 06:55:01', '2024-03-10 14:55:29');
 
 -- Dumping structure for table qcpl_engagement.question_type
 CREATE TABLE IF NOT EXISTS `question_type` (
@@ -314,14 +368,14 @@ CREATE TABLE IF NOT EXISTS `question_type` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`qt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.question_type: ~3 rows (approximately)
 INSERT INTO `question_type` (`qt_id`, `question_type`, `multiple_choice`, `created_at`, `updated_at`) VALUES
 	(1, 'Emoji-based', 0, '2024-01-22 08:51:53', '2024-01-22 08:51:53'),
-	(2, 'Multiple Selection', 0, '2024-02-10 06:56:20', '2024-02-12 20:21:51'),
+	(2, 'Multiple Selection', 1, '2024-02-10 06:56:20', '2024-03-10 14:59:10'),
 	(3, 'Text-based', 0, '2024-01-22 08:52:02', '2024-02-12 20:21:50'),
-	(18, 'Test', 0, '2024-02-26 02:46:20', '2024-02-26 02:46:20');
+	(21, 'test', 0, '2024-03-10 15:13:54', '2024-03-10 15:13:54');
 
 -- Dumping structure for table qcpl_engagement.queue
 CREATE TABLE IF NOT EXISTS `queue` (
@@ -330,9 +384,9 @@ CREATE TABLE IF NOT EXISTS `queue` (
   `queue_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`queue_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.queue: ~14 rows (approximately)
+-- Dumping data for table qcpl_engagement.queue: ~15 rows (approximately)
 INSERT INTO `queue` (`queue_id`, `total_queue`, `queue_date`, `updated_at`) VALUES
 	(1, 5, '2024-01-21 16:00:00', '2024-01-22 06:16:54'),
 	(2, 2, '2024-01-22 16:00:00', '2024-01-23 03:41:27'),
@@ -350,7 +404,11 @@ INSERT INTO `queue` (`queue_id`, `total_queue`, `queue_date`, `updated_at`) VALU
 	(14, 2, '2024-02-17 16:00:00', '2024-02-17 16:07:49'),
 	(15, 5, '2024-02-18 16:00:00', '2024-02-19 15:53:38'),
 	(16, 13, '2024-02-19 16:00:00', '2024-02-20 02:53:39'),
-	(17, 13, '2024-02-25 16:00:00', '2024-02-26 12:53:05');
+	(17, 13, '2024-02-25 16:00:00', '2024-02-26 12:53:05'),
+	(18, 1, '2024-03-02 16:00:00', '2024-03-03 13:34:14'),
+	(19, 5, '2024-03-03 16:00:00', '2024-03-04 13:29:39'),
+	(20, 1, '2024-03-08 16:00:00', '2024-03-09 05:09:40'),
+	(21, 8, '2024-03-09 16:00:00', '2024-03-10 11:17:46');
 
 -- Dumping structure for table qcpl_engagement.queue_details
 CREATE TABLE IF NOT EXISTS `queue_details` (
@@ -360,110 +418,132 @@ CREATE TABLE IF NOT EXISTS `queue_details` (
   `service` varchar(255) NOT NULL,
   `status` tinyint(1) DEFAULT '0' COMMENT '0 = Pending\r\n1 = Complete',
   `entry_check` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0 - Rejected 1 - Passed',
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `is_inside` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0 = Waiting\r\n1 = Inside\r\n2 = Done',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`qd_id`),
   KEY `client_id` (`client_id`),
   CONSTRAINT `queue_details_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.queue_details: ~85 rows (approximately)
-INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `entry_check`, `updated_at`, `created_at`) VALUES
-	(65, 40, 'N-00001', 'NBI', 0, 1, '2024-02-09 14:03:09', '2024-02-08 20:02:46'),
-	(66, 40, 'N-00001', 'Police', 0, 1, '2024-02-09 14:03:09', '2024-02-08 20:02:46'),
-	(67, 41, 'P-00001', 'Police', 0, 1, '2024-02-08 20:03:06', '2024-02-08 20:03:06'),
-	(68, 42, 'P-00002', 'Police', 0, 1, '2024-02-08 20:03:52', '2024-02-08 20:03:52'),
-	(75, 48, 'N-00002', 'Police', 0, 1, '2024-02-08 20:25:28', '2024-02-08 20:25:28'),
-	(76, 49, 'P-00003', 'NBI', 0, 1, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
-	(77, 49, 'P-00003', 'Police', 0, 1, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
-	(78, 50, 'P-00004', 'NBI', 0, 1, '2024-02-08 20:27:33', '2024-02-08 20:27:33'),
-	(79, 51, 'N-00003', 'PSA', 0, 1, '2024-02-08 20:28:06', '2024-02-08 20:28:06'),
-	(80, 52, 'N-00001', 'NBI', 0, 1, '2024-02-13 01:32:44', '2024-02-10 13:29:39'),
-	(81, 53, 'N-00002', 'NBI', 0, 1, '2024-02-10 13:45:13', '2024-02-10 13:45:13'),
-	(82, 54, 'N-00003', 'NBI', 0, 1, '2024-02-10 13:51:14', '2024-02-10 13:51:14'),
-	(83, 55, 'N-00004', 'NBI', 0, 1, '2024-02-10 13:54:54', '2024-02-10 13:54:54'),
-	(84, 56, 'P-00001', 'NBI', 0, 1, '2024-02-10 13:57:19', '2024-02-10 13:57:19'),
-	(85, 57, 'P-00002', 'NBI', 0, 1, '2024-02-10 15:01:54', '2024-02-10 15:01:54'),
-	(86, 58, 'P-00003', 'NBI', 0, 1, '2024-02-10 15:07:05', '2024-02-10 15:07:05'),
-	(87, 59, 'P-00004', 'NBI', 0, 1, '2024-02-10 15:17:47', '2024-02-10 15:17:47'),
-	(88, 60, 'N-00005', 'Police', 0, 1, '2024-02-10 15:24:37', '2024-02-10 15:24:37'),
-	(89, 61, 'N-00006', 'NBI', 0, 1, '2024-02-10 15:36:10', '2024-02-10 15:36:10'),
-	(90, 62, 'P-00001', 'NBI', 1, 1, '2024-02-13 06:12:53', '2024-02-12 19:26:46'),
-	(91, 63, 'P-00002', 'NBI', 2, 1, '2024-02-13 06:07:48', '2024-02-13 01:47:12'),
-	(92, 63, 'P-00002', 'Police', 1, 1, '2024-02-13 06:07:57', '2024-02-13 01:47:12'),
-	(93, 63, 'P-00002', 'PSA', 1, 1, '2024-02-13 06:07:57', '2024-02-13 01:47:12'),
-	(94, 64, 'P-00003', 'NBI', 2, 1, '2024-02-13 06:03:44', '2024-02-13 02:57:46'),
-	(95, 65, 'N-00001', 'NBI', 2, 1, '2024-02-13 06:03:57', '2024-02-13 02:58:21'),
-	(96, 66, 'P-00004', 'Police', 1, 1, '2024-02-13 06:13:22', '2024-02-13 03:02:57'),
-	(97, 67, 'P-00005', 'Police', 1, 1, '2024-02-13 06:13:26', '2024-02-13 03:03:43'),
-	(98, 68, 'P-00006', 'PSA', 1, 1, '2024-02-13 06:13:31', '2024-02-13 03:06:33'),
-	(99, 69, 'P-00007', 'NBI', 1, 1, '2024-02-13 06:18:02', '2024-02-13 06:16:46'),
-	(100, 70, 'P-00008', 'PSA', 2, 1, '2024-02-13 06:35:15', '2024-02-13 06:20:39'),
-	(101, 71, 'N-00002', 'Police', 0, 1, '2024-02-13 06:22:11', '2024-02-13 06:22:11'),
-	(102, 72, 'P-00009', 'NBI', 0, 1, '2024-02-13 07:06:30', '2024-02-13 07:06:30'),
-	(103, 73, 'P-00010', 'Police', 0, 1, '2024-02-13 07:18:24', '2024-02-13 07:18:24'),
-	(104, 74, 'N-00001', 'NBI', 0, 1, '2024-02-15 00:11:06', '2024-02-15 00:11:06'),
-	(105, 75, 'N-00001', 'PSA', 1, 1, '2024-02-17 15:01:37', '2024-02-17 05:10:26'),
-	(106, 75, 'N-00001', 'Clearance', 1, 1, '2024-02-17 15:01:37', '2024-02-17 05:10:26'),
-	(107, 76, 'N-00002', 'NBI', 0, 1, '2024-02-17 15:54:20', '2024-02-17 15:54:20'),
-	(108, 77, 'N-00003', 'NBI', 0, 1, '2024-02-17 15:55:16', '2024-02-17 15:55:16'),
-	(109, 77, 'N-00003', 'Police', 0, 1, '2024-02-17 15:55:16', '2024-02-17 15:55:16'),
-	(110, 78, 'N-00004', 'NBI', 0, 1, '2024-02-17 15:55:57', '2024-02-17 15:55:57'),
-	(111, 78, 'N-00004', 'Police', 0, 1, '2024-02-17 15:55:57', '2024-02-17 15:55:57'),
-	(112, 79, 'P-00001', 'NBI', 0, 1, '2024-02-17 15:57:55', '2024-02-17 15:57:55'),
-	(113, 79, 'P-00001', 'Police', 0, 1, '2024-02-17 15:57:55', '2024-02-17 15:57:55'),
-	(114, 79, 'P-00001', 'das', 0, 1, '2024-02-17 15:57:55', '2024-02-17 15:57:55'),
-	(115, 80, 'N-00005', 'NBI', 0, 1, '2024-02-17 15:58:39', '2024-02-17 15:58:39'),
-	(116, 81, 'P-00001', 'NBI', 1, 1, '2024-02-17 20:37:19', '2024-02-17 16:04:11'),
-	(117, 82, 'P-00002', 'NBI', 1, 1, '2024-02-17 22:48:20', '2024-02-17 16:07:49'),
-	(118, 83, 'N-00001', 'NBI', 2, 0, '2024-02-19 13:07:03', '2024-02-19 09:44:13'),
-	(119, 83, 'N-00001', 'Police', 2, 0, '2024-02-19 13:07:03', '2024-02-19 09:44:13'),
-	(120, 84, 'P-00001', 'NBI', 1, 1, '2024-02-19 13:16:45', '2024-02-19 13:09:17'),
-	(121, 84, 'P-00001', 'Police', 1, 1, '2024-02-19 13:16:45', '2024-02-19 13:09:17'),
-	(122, 84, 'P-00001', 'test', 2, 0, '2024-02-19 13:15:49', '2024-02-19 13:09:17'),
-	(123, 85, 'P-00002', 'NBI', 0, 1, '2024-02-19 15:42:37', '2024-02-19 15:42:37'),
-	(124, 85, 'P-00002', 'Police', 0, 1, '2024-02-19 15:42:37', '2024-02-19 15:42:37'),
-	(125, 86, 'P-00003', 'NBI', 0, 1, '2024-02-19 15:52:55', '2024-02-19 15:52:55'),
-	(126, 86, 'P-00003', 'Police', 0, 1, '2024-02-19 15:52:55', '2024-02-19 15:52:55'),
-	(127, 87, 'N-00002', 'test12', 0, 1, '2024-02-19 15:53:38', '2024-02-19 15:53:38'),
-	(128, 87, 'N-00002', 'ad', 0, 1, '2024-02-19 15:53:38', '2024-02-19 15:53:38'),
-	(129, 88, 'P-00001', 'Police', 1, 1, '2024-02-19 16:21:45', '2024-02-19 16:12:21'),
-	(130, 89, 'P-00002', 'Police', 1, 1, '2024-02-19 16:23:07', '2024-02-19 16:12:50'),
-	(131, 90, 'P-00003', 'Police', 1, 1, '2024-02-19 16:19:44', '2024-02-19 16:13:35'),
-	(132, 90, 'P-00003', 'asd', 1, 1, '2024-02-19 16:19:44', '2024-02-19 16:13:35'),
-	(133, 90, 'P-00003', 'zxczc ', 2, 0, '2024-02-19 16:17:33', '2024-02-19 16:13:35'),
-	(134, 91, 'P-00004', 'NBI', 2, 0, '2024-02-19 16:18:01', '2024-02-19 16:14:24'),
-	(135, 91, 'P-00004', 'Police', 2, 0, '2024-02-19 16:18:01', '2024-02-19 16:14:24'),
-	(136, 91, 'P-00004', 'zxc', 2, 0, '2024-02-19 16:18:01', '2024-02-19 16:14:24'),
-	(137, 92, 'N-00001', 'Police', 1, 1, '2024-02-19 16:25:34', '2024-02-19 16:15:06'),
-	(138, 93, 'N-00002', 'sad', 1, 1, '2024-02-19 17:22:50', '2024-02-19 17:22:31'),
-	(139, 94, 'N-00003', 'NBI', 1, 1, '2024-02-19 17:37:20', '2024-02-19 17:36:58'),
-	(140, 95, 'N-00004', 'NBI', 1, 1, '2024-02-19 17:39:23', '2024-02-19 17:39:10'),
-	(141, 96, 'P-00005', 'Police', 1, 1, '2024-02-19 17:44:05', '2024-02-19 17:42:22'),
-	(142, 97, 'P-00006', 'NBI', 1, 1, '2024-02-19 17:44:58', '2024-02-19 17:42:55'),
-	(143, 98, 'N-00005', 'Police', 1, 1, '2024-02-19 17:45:38', '2024-02-19 17:43:27'),
-	(144, 99, 'N-00006', 'Police', 1, 1, '2024-02-19 18:36:08', '2024-02-19 18:35:52'),
-	(145, 100, 'N-00007', 'NBI', 1, 1, '2024-02-20 02:53:54', '2024-02-20 02:53:39'),
-	(146, 101, 'P-00001', 'NBI', 1, 1, '2024-02-26 01:57:39', '2024-02-26 00:33:13'),
-	(147, 102, 'P-00002', 'Police', 1, 1, '2024-02-26 03:11:01', '2024-02-26 00:39:30'),
-	(148, 103, 'N-00001', 'NBI', 1, 1, '2024-02-26 02:00:25', '2024-02-26 00:42:26'),
-	(149, 103, 'N-00001', 'Police', 1, 1, '2024-02-26 02:00:25', '2024-02-26 00:42:26'),
-	(150, 104, 'N-00002', 'Police', 1, 1, '2024-02-26 02:02:24', '2024-02-26 00:45:21'),
-	(151, 104, 'N-00002', 'sdasd', 1, 1, '2024-02-26 02:02:24', '2024-02-26 00:45:21'),
-	(152, 105, 'N-00003', 'Police', 1, 1, '2024-02-26 03:09:59', '2024-02-26 00:45:39'),
-	(153, 106, 'P-00003', 'NBI', 1, 1, '2024-02-26 09:45:07', '2024-02-26 03:18:14'),
-	(154, 106, 'P-00003', 'Police', 1, 1, '2024-02-26 09:45:07', '2024-02-26 03:18:14'),
-	(155, 107, 'P-00004', 'Police', 1, 1, '2024-02-26 10:02:14', '2024-02-26 09:44:12'),
-	(156, 108, 'P-00005', 'Police', 1, 1, '2024-02-26 10:44:19', '2024-02-26 10:25:39'),
-	(157, 109, 'N-00004', 'Police', 0, 1, '2024-02-26 10:26:30', '2024-02-26 10:26:30'),
-	(158, 109, 'N-00004', 'adas', 0, 1, '2024-02-26 10:26:30', '2024-02-26 10:26:30'),
-	(159, 110, 'P-00006', 'Police', 0, 1, '2024-02-26 10:26:49', '2024-02-26 10:26:49'),
-	(160, 111, 'P-00007', 'NBI', 0, 1, '2024-02-26 10:42:30', '2024-02-26 10:42:30'),
-	(161, 111, 'P-00007', 'Police', 0, 1, '2024-02-26 10:42:30', '2024-02-26 10:42:30'),
-	(162, 112, 'P-00008', 'NBI', 0, 1, '2024-02-26 10:43:18', '2024-02-26 10:43:18'),
-	(163, 112, 'P-00008', 'Police', 0, 1, '2024-02-26 10:43:18', '2024-02-26 10:43:18'),
-	(164, 113, 'N-00005', 'NBI', 1, 1, '2024-02-26 12:53:54', '2024-02-26 12:53:05'),
-	(165, 113, 'N-00005', 'Police', 1, 1, '2024-02-26 12:53:54', '2024-02-26 12:53:05');
+-- Dumping data for table qcpl_engagement.queue_details: ~116 rows (approximately)
+INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `entry_check`, `is_inside`, `created_at`, `updated_at`) VALUES
+	(65, 40, 'N-00001', 'NBI', 0, 1, 0, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
+	(66, 40, 'N-00001', 'Police', 0, 1, 0, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
+	(67, 41, 'P-00001', 'Police', 0, 1, 0, '2024-02-08 20:03:06', '2024-02-08 20:03:06'),
+	(68, 42, 'P-00002', 'Police', 0, 1, 0, '2024-02-08 20:03:52', '2024-02-08 20:03:52'),
+	(75, 48, 'N-00002', 'Police', 0, 1, 0, '2024-02-08 20:25:28', '2024-02-08 20:25:28'),
+	(76, 49, 'P-00003', 'NBI', 0, 1, 0, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
+	(77, 49, 'P-00003', 'Police', 0, 1, 0, '2024-02-08 20:26:36', '2024-02-08 20:26:36'),
+	(78, 50, 'P-00004', 'NBI', 0, 1, 0, '2024-02-08 20:27:33', '2024-02-08 20:27:33'),
+	(79, 51, 'N-00003', 'PSA', 0, 1, 0, '2024-02-08 20:28:06', '2024-02-08 20:28:06'),
+	(80, 52, 'N-00001', 'NBI', 0, 1, 0, '2024-02-10 13:29:39', '2024-02-13 01:32:44'),
+	(81, 53, 'N-00002', 'NBI', 0, 1, 0, '2024-02-10 13:45:13', '2024-02-10 13:45:13'),
+	(82, 54, 'N-00003', 'NBI', 0, 1, 0, '2024-02-10 13:51:14', '2024-02-10 13:51:14'),
+	(83, 55, 'N-00004', 'NBI', 0, 1, 0, '2024-02-10 13:54:54', '2024-02-10 13:54:54'),
+	(84, 56, 'P-00001', 'NBI', 0, 1, 0, '2024-02-10 13:57:19', '2024-02-10 13:57:19'),
+	(85, 57, 'P-00002', 'NBI', 0, 1, 0, '2024-02-10 15:01:54', '2024-02-10 15:01:54'),
+	(86, 58, 'P-00003', 'NBI', 0, 1, 0, '2024-02-10 15:07:05', '2024-02-10 15:07:05'),
+	(87, 59, 'P-00004', 'NBI', 0, 1, 0, '2024-02-10 15:17:47', '2024-02-10 15:17:47'),
+	(88, 60, 'N-00005', 'Police', 0, 1, 0, '2024-02-10 15:24:37', '2024-02-10 15:24:37'),
+	(89, 61, 'N-00006', 'NBI', 0, 1, 0, '2024-02-10 15:36:10', '2024-02-10 15:36:10'),
+	(90, 62, 'P-00001', 'NBI', 1, 1, 0, '2024-02-12 19:26:46', '2024-02-13 06:12:53'),
+	(91, 63, 'P-00002', 'NBI', 2, 1, 1, '2024-02-13 01:47:12', '2024-03-04 13:55:08'),
+	(92, 63, 'P-00002', 'Police', 1, 1, 0, '2024-02-13 01:47:12', '2024-02-13 06:07:57'),
+	(93, 63, 'P-00002', 'PSA', 1, 1, 0, '2024-02-13 01:47:12', '2024-02-13 06:07:57'),
+	(94, 64, 'P-00003', 'NBI', 2, 1, 1, '2024-02-13 02:57:46', '2024-03-04 13:55:08'),
+	(95, 65, 'N-00001', 'NBI', 2, 1, 1, '2024-02-13 02:58:21', '2024-03-04 13:55:07'),
+	(96, 66, 'P-00004', 'Police', 1, 1, 0, '2024-02-13 03:02:57', '2024-02-13 06:13:22'),
+	(97, 67, 'P-00005', 'Police', 1, 1, 0, '2024-02-13 03:03:43', '2024-02-13 06:13:26'),
+	(98, 68, 'P-00006', 'PSA', 1, 1, 0, '2024-02-13 03:06:33', '2024-02-13 06:13:31'),
+	(99, 69, 'P-00007', 'NBI', 1, 1, 0, '2024-02-13 06:16:46', '2024-02-13 06:18:02'),
+	(100, 70, 'P-00008', 'PSA', 2, 1, 0, '2024-02-13 06:20:39', '2024-02-13 06:35:15'),
+	(101, 71, 'N-00002', 'Police', 0, 1, 0, '2024-02-13 06:22:11', '2024-02-13 06:22:11'),
+	(102, 72, 'P-00009', 'NBI', 0, 1, 0, '2024-02-13 07:06:30', '2024-02-13 07:06:30'),
+	(103, 73, 'P-00010', 'Police', 0, 1, 0, '2024-02-13 07:18:24', '2024-02-13 07:18:24'),
+	(104, 74, 'N-00001', 'NBI', 0, 1, 0, '2024-02-15 00:11:06', '2024-02-15 00:11:06'),
+	(105, 75, 'N-00001', 'PSA', 1, 1, 0, '2024-02-17 05:10:26', '2024-02-17 15:01:37'),
+	(106, 75, 'N-00001', 'Clearance', 1, 1, 1, '2024-02-17 05:10:26', '2024-03-04 13:55:05'),
+	(107, 76, 'N-00002', 'NBI', 0, 1, 0, '2024-02-17 15:54:20', '2024-02-17 15:54:20'),
+	(108, 77, 'N-00003', 'NBI', 0, 1, 0, '2024-02-17 15:55:16', '2024-02-17 15:55:16'),
+	(109, 77, 'N-00003', 'Police', 0, 1, 0, '2024-02-17 15:55:16', '2024-02-17 15:55:16'),
+	(110, 78, 'N-00004', 'NBI', 0, 1, 0, '2024-02-17 15:55:57', '2024-02-17 15:55:57'),
+	(111, 78, 'N-00004', 'Police', 0, 1, 0, '2024-02-17 15:55:57', '2024-02-17 15:55:57'),
+	(112, 79, 'P-00001', 'NBI', 0, 1, 0, '2024-02-17 15:57:55', '2024-02-17 15:57:55'),
+	(113, 79, 'P-00001', 'Police', 0, 1, 0, '2024-02-17 15:57:55', '2024-02-17 15:57:55'),
+	(114, 79, 'P-00001', 'das', 0, 1, 2, '2024-02-17 15:57:55', '2024-03-04 13:59:22'),
+	(115, 80, 'N-00005', 'NBI', 0, 1, 0, '2024-02-17 15:58:39', '2024-02-17 15:58:39'),
+	(116, 81, 'P-00001', 'NBI', 1, 1, 0, '2024-02-17 16:04:11', '2024-02-17 20:37:19'),
+	(117, 82, 'P-00002', 'NBI', 1, 1, 0, '2024-02-17 16:07:49', '2024-02-17 22:48:20'),
+	(118, 83, 'N-00001', 'NBI', 2, 0, 1, '2024-02-19 09:44:13', '2024-03-04 13:55:06'),
+	(119, 83, 'N-00001', 'Police', 2, 0, 0, '2024-02-19 09:44:13', '2024-02-19 13:07:03'),
+	(120, 84, 'P-00001', 'NBI', 1, 1, 0, '2024-02-19 13:09:17', '2024-02-19 13:16:45'),
+	(121, 84, 'P-00001', 'Police', 1, 1, 0, '2024-02-19 13:09:17', '2024-02-19 13:16:45'),
+	(122, 84, 'P-00001', 'test', 2, 0, 0, '2024-02-19 13:09:17', '2024-02-19 13:15:49'),
+	(123, 85, 'P-00002', 'NBI', 0, 1, 0, '2024-02-19 15:42:37', '2024-02-19 15:42:37'),
+	(124, 85, 'P-00002', 'Police', 0, 1, 0, '2024-02-19 15:42:37', '2024-02-19 15:42:37'),
+	(125, 86, 'P-00003', 'NBI', 0, 1, 0, '2024-02-19 15:52:55', '2024-02-19 15:52:55'),
+	(126, 86, 'P-00003', 'Police', 0, 1, 0, '2024-02-19 15:52:55', '2024-02-19 15:52:55'),
+	(127, 87, 'N-00002', 'test12', 0, 1, 0, '2024-02-19 15:53:38', '2024-02-19 15:53:38'),
+	(128, 87, 'N-00002', 'ad', 0, 1, 1, '2024-02-19 15:53:38', '2024-03-04 13:58:52'),
+	(129, 88, 'P-00001', 'Police', 1, 1, 0, '2024-02-19 16:12:21', '2024-02-19 16:21:45'),
+	(130, 89, 'P-00002', 'Police', 1, 1, 0, '2024-02-19 16:12:50', '2024-02-19 16:23:07'),
+	(131, 90, 'P-00003', 'Police', 1, 1, 0, '2024-02-19 16:13:35', '2024-02-19 16:19:44'),
+	(132, 90, 'P-00003', 'asd', 1, 1, 1, '2024-02-19 16:13:35', '2024-03-04 13:55:03'),
+	(133, 90, 'P-00003', 'zxczc ', 2, 0, 0, '2024-02-19 16:13:35', '2024-02-19 16:17:33'),
+	(134, 91, 'P-00004', 'NBI', 2, 0, 1, '2024-02-19 16:14:24', '2024-03-04 13:55:06'),
+	(135, 91, 'P-00004', 'Police', 2, 0, 0, '2024-02-19 16:14:24', '2024-02-19 16:18:01'),
+	(136, 91, 'P-00004', 'zxc', 2, 0, 0, '2024-02-19 16:14:24', '2024-02-19 16:18:01'),
+	(137, 92, 'N-00001', 'Police', 1, 1, 0, '2024-02-19 16:15:06', '2024-02-19 16:25:34'),
+	(138, 93, 'N-00002', 'sad', 1, 1, 0, '2024-02-19 17:22:31', '2024-02-19 17:22:50'),
+	(139, 94, 'N-00003', 'NBI', 1, 1, 0, '2024-02-19 17:36:58', '2024-02-19 17:37:20'),
+	(140, 95, 'N-00004', 'NBI', 1, 1, 1, '2024-02-19 17:39:10', '2024-03-04 13:59:33'),
+	(141, 96, 'P-00005', 'Police', 1, 1, 0, '2024-02-19 17:42:22', '2024-02-19 17:44:05'),
+	(142, 97, 'P-00006', 'NBI', 1, 1, 1, '2024-02-19 17:42:55', '2024-03-04 13:57:49'),
+	(143, 98, 'N-00005', 'Police', 1, 1, 0, '2024-02-19 17:43:27', '2024-02-19 17:45:38'),
+	(144, 99, 'N-00006', 'Police', 1, 1, 0, '2024-02-19 18:35:52', '2024-02-19 18:36:08'),
+	(145, 100, 'N-00007', 'NBI', 1, 1, 1, '2024-02-20 02:53:39', '2024-03-04 13:57:01'),
+	(146, 101, 'P-00001', 'NBI', 1, 1, 1, '2024-02-26 00:33:13', '2024-03-04 13:55:17'),
+	(147, 102, 'P-00002', 'Police', 1, 1, 0, '2024-02-26 00:39:30', '2024-02-26 03:11:01'),
+	(148, 103, 'N-00001', 'NBI', 1, 1, 1, '2024-02-26 00:42:26', '2024-03-04 13:55:12'),
+	(149, 103, 'N-00001', 'Police', 1, 1, 0, '2024-02-26 00:42:26', '2024-02-26 02:00:25'),
+	(150, 104, 'N-00002', 'Police', 1, 1, 0, '2024-02-26 00:45:21', '2024-02-26 02:02:24'),
+	(151, 104, 'N-00002', 'sdasd', 1, 1, 0, '2024-02-26 00:45:21', '2024-02-26 02:02:24'),
+	(152, 105, 'N-00003', 'Police', 1, 1, 0, '2024-02-26 00:45:39', '2024-02-26 03:09:59'),
+	(153, 106, 'P-00003', 'NBI', 1, 1, 1, '2024-02-26 03:18:14', '2024-03-04 13:55:10'),
+	(154, 106, 'P-00003', 'Police', 1, 1, 0, '2024-02-26 03:18:14', '2024-02-26 09:45:07'),
+	(155, 107, 'P-00004', 'Police', 1, 1, 0, '2024-02-26 09:44:12', '2024-02-26 10:02:14'),
+	(156, 108, 'P-00005', 'Police', 1, 1, 0, '2024-02-26 10:25:39', '2024-02-26 10:44:19'),
+	(157, 109, 'N-00004', 'Police', 0, 1, 0, '2024-02-26 10:26:30', '2024-02-26 10:26:30'),
+	(158, 109, 'N-00004', 'adas', 0, 1, 1, '2024-02-26 10:26:30', '2024-03-04 13:55:03'),
+	(159, 110, 'P-00006', 'Police', 0, 1, 0, '2024-02-26 10:26:49', '2024-02-26 10:26:49'),
+	(160, 111, 'P-00007', 'NBI', 0, 1, 0, '2024-02-26 10:42:30', '2024-02-26 10:42:30'),
+	(161, 111, 'P-00007', 'Police', 0, 1, 0, '2024-02-26 10:42:30', '2024-02-26 10:42:30'),
+	(162, 112, 'P-00008', 'NBI', 0, 1, 0, '2024-02-26 10:43:18', '2024-02-26 10:43:18'),
+	(163, 112, 'P-00008', 'Police', 0, 1, 0, '2024-02-26 10:43:18', '2024-02-26 10:43:18'),
+	(164, 113, 'N-00005', 'NBI', 1, 1, 1, '2024-02-26 12:53:05', '2024-03-04 13:55:09'),
+	(165, 113, 'N-00005', 'Police', 1, 1, 0, '2024-02-26 12:53:05', '2024-02-26 12:53:54'),
+	(166, 114, 'N-00001', 'Police', 0, 1, 0, '2024-03-03 13:34:14', '2024-03-03 13:36:01'),
+	(167, 115, 'P-00001', 'Police', 2, 0, 0, '2024-03-04 13:27:48', '2024-03-04 13:39:38'),
+	(168, 116, 'P-00002', 'NBI', 0, 1, 0, '2024-03-04 13:28:10', '2024-03-04 13:28:10'),
+	(169, 116, 'P-00002', 'aw', 0, 1, 1, '2024-03-04 13:28:10', '2024-03-04 13:58:51'),
+	(170, 117, 'P-00003', 'NBI', 0, 1, 0, '2024-03-04 13:28:33', '2024-03-04 13:28:33'),
+	(171, 117, 'P-00003', 'Police', 0, 1, 0, '2024-03-04 13:28:33', '2024-03-04 13:28:33'),
+	(172, 118, 'P-00004', 'NBI', 0, 1, 0, '2024-03-04 13:29:19', '2024-03-04 13:29:19'),
+	(173, 118, 'P-00004', 'Police', 0, 1, 0, '2024-03-04 13:29:19', '2024-03-04 13:29:19'),
+	(174, 119, 'N-00001', 'Police', 0, 1, 0, '2024-03-04 13:29:39', '2024-03-04 13:29:39'),
+	(175, 120, 'N-00001', 'Police', 1, 1, 0, '2024-03-09 05:09:40', '2024-03-09 05:10:18'),
+	(176, 121, 'N-00001', 'NBI', 1, 1, 0, '2024-03-10 01:56:30', '2024-03-10 02:04:08'),
+	(177, 121, 'N-00001', 'Police', 1, 1, 0, '2024-03-10 01:56:30', '2024-03-10 02:04:08'),
+	(178, 122, 'N-00002', 'Police', 1, 1, 0, '2024-03-10 02:17:11', '2024-03-10 02:17:35'),
+	(179, 123, 'P-00001', 'Police', 1, 1, 0, '2024-03-10 02:21:18', '2024-03-10 02:22:06'),
+	(180, 124, 'P-00002', 'Police', 1, 1, 0, '2024-03-10 03:41:39', '2024-03-10 03:41:55'),
+	(181, 125, 'P-00003', 'Police', 1, 1, 0, '2024-03-10 03:49:03', '2024-03-10 03:49:26'),
+	(182, 125, 'P-00003', 'sda', 1, 1, 0, '2024-03-10 03:49:03', '2024-03-10 03:49:26'),
+	(183, 126, 'N-00003', 'NBI', 1, 1, 0, '2024-03-10 10:14:58', '2024-03-10 10:19:23'),
+	(184, 126, 'N-00003', 'Police', 1, 1, 0, '2024-03-10 10:14:58', '2024-03-10 10:19:23'),
+	(185, 127, 'N-00004', 'Police', 1, 1, 0, '2024-03-10 10:23:26', '2024-03-10 10:23:40'),
+	(186, 128, 'N-00005', 'NBI', 0, 1, 0, '2024-03-10 11:17:46', '2024-03-10 11:17:46');
 
 -- Dumping structure for table qcpl_engagement.service
 CREATE TABLE IF NOT EXISTS `service` (
@@ -490,13 +570,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `username` (`username`),
   KEY `user_role_id` (`user_role_id`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_role_id`) REFERENCES `user_role` (`user_role_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table qcpl_engagement.users: ~3 rows (approximately)
 INSERT INTO `users` (`user_id`, `user_role_id`, `username`, `password`, `is_active`, `last_login`, `created_at`, `updated_at`) VALUES
-	(4, 1, 'admin', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 1, '2024-02-26 15:30:24', '2023-12-28 02:52:00', '2024-02-26 15:30:24'),
-	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 1, '2024-02-25 09:39:33', '2023-12-28 02:53:48', '2024-02-25 09:39:33'),
-	(7, 1, 'bogart123', '$2y$10$uH24T.acTZWVm3Mt8fjO9.d.xV3jKgXxlJR/ch8swhPZKEImZgLw6', 1, '0000-00-00 00:00:00', '2024-01-23 02:35:23', '2024-01-23 02:35:23');
+	(4, 1, 'sta_clara', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 0, '2024-03-10 13:19:51', '2023-12-28 02:52:00', '2024-03-10 14:10:06'),
+	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 0, '2024-03-10 11:53:43', '2023-12-28 02:53:48', '2024-03-10 13:15:49'),
+	(7, 1, 'bogart123', '$2y$10$6ylVVS1GM8EcPJGafvmlJ.s5JljOWi3jYT9W97DN1JTYFPGWb.Xfq', 0, '0000-00-00 00:00:00', '2024-01-23 02:35:23', '2024-03-10 14:32:04'),
+	(8, 1, 'admin', '$2y$10$cEs4Nkyq9pyL4wFModVWbelahSrzNPfEqb0/rMvpIIjlMpngy7PlW', 0, '2024-03-10 15:45:17', '2024-03-10 13:13:43', '2024-03-10 15:45:17');
 
 -- Dumping structure for table qcpl_engagement.user_role
 CREATE TABLE IF NOT EXISTS `user_role` (
@@ -511,6 +592,11 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 INSERT INTO `user_role` (`user_role_id`, `user_role`, `created_at`, `updated_at`) VALUES
 	(1, 'Admin', '2023-12-06 14:57:56', '2023-12-06 15:01:56'),
 	(2, 'Staff', '2023-12-06 14:58:17', '2023-12-06 15:02:06');
+
+-- Dumping structure for view qcpl_engagement.busiest_times
+-- Removing temporary table and create final VIEW structure
+DROP TABLE IF EXISTS `busiest_times`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `busiest_times` AS select concat(`hour_table`.`hour`,':00') AS `hour`,sum(if((dayofweek(`client`.`created_at`) = 2),1,0)) AS `monday`,sum(if((dayofweek(`client`.`created_at`) = 3),1,0)) AS `tuesday`,sum(if((dayofweek(`client`.`created_at`) = 4),1,0)) AS `wednesday`,sum(if((dayofweek(`client`.`created_at`) = 5),1,0)) AS `thursday`,sum(if((dayofweek(`client`.`created_at`) = 6),1,0)) AS `friday` from (((select '8' AS `hour` union select '9' AS `9` union select '10' AS `10` union select '11' AS `11` union select '12' AS `12` union select '13' AS `13` union select '14' AS `14` union select '15' AS `15` union select '16' AS `16` union select '17' AS `17`) `hour_table` join (select 1 AS `day` union select 2 AS `2` union select 3 AS `3` union select 4 AS `4` union select 5 AS `5`) `day_table`) left join `client` on(((hour(`client`.`created_at`) = `hour_table`.`hour`) and (dayofweek(`client`.`created_at`) = `day_table`.`day`)))) where ((yearweek(`client`.`created_at`,1) = yearweek(curdate(),1)) or (`client`.`created_at` is null)) group by `hour_table`.`hour` order by (case `hour_table`.`hour` when '8' then 1 when '9' then 2 when '10' then 3 when '11' then 4 when '12' then 5 when '13' then 6 when '14' then 7 when '15' then 8 when '16' then 9 when '17' then 10 end);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
