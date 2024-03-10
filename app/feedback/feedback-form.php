@@ -377,7 +377,7 @@
 
                                 <div class="button-fields" style="display:flex; gap:0.8em; margin-top:9px; justify-content:center; align-items: center;">
                                 <button id="good-button" onclick="setValue('Good')"  style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Good</button>
-                                <button id="fair-button" onclick="setValue('Fair enough')" style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Fair Enough</button>
+                                <button id="fair-button" onclick="setValue('Average')" style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Average</button>
                                 <button id="poor-button" onclick="setValue('Poor')" style="border-radius:10px; background:none;border:2px solid grey; padding:10px; transition:0.3s ease-in-out;">Poor</button>
                                 </div>
                                 </div>
