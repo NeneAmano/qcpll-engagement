@@ -346,7 +346,7 @@
                 die();
             } elseif($checkPassword === true) {
                 
-                $query = "SELECT * FROM users WHERE user_id = '" .$usernameExists['user_id']. "' AND username = '" .$usernameExists['username']. "' AND is_active = 1 AND (user_role_id = 1 OR user_role_id = 2);";
+                $query = "SELECT * FROM users WHERE user_id = '" .$usernameExists['user_id']. "' AND username = '" .$usernameExists['username']. "' AND is_active = 0 AND (user_role_id = 1 OR user_role_id = 2);";
                 $result = mysqli_query($conn, $query);
                 $count = mysqli_num_rows($result);
                 if($count === 1) {    
