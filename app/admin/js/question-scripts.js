@@ -79,7 +79,7 @@ $(document).ready(function () {
     });
 });
 
-// delete question
+// deactivate question
 $(document).ready(function () {
     $('body').on('click', '.delete', function(event) {
 
@@ -94,6 +94,24 @@ $(document).ready(function () {
         console.log(data);
 
         $('#delete_question_id').val(data[0]);
+    });
+});
+
+// restore question
+$(document).ready(function () {
+    $('body').on('click', '.restore', function(event) {
+
+        $('#restore_question_modal').modal('show');
+
+        $tr = $(this).closest('tr');
+
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        console.log(data);
+
+        $('#restore_question_id').val(data[0]);
     });
 });
 
