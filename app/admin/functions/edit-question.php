@@ -21,12 +21,12 @@
                 setInterval(function(){ countdown(); },1000);
             </script>';
             echo $error_redirect;
-            header("refresh:5;url=../questions.php");
+            header("refresh:5;url=../questions.php?archived-records=no.php");
             die();
         }else{
             $sql = "UPDATE questions SET english_question = '$edit_english_question', tagalog_question = '$edit_tagalog_question' WHERE question_id = $edit_question_id;";
             if(mysqli_query($conn, $sql)){
-                header("location: ../questions.php?edit=successful");
+                header("location: ../questions.php?archived-records=no&edit=successful");
                 die();
             }
         }
