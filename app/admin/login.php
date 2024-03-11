@@ -3,7 +3,6 @@
     ob_start();
     $sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
     mysqli_query($conn, $sql);
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
