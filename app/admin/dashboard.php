@@ -1,8 +1,8 @@
 <?php
     require_once('../core/init.php');
     ob_start();
-    $sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
-    mysqli_query($conn, $sql);
+    // $sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
+    // mysqli_query($conn, $sql);
 
     if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
         session_unset();
