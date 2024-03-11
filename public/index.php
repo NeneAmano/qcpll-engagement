@@ -24,7 +24,7 @@
                             $error_message = ' Invalid password';
                         }else{
                             $is_active = $row['is_active'];
-                            if($is_active == 0){
+                            if($is_active == 1){
                                 $error_message = 'Your account is deactivated.';
                                 $username_success = '';
                             }else{
