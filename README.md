@@ -22,7 +22,7 @@ We based the sentiment score of emojis to [Emoji Sentiment Ranking v1.0](https:/
 I also used this great tool [PHP Sentiment Analyzer](https://github.com/davmixcool/php-sentiment-analyzer) to understand and predict sentiments in a sentence using VADER (Valence Aware Dictionary and sentiment Reasoner).
 
 ## Developers
-@n67h
-@eggwap
-@NeneAmano
-@Nabszx
+@github/n67h
+@github/eggwap
+@github/NeneAmano
+@github/abszx
