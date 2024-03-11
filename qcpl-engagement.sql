@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `client` (
   CONSTRAINT `client_ibfk_1` FOREIGN KEY (`age_id`) REFERENCES `age` (`age_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.client: ~75 rows (approximately)
+-- Dumping data for table qcpl_engagement.client: ~94 rows (approximately)
 INSERT INTO `client` (`client_id`, `civil_status`, `f_name`, `m_name`, `l_name`, `suffix`, `age_id`, `gender`, `education`, `occupation`, `status`, `created_at`, `updated_at`) VALUES
 	(35, '', 'da', 'das', 'das', 'das', 5, 'Male', 'Doctorate Degree', 'Employed', 1, '2024-02-08 01:26:03', '2024-02-08 01:26:03'),
 	(36, '', 'dasd', 'dsad', 'dasd', 'da', 3, 'Female', 'College Level', 'Unemployed', 2, '2024-02-08 01:29:29', '2024-02-08 01:29:29'),
@@ -254,9 +254,9 @@ CREATE TABLE IF NOT EXISTS `history_logs` (
   PRIMARY KEY (`hl_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `history_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.history_logs: ~39 rows (approximately)
+-- Dumping data for table qcpl_engagement.history_logs: ~41 rows (approximately)
 INSERT INTO `history_logs` (`hl_id`, `user_id`, `content`, `content_id`, `_action`, `created_at`) VALUES
 	(1, 5, 'login', 0, 'Log in', '2024-03-10 11:07:15'),
 	(2, 4, 'queue', 186, 'Add', '2024-03-10 11:17:46'),
@@ -301,8 +301,7 @@ INSERT INTO `history_logs` (`hl_id`, `user_id`, `content`, `content_id`, `_actio
 	(41, 4, 'question-type', 21, 'Add', '2024-03-10 15:13:54'),
 	(42, 4, 'logout', 0, 'Log out', '2024-03-10 15:45:12'),
 	(43, 8, 'login', 0, 'Log in', '2024-03-10 15:45:17'),
-	(44, 8, 'logout', 0, 'Log out', '2024-03-10 15:45:30'),
-	(45, 8, 'login', 0, 'Log in', '2024-03-11 07:05:17');
+	(44, 8, 'logout', 0, 'Log out', '2024-03-10 15:45:30');
 
 -- Dumping structure for table qcpl_engagement.questions
 CREATE TABLE IF NOT EXISTS `questions` (
@@ -321,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   CONSTRAINT `questions_ibfk_2` FOREIGN KEY (`qc_id`) REFERENCES `question_category` (`qc_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.questions: ~21 rows (approximately)
+-- Dumping data for table qcpl_engagement.questions: ~22 rows (approximately)
 INSERT INTO `questions` (`question_id`, `qt_id`, `qc_id`, `english_question`, `tagalog_question`, `is_deleted`, `created_at`, `updated_at`) VALUES
 	(31, 1, 1, 'Is our staff helpful?', 'Matulungin ba ang aming mga tauhan?', 0, '2024-02-26 01:34:49', '2024-02-26 01:34:49'),
 	(32, 1, 2, 'Are you satisfied with the service you received?', 'Nasiyahan ka ba sa iyong serbisyong natanggap?', 0, '2024-02-26 01:37:02', '2024-02-26 01:37:02'),
@@ -387,7 +386,7 @@ CREATE TABLE IF NOT EXISTS `queue` (
   PRIMARY KEY (`queue_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.queue: ~14 rows (approximately)
+-- Dumping data for table qcpl_engagement.queue: ~15 rows (approximately)
 INSERT INTO `queue` (`queue_id`, `total_queue`, `queue_date`, `updated_at`) VALUES
 	(1, 5, '2024-01-21 16:00:00', '2024-01-22 06:16:54'),
 	(2, 2, '2024-01-22 16:00:00', '2024-01-23 03:41:27'),
@@ -427,7 +426,7 @@ CREATE TABLE IF NOT EXISTS `queue_details` (
   CONSTRAINT `queue_details_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`client_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.queue_details: ~104 rows (approximately)
+-- Dumping data for table qcpl_engagement.queue_details: ~116 rows (approximately)
 INSERT INTO `queue_details` (`qd_id`, `client_id`, `queue_number`, `service`, `status`, `entry_check`, `is_inside`, `created_at`, `updated_at`) VALUES
 	(65, 40, 'N-00001', 'NBI', 0, 1, 0, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
 	(66, 40, 'N-00001', 'Police', 0, 1, 0, '2024-02-08 20:02:46', '2024-02-09 14:03:09'),
@@ -573,12 +572,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`user_role_id`) REFERENCES `user_role` (`user_role_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table qcpl_engagement.users: ~4 rows (approximately)
+-- Dumping data for table qcpl_engagement.users: ~3 rows (approximately)
 INSERT INTO `users` (`user_id`, `user_role_id`, `username`, `password`, `is_active`, `last_login`, `created_at`, `updated_at`) VALUES
 	(4, 1, 'sta_clara', '$2y$10$MRaoOOnRQ69KTufCOTKo3u87J0E41e3XIIvYSr/3vG58uJ6NDtWWS', 0, '2024-03-10 13:19:51', '2023-12-28 02:52:00', '2024-03-10 14:10:06'),
 	(5, 2, 'staff', '$2y$10$pk3hTpWf00wNWmTR6XtSY.mOzNX3T8Gy.tmlArEtxEY3djTzoCnE6', 0, '2024-03-10 11:53:43', '2023-12-28 02:53:48', '2024-03-10 13:15:49'),
 	(7, 1, 'bogart123', '$2y$10$6ylVVS1GM8EcPJGafvmlJ.s5JljOWi3jYT9W97DN1JTYFPGWb.Xfq', 0, '0000-00-00 00:00:00', '2024-01-23 02:35:23', '2024-03-10 14:32:04'),
-	(8, 1, 'admin', '$2y$10$cEs4Nkyq9pyL4wFModVWbelahSrzNPfEqb0/rMvpIIjlMpngy7PlW', 0, '2024-03-11 07:05:17', '2024-03-10 13:13:43', '2024-03-11 07:05:17');
+	(8, 1, 'admin', '$2y$10$cEs4Nkyq9pyL4wFModVWbelahSrzNPfEqb0/rMvpIIjlMpngy7PlW', 0, '2024-03-10 15:45:17', '2024-03-10 13:13:43', '2024-03-10 15:45:17');
 
 -- Dumping structure for table qcpl_engagement.user_role
 CREATE TABLE IF NOT EXISTS `user_role` (
