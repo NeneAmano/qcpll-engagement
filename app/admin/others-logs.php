@@ -397,7 +397,7 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                                 <td class="text-center"><?= $Age ?></td>
                                                 <td class="text-center"><?= $Gender ?></td>
                                                 <td class="text-center"><?= $TimeIn ?></td>
-                                                <td class="text-center"><?= $TimeOut ?></td>
+                                                <td class="text-center"><?= date('Y-m-d H:i:s', strtotime($TimeOut)) ?></td>
                                                 <td class="text-center"><?= $Service ?></td>
                                                 <td class="text-center"><?= $ServiceType ?></td>
                                             </tr>
