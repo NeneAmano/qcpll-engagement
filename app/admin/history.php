@@ -85,108 +85,44 @@
 <body>
     <div class="uk-container uk-padding">
         <div class="uk-timeline">
-            <div class="uk-timeline-item">
-                <div class="uk-timeline-icon">
-                    <span class="uk-badge"><span uk-icon="check"></span></span>
-                </div>
-                <div class="uk-timeline-content">
-                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small uk-flex-middle" uk-grid>
-                                <h3 class="uk-card-title"><time datetime="2020-07-08">July 8</time></h3>
-                                <span class="uk-label uk-label-success uk-margin-auto-left">Feature</span>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque mollitia voluptate vitae tempora repellat officiis iure dolorem accusantium sit temporibus?
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-timeline-item">
-                <div class="uk-timeline-icon">
-                    <span class="uk-badge"><span uk-icon="check"></span></span>
-                </div>
-                <div class="uk-timeline-content">
-                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small uk-flex-middle" uk-grid>
-                                <h3 class="uk-card-title"><time datetime="2020-07-07">July 7</time></h3>
-                                <span class="uk-label uk-label-warning uk-margin-auto-left">Test</span>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                            </p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                            </p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                            </p>
-                            <p>admin</p>
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="uk-timeline-item">
-                <div class="uk-timeline-icon">
-                    <span class="uk-badge"><span uk-icon="check"></span></span>
-                </div>
-                <div class="uk-timeline-content">
-                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small uk-flex-middle" uk-grid>
-                                <h3 class="uk-card-title"><time datetime="2020-07-06">July 6</time></h3>
-                                <span class="uk-label uk-label-danger uk-margin-auto-left">Fix</span>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-timeline-item">
-                <div class="uk-timeline-icon">
-                    <span class="uk-badge"><span uk-icon="check"></span></span>
-                </div>
-                <div class="uk-timeline-content">
-                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small uk-flex-middle" uk-grid>
-                                <h3 class="uk-card-title"><time datetime="2020-07-06">July 6</time></h3>
-                                <span class="uk-label uk-label-danger uk-margin-auto-left">Fix</span>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="uk-timeline-item">
-                <div class="uk-timeline-icon">
-                    <span class="uk-badge"><span uk-icon="check"></span></span>
-                </div>
-                <div class="uk-timeline-content">
-                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                        <div class="uk-card-header">
-                            <div class="uk-grid-small uk-flex-middle" uk-grid>
-                                <h3 class="uk-card-title"><time datetime="2020-07-06">July 6</time></h3>
-                                <span class="uk-label uk-label-danger uk-margin-auto-left">Fix</span>
-                            </div>
-                        </div>
-                        <div class="uk-card-body">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
+            
+            <?php
+                        $sql = "SELECT users.username, history_logs.content, history_logs._action,history_logs.created_at FROM history_logs JOIN users USING (USER_id);";
+                        
+                        $res = mysqli_query($conn,$sql);
+                        if (mysqli_num_rows($res) > 0) {
+                            while ($row = mysqli_fetch_assoc($res)) {
+                                $username = $row['username'];
+                                $content = $row['content'];
+                                $action = $row['_action'];
+                                $date = $row['created_at'];
+                                
+                                $date_string = $date;
+                                $timestamp = strtotime($date_string);
+                                $formattedDate = date("F j, Y", $timestamp);
+                                
+                                echo'<div class="uk-timeline-item">';
+                                    echo '<div class="uk-timeline-icon">';
+                                        echo '<span class="uk-badge"><span uk-icon="check"></span></span>';
+                                    echo '</div>';
+                                    echo '<div class="uk-timeline-content">';
+                                        echo '<div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">';
+                                echo '<div class="uk-card-header">';
+                                    echo '<div class="uk-grid-small uk-flex-middle" uk-grid>';
+                                        echo '<h3 class="uk-card-title"><time datetime="2020-07-08">'.$formattedDate.'</time></h3>';
+                                        echo'<span class="uk-label uk-label-success uk-margin-auto-left">'.$username.'</span>';
+                                    echo '</div>';
+                                echo '</div>';
+                                echo '<div class="uk-card-body">';
+                                    echo '<p>'.$action.'</p>';
+                                echo '</div>';
+                                echo '</div>';
+                                echo '</div>';
+                                echo '</div>';
+                            }
+                        }
+                    ?>
         </div>
     </div>
     <!-- UIkit JS -->
