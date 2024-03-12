@@ -312,7 +312,8 @@
     ?>
     <!-- start of main section container -->
     <section>
-        <p class="admin-title">WELCOME, ADMIN</p>
+        <p class="admin-title">WELCOME, ADMIN </p>
+        <?= date_default_timezone_get(); ?>
         <!-- start of main row -->
         <div class="row">
             <!-- start of total clients card -->
