@@ -88,7 +88,12 @@
             
             
             <?php
-                        $sql = "SELECT users.username, history_logs.content, history_logs._action,history_logs.created_at FROM history_logs JOIN users USING (USER_id);";
+                        $sql = "SELECT users.username, history_logs.content, history_logs._action, history_logs.created_at 
+                        FROM history_logs 
+                        JOIN users 
+                        ON history_logs.user_id = users.user_id 
+                        ORDER BY history_logs.created_at DESC;
+                        ";
                         
                         $res = mysqli_query($conn,$sql);
                         if (mysqli_num_rows($res) > 0) {

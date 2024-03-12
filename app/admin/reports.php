@@ -305,7 +305,7 @@ if ($user_role_id_session !== 1) {
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 75em;
-                bottom: 269em !important;
+                bottom: 187em !important;
                 width: 25em;
                 min-height: 50em !important;
                 display: grid;
@@ -336,7 +336,7 @@ if ($user_role_id_session !== 1) {
                 box-shadow: 0 6rem 40rem rgba(132, 139, 234, 0.18);
                 position: relative;
                 left: 45em;
-                bottom: 124em;
+                bottom: 67em !important;
                 width: 25em;
                 height: auto;
                 display: grid;
