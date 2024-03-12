@@ -312,6 +312,8 @@
     ?>
     <!-- start of main section container -->
     <section>
+        <?= date_default_timezone_get(); ?>
+        <?= "The time is " . date("h:i:sa"); ?>
         <p class="admin-title">WELCOME, ADMIN </p>
         <!-- start of main row -->
         <div class="row">
