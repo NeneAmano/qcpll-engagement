@@ -412,7 +412,9 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                             <td colspan="" class="text-center d-none"></td>
                                             <td colspan="" class="text-center d-none"></td>
                                             <td colspan="" class="text-center d-none"></td>
-                                            <td colspan="5" class="text-center">No records found.</td>
+           
+                
+                                            <td colspan="7" class="text-center">No records found.</td>
                                         </tr>
                                     <?php
                                     }
