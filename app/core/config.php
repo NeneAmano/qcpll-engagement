@@ -20,5 +20,6 @@
         // absolute path
         define('ROOT', '');
     }
-    
+
     date_default_timezone_set('Asia/Singapore');
+    date_default_timezone_get();
