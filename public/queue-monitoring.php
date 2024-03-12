@@ -1,7 +1,7 @@
-<?php 
-    require_once '../app/core/init.php'; 
-    // $sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
-    // mysqli_query($conn, $sql);
+<?php
+require_once '../app/core/init.php';
+$sql = "SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));";
+mysqli_query($conn, $sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,10 +148,15 @@
         bottom: -5%;
         height: 600px;
     }
-    .no-record{
+
+    .no-record {
         text-align: center;
         font-size: 20px;
         letter-spacing: 5px;
+    }
+
+    .arrow {
+        width: 12.5rem;
     }
 </style>
 
@@ -164,7 +169,7 @@
                 <h2 style="text-align: center; color:#ffffff; background-color:#3498db;">PRIORITY LANE</h2><br>
 
                 <?php
-                        $priorSql = "SELECT 
+                $priorSql = "SELECT 
                         client.`status` AS client_status, 
                         queue_details.queue_number, 
                         GROUP_CONCAT(queue_details.service) AS services, 
@@ -236,13 +241,16 @@
                 }
                 ?>
             </div>
+            <div class="arrow-container">
+                <img src="./assets/images/red-arrow.png" alt="arrow.png" class="arrow">
+            </div>
         </div>
     </div>
 
     <img src="./assets/images/hedgehog.gif" alt="" class="duck">
 
     <script>
-        setInterval(function() {
+        setInterval(function () {
             location.reload();
         }, 1000);
     </script>
