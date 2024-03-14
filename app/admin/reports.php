@@ -678,99 +678,154 @@ if ($user_role_id_session !== 1) {
                                 }
                                 ?>
                                 <div class="card-content">
-                                    <div class="card-title">
-                                        <p>
-                                            <?= $question_category . '<span class=""> Experience</span> <span class="fs-6">(' . $count . ')</span>' ?>
-                                        </p>
-                                    </div>
-                                    <div class="card-body">
-                                        <?php
+                                <div class="card-content">
+    <div class="card-title">
+        <p>
+            <?php
+            // Calculate the total count based on the filter
+            $sql_count = "SELECT COUNT(*) AS total_count FROM feedback f
+                          INNER JOIN questions q USING (question_id) 
+                          INNER JOIN question_type qt USING (qt_id)
+                          INNER JOIN question_category qc USING (qc_id) 
+                          INNER JOIN emoji e ON f.answer_id = e.emoji_id
+                          WHERE qc.question_category = '$question_category' 
+                          AND qt.question_type = 'Emoji-based' 
+                          AND e.in_choices != 0";
 
-$sql_emoji = "WITH EmojiFeedback AS (
-    SELECT 
-        e.emoji_id,
-        f.answer_id,
-        COUNT(*) AS count_per_answer,
-        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY qc_id) AS percentage
-    FROM 
-        feedback f
-        INNER JOIN questions q USING (question_id) 
-        INNER JOIN question_type qt USING (qt_id)
-        INNER JOIN question_category qc USING (qc_id) 
-        INNER JOIN emoji e ON f.answer_id = e.emoji_id
-    WHERE 
-        qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based' AND e.in_choices != 0";
+            // Check if filter is set
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
+                switch ($filter) {
+                    case 'today':
+                        // Filter for today's feedback
+                        $sql_count .= " AND DATE(f.created_at) = CURDATE()";
+                        break;
+                    case '7days':
+                        // Filter for feedback in the last 7 days
+                        $sql_count .= " AND f.created_at >= CURRENT_DATE - INTERVAL 7 DAY";
+                        break;
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                    case '10':
+                    case '11':
+                    case '12':
+                        // Filter for feedback in the specified month
+                        $sql_count .= " AND MONTH(f.created_at) = $filter";
+                        break;
+                    default:
+                        // No specific filter, use general query
+                        break;
+                }
+            }
 
-// Check if filter is set
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
-    switch ($filter) {
-        case 'today':
-            // Filter for today's feedback
-            $sql_emoji .= " AND DATE(f.created_at) = CURDATE()";
-            break;
-        case '7days':
-            // Filter for feedback in the last 7 days
-            $sql_emoji .= " AND f.created_at >= CURRENT_DATE - INTERVAL 7 DAY";
-            break;
-        case '1':
-        case '2':
-        case '3':
-        case '4':
-        case '5':
-        case '6':
-        case '7':
-        case '8':
-        case '9':
-        case '10':
-        case '11':
-        case '12':
-            // Filter for feedback in the specified month
-            $sql_emoji .= " AND MONTH(f.created_at) = $filter";
-            break;
-        default:
-            // No specific filter, use general query
-            break;
-    }
-}
+            // Execute the count query
+            $result_count = mysqli_query($conn, $sql_count);
+            $row_count = mysqli_fetch_assoc($result_count);
+            $filter_count = $row_count['total_count'];
 
-$sql_emoji .= " GROUP BY e.emoji_id, f.answer_id
-                )
-                SELECT 
-                    e.emoji_id,
-                    ef.answer_id,
-                    COALESCE(ef.count_per_answer, 0) AS count_per_answer,  -- Use COALESCE to handle NULL values
-                    COALESCE(ef.percentage, 0) AS percentage,  -- Use COALESCE to handle NULL values
-                    e.*  -- Include other columns from the emoji table if needed
-                FROM 
-                    emoji e
-                    LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
-                WHERE 
-                    e.in_choices != 0
-                ORDER BY 
-                    e.emoji_id DESC
-                LIMIT 5;";
+            // Display question category and count
+            echo $question_category . '<span class=""> Experience</span> <span class="fs-6">(' . $filter_count . ')</span>';
+            ?>
+        </p>
+    </div>
+    <div class="card-body">
+        <?php
+        
+        // Remaining code for displaying emoji feedback...
+        $sql_emoji = "WITH EmojiFeedback AS (
+            SELECT 
+                e.emoji_id,
+                f.answer_id,
+                COUNT(*) AS count_per_answer,
+                COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (PARTITION BY qc_id) AS percentage
+            FROM 
+                feedback f
+                INNER JOIN questions q USING (question_id) 
+                INNER JOIN question_type qt USING (qt_id)
+                INNER JOIN question_category qc USING (qc_id) 
+                INNER JOIN emoji e ON f.answer_id = e.emoji_id
+            WHERE 
+                qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based' AND e.in_choices != 0";
 
-                                    $result_emoji = mysqli_query($conn, $sql_emoji);
-                                    if (mysqli_num_rows($result_emoji) > 0) {
-                                        while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
-                                            $emoji_id = $row_emoji['emoji_id'];
-                                            $image_path = $row_emoji['image_path'];
-                                            $percentage = $row_emoji['percentage'];
-                                            $formatted_percentage = number_format($percentage, 1);
-                                            ?>
-                                            <span>
-                                                <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
-                                                <p>
-                                                    <?= $formatted_percentage ?>%
-                                                </p>
-                                            </span>
-                                            <?php
-                                        }
-                                    }
-                                    ?>
-                                </div>
-                            </div>
+        // Check if filter is set
+        if (isset($_GET['filter'])) {
+            $filter = $_GET['filter'];
+            switch ($filter) {
+                case 'today':
+                    // Filter for today's feedback
+                    $sql_emoji .= " AND DATE(f.created_at) = CURDATE()";
+                    break;
+                case '7days':
+                    // Filter for feedback in the last 7 days
+                    $sql_emoji .= " AND f.created_at >= CURRENT_DATE - INTERVAL 7 DAY";
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '10':
+                case '11':
+                case '12':
+                    // Filter for feedback in the specified month
+                    $sql_emoji .= " AND MONTH(f.created_at) = $filter";
+                    break;
+                default:
+                    // No specific filter, use general query
+                    break;
+            }
+        }
+
+        $sql_emoji .= " GROUP BY e.emoji_id, f.answer_id
+                        )
+                        SELECT 
+                            e.emoji_id,
+                            ef.answer_id,
+                            COALESCE(ef.count_per_answer, 0) AS count_per_answer,  -- Use COALESCE to handle NULL values
+                            COALESCE(ef.percentage, 0) AS percentage,  -- Use COALESCE to handle NULL values
+                            e.*  -- Include other columns from the emoji table if needed
+                        FROM 
+                            emoji e
+                            LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                        WHERE 
+                            e.in_choices != 0
+                        ORDER BY 
+                            e.emoji_id DESC
+                        LIMIT 5;";
+
+        $result_emoji = mysqli_query($conn, $sql_emoji);
+        if (mysqli_num_rows($result_emoji) > 0) {
+            while ($row_emoji = mysqli_fetch_assoc($result_emoji)) {
+                $emoji_id = $row_emoji['emoji_id'];
+                $image_path = $row_emoji['image_path'];
+                $percentage = $row_emoji['percentage'];
+                $formatted_percentage = number_format($percentage, 1);
+                ?>
+                <span>
+                    <img src="../../<?= $image_path ?>" alt="" class="emoji-img">
+                    <p>
+                        <?= $formatted_percentage ?>%
+                    </p>
+                </span>
+                <?php
+            }
+        }
+        ?>
+    </div>
+</div>
+
+
                             <?php
                         }
                     }
@@ -817,6 +872,7 @@ if (isset($_GET['filter'])) {
         case '10':
         case '11':
         case '12':
+            
             // Filter for feedback in the specified month
             $sql_text_service .= " AND MONTH(feedback.created_at) = $filter";
             break;
@@ -878,156 +934,209 @@ if (mysqli_num_rows($result_text_service) > 0) {
                         <p>Overall Experience</p>
                     </div>
                     <div class="card-analysis">
-                        <?php
-                        $sql_a_overall = "WITH EmojiFeedback AS (
-                            SELECT 
-                                e.emoji_id,
-                                f.answer_id,
-                                COUNT(*) AS count_per_answer,
-                                COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
-                            FROM 
-                                feedback f
-                                INNER JOIN questions q USING (question_id) 
-                                INNER JOIN question_type qt USING (qt_id)
-                                INNER JOIN question_category qc USING (qc_id) 
-                                INNER JOIN emoji e ON f.answer_id = e.emoji_id
-                            WHERE 
-                                qt.question_type = 'Emoji-based'
-                            GROUP BY 
-                                e.emoji_id, f.answer_id
-                        )
-                        
-                        SELECT 
-                            e.emoji_id,
-                            ef.answer_id,
-                            COALESCE(ef.count_per_answer, 0) AS count_per_answer,
-                            COALESCE(ef.percentage, 0) AS percentage,
-                            e.*
-                        FROM 
-                            emoji e
-                            LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
-                        WHERE 
-                            e.in_choices != 0
-                        ORDER BY 
-                            COALESCE(ef.count_per_answer, 0) DESC,
-                            COALESCE(ef.percentage, 0) DESC,
-                            e.emoji_id DESC
-                        LIMIT 1;";
-                        $result_a_overall = mysqli_query($conn, $sql_a_overall);
-                        if (mysqli_num_rows($result_a_overall) > 0) {
-                            $row_a_overall = mysqli_fetch_assoc($result_a_overall);
-                            $percentage = $row_a_overall['percentage'];
-                            $image_path = $row_a_overall['image_path'];
-                            $sentiment_score = $row_a_overall['sentiment_score'];
-                            $unicode_name = $row_a_overall['unicode_name'];
-                            $remarks = $row_a_overall['remarks'];
-
-                            // Find the position of the first dot (.)
-                            $dot_position = strpos($remarks, '.');
-
-                            // Extract the substring after the first dot (.)
-                            $final_remarks = substr($remarks, $dot_position + 1);
-                        }
-                        ?>
-                        <div class="card-main-contetn-analysis">
-                            <?php
-                            if ($percentage == 0) {
-                                echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
-                                echo '<div class="card-body-analysis">';
-                                echo '<p><b>Remarks:</b> No data found.</p>';
-                                echo '<p><b>Sentiment Score:</b> No data found.</p>';
-                                echo '</div>';
-                            } else {
-                                echo '<img src="../../' . $image_path . '" alt="" class="emoji-img-analysis">';
-                                echo '<div class="card-body-analysis">';
-                                echo '<p><b>Remarks:</b>' . $final_remarks . '</p>';
-                                echo '<p><b>Sentiment Score:</b>' . $sentiment_score . '</p>';
-                                echo '</div>';
-                            }
-                            ?>
-                            <hr class="border border-dark">
-                        </div>
-                    </div>
-
                     <?php
-                    $sql_a_category = "SELECT * FROM question_category;";
-                    $result_a_category = mysqli_query($conn, $sql_a_category);
-                    if (mysqli_num_rows($result_a_category) > 0) {
-                        while ($row_a_category = mysqli_fetch_assoc($result_a_category)) {
-                            $qc_id = $row_a_category['qc_id'];
-                            $question_category = $row_a_category['question_category'];
-                            ?>
-                            <!-- for staff assistance -->
-                            
-                            <div class="card-analysis">
-                                <?php
-                                $sql_analysis = "WITH EmojiFeedback AS (
-                                        SELECT 
-                                            e.emoji_id,
-                                            f.answer_id,
-                                            COUNT(*) AS count_per_answer,
-                                            COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
-                                        FROM 
-                                            feedback f
-                                            INNER JOIN questions q USING (question_id) 
-                                            INNER JOIN question_type qt USING (qt_id)
-                                            INNER JOIN question_category qc USING (qc_id) 
-                                            INNER JOIN emoji e ON f.answer_id = e.emoji_id
-                                        WHERE 
-                                            qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'
-                                        GROUP BY 
-                                            e.emoji_id, f.answer_id
-                                    )
-                                    
-                                    SELECT 
-                                        e.emoji_id,
-                                        ef.answer_id,
-                                        COALESCE(ef.count_per_answer, 0) AS count_per_answer,
-                                        COALESCE(ef.percentage, 0) AS percentage,
-                                        e.*
-                                    FROM 
-                                        emoji e
-                                        LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
-                                    WHERE 
-                                        e.in_choices != 0
-                                    ORDER BY 
-                                        COALESCE(ef.count_per_answer, 0) DESC,
-                                        COALESCE(ef.percentage, 0) DESC,
-                                        e.emoji_id DESC
-                                    LIMIT 1;";
-                                $result_analysis = mysqli_query($conn, $sql_analysis);
-                                if (mysqli_num_rows($result_analysis) > 0) {
-                                    $row_analysis = mysqli_fetch_assoc($result_analysis);
+// Overall emoji-based analysis
+$sql_a_overall = "WITH EmojiFeedback AS (
+    SELECT 
+        e.emoji_id,
+        f.answer_id,
+        COUNT(*) AS count_per_answer,
+        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+    FROM 
+        feedback f
+        INNER JOIN questions q USING (question_id) 
+        INNER JOIN question_type qt USING (qt_id)
+        INNER JOIN question_category qc USING (qc_id) 
+        INNER JOIN emoji e ON f.answer_id = e.emoji_id
+    WHERE 
+        qt.question_type = 'Emoji-based'";
 
-                                    $percentage = $row_analysis['percentage'];
-                                    $image_path = $row_analysis['image_path'];
-                                    $sentiment_score = $row_analysis['sentiment_score'];
-                                    $unicode_name = $row_analysis['unicode_name'];
-                                    $remarks = $row_analysis['remarks'];
+// Check if filter is set
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+    switch ($filter) {
+        case 'today':
+            // Filter for today's feedback
+            $sql_a_overall .= " AND DATE(f.created_at) = CURDATE()";
+            break;
+        case '7days':
+            // Filter for feedback in the last 7 days
+            $sql_a_overall .= " AND f.created_at >= CURRENT_DATE - INTERVAL 7 DAY";
+            break;
+        case 'year':
+            // Filter for feedback in the current year
+            $sql_a_overall .= " AND YEAR(f.created_at) = YEAR(CURRENT_DATE)";
+            break;
+        default:
+            // Check if it's a month filter
+            if (ctype_digit($filter) && $filter >= 1 && $filter <= 12) {
+                // Filter for feedback in the specified month
+                $sql_a_overall .= " AND MONTH(f.created_at) = $filter";
+            }
+            break;
+    }
+}
 
-                                    // Find the position of the first dot (.)
-                                    $dot_position = strpos($remarks, '.');
+$sql_a_overall .= " GROUP BY e.emoji_id, f.answer_id
+                    )
+                    SELECT 
+                        e.emoji_id,
+                        ef.answer_id,
+                        COALESCE(ef.count_per_answer, 0) AS count_per_answer,
+                        COALESCE(ef.percentage, 0) AS percentage,
+                        e.*
+                    FROM 
+                        emoji e
+                        LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                    WHERE 
+                        e.in_choices != 0
+                    ORDER BY 
+                        COALESCE(ef.count_per_answer, 0) DESC,
+                        COALESCE(ef.percentage, 0) DESC,
+                        e.emoji_id DESC
+                    LIMIT 1;";
+$result_a_overall = mysqli_query($conn, $sql_a_overall);
+if (mysqli_num_rows($result_a_overall) > 0) {
+    $row_a_overall = mysqli_fetch_assoc($result_a_overall);
+    $percentage = $row_a_overall['percentage'];
+    $image_path = $row_a_overall['image_path'];
+    $sentiment_score = $row_a_overall['sentiment_score'];
+    $unicode_name = $row_a_overall['unicode_name'];
+    $remarks = $row_a_overall['remarks'];
+    
 
-                                    // Extract the substring after the first dot (.)
-                                    $final_remarks = substr($remarks, $dot_position + 1);
-                                }
-                                ?>
-                                <div class="card-main-contetn-analysis">
-                                    <?php
-                                    if ($percentage == 0) {
-                                        echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
-                                        echo '<div class="card-body-analysis">';
-                                        echo '<p><b>Remarks:</b> No data found.</p>';
-                                        echo '<p><b>Sentiment Score:</b> No data found.</p>';
-                                        echo '</div>';
-                                    } else {
-                                        echo '<img src="../../' . $image_path . '" alt="" class="emoji-img-analysis">';
-                                        echo '<div class="card-body-analysis">';
-                                        echo '<p><b>Remarks:</b>' . $final_remarks . '</p>';
-                                        echo '<p><b>Sentiment Score:</b>' . $sentiment_score . '</p>';
-                                        echo '</div>';
-                                    }
-                                    ?>
+    // Find the position of the first dot (.)
+    $dot_position = strpos($remarks, '.');
+
+    // Extract the substring after the first dot (.)
+    $final_remarks = substr($remarks, $dot_position + 1);
+}
+?>
+<div class="card-main-contetn-analysis">
+    <?php
+    if ($percentage == 0) {
+        echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
+        echo '<div class="card-body-analysis">';
+        echo '<p><b>Remarks:</b> No data found.</p>';
+        echo '<p><b>Sentiment Score:</b> No data found.</p>';
+        echo '</div>';
+    } else {
+        echo '<img src="../../' . $image_path . '" alt="" class="emoji-img-analysis">';
+        echo '<div class="card-body-analysis">';
+        echo '<p><b>Remarks:</b>' . $final_remarks . '</p>';
+        echo '<p><b>Sentiment Score:</b>' . $sentiment_score . '</p>';
+        echo '</div>';
+    }
+    ?>
+    <hr class="border border-dark">
+</div>
+</div>
+
+<?php
+$sql_a_category = "SELECT * FROM question_category;";
+$result_a_category = mysqli_query($conn, $sql_a_category);
+if (mysqli_num_rows($result_a_category) > 0) {
+    while ($row_a_category = mysqli_fetch_assoc($result_a_category)) {
+        $qc_id = $row_a_category['qc_id'];
+        $question_category = $row_a_category['question_category'];
+        echo $question_category . '<span class=""> Experience</span>';
+        ?>
+
+        <div class="card-analysis">
+            <?php
+            $sql_analysis = "WITH EmojiFeedback AS (
+                    SELECT 
+                        e.emoji_id,
+                        f.answer_id,
+                        COUNT(*) AS count_per_answer,
+                        COUNT(*) * 100.0 / SUM(COUNT(*)) OVER () AS percentage
+                    FROM 
+                        feedback f
+                        INNER JOIN questions q USING (question_id) 
+                        INNER JOIN question_type qt USING (qt_id)
+                        INNER JOIN question_category qc USING (qc_id) 
+                        INNER JOIN emoji e ON f.answer_id = e.emoji_id
+                    WHERE 
+                        qc.question_category = '$question_category' AND qt.question_type = 'Emoji-based'";
+
+            // Check if filter is set
+            if (isset($_GET['filter'])) {
+                $filter = $_GET['filter'];
+                switch ($filter) {
+                    case 'today':
+                        // Filter for today's feedback
+                        $sql_analysis .= " AND DATE(f.created_at) = CURDATE()";
+                        break;
+                    case '7days':
+                        // Filter for feedback in the last 7 days
+                        $sql_analysis .= " AND f.created_at >= CURRENT_DATE - INTERVAL 7 DAY";
+                        break;
+                    case 'year':
+                        // Filter for feedback in the current year
+                        $sql_analysis .= " AND YEAR(f.created_at) = YEAR(CURRENT_DATE)";
+                        break;
+                    default:
+                        // Check if it's a month filter
+                        if (ctype_digit($filter) && $filter >= 1 && $filter <= 12) {
+                            // Filter for feedback in the specified month
+                            $sql_analysis .= " AND MONTH(f.created_at) = $filter";
+                        }
+                        break;
+                }
+            }
+
+            $sql_analysis .= " GROUP BY e.emoji_id, f.answer_id
+                                )
+                                SELECT 
+                                    e.emoji_id,
+                                    ef.answer_id,
+                                    COALESCE(ef.count_per_answer, 0) AS count_per_answer,
+                                    COALESCE(ef.percentage, 0) AS percentage,
+                                    e.*
+                                FROM 
+                                    emoji e
+                                    LEFT JOIN EmojiFeedback ef ON e.emoji_id = ef.emoji_id
+                                WHERE 
+                                    e.in_choices != 0
+                                ORDER BY 
+                                    COALESCE(ef.count_per_answer, 0) DESC,
+                                    COALESCE(ef.percentage, 0) DESC,
+                                    e.emoji_id DESC
+                                LIMIT 1;";
+            $result_analysis = mysqli_query($conn, $sql_analysis);
+            if (mysqli_num_rows($result_analysis) > 0) {
+                $row_analysis = mysqli_fetch_assoc($result_analysis);
+
+                $percentage = $row_analysis['percentage'];
+                $image_path = $row_analysis['image_path'];
+                $sentiment_score = $row_analysis['sentiment_score'];
+                $unicode_name = $row_analysis['unicode_name'];
+                $remarks = $row_analysis['remarks'];
+
+                // Find the position of the first dot (.)
+                $dot_position = strpos($remarks, '.');
+
+                // Extract the substring after the first dot (.)
+                $final_remarks = substr($remarks, $dot_position + 1);
+            }
+            ?>
+            <div class="card-main-contetn-analysis">
+                <?php
+                if ($percentage == 0) {
+                    echo '<img src="../../public/assets/images/question-mark.png" alt="" class="emoji-img-analysis">';
+                    echo '<div class="card-body-analysis">';
+                    echo '<p><b>Remarks:</b> No data found.</p>';
+                    echo '<p><b>Sentiment Score:</b> No data found.</p>';
+                    echo '</div>';
+                } else {
+                    echo '<img src="../../' . $image_path . '" alt="" class="emoji-img-analysis">';
+                    echo '<div class="card-body-analysis">';
+                    echo '<p><b>Remarks:</b>' . $final_remarks . '</p>';
+                    echo '<p><b>Sentiment Score:</b>' . $sentiment_score . '</p>';
+                    echo '</div>';
+                }
+                ?>
+
                                     <hr class="border border-dark">
                                 </div>
                             </div>
@@ -1037,83 +1146,273 @@ if (mysqli_num_rows($result_text_service) > 0) {
                     ?>
                     <!-- for text-based ratings -->
                     <div class="card-title-analysis mb-5">
-                        <p>Text-based</p>
-                    </div>
-                    <?php
-                    $sql_category = "SELECT * FROM question_category;";
-                    $result_category = mysqli_query($conn, $sql_category);
-                    if (mysqli_num_rows($result_category) > 0) {
-                        while ($row_category = mysqli_fetch_assoc($result_category)) {
-                            $qc_id = $row_category['qc_id'];
-                            $question_category = $row_category['question_category'];
+    <p>Text-based</p>
+</div>
+<?php
+// Initialize $sql_overall with a default query
+$sql_overall = "WITH SentimentFeedback AS (
+                    SELECT 
+                        qc.question_category,
+                        COUNT(*) AS total_feedback,
+                        (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+                        (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+                        (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive,
+                        CASE
+                            WHEN GREATEST(
+                                (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                            ) = (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Negative'
+                            WHEN GREATEST(
+                                (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                            ) = (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Neutral'
+                            WHEN GREATEST(
+                                (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                            ) = (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Positive'
+                        END AS highest_sentiment,
+                        GREATEST(
+                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                        ) AS highest_percentage
+                    FROM
+                        feedback f
+                        INNER JOIN questions q USING (question_id)
+                        INNER JOIN question_category qc USING (qc_id)
+                        INNER JOIN question_type qt USING (qt_id)
+                    WHERE qt.question_type = 'Text-based'
+                    GROUP BY qc.question_category
+                )
+                
+                SELECT 
+                    sf.question_category,
+                    sf.total_feedback,
+                    sf.negative,
+                    sf.neutral,
+                    sf.positive,
+                    sf.highest_sentiment,
+                    sf.highest_percentage
+                FROM 
+                    SentimentFeedback sf;";
+
+// Check if filter is set
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+
+    switch ($filter) {
+        case '7days':
+            // Modify $sql_overall according to '7days' filter
+            $sql_overall = "WITH SentimentFeedback AS (
+                                SELECT 
+                                    qc.question_category,
+                                    COUNT(*) AS total_feedback,
+                                    (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+                                    (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+                                    (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive,
+                                    CASE
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Negative'
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Neutral'
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Positive'
+                                    END AS highest_sentiment,
+                                    GREATEST(
+                                        (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                    ) AS highest_percentage
+                                FROM
+                                    feedback f
+                                    INNER JOIN questions q USING (question_id)
+                                    INNER JOIN question_category qc USING (qc_id)
+                                    INNER JOIN question_type qt USING (qt_id)
+                                WHERE qt.question_type = 'Text-based'
+                                    AND f.created_at >= CURRENT_DATE - INTERVAL 7 DAY -- Filter for feedback in the last 7 days
+                                GROUP BY qc.question_category
+                            )
+                            
+                            SELECT 
+                                sf.question_category,
+                                sf.total_feedback,
+                                sf.negative,
+                                sf.neutral,
+                                sf.positive,
+                                sf.highest_sentiment,
+                                sf.highest_percentage
+                            FROM 
+                                SentimentFeedback sf;";
+            break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '10':
+        case '11':
+        case '12':
+            $month = intval($filter); // Convert month filter to integer
+            // Modify $sql_overall according to month filter
+            $sql_overall = "WITH SentimentFeedback AS (
+                                SELECT 
+                                    qc.question_category,
+                                    COUNT(*) AS total_feedback,
+                                    (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+                                    (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+                                    (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive,
+                                    CASE
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Negative'
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Neutral'
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Positive'
+                                    END AS highest_sentiment,
+                                    GREATEST(
+                                        (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                    ) AS highest_percentage
+                                FROM
+                                    feedback f
+                                    INNER JOIN questions q USING (question_id)
+                                    INNER JOIN question_category qc USING (qc_id)
+                                    INNER JOIN question_type qt USING (qt_id)
+                                WHERE qt.question_type = 'Text-based'
+                                    AND MONTH(f.created_at) = $month -- Filter for feedback in the specified month
+                                GROUP BY qc.question_category
+                            )
+                            
+                            SELECT 
+                                sf.question_category,
+                                sf.total_feedback,
+                                sf.negative,
+                                sf.neutral,
+                                sf.positive,
+                                sf.highest_sentiment,
+                                sf.highest_percentage
+                            FROM 
+                                SentimentFeedback sf;";
+            break;
+        case 'year':
+            // Modify $sql_overall according to year filter
+            $sql_overall = "WITH SentimentFeedback AS (
+                                SELECT 
+                                    qc.question_category,
+                                    COUNT(*) AS total_feedback,
+                                    (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
+                                    (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
+                                    (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive,
+                                    CASE
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Negative'
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Neutral'
+                                        WHEN GREATEST(
+                                            (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                            (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                        ) = (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Positive'
+                                    END AS highest_sentiment,
+                                    GREATEST(
+                                        (SUM(CASE WHEN f.text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN f.text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
+                                        (SUM(CASE WHEN f.text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
+                                    ) AS highest_percentage
+                                FROM
+                                    feedback f
+                                    INNER JOIN questions q USING (question_id)
+                                    INNER JOIN question_category qc USING (qc_id)
+                                    INNER JOIN question_type qt USING (qt_id)
+                                WHERE qt.question_type = 'Text-based'
+                                    AND YEAR(f.created_at) = YEAR(CURRENT_DATE) -- Filter for feedback in the current year
+                                GROUP BY qc.question_category
+                            )
+                            
+                            SELECT 
+                                sf.question_category,
+                                sf.total_feedback,
+                                sf.negative,
+                                sf.neutral,
+                                sf.positive,
+                                sf.highest_sentiment,
+                                sf.highest_percentage
+                            FROM 
+                                SentimentFeedback sf;";
+            break;
+        default:
+            // Default case: no filter or unsupported filter, use a general query
+            break;
+    }
+}
+
+$result_overall = mysqli_query($conn, $sql_overall);
+
+if (mysqli_num_rows($result_overall) > 0) {
+    while ($row_overall = mysqli_fetch_assoc($result_overall)) {
+        $question_category = $row_overall['question_category'];
+        $total_feedback = $row_overall['total_feedback'];
+        $negative = $row_overall['negative'];
+        $neutral = $row_overall['neutral'];
+        $positive = $row_overall['positive'];
+        $highest_sentiment = $row_overall['highest_sentiment'];
+        $highest_percentage = $row_overall['highest_percentage'];
+?>
+        <div class="card-analysis">
+            <div class="card-body-analysis-text">
+                <p><b><?= $question_category ?> Experience</b></p>
+                <p><b>Total Feedback:</b> <?= $total_feedback ?></p>
+                <p><b>Negative:</b> <?= $negative ?>%</p>
+                <p><b>Neutral:</b> <?= $neutral ?>%</p>
+                <p><b>Positive:</b> <?= $positive ?>%</p>
+                <p><b>Highest Sentiment:</b> <?= $highest_sentiment ?></p>
+                <p><b>Highest Percentage:</b> <?= $highest_percentage ?>%</p>
+                <br>
+            </div>
+        </div>
+<?php
+    }
+}
+?>
 
 
-                            $sql_text = "SELECT
-                                question_id,
-                                question_type.question_type,
-                                question_category.question_category,
-                                COUNT(*) AS total_feedback,
-                                (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS negative,
-                                (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS neutral,
-                                (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS positive,
-                                CASE
-                                    WHEN GREATEST(
-                                        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
-                                    ) = (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Negative'
-                                    WHEN GREATEST(
-                                        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
-                                    ) = (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Neutral'
-                                    WHEN GREATEST(
-                                        (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                        (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                        (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
-                                    ) = (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100 THEN 'Positive'
-                                END AS highest_sentiment,
-                                GREATEST(
-                                    (SUM(CASE WHEN text_sentiment = 0 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                    (SUM(CASE WHEN text_sentiment = 1 THEN 1 ELSE 0 END) / COUNT(*)) * 100,
-                                    (SUM(CASE WHEN text_sentiment = 2 THEN 1 ELSE 0 END) / COUNT(*)) * 100
-                                ) AS highest_percentage
-                            FROM
-                                feedback
-                                INNER JOIN questions USING (question_id)
-                                INNER JOIN question_category USING (qc_id)
-                                INNER JOIN question_type USING (qt_id)
-                            WHERE question_type.question_type = 'Text-based' AND question_category.question_category = '$question_category'
-                            GROUP BY question_id, question_type.question_type, question_category.question_category;
-                            ";
-                            $result_text = mysqli_query($conn, $sql_text);
-                            if (mysqli_num_rows($result_text) > 0) {
-                                while ($row_text = mysqli_fetch_assoc($result_text)) {
-                                    $highest_sentiment = $row_text['highest_sentiment'];
-                                    $highest_percentage = $row_text['highest_percentage'];
-                                    ?>
-                                    <div class="card-analysis">
-                                        <div class="card-body-analysis-text">
-                                            <p><b>
-                                                    <?= $question_category ?> Experience
-                                                </b></p>
+    
 
-                                            <p><b>Highest Sentiment:</b>
-                                                <?= $highest_sentiment ?>
-                                            </p>
-                                            <p><b>Percentage:</b>
-                                                <?= $highest_percentage ?>%
-                                            </p>
-                                            <br>
-                                        </div>
-                                    </div>
 
-                                    <?php
-                                }
-                            }
-                        }
-                    }
-                    ?>
+
+
                     <!-- reference website -->
                     <div class="card-analysis">
                         <div class="card-body-analysis-text">
