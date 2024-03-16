@@ -1,0 +1,162 @@
+
+body {
+    background-image:linear-gradient(rgba(18, 54, 39, 0.7),rgba(34, 42, 77, 0.7)),url(../images/bg.png);
+}
+
+.formbg {
+    background-color: #f2f2f1;
+    border: 0.125rem solid transparent;
+    border-radius: 0.938rem;
+    padding: 1.25rem;
+}
+
+.invi {
+    display: none;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 30px;
+    background: #e0e0e0;
+    /* box-shadow: 15px 15px 30px #bebebe,
+               -15px -15px 30px #ffffff;
+     */
+  }
+
+@media print {
+
+    @page {
+        size: landscape a5;
+        margin: 0;
+        margin-left: 1.813rem;
+        margin-bottom: 0.625rem;
+        padding: 0 !important;
+    }
+    body  {
+        margin: 0 !important;
+        padding: 0 !important;
+       
+    }
+
+    .invi {
+        display: block;
+    }
+
+    .visi {
+        display: none;
+    }
+
+    .upperSectionMargin {
+        position: relative;
+        top: -50px;
+    }
+    /* .upperSectionMargin2 {
+        position: relative;
+        top: -60px;
+    } */
+
+    .pMargin {
+        margin: 0;
+    }
+
+    .lowerSectionMargin {
+    position: relative;
+    top: -45px;
+    }
+    .lowerSectionMargin2 {
+        position: relative;
+        top: -10px;
+    }
+
+    
+    /* fb-margin - spouse
+    1 and 2 - father
+    3 and 4 - mother */
+
+    .fb-margin {
+        position: relative;
+        top: -20px;
+    }
+    .fb-margin1 {
+        position: relative;
+        top: -40px;
+    }
+    .fb-margin2 {
+        position: relative;
+        top: -60px;
+    }
+    .yawa {
+        position: relative;
+        top: -20px;
+    }
+    .fb-margin3 {
+        position: relative;
+        top: -80px;
+    }
+    .fb-margin4 {
+        position: relative;
+        top: -100px;
+    }
+
+    .otherInfoMargin {
+        position: relative;
+        top: -15px;
+    }
+
+    .paraMargin {
+        position: relative;
+        top: -10px;
+    }
+    .caMargin {
+        position: relative;
+        top: -10px;
+    }
+
+    .smol {
+        position: relative;
+        font-size: 8px;
+    }
+
+.header {
+    position: relative;
+    top: -30px;
+}
+
+.header1 {
+    position: relative;
+    top: 10px;
+}
+
+    h1 {
+        font-size: 0.65rem;
+    }
+    h4 {
+        font-size: 0.75rem;
+    }
+
+    label {
+        font-size: 0.625rem;
+    }
+
+    .pwd {
+        font-size: 0.563rem;
+    }
+    .form-control, .form-label{
+        margin-top:-10px !important ;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    select {
+        font-size: 8pt; /* Adjust font size as needed */
+        height: auto; /* Reset height to auto */
+        line-height: 1; /* Reset line-height to normal */
+    }
+
+    /* Additional adjustments for checkboxes and radio buttons */
+    input[type="radio"],
+    input[type="checkbox"] {
+        transform: scale(0.8); /* Adjust scale if needed */
+    }
+}
+
