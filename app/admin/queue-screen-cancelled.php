@@ -180,86 +180,64 @@
         <!-- ends here -->
 
 
-    <script>
-        $(document).ready(function() {
-    function fetchQueueData() {
-        $.ajax({
-            url: 'fetch_queue_data_cancelled.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                var tableBody = $('#datatable tbody');
-                tableBody.empty();
-                if (data.length > 0) {
-                    $.each(data, function(index, row) {
-                        var newRow = $('<tr>');
-                        newRow.append('<td>' + row.qd_id + '</td>');
-                        newRow.append('<td>' + row.client_id + '</td>');
-                        newRow.append('<td>' + row.client + '</td>');
-                        newRow.append('<td>' + row.queue_number + '</td>');
-                        newRow.append('<td>' + row.service + '</td>');
-                        
-                        var statusDescription = '';
-                        var statusButtonClass = '';
-                        if (row.status == 0) {
-                            statusDescription = 'Pending';
-                            statusButtonClass = 'btn-primary';
-                        } else if (row.status == 1) {
-                            statusDescription = 'Completed';
-                            statusButtonClass = 'btn-success';
-                        } else if (row.status == 2) {
-                            statusDescription = 'Cancelled';
-                            statusButtonClass = 'btn-danger';
-                        }
-                        newRow.append('<td class="text-center"><button class="btn ' + statusButtonClass + '">' + statusDescription + '</button></td>');
+        <script>
+        $(document).ready(function () {
+            // Initialize DataTables outside of AJAX
+            var dataTable = $('#datatable').DataTable();
 
-                        var entryDescription = '';
-                        var entryButtonClass = '';
-                        if (row.entry_check == 0) {
-                            entryDescription = 'Rejected';
-                            entryButtonClass = 'btn-danger'
-                        } else if (row.entry_check == 1) {
-                            entryDescription = 'Passed';
-                            entryButtonClass = 'btn-success'
-                        }
-                        newRow.append('<td class="text-center"><button class="btn ' + entryButtonClass + '">' + entryDescription + '</button></td>');
+            function fetchQueueData() {
+                $.ajax({
+                    url: 'fetch_queue_data_cancelled.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var tableBody = $('#datatable tbody');
+                        // Clear existing table data
+                        dataTable.clear();
 
-                        
-                        newRow.append('<td>' + row.created_at + '</td>');
-                        newRow.append('<td>' + row.updated_at + '</td>');
-                        newRow.append('<td><a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a></td>');
-                        tableBody.append(newRow);
-                    });
-                } else {
-                    tableBody.append('<tr><td colspan="10" class="text-center">No records found.</td></tr>');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
+                        if (data.length > 0) {
+                            $.each(data, function (index, row) {
+                                // Add new row data
+                                dataTable.row.add([
+                                    row.qd_id,
+                                    row.client_id,
+                                    row.client,
+                                    row.queue_number,
+                                    row.service,
+                                    row.status == 0 ? 'Pending' : row.status == 1 ? 'Completed' : 'Cancelled',
+                                    row.entry_check == 0 ? 'Rejected' : 'Passed',
+                                    row.created_at,
+                                    row.updated_at,
+                                    '<a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>'
+                                ]).draw(false);
+                            });
+                        } else {
+                            tableBody.append('<tr><td colspan="10" class="text-center">No records found.</td></tr>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
             }
+
+            // Fetch data initially and then every 1000 milliseconds
+            fetchQueueData();
+            setInterval(fetchQueueData, 1000);
+
+            // Handle modal trigger
+            $('body').on('click', '.edit', function (event) {
+                var $tr = $(this).closest('tr');
+                var data = $tr.children("td").map(function () {
+                    return $(this).text();
+                }).get();
+
+                $('#edit_qd_id').val(data[0]);
+                $('#edit_client_id').val(data[1]);
+                $('#edit_name').val(data[2]);
+                $('#edit_queue_number').val(data[3]);
+            });
         });
-    }
-
-
-    $('#datatable').DataTable();
-
-    fetchQueueData();
-    setInterval(fetchQueueData, 1000);
-
-    // Handle modal trigger
-    $('body').on('click', '.edit', function(event) {
-        var $tr = $(this).closest('tr');
-        var data = $tr.children("td").map(function() {
-            return $(this).text();
-        }).get();
-
-        $('#edit_qd_id').val(data[0]);
-        $('#edit_client_id').val(data[1]);
-        $('#edit_name').val(data[2]);
-        $('#edit_queue_number').val(data[3]);
-    });
-});
-
     </script>
 </body>
 </html>
