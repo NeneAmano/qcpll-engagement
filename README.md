@@ -20,9 +20,3 @@ And some more libraries and plugins that I probably forgot.
 We based the sentiment score of emojis to [Emoji Sentiment Ranking v1.0](https://kt.ijs.si/data/Emoji_sentiment_ranking/?emoji) and the remarks to [Emojipedia](https://emojipedia.org/).
 
 I also used this great tool [PHP Sentiment Analyzer](https://github.com/davmixcool/php-sentiment-analyzer) to understand and predict sentiments in a sentence using VADER (Valence Aware Dictionary and sentiment Reasoner).
-
-## Developers
-@n67h
-@eggwap
-@NeneAmano
-@Nabszx
