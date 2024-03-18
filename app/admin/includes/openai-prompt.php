@@ -1,5 +1,5 @@
 <?php
-    $openApiKey = "";
+    $openApiKey = "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";
 
 // start of emoji query
     // start of query for emoji staff
