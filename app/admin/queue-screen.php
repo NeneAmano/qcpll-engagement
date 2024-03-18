@@ -189,63 +189,65 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
 
 
     <script>
-        $(document).ready(function () {
-            // Initialize DataTables outside of AJAX
-            var dataTable = $('#datatable').DataTable();
+       $(document).ready(function () {
+    // Initialize DataTables outside of AJAX
+    var dataTable = $('#datatable').DataTable();
 
-            function fetchQueueData() {
-                $.ajax({
-                    url: 'fetch_queue_data.php',
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (data) {
-                        var tableBody = $('#datatable tbody');
-                        // Clear existing table data
-                        dataTable.clear();
+    function fetchQueueData() {
+        $.ajax({
+            url: 'fetch_queue_data.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                var tableBody = $('#datatable tbody');
+                // Clear existing table data
+                dataTable.clear().draw();
 
-                        if (data.length > 0) {
-                            $.each(data, function (index, row) {
-                                // Add new row data
-                                dataTable.row.add([
-                                    row.qd_id,
-                                    row.client_id,
-                                    row.client,
-                                    row.queue_number,
-                                    row.service,
-                                    row.status == 0 ? 'Pending' : row.status == 1 ? 'Completed' : 'Cancelled',
-                                    row.entry_check == 0 ? 'Rejected' : 'Passed',
-                                    row.created_at,
-                                    row.updated_at,
-                                    '<a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>'
-                                ]).draw(false);
-                            });
-                        } else {
-                            tableBody.append('<tr><td colspan="10" class="text-center">No records found.</td></tr>');
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+                if (data.length > 0) {
+                    $.each(data, function (index, row) {
+                        // Add new row data
+                        dataTable.row.add([
+                            row.qd_id,
+                            row.client_id,
+                            row.client,
+                            row.queue_number,
+                            row.service,
+                            row.status == 0 ? 'Pending' : row.status == 1 ? 'Completed' : 'Cancelled',
+                            row.entry_check == 0 ? 'Rejected' : 'Passed',
+                            row.created_at,
+                            row.updated_at,
+                            '<a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>'
+                        ]).draw(false);
+                    });
+                } else {
+                    // Clear table body and append "No records found" message
+                    tableBody.empty().append('<tr><td colspan="10" class="text-center">No records found.</td></tr>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
             }
-
-            // Fetch data initially and then every 1000 milliseconds
-            fetchQueueData();
-            setInterval(fetchQueueData, 1000);
-
-            // Handle modal trigger
-            $('body').on('click', '.edit', function (event) {
-                var $tr = $(this).closest('tr');
-                var data = $tr.children("td").map(function () {
-                    return $(this).text();
-                }).get();
-
-                $('#edit_qd_id').val(data[0]);
-                $('#edit_client_id').val(data[1]);
-                $('#edit_name').val(data[2]);
-                $('#edit_queue_number').val(data[3]);
-            });
         });
+    }
+
+    // Fetch data initially and then every 1000 milliseconds
+    fetchQueueData();
+    setInterval(fetchQueueData, 1000);
+
+    // Handle modal trigger
+    $('body').on('click', '.edit', function (event) {
+        var $tr = $(this).closest('tr');
+        var data = $tr.children("td").map(function () {
+            return $(this).text();
+        }).get();
+
+        $('#edit_qd_id').val(data[0]);
+        $('#edit_client_id').val(data[1]);
+        $('#edit_name').val(data[2]);
+        $('#edit_queue_number').val(data[3]);
+    });
+});
+
     </script>
 </body>
 

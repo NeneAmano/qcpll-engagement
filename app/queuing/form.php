@@ -78,33 +78,36 @@ if (isset ($_SESSION['user_id'])) {
             <div class="row">
                 <div class="col-3" style="text-align: center;">
                     <div class="header">
-                        <h4>Queue Number</h4>
-                        <div class="card">
-                            <h4>
-                                <?= $queue_no ?>
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-6" style="text-align: center;">
-                    <div class="header1">
-                        <h4>NBI APPLICATION FORM - E GOVERNMENT SERVICE</h4>
-                    </div>
-                </div>
-
-                <div class="col-3" style="text-align: center;">
-                    <div class="header">
                         <div class="sub-information">
                             <h4>Main Library</h4>
                             <h4 class="ps-4">
                                 <?= $created_at ?>
                             </h4>
                             <h4>2 Gov. ID</h4>
-                            <p>1.___________
-                            <p>
-                            <p>2.___________
-                            <p>
+                            <div class="mlMargin1">
+                                <p>1.___________
+                                <p>
+                                <p class="mlMargin">2.___________
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6" style="text-align: center;">
+                    <div class="header1">
+                        <h4>FILL UP FORM - E GOVERNMENT SERVICE</h4>
+                        <h4 class="invi to-be-filled-up">TO BE FILLED UP</h4>
+                    </div>
+                </div>
+
+                <div class="col-3" style="text-align: center;">
+                    <div class="header">
+                        <h4>Queue Number</h4>
+                        <div class="card">
+                            <h4>
+                                <?= $queue_no ?>
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -120,7 +123,7 @@ if (isset ($_SESSION['user_id'])) {
                         </form>
                     </div>
                     <?php if ($gender == "Male"): ?>
-                        <div class="col-2">
+                        <div class="col-3">
                             <form>
                                 <label class="form-label" for="middle-name">Middle Name:</label>
                                 <input type="text" class="form-control custom-input" id="middle-name" placeholder=""
@@ -128,7 +131,7 @@ if (isset ($_SESSION['user_id'])) {
                             </form>
                         </div>
                     <?php elseif ($civil_status == "Married" || $civil_status == "Widow"): ?>
-                        <div class="col-2">
+                        <div class="col-3">
                             <div class="maidenMiddleName">
 
                                 <label class="smol">Maiden Middle Name:</label>
@@ -137,7 +140,7 @@ if (isset ($_SESSION['user_id'])) {
                             </div>
                         </div>
                     <?php else: ?>
-                        <div class="col-2">
+                        <div class="col-3">
                             <form>
                                 <label class="form-label" for="middle-name">Middle Name:</label>
                                 <input type="text" class="form-control custom-input" id="middle-name" placeholder=""
@@ -149,25 +152,45 @@ if (isset ($_SESSION['user_id'])) {
 
 
                     <div class="col-3">
-                        <form>
-                            <label class="form-label" for="last-name">Last Name:</label>
-                            <input type="text" class="form-control" id="last-name" placeholder=""
-                                value="<?= $l_name ?>">
-                        </form>
+                        <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                            <!-- Form for female gender and married or widow civil status -->
+                            <form>
+                                <label class="form-label" for="last-name">Husband's Surname:</label>
+                                <input type="text" class="form-control" id="last-name" placeholder=""
+                                    value="<?= $l_name ?>">
+                            </form>
+                        <?php else: ?>
+                            <!-- Default form -->
+                            <form>
+                                <label class="form-label" for="last-name">Last Name:</label>
+                                <input type="text" class="form-control" id="last-name" placeholder=""
+                                    value="<?= $l_name ?>">
+                            </form>
+                        <?php endif; ?>
                     </div>
-                    <div class="col-2">
-                        <form>
-                            <label class="form-label" for="suffix">Suffix: <span
-                                    class="fst-italic">(Jr./Sr./II/III)</span></label>
-                            <input type="text" class="form-control" id="suffix" placeholder="" value="<?= $suffix ?>">
-                        </form>
-                    </div>
-                    <div class="col-2">
-                        <form>
-                            <label for="gender" class="form-label">Gender:</label>
-                            <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
-                        </form>
-                    </div>
+                    <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                        <!-- maiden last name input -->
+                        <div class="col-3">
+                            <form>
+                                <label class="form-label" for="maiden-last-name">Maiden Last Name:</label>
+                                <input type="text" class="form-control" id="maiden-last-name" placeholder=""
+                                    value="<?= $m_name ?>">
+                            </form>
+                        </div>
+                    <?php else: ?>
+                        <!-- default display for non-female gender -->
+                        <div class="col-3">
+                            <div class="newSecM1">
+                                <form>
+                                    <label class="form-label" for="suffix">Suffix: <span
+                                            class="fst-italic">(Jr./Sr./II/III)</span></label>
+                                    <input type="text" class="form-control" id="suffix" placeholder=""
+                                        value="<?= $suffix ?>">
+                                </form>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
                 </div>
 
 
@@ -193,10 +216,10 @@ if (isset ($_SESSION['user_id'])) {
                         </form>
                     </div>
                     <div class="col">
-                        <!-- <form>
-                                        <label for="gender" class="form-label">Gender:</label>
-                                        <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
-                                    </form> -->
+                        <form>
+                            <label for="gender" class="form-label">Gender:</label>
+                            <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
+                        </form>
                     </div>
                 </div>
             </div>
