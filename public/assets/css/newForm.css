@@ -38,6 +38,11 @@ body {
        
     }
 
+.to-be-filled-up {
+    position: relative;
+    top: 9.375rem;
+}
+
     .invi {
         display: block;
     }
@@ -48,7 +53,7 @@ body {
 
     .upperSectionMargin {
         position: relative;
-        top: -50px;
+        top: -4.375rem;
     }
     /* .upperSectionMargin2 {
         position: relative;
@@ -61,11 +66,11 @@ body {
 
     .lowerSectionMargin {
     position: relative;
-    top: -45px;
+    top: -2.813rem;
     }
     .lowerSectionMargin2 {
         position: relative;
-        top: -10px;
+        top: -0.625rem;
     }
 
     
@@ -75,56 +80,65 @@ body {
 
     .fb-margin {
         position: relative;
-        top: -20px;
+        top: -1.25rem;
     }
     .fb-margin1 {
         position: relative;
-        top: -40px;
+        top: -2.5rem;
     }
     .fb-margin2 {
         position: relative;
-        top: -60px;
+        top: -3.75rem;
     }
     .yawa {
         position: relative;
-        top: -20px;
+        top: -1.25rem;
     }
     .fb-margin3 {
         position: relative;
-        top: -80px;
+        top: -5rem;
     }
     .fb-margin4 {
         position: relative;
-        top: -100px;
+        top: -6.25rem;
     }
 
     .otherInfoMargin {
         position: relative;
-        top: -15px;
+        top: -0.938rem;
     }
 
     .paraMargin {
         position: relative;
-        top: -10px;
+        top: -0.625rem;
     }
     .caMargin {
         position: relative;
-        top: -10px;
+        top: -0.625rem;
     }
+
+.mlMargin {
+    position: relative;
+    top: -0.625rem;
+}
+.mlMargin1 {
+    position: relative;
+    top: -0.625rem;
+}
 
     .smol {
         position: relative;
-        font-size: 8px;
+        font-size: 0.5rem;
     }
 
 .header {
     position: relative;
-    top: -30px;
+    top: -1.875rem;
 }
 
 .header1 {
     position: relative;
-    top: 10px;
+    top: 0.625rem;
 }
 
     h1 {
