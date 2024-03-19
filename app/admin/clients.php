@@ -178,7 +178,10 @@
                                         $status = $row_select['status'];
                                         $created_at = $row_select['created_at'];
                                         $updated_at = $row_select['updated_at'];
-
+                                        
+                                        // Add 8 hours to the original timestamp
+                                        $new_created_at = date('Y-m-d H:i:s', strtotime($created_at . ' +8 hours'));
+                                        $new_updated_at = date('Y-m-d H:i:s', strtotime($updated_at . ' +8 hours'));
                                         if ($age_id == 1) {
                                             $age_value = "0-12";
                                         } elseif ($age_id == 2) {
@@ -202,8 +205,8 @@
                                             <td class="text-center"><?= $education ?></td>
                                             <td class="text-center"><?= $occupation ?></td>
                                             <td class="text-center"><?= $status ?></td>
-                                            <td class="text-center"><?= $created_at ?></td>
-                                            <td class="text-center"><?= $updated_at ?></td>
+                                            <td class="text-center"><?= $new_created_at ?></td>
+                                            <td class="text-center"><?= $new_updated_at ?></td>
                                         </tr>
                                     <?php
                                     }
