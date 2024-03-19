@@ -12,7 +12,7 @@ queue_details.service,
 queue_details.`status`,
 queue_details.entry_check,
 DATE_ADD(queue_details.created_at, INTERVAL 8 HOUR) AS created_at_with_offset,
-queue_details.updated_at
+DATE_ADD(queue_details.updated_at, INTERVAL 8 HOUR) AS updated_at_with_offset
 FROM 
 queue_details
 JOIN 

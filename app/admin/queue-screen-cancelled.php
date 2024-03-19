@@ -206,8 +206,8 @@
                             row.service,
                             row.status == 0 ? 'Pending' : row.status == 1 ? 'Completed' : 'Cancelled',
                             row.entry_check == 0 ? 'Rejected' : 'Passed',
-                            row.created_at,
-                            row.updated_at,
+                            row.created_at_with_offset,
+                            row.updated_at_with_offset,
                             '<a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_entry_status" data-modal-type="user"><i class="fa-solid fa-pen-to-square"></i></a>'
                         ]).draw(false);
                     });
