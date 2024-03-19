@@ -285,6 +285,9 @@
                                             $tagalog_question = $row_select['tagalog_question'];
                                             $created_at = $row_select['created_at'];
                                             $updated_at = $row_select['updated_at'];
+                                            // Add 8 hours to the original timestamp
+                                            $new_created_at = date('Y-m-d H:i:s', strtotime($created_at . ' +8 hours'));
+                                            $new_updated_at = date('Y-m-d H:i:s', strtotime($updated_at . ' +8 hours'));
                                     ?>
                                                 <tr>
                                                     <td class="text-center"><?= $question_id ?></td>
@@ -294,8 +297,8 @@
                                                     <td class="text-center"><?= $question_category ?></td>
                                                     <td class="text-center"><?= $english_question ?></td>
                                                     <td class="text-center"><?= $tagalog_question ?></td>
-                                                    <td class="text-center"><?= $created_at ?></td>
-                                                    <td class="text-center"><?= $updated_at ?></td>
+                                                    <td class="text-center"><?= $new_created_at ?></td>
+                                                    <td class="text-center"><?= $new_updated_at ?></td>
                                                     <td class="text-center">
                                                         <?php
                                                             if($is_deleted == 1){
