@@ -255,6 +255,9 @@
                                         $remarks = $row_select['remarks'];
                                         $created_at = $row_select['created_at'];
                                         $updated_at = $row_select['updated_at'];
+                                        // Add 8 hours to the original timestamp
+                                        $new_created_at = date('Y-m-d H:i:s', strtotime($created_at . ' +8 hours'));
+                                        $new_updated_at = date('Y-m-d H:i:s', strtotime($updated_at . ' +8 hours'));
                                 ?>
                                         <tr>
                                             <td class="text-center"><?= $emoji_id ?></td>
@@ -271,8 +274,8 @@
                                             <td class="text-center"><?= $unicode_name ?></td>
                                             <td class="text-center d-none"><?= $unicode_block ?></td>
                                             <td class="text-center"><?= $remarks ?></td>
-                                            <td class="text-center"><?= $created_at ?></td>
-                                            <td class="text-center"><?= $updated_at ?></td>
+                                            <td class="text-center"><?= $new_created_at ?></td>
+                                            <td class="text-center"><?= $new_updated_at ?></td>
                                             <td class="text-center">
                                                 <a class="btn btn-sm btn-success edit" href="#" data-bs-toggle="modal" data-bs-target="#edit_emoji_modal"><i class="fa-solid fa-pen-to-square"></i></a>
                                             </td>
