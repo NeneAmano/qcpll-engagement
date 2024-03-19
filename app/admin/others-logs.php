@@ -397,13 +397,17 @@ if (($user_role_id_session !== 1) && ($user_role_id_session !== 2)) {
                                             $TimeOut = $row_select['TimeOut'];
                                             $Service = $row_select['Services'];
                                             $ServiceType = $row_select['ServiceType'];
+
+                                            // Add 8 hours to the original timestamp
+                                            $newTimeIn = date('Y-m-d H:i:s', strtotime($TimeIn . ' +8 hours'));
+                                            $newTimeOut = date('Y-m-d H:i:s', strtotime($TimeOut . ' +8 hours'));
                                     ?>
                                             <tr>
                                                 <td class="text-center"><?= $Name ?></td>
                                                 <td class="text-center"><?= $Age ?></td>
                                                 <td class="text-center"><?= $Gender ?></td>
-                                                <td class="text-center"><?= $TimeIn ?></td>
-                                                <td class="text-center"><?= date('Y-m-d H:i:s', strtotime($TimeOut)) ?></td>
+                                                <td class="text-center"><?= $newTimeIn ?></td>
+                                                <td class="text-center"><?= $newTimeOut ?></td>
                                                 <td class="text-center"><?= $Service ?></td>
                                                 <td class="text-center"><?= $ServiceType ?></td>
                                             </tr>
