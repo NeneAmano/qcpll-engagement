@@ -338,7 +338,7 @@
                     <ion-icon name="book" class="book-icon"></ion-icon>
                     <h5 class="card-title">Feedbacks Received</h5>
                     <?php
-                    $sql_clients = "SELECT COUNT(DISTINCT client_id) AS total_client FROM feedback;";
+                    $sql_clients = "SELECT COUNT(DISTINCT client_id) AS total_feedback FROM feedback;";
                     $result_clients = mysqli_query($conn, $sql_clients);
                     if (mysqli_num_rows($result_clients) > 0) {
                         $row_clients = mysqli_fetch_assoc($result_clients);
