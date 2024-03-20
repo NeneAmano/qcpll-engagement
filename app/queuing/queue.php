@@ -355,7 +355,7 @@
                     </ol>
                     </nav>
                     <div class="form-wrapper">
-                        <select name="civilstatus" id="" class="form-control" required>
+                        <select name="civilstatus" id="" class="form-control">
                             <option value="" disabled selected>--Civil Status --</option>
                             <option value="Single">Single</option>
                             <option value="Widow">Widow</option>
@@ -376,10 +376,10 @@
                         <input type="text" name="suffix" id="" placeholder="Suffix" class="form-control" value="<?= $suffix_value ?>" >
                     </div>
                     <div class="form-group">
-                        <input type="date" name="birthdate" id="birthdate" max="2000-13-13" required>
+                        <input type="date" name="birthdate" id="birthdate" max="2000-13-13">
                     </div>
                     <div class="form-wrapper">
-                        <select name="gender" id="" class="form-control" required>
+                        <select name="gender" id="" class="form-control">
                             <option value="" disabled selected>-- Select Gender --</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -387,7 +387,7 @@
                         </select>
                     </div>
                     <div class="form-wrapper">
-                        <select name="education" id="" class="form-control" required>
+                        <select name="education" id="" class="form-control">
                             <option value="" disabled selected>-- Select Educational Attainment --</option>
                             <option value="Elementary Graduate">Elementary Graduate</option>
                             <option value="High School Level">High School Level</option>
@@ -400,7 +400,7 @@
                         </select>
                     </div>
                     <div class="form-wrapper">
-                        <select name="occupation" id="" class="form-control" required>
+                        <select name="occupation" id="" class="form-control">
                             <option value="" disabled selected>-- Select Occupation --</option>
                             <option value="Student">Student</option>
                             <option value="Unemployed">Unemployed</option>
@@ -410,7 +410,7 @@
                     </div>
 
                     <div class="form-wrapper">
-                        <select name="status" id="" class="form-control" required>
+                        <select name="status" id="" class="form-control">
                             <option value="0" selected >-- Select Status --</option>
                             <option value="2">PWD</option>
                             <option value="3">Pregnant</option>
