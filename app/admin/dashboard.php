@@ -338,14 +338,13 @@
                     <ion-icon name="book" class="book-icon"></ion-icon>
                     <h5 class="card-title">Feedbacks Received</h5>
                     <?php
-                    $sql_clients = "SELECT COUNT(feedback_id) AS total_feedback FROM feedback;";
+                    $sql_clients = "SELECT COUNT(DISTINCT client_id) AS total_client FROM feedback;";
                     $result_clients = mysqli_query($conn, $sql_clients);
                     if (mysqli_num_rows($result_clients) > 0) {
                         $row_clients = mysqli_fetch_assoc($result_clients);
                         echo '<a href="feedback.php" style="text-decoration:none; color:#212121;"><p class="card-text">' . $row_clients['total_feedback'] . '</a></p>';
                     }
                     ?>
-                   
                 </div>
             </div>
             <!-- end of feedbacks received card -->
@@ -356,7 +355,7 @@
                     <ion-icon name="briefcase" class="case-icon"></ion-icon>
                     <h5 class="card-title">Completed Transaction</h5>
                     <?php
-                    $sql_clients = "SELECT COUNT(qd_id) AS total_transaction FROM queue_details WHERE STATUS = 1;";
+                    $sql_clients = "SELECT COUNT(DISTINCT qd_id) AS total_transaction FROM queue_details WHERE STATUS = 1;";
                     $result_clients = mysqli_query($conn, $sql_clients);
                     if (mysqli_num_rows($result_clients) > 0) {
                         $row_clients = mysqli_fetch_assoc($result_clients);
