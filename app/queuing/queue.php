@@ -40,7 +40,7 @@
             function firstnameInvalid($firstname) {
                 $firstname_length = strlen($firstname);
         
-                if((!preg_match("/^[a-zA-Z ,.'-]+$/i", $firstname)) || ($firstname_length < 2)) {
+                if((!preg_match("/^[a-zA-ZñÑ ,.'-]+$/i", $firstname)) || ($firstname_length < 2)) {
                     $result = true;  
                 } else {
                     $result = false;
@@ -49,7 +49,7 @@
             }
 
             function middlenameInvalid($middlename) {
-                if(!preg_match("/^[a-zA-Z ,.'-]+$/i", $middlename)) {
+                if(!preg_match("/^[a-zA-ZñÑ ,.'-]+$/i", $middlename)) {
                     $result = true;
                 } else {
                     $result = false;
@@ -60,7 +60,7 @@
             function surnameInvalid($surname) {
                 $surname_length = strlen($surname);
         
-                if((!preg_match("/^[a-zA-Z ,.'-]+$/i", $surname)) || ($surname_length < 2)) {
+                if((!preg_match("/^[a-zA-ZñÑ ,.'-]+$/i", $surname)) || ($surname_length < 2)) {
                     $result = true;
                 } else {
                     $result = false;
@@ -69,7 +69,7 @@
             }
 
             function suffixInvalid($suffix) {
-                if(!preg_match("/^[a-zA-Z ,.'-]+$/i", $suffix)) {
+                if(!preg_match("/^[a-zA-ZñÑ ,.'-]+$/i", $suffix)) {
                     $result = true;
                 } else {
                     $result = false;
