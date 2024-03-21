@@ -193,7 +193,7 @@ require_once '../app/core/init.php';
                     $service = $row['services'];
                     echo '<div class="card">';
                     echo '<p class="queue-number"><span>' . $queueNumber . '</span></span></p>';
-                    echo '<p class="transaction">' . $service . '</p>';
+                    // echo '<p class="transaction">' . $service . '</p>';
                     echo '<p class="user">📢</p>';
                     echo '</div>';
                     echo '<br>';
@@ -214,10 +214,24 @@ require_once '../app/core/init.php';
                 <h2 style="text-align: center; color:#ffffff; background-color:cadetblue">NBI LANE</h2><br>
 
                 <?php
-                $nonpriorSql = "SELECT client.`status` AS client_status, queue_details.queue_number, GROUP_CONCAT(queue_details.service) AS services, MAX(queue_details.`status`) AS queue_status
-                FROM client
-                JOIN queue_details ON client.client_id = queue_details.client_id
-                WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0 AND queue_details.service = 'NBI' GROUP BY queue_details.queue_number LIMIT 6;
+                $nonpriorSql = "SELECT 
+                client.`status` AS client_status, 
+                queue_details.queue_number, 
+                GROUP_CONCAT(queue_details.service) AS services, 
+                MAX(queue_details.`status`) AS queue_status
+            FROM 
+                client
+            JOIN 
+                queue_details ON client.client_id = queue_details.client_id
+            WHERE 
+                DATE(queue_details.created_at) = CURDATE() 
+                AND client.`status` = 0  
+                AND queue_details.`status` = 0 
+                AND queue_details.service NOT IN ('Police') 
+            GROUP BY 
+                queue_details.queue_number 
+            LIMIT 6;
+            
                                     ";
                 $result2 = mysqli_query($conn, $nonpriorSql);
                 
@@ -226,7 +240,7 @@ require_once '../app/core/init.php';
                     $service = $row['services'];
                     echo '<div class="card">';
                     echo '<p class="queue-number"><span>' . $queueNumber . '</span></span></p>';
-                    echo '<p class="transaction">' . $service . '</p>';
+                    // echo '<p class="transaction">' . $service . '</p>';
                     echo '<p class="user">📢</p>';
                     echo '</div>';
                     echo '<br>';
@@ -261,6 +275,7 @@ require_once '../app/core/init.php';
             WHERE 
                 queue_details.service = 'Police' 
                 AND queue_details.status = 0
+                AND queue_details.service NOT IN ('NBI') 
                 AND queue_details.client_id NOT IN (
                     SELECT 
                         DISTINCT qd1.client_id
@@ -274,7 +289,9 @@ require_once '../app/core/init.php';
                         AND c.`status` = 0
                 )
                 AND DATE(queue_details.created_at) = CURDATE()
-                AND client.status = 0;
+                AND client.status = 0 LIMIT 6;
+            
+
             
             
                                     ";
@@ -285,7 +302,7 @@ require_once '../app/core/init.php';
                     $service = $row['service'];
                     echo '<div class="card">';
                     echo '<p class="queue-number"><span>' . $queueNumber . '</span></span></p>';
-                    echo '<p class="transaction">' . $service . '</p>';
+                    // echo '<p class="transaction">' . $service . '</p>';
                     echo '<p class="user">📢</p>';
                     echo '</div>';
                     echo '<br>';
