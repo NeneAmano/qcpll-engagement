@@ -256,21 +256,26 @@ require_once '../app/core/init.php';
                 queue_details.service
             FROM 
                 queue_details
+            INNER JOIN 
+                client ON queue_details.client_id = client.client_id
             WHERE 
-                queue_details.service = 'Police' AND
-                queue_details.status = 0
+                queue_details.service = 'Police' 
+                AND queue_details.status = 0
                 AND queue_details.client_id NOT IN (
                     SELECT 
                         DISTINCT qd1.client_id
                     FROM 
                         queue_details qd1
-                    JOIN client c ON qd1.client_id = c.client_id
+                    JOIN 
+                        client c ON qd1.client_id = c.client_id
                     WHERE 
                         qd1.service = 'NBI'
                         AND DATE(qd1.created_at) = CURDATE()
                         AND c.`status` = 0
                 )
-                AND DATE(queue_details.created_at) = CURDATE();
+                AND DATE(queue_details.created_at) = CURDATE()
+                AND client.status = 0;
+            
             
                                     ";
                 $result2 = mysqli_query($conn, $nonpriorSql);
