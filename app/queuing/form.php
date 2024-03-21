@@ -155,9 +155,9 @@ if (isset ($_SESSION['user_id'])) {
                         <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
                             <!-- Form for female gender and married or widow civil status -->
                             <form>
-                                <label class="form-label" for="last-name">Husband's Surname:</label>
+                                <label class="form-label" for="last-name">Maiden Name:</label>
                                 <input type="text" class="form-control" id="last-name" placeholder=""
-                                    value="<?= $l_name ?>">
+                                    value="<?= $m_name ?>">
                             </form>
                         <?php else: ?>
                             <!-- Default form -->
@@ -172,9 +172,9 @@ if (isset ($_SESSION['user_id'])) {
                         <!-- maiden last name input -->
                         <div class="col-3">
                             <form>
-                                <label class="form-label" for="maiden-last-name">Maiden Last Name:</label>
+                                <label class="form-label" for="maiden-last-name">Husband's Surname:</label>
                                 <input type="text" class="form-control" id="maiden-last-name" placeholder=""
-                                    value="<?= $m_name ?>">
+                                    value="<?= $l_name ?>">
                             </form>
                         </div>
                     <?php else: ?>
