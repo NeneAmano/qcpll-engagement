@@ -257,7 +257,8 @@ require_once '../app/core/init.php';
             FROM 
                 queue_details
             WHERE 
-                queue_details.service = 'Police'
+                queue_details.service = 'Police' AND
+                queue_details.status = 0
                 AND queue_details.client_id NOT IN (
                     SELECT 
                         DISTINCT qd1.client_id
