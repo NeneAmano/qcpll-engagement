@@ -211,16 +211,16 @@ require_once '../app/core/init.php';
 
 
             <div class="normal-container">
-                <h2 style="text-align: center; color:#ffffff; background-color:cadetblue">NON-PRIORITY LANE</h2><br>
+                <h2 style="text-align: center; color:#ffffff; background-color:cadetblue">NBI LANE</h2><br>
 
                 <?php
                 $nonpriorSql = "SELECT client.`status` AS client_status, queue_details.queue_number, GROUP_CONCAT(queue_details.service) AS services, MAX(queue_details.`status`) AS queue_status
-                                    FROM client
-                                    JOIN queue_details ON client.client_id = queue_details.client_id
-                                    WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0 GROUP BY queue_details.queue_number LIMIT 6;
+                FROM client
+                JOIN queue_details ON client.client_id = queue_details.client_id
+                WHERE DATE(queue_details.created_at) = CURDATE() AND client.`status` = 0  AND queue_details.`status` = 0 AND queue_details.service = 'NBI' GROUP BY queue_details.queue_number LIMIT 6;
                                     ";
                 $result2 = mysqli_query($conn, $nonpriorSql);
-
+                
                 while ($row = mysqli_fetch_assoc($result2)) {
                     $queueNumber = $row['queue_number'];
                     $service = $row['services'];
@@ -241,8 +241,58 @@ require_once '../app/core/init.php';
                 }
                 ?>
             </div>
-            <div class="arrow-container">
+            <!-- <div class="arrow-container">
                 <img src="./assets/images/red-arrow.png" alt="arrow.png" class="arrow">
+            </div> -->
+
+            <div class="normal-container">
+                <h2 style="text-align: center; color:#ffffff; background-color:cadetblue">POLICE LANE</h2><br>
+
+                <?php
+                $nonpriorSql = "SELECT 
+                queue_details.qd_id,
+                queue_details.client_id,
+                queue_details.queue_number,
+                queue_details.service
+            FROM 
+                queue_details
+            WHERE 
+                queue_details.service = 'Police'
+                AND queue_details.client_id NOT IN (
+                    SELECT 
+                        DISTINCT qd1.client_id
+                    FROM 
+                        queue_details qd1
+                    JOIN client c ON qd1.client_id = c.client_id
+                    WHERE 
+                        qd1.service = 'NBI'
+                        AND DATE(qd1.created_at) = CURDATE()
+                        AND c.`status` = 0
+                )
+                AND DATE(queue_details.created_at) = CURDATE();
+            
+                                    ";
+                $result2 = mysqli_query($conn, $nonpriorSql);
+
+                while ($row = mysqli_fetch_assoc($result2)) {
+                    $queueNumber = $row['queue_number'];
+                    $service = $row['service'];
+                    echo '<div class="card">';
+                    echo '<p class="queue-number"><span>' . $queueNumber . '</span></span></p>';
+                    echo '<p class="transaction">' . $service . '</p>';
+                    echo '<p class="user">📢</p>';
+                    echo '</div>';
+                    echo '<br>';
+                }
+
+                if (mysqli_num_rows($result2) == 0) {
+                    echo '<div class="card">';
+                    echo '<p class="no-record"><span>NO RECORD TODAY</span></span></p>';
+                    echo '<p class="no-record">THANK YOU!</p>';
+                    echo '<p class="user">📢</p>';
+                    echo '</div>';
+                }
+                ?>
             </div>
         </div>
     </div>
