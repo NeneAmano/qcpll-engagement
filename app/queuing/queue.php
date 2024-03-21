@@ -317,6 +317,8 @@
         color:#FD1D1D;
         border: 1px solid #FD1D1D ;
     }
+
+   
 </style>
     <section id="swup" class="transtion-fade">
     <div class="logo">
@@ -335,8 +337,7 @@
                     <img src="../../public/assets/images/demographic-img.png" alt="">
                 </div>
 
-                <?php  
-                    if(isset($_SESSION['user_id'])){
+                    <!-- if(isset($_SESSION['user_id'])){
                         $sql = "SELECT * FROM users WHERE user_id = $user_id_session";
                         $res = mysqli_query($conn,$sql);
                         while($row = mysqli_fetch_assoc($res)){
@@ -344,8 +345,7 @@
                                 echo '<a href="../includes/logout.php?user_id=' .$user_id_session. '"><ion-icon id="power-btn" name="power-outline"></ion-icon></a>';
                             echo '</div>';
                         }
-                    }
-                ?>
+                    } -->
 
                 <form action="" method="post" id="myForm">
                     <nav aria-label="breadcrumb">
@@ -355,7 +355,7 @@
                     </ol>
                     </nav>
                     <div class="form-wrapper">
-                        <select name="civilstatus" id="" class="form-control">
+                        <select name="civilstatus" id="" class="form-control" required>
                             <option value="" disabled selected>--Civil Status --</option>
                             <option value="Single">Single</option>
                             <option value="Widow">Widow</option>
@@ -375,11 +375,14 @@
                         <span class="text-danger"><?= $suffix_error ?></span><span class="text-success"><?= $suffix_success ?></span>
                         <input type="text" name="suffix" id="" placeholder="Suffix" class="form-control" value="<?= $suffix_value ?>" >
                     </div>
-                    <div class="form-group">
-                        <input type="date" name="birthdate" id="birthdate" max="2000-13-13">
-                    </div>
+
+
+                    
+                    <input type="date" name="birthdate" class="form-control" id="birthdate" max="2000-13-13" required>
+
+
                     <div class="form-wrapper">
-                        <select name="gender" id="" class="form-control">
+                        <select name="gender" id="" class="form-control" required>
                             <option value="" disabled selected>-- Select Gender --</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
@@ -387,7 +390,7 @@
                         </select>
                     </div>
                     <div class="form-wrapper">
-                        <select name="education" id="" class="form-control">
+                        <select name="education" id="" class="form-control" required>
                             <option value="" disabled selected>-- Select Educational Attainment --</option>
                             <option value="Elementary Graduate">Elementary Graduate</option>
                             <option value="High School Level">High School Level</option>
@@ -400,7 +403,7 @@
                         </select>
                     </div>
                     <div class="form-wrapper">
-                        <select name="occupation" id="" class="form-control">
+                        <select name="occupation" id="" class="form-control" required>
                             <option value="" disabled selected>-- Select Occupation --</option>
                             <option value="Student">Student</option>
                             <option value="Unemployed">Unemployed</option>
