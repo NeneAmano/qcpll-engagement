@@ -23,6 +23,14 @@ body {
      */
   }
 
+.item-1,
+.item-2 {
+    flex: 1;
+    padding-right: 1px;
+}
+
+
+
 @media print {
 
     @page {
@@ -37,6 +45,116 @@ body {
         padding: 0 !important;
        
     }
+  /* newly added css */
+
+  .email-flex {
+    position: relative;
+    top: -4.063rem;
+    display: flex;
+    /* align-items: center;  */
+  }
+
+  
+  .fill-0001 {
+    display: flex;
+    position: relative;
+    top: 0.188rem;
+  }
+  .fill-0002 {
+    display: flex;
+    position: relative;
+    top: -0.75rem;
+  }
+  .fill-0003 {
+    position: relative;
+  }
+
+.test-suffix {
+    position: relative;
+    top: -0.938rem;
+}
+
+.contact-1{
+    position: relative;
+    top: -5rem;
+}
+.contact-2{
+    position: relative;
+    top: -5rem;
+}
+
+.lower-header {
+    position: relative;
+    top: -5.313rem;
+}
+
+.fill-area-fam {
+    position: relative;
+    top: -5.313rem;
+}
+.fill-area-educ {
+    position: relative;
+    top: -5.313rem;
+}
+
+.fill-2 {
+    position: relative;
+    top: -1.25rem;
+}
+.fill-3 {
+    position: relative;
+    top: -2.5rem;
+}
+.fill-4 {
+    position: relative;
+    top: -4.375rem;
+}
+.fill-5 {
+    position: relative;
+    top: -5.313rem;
+}
+.fill-6 {
+    position: relative;
+    top: -6.25rem;
+}
+
+.fill-02{
+    position: relative;
+    top: -1.25rem;
+}
+.fill-03{
+    display: flex;
+    position: relative;
+    top: -2.5rem;
+}
+.item-1,
+.item-2 {
+    flex: 1;
+}
+.fill-04{
+    position: relative;
+    top: -3.75rem;
+}
+.fill-05{
+    position: relative;
+    top: -4.688rem;
+}
+
+.contact-header {
+    position: relative;
+    top: 11.25rem;
+}
+
+.middle-name {
+    display: flex;
+}
+.middlename-p {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* end of newly added */
 
 .to-be-filled-up {
     position: relative;
@@ -53,7 +171,7 @@ body {
 
     .upperSectionMargin {
         position: relative;
-        top: -4.375rem;
+        top: -80px;
     }
     /* .upperSectionMargin2 {
         position: relative;
@@ -149,7 +267,7 @@ body {
     }
 
     label {
-        font-size: 0.625rem;
+        font-size: 14px;
     }
 
     .pwd {

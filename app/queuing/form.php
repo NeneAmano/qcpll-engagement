@@ -96,8 +96,9 @@ if (isset ($_SESSION['user_id'])) {
 
                 <div class="col-6" style="text-align: center;">
                     <div class="header1">
+
                         <h4>FILL UP FORM - E GOVERNMENT SERVICE</h4>
-                        <h4 class="invi to-be-filled-up">TO BE FILLED UP</h4>
+                        <h4 class="contact-header">CONTACT DETAILS</h4>
                     </div>
                 </div>
 
@@ -112,313 +113,234 @@ if (isset ($_SESSION['user_id'])) {
                     </div>
                 </div>
 
-            </div>
-            <div class="upperSectionMargin">
-                <div class="row">
-                    <div class="col-3">
-                        <form>
-                            <label class="form-label" for="first-name">First Name:</label>
-                            <input type="text" class="form-control custom-input" id="first-name" placeholder=""
-                                value="<?= $f_name ?>">
-                        </form>
-                    </div>
-                    <?php if ($gender == "Male"): ?>
-                        <div class="col-3">
-                            <form>
-                                <label class="form-label" for="middle-name">Middle Name:</label>
-                                <input type="text" class="form-control custom-input" id="middle-name" placeholder=""
-                                    value="<?= $m_name ?>">
-                            </form>
-                        </div>
-                    <?php elseif ($civil_status == "Married" || $civil_status == "Widow"): ?>
-                        <div class="col-3">
-                            <div class="maidenMiddleName">
-
-                                <label class="smol">Maiden Middle Name:</label>
-                                <p class="pMargin">___________________
-                                </p>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <div class="col-3">
-                            <form>
-                                <label class="form-label" for="middle-name">Middle Name:</label>
-                                <input type="text" class="form-control custom-input" id="middle-name" placeholder=""
-                                    value="<?= $m_name ?>">
-                            </form>
-                        </div>
-                    <?php endif; ?>
-
-
-
-                    <div class="col-3">
-                        <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
-                            <!-- Form for female gender and married or widow civil status -->
-                            <form>
-                                <label class="form-label" for="last-name">Maiden Name:</label>
-                                <input type="text" class="form-control" id="last-name" placeholder=""
-                                    value="<?= $m_name ?>">
-                            </form>
-                        <?php else: ?>
-                            <!-- Default form -->
-                            <form>
-                                <label class="form-label" for="last-name">Last Name:</label>
-                                <input type="text" class="form-control" id="last-name" placeholder=""
-                                    value="<?= $l_name ?>">
-                            </form>
-                        <?php endif; ?>
-                    </div>
-                    <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
-                        <!-- maiden last name input -->
-                        <div class="col-3">
-                            <form>
-                                <label class="form-label" for="maiden-last-name">Husband's Surname:</label>
-                                <input type="text" class="form-control" id="maiden-last-name" placeholder=""
-                                    value="<?= $l_name ?>">
-                            </form>
-                        </div>
-                    <?php else: ?>
-                        <!-- default display for non-female gender -->
-                        <div class="col-3">
-                            <div class="newSecM1">
-                                <form>
-                                    <label class="form-label" for="suffix">Suffix: <span
-                                            class="fst-italic">(Jr./Sr./II/III)</span></label>
-                                    <input type="text" class="form-control" id="suffix" placeholder=""
-                                        value="<?= $suffix ?>">
-                                </form>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                </div>
-
-
+                <!-- NEW MODIFIED CONTENT STARTS HERE -->
 
 
                 <div class="row">
-                    <div class="col-3">
-                        <form>
-                            <label for="educ" class="form-label">Educational Attainment:</label>
-                            <input type="text" class="form-control" id="educ" value="<?= $education ?>">
-                        </form>
-                    </div>
-                    <div class="col-3">
-                        <form>
-                            <label for="status" class="form-label me-2">Status:</label>
-                            <input type="text" class="form-control" id="status" value="<?= $new_status ?>">
-                        </form>
-                    </div>
-                    <div class="col-3">
-                        <form>
-                            <label for="civil-status" class="form-label">Civil Status</label>
-                            <input type="text" class="form-control" id="civilstatus" value="<?= $civil_status ?>">
-                        </form>
-                    </div>
                     <div class="col">
-                        <form>
-                            <label for="gender" class="form-label">Gender:</label>
-                            <input type="text" class="form-control" id="gender" value="<?= $gender ?>">
-                        </form>
+                        <div class="email-flex">
+                            <label>Email Address:</label>
+                            <p>______________________________________________________________
+                            <p>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- first name and civil status -->
+                <div class="upperSectionMargin">
+                    <div class="row">
+                        <div class="col-6">
+                            <label>First Name:</label>
+                            <label>
+                                <?= $f_name ?>
+                            </label>
+                        </div>
+                        <div class="col-6">
+                            <label>Civil Status:</label>
+                            <label>
+                                <?= $civil_status ?>
+                            </label>
+                        </div>
+
+                    </div>
+                    <!-- middle name and birthdate -->
+                    <div class="row">
+                        <div class="col-6">
+                            <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                                <div class="middle-name">
+                                    <label>Middle Name:</label>
+                                    <p class="middlename-p">__________________________________</p>
+                                </div>
+                            <?php else: ?>
+                                <label>Middle Name:</label>
+                                <label>
+                                    <?= $m_name ?>
+                                </label>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="col-6">
+                            <label>Birthdate :</label>
+                            <label>
+                                <?= $birthdate ?>
+                            </label>
+                        </div>
+
+                    </div>
+                    <!-- last name and birthplace -->
+                    <div class="row">
+                        <div class="col-6">
+                            <label>
+                                <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                                    Last Name:
+                                <?php else: ?>
+                                    Last Name:
+                                <?php endif; ?>
+                            </label>
+                            <label>
+                                <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                                    <?= $m_name ?>
+                                <?php else: ?>
+                                    <?= $l_name ?>
+                                <?php endif; ?>
+                            </label>
+                        </div>
 
 
 
+                        <div class="col-6">
+                            <div class="fill-0001">
+                                <label>Birth Place:</label>
+                                <p>_________________________________________________
+                            </div>
+                        </div>
+                    </div>
+                    <!-- suffix -->
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="test-suffix">
+                                <label>
+                                    <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                                        Husband's Surname:
+                                    <?php else: ?>
+                                        Suffix:
+                                    <?php endif; ?>
+                                </label>
+                                <label>
+                                    <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
+                                        <?= $l_name ?>
+                                    <?php else: ?>
+                                        <?= $suffix ?>
+                                    <?php endif; ?>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="fill-0002">
+                                <label>Citizenship:</label>
+                                <p>_________________________________________________
+                                <p>
+                            </div>
+                            <!-- <div class="fill-0003">
+                                <label>Spouse Name:</label>
+                                <p>______________________________________________________________
+                                <p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
 
 
-
-
-            <!-- lower section -->
-            <div class="lowerSectionMargin">
+                <!-- CONTACT DETAILS -->
                 <div class="row">
-                    <div class="col-7">
-                        <div class="row">
-                            <div class="col" style="text-align: center;">
-                                <h4>Family Background</h4>
-                            </div>
+                    <div class="col-6">
+                        <div class="contact-1">
+                            <label>Address:</label>
+                            <p>______________________________________________________________
+                            <p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="contact-2">
+                            <label>Mobile:</label>
+                            <p>______________________________________________________________
+                            <p>
+                        </div>
+                    </div>
+                </div>
 
-                            <!-- spouse's name and birthplace -->
-                            <div class="lowerSectionMargin2">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="invi">
-                                            <label>Spouse's Name:</label>
-                                            <p>______________________________________________________________
-                                            <p>
-                                        </div>
-                                        <div class="invi fb-margin">
-                                            <label>Birthplace:</label>
-                                            <p>______________________________________________________________
-                                            <p>
-                                        </div>
-                                        <div class="visi">
-                                            <form>
-                                                <label for="spouse" class="form-label">Spouse's Name:</label>
-                                                <input type="text" class="form-control" id="spouse">
-                                            </form>
-                                            <form>
-                                                <label for="spouse-birthplace" class="form-label">
-                                                    Birthplace:</label>
-                                                <input type="text" class="form-control" id="spouse-birthplace">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- father's name and birthplace -->
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="invi fb-margin1">
-                                            <label>Father's Name:</label>
-                                            <p>______________________________________________________________
-                                            <p>
-                                        </div>
-                                        <div class="invi fb-margin2">
-                                            <label>Birthplace:</label>
-                                            <p class="yawa">
-                                                ______________________________________________________________
-                                            <p>
-                                        </div>
-                                        <div class="visi">
-                                            <form>
-                                                <label for="fathersName" class="form-label">Father's Name:</label>
-                                                <input type="text" class="form-control" id="fathersName">
-                                            </form>
-                                            <form class="form-pad">
-                                                <label for="father-birthplace" class="form-label">Birthplace:</label>
-                                                <input type="text" class="form-control" id="father-birthplace">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- mother's name and birthplace -->
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="invi fb-margin3">
-                                            <label>Mother's Name:</label>
-                                            <p>______________________________________________________________
-                                            <p>
-                                        </div>
-                                        <div class="invi fb-margin4">
-                                            <label>Birthplace:</label>
-                                            <p>______________________________________________________________
-                                            <p>
-                                        </div>
-                                        <div class="visi">
-                                            <form>
-                                                <label for="mothersName" class="form-label">Mother's Maiden
-                                                    Name:</label>
-                                                <input type="text" class="form-control" id="mothersName">
-                                            </form>
-                                            <form>
-                                                <label for="-birthplace" class="form-label">Birthplace:</label>
-                                                <input type="text" class="form-control" id="father-birthplace">
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+
+                <!-- FAMILY BACKGROUND -->
+
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="lower-header">FAMILY BACKGROUND</h4>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="lower-header">EDUCATIONAL BACKGROUND</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="fill-area-fam">
+                            <div class="fill-1">
+                                <label>Spouse Name:</label>
+                                <p>_______________________________________________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-2">
+                                <label>Spouse Birthplace:</label>
+                                <p>_______________________________________________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-3">
+                                <label>Father Name:</label>
+                                <p>_______________________________________________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-4">
+                                <label>Father Birth Place:</label>
+                                <p>_______________________________________________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-5">
+                                <label>Mother Name:</label>
+                                <p>_______________________________________________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-6">
+                                <label>Mother Birth Place:</label>
+                                <p>_______________________________________________________________________________
+                                <p>
                             </div>
                         </div>
                     </div>
+                    <div class="col-4">
+                        <div class="fill-area-educ">
+                            <form>
+                                <label for="educ" class="form-label">Educational Attainment:</label>
+                                <input type="text" class="form-control" id="educ" value="<?= $education ?>">
+                            </form>
 
-                    <div class="col">
-                        <div class="row">
-                            <div class="col" style="text-align: center;">
-                                <h4>Other Information</h4>
+                            <div class="fill-01">
+                                <label>Occupation:</label>
+                                <p>______________________________________________________________
+                                <p>
                             </div>
-
-                            <!-- height, weight and blood type -->
-                            <div class="lowerSectionMargin2">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <div class="invi">
-                                            <label>Height:</label>
-                                            <p>___________
-                                            <p>
-                                        </div>
-                                        <div class="visi">
-                                            <form>
-                                                <label for="height" class="form-label">Height:</label>
-                                                <input type="text" class="form-control" id="height">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="invi">
-                                            <label>Weight (kg):</label>
-                                            <p>___________
-                                            <p>
-                                        </div>
-                                        <div class="visi">
-                                            <form>
-                                                <label for="weight" class="form-label">Weight (kg):</label>
-                                                <input type="text" class="form-control" id="weight">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="invi">
-                                            <label>Blood Type:</label>
-                                            <p>___________
-                                            <p>
-                                        </div>
-                                        <div class="visi">
-                                            <form>
-                                                <label for="bloodType" class="form-label">Blood Type:</label>
-                                                <input type="text" class="form-control" id="bloodType">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <!-- Occupation, contact number and complete address -->
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="invi otherInfoMargin">
-                                                <label>Occupation:</label>
-                                                <p>_________________________________________
-                                                <p>
-                                            </div>
-                                            <div class="visi">
-                                                <form>
-                                                    <label for="work" class="form-label">Occupation:</label>
-                                                    <input type="text" class="form-control" id="work">
-                                                </form>
-                                            </div>
-                                            <div class="invi otherInfoMargin">
-                                                <label>Contact Number:</label>
-                                                <p>_________________________________________
-                                                <p>
-                                            </div>
-                                            <div class="visi">
-                                                <form>
-                                                    <label for="work" class="form-label">Contact Number:</label>
-                                                    <input type="text" class="form-control" id="work">
-                                                </form>
-                                            </div>
-                                            <div class="invi otherInfoMargin">
-                                                <div class="caMargin">
-                                                    <label>Complete Address:</label>
-                                                    <div class="paraMargin">
-                                                        <p>_________________________________________
-                                                        <p>
-                                                        <p>_________________________________________
-                                                        <p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="visi">
-                                                <form>
-                                                    <label for="work" class="form-label">Complete Address:</label>
-                                                    <input type="text" class="form-control" id="work">
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="fill-02">
+                                <label>Religion:</label>
+                                <p>______________________________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-03">
+                                <div class="item-1">
+                                    <label>Height:</label>
+                                    <p>_______________________
+                                    <p>
                                 </div>
+                                <div class="item-1">
+                                    <label>Weight:</label>
+                                    <p>_______________________
+                                    <p>
+                                </div>
+                            </div>
+                            <div class="fill-04">
+                                <label>Complexion:</label>
+                                <p>_____________________________________________
+                                <p>
+                            </div>
+                            <div class="fill-05">
+                                <label>Blood Type:</label>
+                                <p>_____________________________________________
+                                <p>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+
+
             </div>
         </div>
 
