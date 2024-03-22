@@ -1,10 +1,12 @@
 <?php
 require_once ('../core/init.php');
 if (isset ($_SESSION['user_id'])) {
-    if (isset ($_GET['queue_no']) && isset ($_GET['client_id']) && isset ($_GET['birthdate']) && isset ($_GET['birthdate'])) {
+    if (isset ($_GET['queue_no']) && isset ($_GET['client_id']) && isset ($_GET['birthdate']) && isset ($_GET['service'])) {
         $queue_no = $_GET['queue_no'];
         $client_id = $_GET['client_id'];
         $birthdate = $_GET['birthdate'];
+        $service = $_GET['service'];
+
 
         $sql = "SELECT * FROM client WHERE client_id = $client_id;";
         $result = mysqli_query($conn, $sql);
@@ -97,7 +99,7 @@ if (isset ($_SESSION['user_id'])) {
                 <div class="col-6" style="text-align: center;">
                     <div class="header1">
 
-                        <h4>FILL UP FORM - E GOVERNMENT SERVICE</h4>
+                        <h4 class="text-uppercase"><?= $service ?> FORM - E GOVERNMENT SERVICE</h4>
                         <h4 class="contact-header">CONTACT DETAILS</h4>
                     </div>
                 </div>
