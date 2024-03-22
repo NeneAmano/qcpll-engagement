@@ -103,9 +103,11 @@ if (isset ($_SESSION['user_id'])) {
 
                 <div class="col-6" style="text-align: center;">
                     <div class="header1">
-
-                        <h4 class="text-uppercase"><?= $service ?> FORM - E GOVERNMENT SERVICE</h4>
-                        <h4 class="contact-header">CONTACT DETAILS</h4>
+                    <?php
+$service = isset($_GET['service']) ? urldecode($_GET['service']) : '';
+?>
+<h4 class="text-uppercase"><?= $service ?> FORM - E GOVERNMENT SERVICE</h4>
+<h4 class="contact-header">CONTACT DETAILS</h4>
                     </div>
                 </div>
 
@@ -356,17 +358,17 @@ if (isset ($_SESSION['user_id'])) {
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script>
-        // window.onload = function () {
-        //     window.print();
-        // };
+        window.onload = function () {
+           window.print();
+         };
 
-        // window.onafterprint = function (e) {
-        //     closePrintView();
-        // };
+        window.onafterprint = function (e) {
+            closePrintView();
+         };
 
-        // function closePrintView() {
-        //     window.location.href = 'queue.php';
-        // }
+        function closePrintView() {
+            window.location.href = 'queue.php';
+        }
     </script>
 </body>
 
