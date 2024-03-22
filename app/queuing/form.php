@@ -23,6 +23,11 @@ if (isset ($_SESSION['user_id'])) {
                 $occupation = $row['occupation'];
                 $status = $row['status'];
                 $created_at = $row['created_at'];
+                
+
+                
+                $formatted_date = date("F d, Y", strtotime($birthdate));
+                
 
                 $maiden_middle_name = ""; // Initialize maiden middle name variable
                 $maiden_last_name = ""; // Initialize maiden last name variable
@@ -150,7 +155,7 @@ if (isset ($_SESSION['user_id'])) {
                         <div class="col-6">
                             <?php if ($gender == "Female" && ($civil_status == "Married" || $civil_status == "Widow")): ?>
                                 <div class="middle-name">
-                                    <label>Middle Name:</label>
+                                    <label> Maiden Middle Name:</label>
                                     <p class="middlename-p">__________________________________</p>
                                 </div>
                             <?php else: ?>
@@ -164,7 +169,7 @@ if (isset ($_SESSION['user_id'])) {
                         <div class="col-6">
                             <label>Birthdate :</label>
                             <label>
-                                <?= $birthdate ?>
+                                <?=  $formatted_date ?>
                             </label>
                         </div>
 
@@ -235,18 +240,18 @@ if (isset ($_SESSION['user_id'])) {
 
                 <!-- CONTACT DETAILS -->
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-8">
                         <div class="contact-1">
                             <label>Address:</label>
-                            <p>______________________________________________________________
-                            <p>
+                            <p>________________________________________________________________________________
+                                    </p>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <div class="contact-2">
                             <label>Mobile:</label>
-                            <p>______________________________________________________________
-                            <p>
+                            <p>______________________________________________
+                                    </p>
                         </div>
                     </div>
                 </div>
@@ -317,13 +322,13 @@ if (isset ($_SESSION['user_id'])) {
                             <div class="fill-03">
                                 <div class="item-1">
                                     <label>Height:</label>
-                                    <p>_______________________
-                                    <p>
+                                    <p>_____________________
+                                    </p>
                                 </div>
                                 <div class="item-1">
-                                    <label>Weight:</label>
-                                    <p>_______________________
-                                    <p>
+                                    <label class="ps-3">Weight:</label>
+                                    <p class="ps-3">_____________________
+                                    </p>
                                 </div>
                             </div>
                             <div class="fill-04">
@@ -351,17 +356,17 @@ if (isset ($_SESSION['user_id'])) {
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script>
-        window.onload = function () {
-            window.print();
-        };
+        // window.onload = function () {
+        //     window.print();
+        // };
 
-        window.onafterprint = function (e) {
-            closePrintView();
-        };
+        // window.onafterprint = function (e) {
+        //     closePrintView();
+        // };
 
-        function closePrintView() {
-            window.location.href = 'queue.php';
-        }
+        // function closePrintView() {
+        //     window.location.href = 'queue.php';
+        // }
     </script>
 </body>
 
