@@ -256,6 +256,19 @@
                         }
                     }
 
+                    if($nbi !== '' && $police !== '') {
+                        $service = "NBI and Police Clearance";
+                        header("location: form.php?service=" . urlencode($service) . "&queue_no=" . $new_queue_number . "&client_id=" . $client_id . "&birthdate=" . $birthdate);
+                    } elseif($nbi !== '') {
+                        $service = "NBI";
+                        header("location: form.php?service=" . urlencode($service) . "&queue_no=" . $new_queue_number . "&client_id=" . $client_id . "&birthdate=" . $birthdate);
+                    } elseif($police !== '') {
+                        $service = "Police Clearance";
+                        header("location: form.php?service=" . urlencode($service) . "&queue_no=" . $new_queue_number . "&client_id=" . $client_id . "&birthdate=" . $birthdate);
+                    } else {
+                        // Handle other cases or redirections
+                    }
+                    
                     date_default_timezone_set('Asia/Manila');
                     $date_today = date('Y-m-d');
                     $timestamp_today = date('Y-m-d h:i:s');
